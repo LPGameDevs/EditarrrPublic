@@ -1,6 +1,6 @@
-namespace _Project.Scripts.CorgiExtension
+namespace CorgiExtension
 {
-    public class TOLevelSelector : LevelSelector
+    public class EditorLevelSelector : LevelSelector
     {
 
         public virtual void GoToLevel()

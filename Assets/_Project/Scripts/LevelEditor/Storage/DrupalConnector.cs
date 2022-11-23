@@ -16,17 +16,17 @@ namespace LevelEditor
         private const string codeChars = "bcdfghjklmnpqrstvwxyz123456789";
 
 #if UNITY_EDITOR
-        private const string drupalBaseUrl = "https://tower-offender.ddev.site";
-        private const string drupalLevelUrl = "https://tower-offender.ddev.site/jsonapi/node/level";
-        private const string drupalCommentUrl = "https://tower-offender.ddev.site/jsonapi/comment/comment";
-        private const string drupalFileUrl = "https://tower-offender.ddev.site/jsonapi/file/file";
+        private const string drupalBaseUrl = "https://editarrr.ddev.site";
+        private const string drupalLevelUrl = "https://editarrr.ddev.site/jsonapi/node/level";
+        private const string drupalCommentUrl = "https://editarrr.ddev.site/jsonapi/comment/comment";
+        private const string drupalFileUrl = "https://editarrr.ddev.site/jsonapi/file/file";
 #else
         private const string drupalBaseUrl = "https://editarrr.trygamedev.com";
         private const string drupalLevelUrl = "https://editarrr.trygamedev.com/jsonapi/node/level";
         private const string drupalCommentUrl = "https://editarrr.trygamedev.com/jsonapi/comment/comment";
         private const string drupalFileUrl = "https://editarrr.trygamedev.com/jsonapi/file/file";
 #endif
-        private const string token = "YXBpOktabmJmVTFhYmwwYW9lYzZBNndpOFJ2QWZTa1BzVTZYS3IwMHNkR1ZBQmFDcjZUM1BndmN0WFo4WDRVNElIc3Q=";
+        private const string token = "";
 
         private bool _showDebug = false;
 

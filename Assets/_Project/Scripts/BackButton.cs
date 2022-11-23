@@ -1,15 +1,15 @@
 using System;
-using _Project.Scripts.CorgiExtension;
+using CorgiExtension;
 using LevelEditor;
 using UnityEngine;
 
 public class BackButton : MonoBehaviour
 {
-    private TOLevelSelector _selector;
+    private EditorLevelSelector _selector;
 
     private void Awake()
     {
-        _selector = GetComponent<TOLevelSelector>();
+        _selector = GetComponent<EditorLevelSelector>();
     }
 
     public void ButtonClicked()
