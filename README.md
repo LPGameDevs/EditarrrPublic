@@ -8,6 +8,12 @@ Very simple prototype for now, but will be added to soon.
 ![editarrr](https://user-images.githubusercontent.com/1744957/203564293-e01a67a0-bf17-44d7-8bfb-a3f2dfdd1a8a.gif)
 
 
+## Collaboration
+
+Anyone can get involved with the development of this game. Check the board for stuff to work on:
+
+https://github.com/orgs/LPGameDevs/projects/4
+
 
 ## Asset Attributions
 
