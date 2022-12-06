@@ -10,9 +10,7 @@ Very simple prototype for now, but will be added to soon.
 
 ## Collaboration
 
-Anyone can get involved with the development of this game. Check the board for stuff to work on:
-
-https://github.com/orgs/LPGameDevs/projects/4
+Anyone can get involved with the development of this game. Check the roadmap (https://github.com/LPGameDevs/EditarrrPublic/issues/4) or the [project board](https://github.com/orgs/LPGameDevs/projects/4) for stuff to work on.
 
 
 ## Asset Attributions
