@@ -3,7 +3,6 @@ using System.IO;
 using LevelEditor;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class UserNameForm : MonoBehaviour
 {
@@ -12,7 +11,6 @@ public class UserNameForm : MonoBehaviour
     public const string UserNameStorageKey = "UserName";
     public const string DefaultUserName = "anon";
 
-    public UnityEvent OnSubmitFormComplete;
     public TMP_InputField UserNameInput;
 
     private void Start()
@@ -35,7 +33,7 @@ public class UserNameForm : MonoBehaviour
         }
 
         PlayerPrefs.SetString(UserNameStorageKey, newUserName);
-        OnSubmitFormComplete?.Invoke();
         OnNameChosen?.Invoke(UserNameInput.text ?? DefaultUserName);
+        // @todo Transition to next scene.
     }
 }
