@@ -3,11 +3,6 @@ namespace CorgiExtension
     public class EditorLevelSelector : LevelSelector
     {
 
-        public virtual void GoToLevel()
-        {
-            LevelManager.Instance.GotoLevel(LevelName);
-        }
-
 
         public void GoToLevelSelection()
         {

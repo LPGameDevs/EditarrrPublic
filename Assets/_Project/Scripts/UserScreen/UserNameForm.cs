@@ -3,6 +3,7 @@ using System.IO;
 using LevelEditor;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UserNameForm : MonoBehaviour
 {
@@ -34,6 +35,6 @@ public class UserNameForm : MonoBehaviour
 
         PlayerPrefs.SetString(UserNameStorageKey, newUserName);
         OnNameChosen?.Invoke(UserNameInput.text ?? DefaultUserName);
-        // @todo Transition to next scene.
+        LevelManager.Instance.GotoLevel("EditorSelection");
     }
 }

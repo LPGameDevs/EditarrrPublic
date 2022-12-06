@@ -1,3 +1,5 @@
+using UnityEngine.SceneManagement;
+
 /**
  * Level Manager Singleton
  *
@@ -9,25 +11,9 @@
  */
 public class LevelManager : UnitySingleton<LevelManager>
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public void GotoLevel(string sceneName)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void GotoNextLevel()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void GotoLevel(string editorselection)
-    {
-        throw new System.NotImplementedException();
+        SceneManager.LoadScene(sceneName);
     }
 }

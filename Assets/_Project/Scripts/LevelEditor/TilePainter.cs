@@ -504,8 +504,6 @@ namespace LevelEditor
             _currentLevelSave = new LevelSave();
             _isHoverTilesEnabled = TilemapHover.IsNull("Hover Tilemap is not set so hover tiles are disabled.");;
 
-
-
             string data = File.ReadAllText(EditorLevelStorage.LevelStorageEditorLevel);
             _levelCode = PlayerPrefs.GetString("EditorCode");
             if (_levelCode.Length > 0)
@@ -547,7 +545,7 @@ namespace LevelEditor
             {
                 if (_backToSelection)
                 {
-                    SceneManager.LoadScene("EditorSelection");
+                    LevelManager.Instance.GotoLevel("EditorSelection");
                 }
 
                 RegisterEditorSOs();

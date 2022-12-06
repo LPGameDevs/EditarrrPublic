@@ -38,7 +38,7 @@ public class LevelSelectionLoader : MonoBehaviour
             level = Instantiate(DraftPrefab, transform);
         }
 
-        level.Title.text = code.ToUpper();
+        level.setTitle(code.ToUpper());
         level.Creator.text = levelData.creator.ToUpper();
 
         if (levelData.creator.ToLower() != userName.ToLower())
