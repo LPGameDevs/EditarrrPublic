@@ -13,9 +13,9 @@ namespace LevelEditor
         public static Action<DatabaseRequestType, PostRequestData> OnRequestComplete;
         public static Action<DatabaseRequestType, CommentsResponseData> OnCommentsRequestComplete;
 
-        public static bool _remoteStorageEnabled = true;
-        private bool _remoteStorageDrupal = true;
-        private bool _includeDistroLevels = true;
+        public static bool _remoteStorageEnabled = false;
+        private bool _remoteStorageDrupal = false;
+        private bool _includeDistroLevels = false;
         private int _localStorageCode;
 
         private IDbConnector _db;
@@ -61,6 +61,9 @@ namespace LevelEditor
             DirectoryInfo dir = new DirectoryInfo(LevelStoragePath);
             FileInfo[] info = dir.GetFiles("*.json");
 
+            // We may want to package a few levels with the game
+            // so that the player can play without having to download
+            // anything from the server.
             if (_includeDistroLevels)
             {
                 DirectoryInfo dir2 = new DirectoryInfo(DistroLevelStoragePath);

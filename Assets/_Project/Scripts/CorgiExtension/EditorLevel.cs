@@ -87,7 +87,7 @@ namespace CorgiExtension
         public void setTitle(string title)
         {
             Title.text = title;
-            _code = title;
+            _code = title.ToLower();
         }
     }
 }

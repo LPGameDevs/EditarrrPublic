@@ -76,6 +76,11 @@ public class LevelSelectionLoader : MonoBehaviour
 
     }
 
+    /**
+     * Destroy all levels in the selection scene and reload.
+     *
+     * This is easier than trying to track what has changed.
+     */
     private void DestroyAndRefreshLevels()
     {
         foreach (var level in _loadedLevels)
@@ -87,10 +92,13 @@ public class LevelSelectionLoader : MonoBehaviour
         var info = EditorLevelStorage.Instance.GetStoredLevelFiles();
         foreach (FileInfo f in info)
         {
+            // Ignore the level reset template.
             if (f.Name == "level.json")
             {
                 continue;
             }
+
+            // Get the level code from the file name without the extension.
             string levelCode = f.Name.Remove(f.Name.Length - f.Extension.Length);
             SetupLevelPrefabByCode(levelCode);
         }
