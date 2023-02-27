@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace CorgiExtension
 {
-    public class EditorLevel : Level
+    public class EditorLevel : MonoBehaviour
     {
         public static event Action<string> OnEditorLevelUpload;
         public static event Action<string> OnLeaderboardRequest;

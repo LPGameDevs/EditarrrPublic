@@ -1,8 +1,25 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
 namespace CorgiExtension
 {
-    public class EditorLevelSelector : LevelSelector
+    public class EditorLevelSelector : MonoBehaviour
     {
 
+        public string LevelName;
+
+        public void GoToLevel()
+        {
+            LevelManager.Instance.GotoLevel(LevelName);
+        }
+
+        /**
+         * Restarts the current level.
+        */
+        public void RestartLevel()
+        {
+            LevelManager.Instance.GotoLevel(SceneManager.GetActiveScene().name);
+        }
 
         public void GoToLevelSelection()
         {

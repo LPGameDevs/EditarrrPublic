@@ -11,12 +11,6 @@ public class LevelSelectionLoader : MonoBehaviour
     public EditorLevel DraftPrefab;
 
     private List<Transform> _loadedLevels = new List<Transform>();
-    private Carousel _carousel;
-
-    private void Awake()
-    {
-        _carousel = GetComponentInParent<Carousel>();
-    }
 
     void Start()
     {
@@ -101,11 +95,6 @@ public class LevelSelectionLoader : MonoBehaviour
             // Get the level code from the file name without the extension.
             string levelCode = f.Name.Remove(f.Name.Length - f.Extension.Length);
             SetupLevelPrefabByCode(levelCode);
-        }
-
-        if (_carousel != null)
-        {
-            _carousel.SetCount(_loadedLevels.Count);
         }
     }
 

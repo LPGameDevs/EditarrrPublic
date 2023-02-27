@@ -5,24 +5,13 @@ using UnityEngine;
 
 namespace CorgiExtension
 {
-    public class GUIMananger : GUIManager
+    public class GUIMananger : UnitySingleton<GUIMananger>
     {
         public static event Action OnMusicRandom;
 
-        [Header("Bindings")]
-
-        /// the win screen game object
-        [Tooltip("the win screen game object")]
         public GameObject WinScreen;
-
-        /// the lost screen game object
-        [Tooltip("the lost screen game object")]
         public GameObject LoseScreen;
-
-        /// Help overlay for information
-        [Tooltip("Help overlay for information")]
         public GameObject HelpOverlay;
-
 
         public float WinDelay = 1f;
         public float LoseDelay = 1f;
