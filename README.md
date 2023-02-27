@@ -5,8 +5,13 @@ Public repo for level editor tools in Unity
 Very simple prototype for now, but will be added to soon.
 
 
-![editarrr](https://user-images.githubusercontent.com/1744957/203564293-e01a67a0-bf17-44d7-8bfb-a3f2dfdd1a8a.gif)
+<img src="https://user-images.githubusercontent.com/1744957/203564293-e01a67a0-bf17-44d7-8bfb-a3f2dfdd1a8a.gif" alt="editarrr" style="margin:auto" width="340" height="190">
 
+## Latest build
+
+You can play the latest build of the game here:
+
+ - [Play now](https://lpgamedevs.github.io/EditarrrPublic/)
 
 ## Collaboration
 
