@@ -30,7 +30,11 @@ public class UserNameForm : MonoBehaviour
 
         if (oldUserName != newUserName)
         {
-            File.WriteAllText(EditorLevelStorage.LevelStorageEditorLevel, "{}");
+            // Reset any previous level data.
+            if (File.Exists(EditorLevelStorage.LevelStorageEditorLevel))
+            {
+                File.WriteAllText(EditorLevelStorage.LevelStorageEditorLevel, "{}");
+            }
         }
 
         PlayerPrefs.SetString(UserNameStorageKey, newUserName);
