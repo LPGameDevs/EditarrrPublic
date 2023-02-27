@@ -48,8 +48,7 @@ jobs:
         with:
           name: build-WebGL
           path: build/WebGL
-
-
+          retention-days: 1
 
   deployPages:
     needs: buildWebGL
