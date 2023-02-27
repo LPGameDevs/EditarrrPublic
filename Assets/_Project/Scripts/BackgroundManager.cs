@@ -9,6 +9,10 @@ public class BackgroundManager : MonoBehaviour
     public float TopMin;
     public float BottomMax;
 
+    /**
+     * This function moves different background layers to match the camera's
+     * position.
+     */
     private void Update()
     {
         Vector3 cameraPosition = Camera.transform.position;

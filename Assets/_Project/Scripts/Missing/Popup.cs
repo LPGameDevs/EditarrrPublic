@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/**
+ * Use this class to nicely animate a popup.
+ */
 public class Popup : MonoBehaviour
 {
 

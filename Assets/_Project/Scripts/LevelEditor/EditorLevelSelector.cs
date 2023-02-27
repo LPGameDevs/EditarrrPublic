@@ -28,12 +28,13 @@ namespace CorgiExtension
 
         protected void OnEnable()
         {
-            WinMenu.OnScoreSubmitted += GoToLevelSelection;
+            // @todo Reconnect when we have a win menu.
+            // WinMenu.OnScoreSubmitted += GoToLevelSelection;
         }
 
         protected void OnDisable()
         {
-            WinMenu.OnScoreSubmitted -= GoToLevelSelection;
+            // WinMenu.OnScoreSubmitted -= GoToLevelSelection;
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using CorgiExtension;
 using LevelEditor;
 using UnityEngine;
@@ -12,6 +11,10 @@ public class BackButton : MonoBehaviour
         _selector = GetComponent<EditorLevelSelector>();
     }
 
+    /**
+     * Safety mechanism to prevent levels being edited once they are
+     * published.
+     */
     public void ButtonClicked()
     {
         string code = PlayerPrefs.GetString("EditorCode");
