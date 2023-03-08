@@ -1,6 +1,9 @@
 name: GameCI Template 🎮
 
-on: push
+on:
+  push:
+    tags:
+      - v*
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
