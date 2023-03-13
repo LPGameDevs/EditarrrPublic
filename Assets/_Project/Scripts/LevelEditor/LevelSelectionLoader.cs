@@ -3,8 +3,10 @@ using System.IO;
 using CorgiExtension;
 using LevelEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
+/**
+ * Responsible for showing levels on the selection screen.
+ */
 public class LevelSelectionLoader : MonoBehaviour
 {
     public EditorLevel LevelPrefab;
@@ -17,59 +19,6 @@ public class LevelSelectionLoader : MonoBehaviour
         DestroyAndRefreshLevels();
     }
 
-    private void SetupLevelPrefabByCode(string code)
-    {
-        LevelSave levelData = EditorLevelStorage.Instance.GetLevelData(code);
-        string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
-        EditorLevel level;
-
-        if (levelData.published)
-        {
-             level = Instantiate(LevelPrefab, transform);
-        }
-        else
-        {
-            level = Instantiate(DraftPrefab, transform);
-        }
-
-        level.setTitle(code.ToUpper());
-        level.Creator.text = levelData.creator.ToUpper();
-
-        if (levelData.creator.ToLower() != userName.ToLower())
-        {
-            level.HideEditorTools();
-        }
-
-        _loadedLevels.Add(level.transform);
-
-        // create texture from image file
-        RawImage image = level.GetComponentInChildren<RawImage>();
-        string path = $"{EditorLevelStorage.ScreenshotStoragePath}{code}.png";
-
-        bool isDistroLevel = false;
-        if (!File.Exists(path) && File.Exists($"{EditorLevelStorage.DistroLevelStoragePath}{code}.png"))
-        {
-            path = $"{EditorLevelStorage.DistroLevelStoragePath}{code}.png";
-            isDistroLevel = true;
-        }
-
-        if (isDistroLevel)
-        {
-            level.HideDeleteButton();
-        }
-
-        if (image && File.Exists(path))
-        {
-            var bytes = File.ReadAllBytes(path);
-            var tex = new Texture2D(2, 2);
-            tex.LoadImage(bytes);
-
-            image.texture = tex;
-            image.color = Color.white;
-        }
-
-    }
-
     /**
      * Destroy all levels in the selection scene and reload.
      *
@@ -77,10 +26,12 @@ public class LevelSelectionLoader : MonoBehaviour
      */
     private void DestroyAndRefreshLevels()
     {
+        // Remove all existing levels.
         foreach (var level in _loadedLevels)
         {
             Destroy(level.gameObject);
         }
+
         _loadedLevels = new List<Transform>();
 
         var info = EditorLevelStorage.Instance.GetStoredLevelFiles();
@@ -96,6 +47,38 @@ public class LevelSelectionLoader : MonoBehaviour
             string levelCode = f.Name.Remove(f.Name.Length - f.Extension.Length);
             SetupLevelPrefabByCode(levelCode);
         }
+    }
+
+    /**
+     * Lookup the saved level data from the filename and create a level prefab.
+     */
+    private void SetupLevelPrefabByCode(string code)
+    {
+        LevelSave levelData = EditorLevelStorage.Instance.GetLevelData(code);
+        string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+        EditorLevel level;
+
+        if (levelData.published)
+        {
+            level = Instantiate(LevelPrefab, transform);
+        }
+        else
+        {
+            level = Instantiate(DraftPrefab, transform);
+        }
+
+        // Set visual information on the level from data.
+        level.SetTitle(code);
+        level.SetCreator(levelData.creator);
+        level.SetScreenshot(code);
+
+        // Dont allow someone to edit a level if they didnt create it.
+        if (levelData.creator.ToLower() != userName.ToLower())
+        {
+            level.HideEditorTools();
+        }
+
+        _loadedLevels.Add(level.transform);
     }
 
     private void OnEnable()

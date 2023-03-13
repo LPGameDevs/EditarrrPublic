@@ -717,6 +717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Title: {fileID: 6307186819109818666}
   Creator: {fileID: 2276269086239003576}
+  ScreenshotImage: {fileID: 9007994383363989491}
   EditButton: {fileID: 0}
   UploadButton: {fileID: 0}
   DeleteButton: {fileID: 0}

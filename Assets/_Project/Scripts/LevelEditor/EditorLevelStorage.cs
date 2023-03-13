@@ -8,6 +8,7 @@ namespace LevelEditor
 {
     public class EditorLevelStorage : UnitySingleton<EditorLevelStorage>
     {
+        // Trigger this event when the level selection should be updated.
         public static event Action OnLevelRefresh;
 
         public static Action<DatabaseRequestType, PostRequestData> OnRequestComplete;
@@ -83,12 +84,10 @@ namespace LevelEditor
                 if (File.Exists(LevelStoragePath + levelCode + ".json"))
                 {
                     data = File.ReadAllText(LevelStoragePath + levelCode + ".json");
-
                 }
                 else if (File.Exists(DistroLevelStoragePath + levelCode + ".json"))
                 {
                     data = File.ReadAllText(DistroLevelStoragePath + levelCode + ".json");
-
                 }
 
                 if (data.Length > 2)
@@ -121,6 +120,8 @@ namespace LevelEditor
             }
 
             File.Delete(LevelStoragePath + code + ".json");
+            File.Delete(ScreenshotStoragePath + code + ".png");
+
             OnLevelRefresh?.Invoke();
         }
 
@@ -165,11 +166,10 @@ namespace LevelEditor
             _SaveLevelCode = code;
             _SaveLevelData = levelData;
 
-            if (_remoteStorageEnabled && upload)
+            if (upload)
             {
                 if (!levelExists)
                 {
-
                     StartCoroutine(nameof(DoSaveLevelCreate));
                 }
                 else
@@ -202,7 +202,10 @@ namespace LevelEditor
         public IEnumerator DoSaveLevelCreate()
         {
             yield return DoTakeScreenshot();
-            _db.CreateData(_SaveLevelCode, _SaveLevelData);
+            if (_remoteStorageEnabled)
+            {
+                _db.CreateData(_SaveLevelCode, _SaveLevelData);
+            }
         }
 
         public IEnumerator DoSaveLevelUpdate()
@@ -212,15 +215,17 @@ namespace LevelEditor
             {
                 yield return DoTakeScreenshot();
             }
-            _db.UpdateData(_SaveLevelCode, _SaveLevelData);
+
+            if (_remoteStorageEnabled)
+            {
+                _db.UpdateData(_SaveLevelCode, _SaveLevelData);
+            }
         }
 
         public IEnumerator DoTakeScreenshot()
         {
             // Wait till the last possible moment before screen rendering to hide the UI
-            yield return null;
             Canvas canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-
             canvas.enabled = false;
 
             // Wait for screen rendering to complete
@@ -251,7 +256,6 @@ namespace LevelEditor
 
         private void CheckEditorLevelExists()
         {
-
             if (!File.Exists(LevelStorageEditorLevel))
             {
                 File.WriteAllText(LevelStorageEditorLevel, "{}");

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using LevelEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ namespace CorgiExtension
 
         public Text Title;
         public Text Creator;
+        public RawImage ScreenshotImage;
         public Transform EditButton;
         public Transform UploadButton;
         public Transform DeleteButton;
@@ -84,10 +86,44 @@ namespace CorgiExtension
             }
         }
 
-        public void setTitle(string title)
+        public void SetTitle(string title)
         {
-            Title.text = title;
+            Title.text = title.ToUpper();
             _code = title.ToLower();
+        }
+
+        public void SetCreator(string creator)
+        {
+            Creator.text = creator.ToUpper();
+        }
+
+        public void SetScreenshot(string code)
+        {
+            // create texture from image file
+            string path = $"{EditorLevelStorage.ScreenshotStoragePath}{code}.png";
+
+            bool isDistroLevel = false;
+            if (!File.Exists(path) && File.Exists($"{EditorLevelStorage.DistroLevelStoragePath}{code}.png"))
+            {
+                path = $"{EditorLevelStorage.DistroLevelStoragePath}{code}.png";
+                isDistroLevel = true;
+            }
+
+            if (isDistroLevel)
+            {
+                HideDeleteButton();
+            }
+
+            if (ScreenshotImage && File.Exists(path))
+            {
+                var bytes = File.ReadAllBytes(path);
+                var tex = new Texture2D(2, 2);
+                tex.LoadImage(bytes);
+
+                ScreenshotImage.texture = tex;
+                ScreenshotImage.color = Color.white;
+            }
+
         }
     }
 }
