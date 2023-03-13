@@ -1,11 +1,16 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-namespace CorgiExtension
+namespace LevelEditor
 {
+    /**
+     * Component logic for navigating between levels.
+     *
+     * Example usage:
+     * - Add to a button and navigate to a level on click.
+     */
     public class EditorLevelSelector : MonoBehaviour
     {
-
+        // The level to navigate to (chosen in Editor).
         public string LevelName;
 
         public void GoToLevel()
@@ -18,23 +23,13 @@ namespace CorgiExtension
         */
         public void RestartLevel()
         {
-            LevelManager.Instance.GotoLevel(SceneManager.GetActiveScene().name);
+            LevelManager.Instance.RestartLevel();
         }
+
 
         public void GoToLevelSelection()
         {
-            LevelManager.Instance.GotoLevel("EditorSelection");
-        }
-
-        protected void OnEnable()
-        {
-            // @todo Reconnect when we have a win menu.
-            // WinMenu.OnScoreSubmitted += GoToLevelSelection;
-        }
-
-        protected void OnDisable()
-        {
-            // WinMenu.OnScoreSubmitted -= GoToLevelSelection;
+            LevelManager.Instance.GotoLevel(LevelManager.LevelSelectionSceneName);
         }
     }
 }

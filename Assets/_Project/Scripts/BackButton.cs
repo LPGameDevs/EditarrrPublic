@@ -1,7 +1,10 @@
-using CorgiExtension;
 using LevelEditor;
 using UnityEngine;
 
+/**
+ * Button logic for leaving the game level and returning to the editor.
+ */
+[RequireComponent(typeof(EditorLevelSelector))]
 public class BackButton : MonoBehaviour
 {
     private EditorLevelSelector _selector;
@@ -20,9 +23,10 @@ public class BackButton : MonoBehaviour
         string code = PlayerPrefs.GetString("EditorCode");
         var level = EditorLevelStorage.Instance.GetLevelData(code);
 
+        // Once the level is published it can no longer be edited.
         if (level.published)
         {
-            _selector.LevelName = "EditorSelection";
+            _selector.LevelName = LevelManager.LevelSelectionSceneName;
         }
 
         _selector.GoToLevel();

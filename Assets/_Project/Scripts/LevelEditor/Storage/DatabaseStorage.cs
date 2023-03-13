@@ -45,7 +45,7 @@ namespace LevelEditor.Storage
                 var ob =  JsonConvert.DeserializeObject<DatabaseResponse>(json);
                 return JsonConvert.DeserializeObject<LevelSave>(json);
             }
-            catch (Exception e)
+            catch (Exception _)
             {
                 // might want to log exception
                 // and throw or return bad status

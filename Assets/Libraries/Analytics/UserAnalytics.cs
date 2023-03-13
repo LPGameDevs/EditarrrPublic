@@ -8,14 +8,6 @@ using UnityEngine;
 public class UserAnalytics : MonoBehaviour
 {
 
-    public void SendUserNameChosen(string userName)
-    {
-        Dictionary<string, object> parameters = new Dictionary<string, object>()
-        {
-            { "userName", userName}
-        };
-        AnalyticsService.Instance.CustomData("nameChosen", parameters);
-    }
 
     public void SendStartEditor(string code)
     {
@@ -65,7 +57,6 @@ public class UserAnalytics : MonoBehaviour
 
     private void OnEnable()
     {
-        UserNameForm.OnNameChosen += SendUserNameChosen;
         LevelAnalytics.OnLevelEditStart += SendStartEditor;
         LevelAnalytics.OnLevelPlayStart += SendStartLevel;
         WinMenu.OnScoreSubmit += SendCompleteLevel;
@@ -75,7 +66,6 @@ public class UserAnalytics : MonoBehaviour
 
     private void OnDisable()
     {
-        UserNameForm.OnNameChosen -= SendUserNameChosen;
         LevelAnalytics.OnLevelEditStart -= SendStartEditor;
         LevelAnalytics.OnLevelPlayStart -= SendStartLevel;
         WinMenu.OnScoreSubmit -= SendCompleteLevel;

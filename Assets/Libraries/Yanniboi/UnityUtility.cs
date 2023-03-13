@@ -4,13 +4,17 @@ namespace Yanniboi
 {
     public static class UnityUtility
     {
-        public static bool IsNull<T>(this T myObject, string message = "") where T : class
+        public static bool IsNull<T>(this T myObject, string message = "", bool logError = false) where T : class
         {
             if (myObject is Object obj)
             {
                 if (!obj)
                 {
-                    Debug.LogError("The object is null! " + message);
+                    if (logError)
+                    {
+                        Debug.LogError("The object is null! " + message);
+                    }
+
                     return false;
                 }
             }
@@ -18,7 +22,11 @@ namespace Yanniboi
             {
                 if (myObject == null)
                 {
-                    Debug.LogError("The object is null! " + message);
+                    if (logError)
+                    {
+                        Debug.LogError("The object is null! " + message);
+                    }
+
                     return false;
                 }
             }

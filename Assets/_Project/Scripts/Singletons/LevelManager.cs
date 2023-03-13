@@ -12,8 +12,15 @@ using UnityEngine.SceneManagement;
 public class LevelManager : UnitySingleton<LevelManager>
 {
 
+    public static string LevelSelectionSceneName = "EditorSelection";
+
     public void GotoLevel(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void RestartLevel()
+    {
+        GotoLevel(SceneManager.GetActiveScene().name);
     }
 }

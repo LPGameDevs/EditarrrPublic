@@ -3,12 +3,12 @@ using System.IO;
 using LevelEditor;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
+/**
+ * This class allows a user to choose a username.
+ */
 public class UserNameForm : MonoBehaviour
 {
-    public static event Action<string> OnNameChosen;
-
     public const string UserNameStorageKey = "UserName";
     public const string DefaultUserName = "anon";
 
@@ -16,6 +16,7 @@ public class UserNameForm : MonoBehaviour
 
     private void Start()
     {
+        // If we already have saved a username then use that.
         string userName = PlayerPrefs.GetString(UserNameStorageKey);
         if (userName.Length > 0 && userName != DefaultUserName)
         {
@@ -28,6 +29,8 @@ public class UserNameForm : MonoBehaviour
         string oldUserName = PlayerPrefs.GetString(UserNameStorageKey, DefaultUserName);
         string newUserName = UserNameInput.text ?? DefaultUserName;
 
+        // If the username changes then we need to reset the level data.
+        // This is easier than trying to migrate the data.
         if (oldUserName != newUserName)
         {
             // Reset any previous level data.
@@ -37,8 +40,9 @@ public class UserNameForm : MonoBehaviour
             }
         }
 
+        // We store the username in player prefs. Its not sensitive data so this is fine.
         PlayerPrefs.SetString(UserNameStorageKey, newUserName);
-        OnNameChosen?.Invoke(UserNameInput.text ?? DefaultUserName);
-        LevelManager.Instance.GotoLevel("EditorSelection");
+
+        LevelManager.Instance.GotoLevel(LevelManager.LevelSelectionSceneName);
     }
 }

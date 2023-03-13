@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using Yanniboi;
 
@@ -545,7 +544,7 @@ namespace LevelEditor
             {
                 if (_backToSelection)
                 {
-                    LevelManager.Instance.GotoLevel("EditorSelection");
+                    LevelManager.Instance.GotoLevel(LevelManager.LevelSelectionSceneName);
                 }
 
                 RegisterEditorSOs();
