@@ -16,7 +16,7 @@ namespace LevelEditor
 
         public static bool _remoteStorageEnabled = false;
         private bool _remoteStorageDrupal = false;
-        private bool _includeDistroLevels = false;
+        private bool _includeDistroLevels = true;
         private int _localStorageCode;
 
         private IDbConnector _db;
