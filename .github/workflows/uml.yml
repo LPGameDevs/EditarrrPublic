@@ -57,4 +57,4 @@ jobs:
           author_name: 'UML Bot'
           message: 'Generate UML (${{ github.workflow }})'
           new_branch: 'uml-diagrams'
-          add: 'UML'
+   
