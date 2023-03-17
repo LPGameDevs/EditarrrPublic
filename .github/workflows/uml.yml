@@ -12,7 +12,7 @@ jobs:
     env:
       CODE_PATH: "./Assets/_Project/Scripts/"
       UML_OUTPUT_PATH: "./UML/"
-      UMP_GENERATION_PARAMETERS: -public -createAssociation -allInOne
+      UMP_GENERATION_PARAMETERS: -public -createAssociation -allInOne -excludePaths "./Assets/_Project/Scripts/LevelEditor/Storage/"
     steps:
       - uses: actions/checkout@v2
 
