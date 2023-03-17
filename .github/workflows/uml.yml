@@ -12,35 +12,35 @@ jobs:
     env:
       CODE_PATH: "./Assets/_Project/Scripts/"
       UML_OUTPUT_PATH: "./UML/"
-      UMP_GENERATION_PARAMETERS: -public -createAssociation -allInOne -excludePaths "./Assets/_Project/Scripts/LevelEditor/Storage/"
+      UMP_GENERATION_PARAMETERS: -public -createAssociation -allInOne
     steps:
       - uses: actions/checkout@v2
 
-      - name: Remove old diagrams 
+      - name: Remove old diagrams
         run: rm -r ${{ env.UML_OUTPUT_PATH }} || true
-        
+
       - name: Check if there is code
         run: |
           [ -d ${{ env.CODE_PATH }} ] && echo "::set-output name=CODE_EXISTS::true" || true
         id: check_for_code
-        
+
       - uses: actions/setup-dotnet@v1
         if: ${{ steps.check_for_code.outputs.CODE_EXISTS == 'true' }}
         with:
           dotnet-version: 5.0.x
-      
+
       - if: ${{ steps.check_for_code.outputs.CODE_EXISTS == 'true' }}
         run: dotnet tool install --global PlantUmlClassDiagramGenerator --version 1.2.4
       - if: ${{ steps.check_for_code.outputs.CODE_EXISTS == 'true' }}
         run: dotnet tool restore
-        
+
       - name: Create a folder for diagrams
         if: ${{ steps.check_for_code.outputs.CODE_EXISTS == 'true' }}
         run: mkdir ${{ env.UML_OUTPUT_PATH }}
       - name: Generate PlantUML files
         if: ${{ steps.check_for_code.outputs.CODE_EXISTS == 'true' }}
         run: puml-gen ${{ env.CODE_PATH }} ${{ env.UML_OUTPUT_PATH }} -dir ${{ env.UMP_GENERATION_PARAMETERS }}
-        
+
       - name: Get File names
         if: ${{ steps.check_for_code.outputs.CODE_EXISTS == 'true' }}
         run: |
