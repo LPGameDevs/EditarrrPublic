@@ -8,6 +8,10 @@ This includes art/music/scripts/etc.
 This is for any libraries or asset packs that are used by the game, but not made by
 contributors.
 
+### Scripts
+
+This is for build related scripts not part of the main game
+
 ### StreamingAssets
 
 TBC - Unity directory for distributed files like levels.
