@@ -2,7 +2,7 @@ name: Generate UML
 on:
   push:
     branches:
-      - develop
+      - main
   workflow_dispatch:
 
 jobs:
