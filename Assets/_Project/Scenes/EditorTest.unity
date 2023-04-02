@@ -799,22 +799,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &296208200
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 920301251}
-  m_Layer: 0
-  m_Name: LevelStart
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &300493817
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,20 +2051,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!4 &920301251
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 296208200}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1858949006}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1100167515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2753,7 +2723,7 @@ MonoBehaviour:
   PlayerWinSO: {fileID: 11400000, guid: e5c207a599d039786aee1a96e835c857, type: 2}
   EnemySO: {fileID: 11400000, guid: 0b8fd96f50da964e3a64cfcc2bf1f26a, type: 2}
   EnemyFollowSO: {fileID: 11400000, guid: f02cd4c27439ed386a5fba9b63431eb6, type: 2}
-  PlayerSpawn: {fileID: 296208200}
+  PlayerSpawn: {fileID: 11400000, guid: aaef4afe49ef634919d611aee0f274c5, type: 2}
 --- !u!20 &1674258895
 Camera:
   m_ObjectHideFlags: 0
@@ -2941,7 +2911,6 @@ Transform:
   m_Children:
   - {fileID: 1618315838}
   - {fileID: 596099697}
-  - {fileID: 920301251}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

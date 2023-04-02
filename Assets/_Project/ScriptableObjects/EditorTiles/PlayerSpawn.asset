@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d12328e668449284621ef76c6fdbec, type: 3}
   m_Name: PlayerSpawn
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 5390691737254147757, guid: 4045cb584cb19e7478c15bd08b5f9715, type: 3}
   itemFrameImage: {fileID: 21300000, guid: 94c48fdd72f34bf4798d2ce1802de935, type: 3}
   initialItemCount: 1
-  currentItemCount: 0
+  currentItemCount: 1
   Tile: {fileID: 11400000, guid: ce34959abb45887fc82e6c6a77f51fd1, type: 2}
   Layer: 20
   Infinite: 0

@@ -50,7 +50,7 @@ namespace LevelEditor
         public EditorTileSO BackgroundSO, SpikesSO, WallSO, PlayerSpawnSO, PlayerWinSO, EnemySO, EnemyFollowSO;
         // public EditorTileSO MovingPlatformSO, MovingPlatformDeathSO;
 
-        public GameObject PlayerSpawn;
+        public EditorTileSO PlayerSpawn;
         private bool _isHoverTilesEnabled;
 
         #region LevelSetup
@@ -63,11 +63,6 @@ namespace LevelEditor
                 // WallSO, SpikesSO, PlayerSpawnSO, PlayerWinSO, EnemySO, EnemyFollowSO, MovingPlatformSO, MovingPlatformDeathSO
                 WallSO, SpikesSO, PlayerSpawnSO, PlayerWinSO, EnemySO, EnemyFollowSO
             };
-        }
-
-        private void SetPlayerSpawn()
-        {
-            PlayerSpawn.transform.position = _currentLevelSave.playerSpawn + new Vector3(0.5f, 0.5f, 0);
         }
 
         private void RemoveAllTiles()
@@ -180,6 +175,12 @@ namespace LevelEditor
 
             if (!IsEditorScene)
             {
+                if (_currentLevelSave.playerSpawn != Vector3Int.zero && PlayerSpawnSO.prefab != null)
+                {
+                    Instantiate(PlayerSpawnSO.prefab, (Vector3) _currentLevelSave.playerSpawn + new Vector3(0.5f, 0.5f, 0),
+                        Quaternion.identity);
+                }
+
                 if (_currentLevelSave.playerWin != Vector3Int.zero && PlayerWinSO.prefab != null)
                 {
                     Instantiate(PlayerWinSO.prefab, (Vector3) _currentLevelSave.playerWin + new Vector3(0.5f, 0.5f, 0),
@@ -537,11 +538,7 @@ namespace LevelEditor
                 _backToSelection = true;
             }
 
-            if (!IsEditorScene)
-            {
-                SetPlayerSpawn();
-            }
-            else
+            if (IsEditorScene)
             {
                 if (_backToSelection)
                 {
