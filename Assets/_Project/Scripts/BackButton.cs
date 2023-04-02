@@ -1,4 +1,5 @@
 using LevelEditor;
+using Singletons;
 using UnityEngine;
 
 /**

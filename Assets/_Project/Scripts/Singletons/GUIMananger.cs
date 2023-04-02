@@ -3,7 +3,7 @@ using System.Collections;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
-namespace CorgiExtension
+namespace Singletons
 {
     public class GUIMananger : UnitySingleton<GUIMananger>
     {

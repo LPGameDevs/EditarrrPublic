@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using LevelEditor;
+using Singletons;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,7 +33,7 @@ namespace CorgiExtension
         public void GoToEditorLevel()
         {
             CheckCodePreferences();
-            LevelManager.Instance.GotoLevel("EditorCreate");
+            LevelManager.Instance.GotoLevel(LevelManager.CreateLevelSceneName);
         }
 
         private void CheckCodePreferences()
@@ -62,7 +63,7 @@ namespace CorgiExtension
         public void GoToLevel()
         {
             CheckCodePreferences();
-            LevelManager.Instance.GotoLevel("EditorTest");
+            LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
         }
 
         public void HideEditorTools()
