@@ -8,6 +8,12 @@ To get involved or ask questions, join the GDFG Discord server:
 
 It is helpful if you let us know what you want to work on by either assigning yourself a project task or by posting a message in discord.
 
+## Video Guide to Editarrr Contributing
+
+[![Video Guide to Editarrr Contributing](https://img.youtube.com/vi/GOCWatlXC2U/0.jpg)](https://www.youtube.com/watch?v=GOCWatlXC2U)
+
+
+
 
 ## How to pull down the game to open in Unity
 
