@@ -57,11 +57,11 @@ namespace LevelEditor
             dataStream.Close();
             WebResponse response = request.GetResponse();
 
-            var encoding = ASCIIEncoding.ASCII;
+            var encoding = Encoding.ASCII;
             using (var reader = new StreamReader(response.GetResponseStream(), encoding))
             {
                 string responseText = reader.ReadToEnd();
-                this.LogMessage("Status", responseText);
+                LogMessage("Status", responseText);
             }
 
             // @todo ErrorHandling.
@@ -88,17 +88,17 @@ namespace LevelEditor
                     {
                         string url = drupalBaseUrl + fileRes.data.attributes.uri.url;
                         StartCoroutine(nameof(DownloadScreenshotImage), new FileDownloadData(code, url, saveLevelScreenshotPath));
-                        this.LogMessage ("ScreenshotFile", JsonUtility.ToJson(res, true));
+                        LogMessage ("ScreenshotFile", JsonUtility.ToJson(res, true));
                     }).Catch(err =>
                     {
-                        this.LogMessage("Error", err.Message);
+                        LogMessage("Error", err.Message);
                     });
                 }
 
-                this.LogMessage ("Levels", JsonUtility.ToJson(res, true));
+                LogMessage ("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
-                this.LogMessage("Error", err.Message);
+                LogMessage("Error", err.Message);
             });
         }
 
@@ -151,10 +151,10 @@ namespace LevelEditor
                 UploadImage(res.data.id, res.data.attributes.title);
 
                 EditorLevelStorage.OnRequestComplete?.Invoke(DatabaseRequestType.InsertData, responseData);
-                this.LogMessage ("Levels", JsonUtility.ToJson(res, true));
+                LogMessage ("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
-                this.LogMessage("Error", err.Message);
+                LogMessage("Error", err.Message);
             });
         }
 
@@ -165,7 +165,7 @@ namespace LevelEditor
             RestClient.Get<DrupalResponseMultiple>($"{drupalLevelUrl}?filter[title]={code}").Then(res => {
                 if (res.data.Length > 0)
                 {
-                    this.LogMessage ("Levels", JsonUtility.ToJson(res, true));
+                    LogMessage ("Levels", JsonUtility.ToJson(res, true));
                     string uuid = res.data[0].id;
                     DrupalUpdateRequest request = new DrupalUpdateRequest
                     {
@@ -198,10 +198,10 @@ namespace LevelEditor
                         }
 
                         EditorLevelStorage.OnRequestComplete?.Invoke(DatabaseRequestType.UpdateData, responseData);
-                        this.LogMessage ("Update", JsonUtility.ToJson(res, true));
+                        LogMessage ("Update", JsonUtility.ToJson(res, true));
                     }).Catch(err =>
                     {
-                        this.LogMessage("Error", err.Message);
+                        LogMessage("Error", err.Message);
                     });
                 }
                 else
@@ -211,7 +211,7 @@ namespace LevelEditor
                 }
             }).Catch(err =>
             {
-                this.LogMessage("Error", err.Message);
+                LogMessage("Error", err.Message);
             });
 
 
@@ -235,7 +235,7 @@ namespace LevelEditor
              RestClient.Get<DrupalResponseMultiple>($"{drupalLevelUrl}?filter[title]={code}").Then(res => {
                 if (res.data.Length > 0)
                 {
-                    this.LogMessage ("Levels", JsonUtility.ToJson(res, true));
+                    LogMessage ("Levels", JsonUtility.ToJson(res, true));
                     string uuid = res.data[0].id;
 
                     DrupalCommentRequest request = new DrupalCommentRequest(uuid, time, user, ghost);
@@ -247,16 +247,16 @@ namespace LevelEditor
                     {
                         EditorLevelStorage.OnRequestComplete?.Invoke(DatabaseRequestType.InsertComment, responseData);
 
-                        this.LogMessage ("Update", JsonUtility.ToJson(res, true));
+                        LogMessage ("Update", JsonUtility.ToJson(res, true));
                     }).Catch(err =>
                     {
                         // EditorLevelStorage.OnRequestComplete?.Invoke(DatabaseRequestType.InsertComment, responseData);
-                        this.LogMessage("Error", err.Message);
+                        LogMessage("Error", err.Message);
                     });
                 }
              }).Catch(err =>
             {
-                this.LogMessage("Error", err.Message);
+                LogMessage("Error", err.Message);
             });
         }
 
@@ -266,7 +266,7 @@ namespace LevelEditor
             {
                 if (res.data.Length > 0)
                 {
-                    this.LogMessage ("Levels", JsonUtility.ToJson(res, true));
+                    LogMessage ("Levels", JsonUtility.ToJson(res, true));
                     string uuid = res.data[0].id;
                     RestClient.Get<DrupalCommentRequestMultiple>($"{drupalCommentUrl}?filter[entity_id.id][value]={uuid}&filter[status]=1").Then(res =>
                     {
@@ -282,18 +282,18 @@ namespace LevelEditor
                         };
                         EditorLevelStorage.OnCommentsRequestComplete?.Invoke(DatabaseRequestType.GetLevelComments, responseData);
 
-                        this.LogMessage ("Comments", JsonUtility.ToJson(res, true));
+                        LogMessage ("Comments", JsonUtility.ToJson(res, true));
 
                     }).Catch(err =>
                     {
-                        this.LogMessage("Error", err.Message);
+                        LogMessage("Error", err.Message);
 
                     });
 
                 }
             }).Catch(err =>
             {
-                this.LogMessage("Error", err.Message);
+                LogMessage("Error", err.Message);
 
             });
 

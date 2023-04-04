@@ -34,7 +34,7 @@ namespace Legacy
             }
 
             // Secret key to press.
-            if (this.SecretKey.WasPressed)
+            if (SecretKey.WasPressed)
             {
                 _keyCount++;
             }

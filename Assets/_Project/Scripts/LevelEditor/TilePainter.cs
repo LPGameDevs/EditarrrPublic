@@ -588,7 +588,7 @@ namespace LevelEditor
                 return;
             }
 
-            Vector3 point = _camera.ScreenToWorldPoint(this.MousePosition.Read<Vector2>());
+            Vector3 point = _camera.ScreenToWorldPoint(MousePosition.Read<Vector2>());
             Vector3Int selectedTile = _currentTilemap.WorldToCell(point);
             if (_isMouseLeftClick || _isMouseRightClick)
             {
@@ -624,30 +624,30 @@ namespace LevelEditor
         {
             _isMouseLeftClick = false;
             _isMouseRightClick = false;
-            if (this.MouseLeftButton.WasPressed)
+            if (MouseLeftButton.WasPressed)
             {
                 _isMouseLeftClick = true;
             }
-            else if (this.MouseLeftButton.IsPressed)
+            else if (MouseLeftButton.IsPressed)
             {
                 _isMouseLeftDown = true;
             }
-            else if (this.MouseLeftButton.WasReleased)
+            else if (MouseLeftButton.WasReleased)
             {
                 _isMouseLeftDown = false;
             }
 
-            if (this.MouseRightButton.WasPressed)
+            if (MouseRightButton.WasPressed)
             {
                 _isMouseRightClick = true;
 
             }
-            else if (this.MouseRightButton.IsPressed)
+            else if (MouseRightButton.IsPressed)
             {
                 _isMouseRightDown = true;
 
             }
-            else if (this.MouseRightButton.WasReleased)
+            else if (MouseRightButton.WasReleased)
             {
                 _isMouseRightDown = false;
             }

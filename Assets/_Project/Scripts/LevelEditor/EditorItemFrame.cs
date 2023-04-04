@@ -95,7 +95,7 @@ namespace LevelEditor
 
         private void Update()
         {
-            if (this.UINext.WasPressed)
+            if (UINext.WasPressed)
             {
                 NextItem();
             }

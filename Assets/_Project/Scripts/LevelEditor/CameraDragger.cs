@@ -30,18 +30,18 @@ public class CameraDragger : MonoBehaviour
 
     void Update()
     {
-        _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - this.MouseScroll.Read<Vector2>().y * ScrollSpeed, ZoomMax, ZoomMin);
+        _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - MouseScroll.Read<Vector2>().y * ScrollSpeed, ZoomMax, ZoomMin);
 
-        Vector3 mousePosition = this.MousePosition.Read<Vector2>();
+        Vector3 mousePosition = MousePosition.Read<Vector2>();
 
-        if (this.MouseMiddleButton.WasPressed)
+        if (MouseMiddleButton.WasPressed)
         {
             _dragOrigin = mousePosition;
             _cameraStart = transform.position;
             return;
         }
 
-        if (!this.MouseMiddleButton.IsPressed) return;
+        if (!MouseMiddleButton.IsPressed) return;
 
         Vector3 pos = _camera.ScreenToViewportPoint(mousePosition - _dragOrigin);
 
