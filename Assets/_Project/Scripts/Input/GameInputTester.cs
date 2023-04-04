@@ -4,11 +4,11 @@ namespace Editarrr.Input
 {
     public class GameInputTester : MonoBehaviour
     {
-        [field: SerializeField] public InputValue[] InputValues { get; private set; }
+        [SerializeField] public InputValue[] InputValues { get; private set; }
 
         private void Update()
         {
-            foreach (var inputValue in this.InputValues)
+            foreach (var inputValue in InputValues)
             {
                 if (inputValue.WasPressed)
                 {

@@ -22,7 +22,7 @@ namespace Editarrr.Input
         /// </summary>
         protected override void OnLink(ref InputValueUpdate action)
         {
-            action += this.Update;
+            action += Update;
         }
 
         /// <summary>
@@ -30,15 +30,15 @@ namespace Editarrr.Input
         /// </summary>
         void Update()
         {
-            if (this.IsPressed)
+            if (IsPressed)
             {
-                this.DownTime += Time.deltaTime;
-                this.UpTime = 0;
+                DownTime += Time.deltaTime;
+                UpTime = 0;
             }
             else
             {
-                this.DownTime = 0;
-                this.UpTime += Time.deltaTime;
+                DownTime = 0;
+                UpTime += Time.deltaTime;
             }
         }
     }

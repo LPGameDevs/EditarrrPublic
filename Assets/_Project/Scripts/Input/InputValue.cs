@@ -17,17 +17,17 @@ namespace Editarrr.Input
         /// <summary>
         /// Whether the input was pressed, released, or is currently being held down
         /// </summary>
-        public bool WasPressed { get => this.InputAction.WasPressedThisFrame(); }
-        public bool WasReleased { get => this.InputAction.WasReleasedThisFrame(); }
-        public bool IsPressed { get => this.InputAction.IsPressed(); }
+        public bool WasPressed { get => InputAction.WasPressedThisFrame(); }
+        public bool WasReleased { get => InputAction.WasReleasedThisFrame(); }
+        public bool IsPressed { get => InputAction.IsPressed(); }
 
         /// <summary>
         /// Links an InputAction to this InputValue and calls OnLink() method
         /// </summary>
         public void Link(InputAction inputAction, ref InputValueUpdate action)
         {
-            this.InputAction = inputAction;
-            this.OnLink(ref action);
+            InputAction = inputAction;
+            OnLink(ref action);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Editarrr.Input
         public T Read<T>()
             where T : struct
         {
-            return this.InputAction.ReadValue<T>();
+            return InputAction.ReadValue<T>();
         }
 
         /// <summary>

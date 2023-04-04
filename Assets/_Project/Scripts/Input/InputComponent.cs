@@ -20,10 +20,10 @@ namespace Editarrr.Input
         private void Awake()
         {
             // Get the input action collection and enable it
-            this.InputActionCollection = this.GetInputAssetObject();
-            this.InputActionCollection.Enable();
+            InputActionCollection = GetInputAssetObject();
+            InputActionCollection.Enable();
 
-            foreach (var group in this.Groups)
+            foreach (var group in Groups)
             {
                 if (!group.IsActive)
                     continue;
@@ -31,12 +31,12 @@ namespace Editarrr.Input
                 // Map each input action to an input value
                 foreach (var link in group.Links)
                 {
-                    InputAction action = this.InputActionCollection.FindAction($"{link.Action.name}");
+                    InputAction action = InputActionCollection.FindAction($"{link.Action.name}");
 
                     if (link.Action.action == null)
                         throw new UnityException($"No Action for Input '{link.Action}' ({link.Action.name})");
 
-                    this.Link(link.Value, action);
+                    Link(link.Value, action);
                 }
             }
         }
@@ -46,11 +46,11 @@ namespace Editarrr.Input
         /// </summary>
         private void Link(InputValue inputValue, InputAction inputAction)
         {
-            InputValueUpdate inputStateUpdate = this.InputValueUpdate;
+            InputValueUpdate inputStateUpdate = InputValueUpdate;
 
             inputValue.Link(inputAction, ref inputStateUpdate);
 
-            this.InputValueUpdate = inputStateUpdate;
+            InputValueUpdate = inputStateUpdate;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Editarrr.Input
         /// </summary>
         private void Update()
         {
-            this.InputValueUpdate?.Invoke();
+            InputValueUpdate?.Invoke();
         }
 
         /// <summary>
