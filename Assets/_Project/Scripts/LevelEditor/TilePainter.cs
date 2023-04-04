@@ -617,6 +617,7 @@ namespace LevelEditor
 
             }
 
+            HandleKeyInput(point);
             HandleMouseInput();
         }
 
@@ -651,6 +652,58 @@ namespace LevelEditor
             {
                 _isMouseRightDown = false;
             }
+        }
+
+        private void HandleKeyInput(Vector3 position)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+
+        // public Tilemap TilemapBackground, TilemapPlatform, TilemapDamage, TilemapWalls, TilemapElements, TilemapHover;
+
+
+                Vector3Int selectedTile = _currentTilemap.WorldToCell(position);
+
+                if (CheckForTile(selectedTile, TilemapElements))
+                {
+                    TileBase tile = TilemapElements.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+                else if (CheckForTile(selectedTile, TilemapWalls))
+                {
+                    TileBase tile = TilemapWalls.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+                else if (CheckForTile(selectedTile, TilemapPlatform))
+                {
+                    TileBase tile = TilemapPlatform.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+                else if (CheckForTile(selectedTile, TilemapDamage))
+                {
+                    TileBase tile = TilemapDamage.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+                else if (CheckForTile(selectedTile, TilemapBackground))
+                {
+                    TileBase tile = TilemapBackground.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+
+            }
+        }
+
+        private void SwapTileUntilFound(TileBase tile)
+        {
+            while (Tile != tile)
+            {
+                EditorItemManager.Instance.NextTrap();
+            }
+        }
+
+        private bool CheckForTile(Vector3Int position, Tilemap tilemapElements)
+        {
+            return tilemapElements.HasTile(position);
         }
 
         private void OnEnable()

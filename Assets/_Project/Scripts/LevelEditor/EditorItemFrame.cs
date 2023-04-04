@@ -11,14 +11,10 @@ namespace LevelEditor
 
         protected bool _arrowsChecked;
 
-        [SerializeField]
-        private Image itemFrameImage;
-        [SerializeField]
-        private Image itemFrameCountWrapper;
-        [SerializeField]
-        private TextMeshProUGUI itemFrameCount;
-        [SerializeField]
-        private Button[] itemFrameArrowButtons;
+        [SerializeField] private Image itemFrameImage;
+        [SerializeField] private Image itemFrameCountWrapper;
+        [SerializeField] private TextMeshProUGUI itemFrameCount;
+        [SerializeField] private Button[] itemFrameArrowButtons;
 
         #region Input
         [field: SerializeField] private InputValue UINext { get; set; }
@@ -47,7 +43,6 @@ namespace LevelEditor
             itemFrameImage.sprite = trap.getItemFrameImage();
             itemFrameCount.text = trap.getCurrentItemCount().ToString();
             itemFrameCount.gameObject.transform.parent.gameObject.SetActive(trap.showCount());
-
         }
 
         protected void UpdateArrows()
@@ -76,6 +71,7 @@ namespace LevelEditor
             {
                 return;
             }
+
             _trapsManager.NextTrap();
         }
 
@@ -85,6 +81,7 @@ namespace LevelEditor
             {
                 return;
             }
+
             _trapsManager.PreviousTrap();
         }
 
@@ -98,6 +95,47 @@ namespace LevelEditor
             if (UINext.WasPressed)
             {
                 NextItem();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                _trapsManager.SelectTrap(0);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                _trapsManager.SelectTrap(1);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                _trapsManager.SelectTrap(2);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                _trapsManager.SelectTrap(3);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                _trapsManager.SelectTrap(4);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                _trapsManager.SelectTrap(5);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha7))
+            {
+                _trapsManager.SelectTrap(6);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha8))
+            {
+                _trapsManager.SelectTrap(7);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha9))
+            {
+                _trapsManager.SelectTrap(8);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                _trapsManager.SelectTrap(9);
             }
         }
 
