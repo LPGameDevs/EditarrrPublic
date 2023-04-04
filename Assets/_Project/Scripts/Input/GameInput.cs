@@ -453,6 +453,153 @@ namespace Editarrr.Input
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Editor"",
+            ""id"": ""88af379a-49fc-4f3b-bfd9-382ca5521dc3"",
+            ""actions"": [
+                {
+                    ""name"": ""TileSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""556d4e66-5127-4165-8a83-2a8f56ecc4b9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectTile"",
+                    ""type"": ""Button"",
+                    ""id"": ""b4578e34-5a60-4d88-8ccb-d21b5649ff4a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8c95f977-4269-4c41-8ef5-577f03758e93"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TileSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6768290-cf13-4463-a86b-3f44fe327fde"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""36bca140-ac87-4e98-953d-877b4a34ac5d"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0be0570b-d565-41bb-a15c-4f474c1fccc2"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05ee77a5-9f45-4f3e-8671-20d62b120ed7"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e3fd1d82-5914-44c0-8a4c-037ae10365b1"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbf70b3d-f7fe-4817-96c9-52b7d88c663a"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b848444-0db4-4519-a6b9-33489cd506fb"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f277764-d2e1-40fb-8870-62350f9f7735"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c951701-9711-42c9-b8d9-a41c91fe5ee4"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8879ebfa-004b-47ca-bd20-390458730a51"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectTile"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -475,6 +622,10 @@ namespace Editarrr.Input
             // Development
             m_Development = asset.FindActionMap("Development", throwIfNotFound: true);
             m_Development_Secret = m_Development.FindAction("Secret", throwIfNotFound: true);
+            // Editor
+            m_Editor = asset.FindActionMap("Editor", throwIfNotFound: true);
+            m_Editor_TileSwitch = m_Editor.FindAction("TileSwitch", throwIfNotFound: true);
+            m_Editor_SelectTile = m_Editor.FindAction("SelectTile", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -701,6 +852,47 @@ namespace Editarrr.Input
             }
         }
         public DevelopmentActions @Development => new DevelopmentActions(this);
+
+        // Editor
+        private readonly InputActionMap m_Editor;
+        private IEditorActions m_EditorActionsCallbackInterface;
+        private readonly InputAction m_Editor_TileSwitch;
+        private readonly InputAction m_Editor_SelectTile;
+        public struct EditorActions
+        {
+            private @GameInput m_Wrapper;
+            public EditorActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @TileSwitch => m_Wrapper.m_Editor_TileSwitch;
+            public InputAction @SelectTile => m_Wrapper.m_Editor_SelectTile;
+            public InputActionMap Get() { return m_Wrapper.m_Editor; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(EditorActions set) { return set.Get(); }
+            public void SetCallbacks(IEditorActions instance)
+            {
+                if (m_Wrapper.m_EditorActionsCallbackInterface != null)
+                {
+                    @TileSwitch.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnTileSwitch;
+                    @TileSwitch.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnTileSwitch;
+                    @TileSwitch.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnTileSwitch;
+                    @SelectTile.started -= m_Wrapper.m_EditorActionsCallbackInterface.OnSelectTile;
+                    @SelectTile.performed -= m_Wrapper.m_EditorActionsCallbackInterface.OnSelectTile;
+                    @SelectTile.canceled -= m_Wrapper.m_EditorActionsCallbackInterface.OnSelectTile;
+                }
+                m_Wrapper.m_EditorActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @TileSwitch.started += instance.OnTileSwitch;
+                    @TileSwitch.performed += instance.OnTileSwitch;
+                    @TileSwitch.canceled += instance.OnTileSwitch;
+                    @SelectTile.started += instance.OnSelectTile;
+                    @SelectTile.performed += instance.OnSelectTile;
+                    @SelectTile.canceled += instance.OnSelectTile;
+                }
+            }
+        }
+        public EditorActions @Editor => new EditorActions(this);
         public interface IGameplayActions
         {
             void OnMove(InputAction.CallbackContext context);
@@ -721,6 +913,11 @@ namespace Editarrr.Input
         public interface IDevelopmentActions
         {
             void OnSecret(InputAction.CallbackContext context);
+        }
+        public interface IEditorActions
+        {
+            void OnTileSwitch(InputAction.CallbackContext context);
+            void OnSelectTile(InputAction.CallbackContext context);
         }
     }
 }

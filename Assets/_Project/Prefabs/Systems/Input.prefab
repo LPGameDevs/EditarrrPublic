@@ -43,28 +43,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f47388fbb86da54c813fba0639e540a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  links:
-  - value: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
-    action: {fileID: -2535791864937150748, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}
-    action: {fileID: 970407257195641555, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: 8c0411f402ddc984bab4d30080ee09fb, type: 2}
-    action: {fileID: -6629587793855166937, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: ff4dcd1715d1d3749abc905aba2a3ef5, type: 2}
-    action: {fileID: -4618411714609103689, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: 31d6a9f945e14824c9375269fc201fa2, type: 2}
-    action: {fileID: 4562765374428807731, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: 11ba13480451f574e8c6ecdc13111c23, type: 2}
-    action: {fileID: -1011556241823590168, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: c1cc2bb641eded5418bde62176409957, type: 2}
-    action: {fileID: 2141139948079019871, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: 8c8b550f53e2051499bea9cd0a9fa1b5, type: 2}
-    action: {fileID: 5023802871358973376, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: 4861822cf572eef43a7cbfca56333175, type: 2}
-    action: {fileID: 2347495083442255480, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: b2e5237c0e58fad4184c46cec872110b, type: 2}
-    action: {fileID: -5910156182953414340, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: d287971872d4d7e408da675ecc5e0da7, type: 2}
-    action: {fileID: 7635530670321881424, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
-  - value: {fileID: 11400000, guid: a73721fbfbb9bdc40b4ceafb087654ea, type: 2}
-    action: {fileID: 1704132375156580209, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+  <Groups>k__BackingField:
+  - <Name>k__BackingField: Gameplay
+    links:
+    - value: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
+      action: {fileID: -2535791864937150748, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}
+      action: {fileID: 970407257195641555, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: 8c0411f402ddc984bab4d30080ee09fb, type: 2}
+      action: {fileID: -6629587793855166937, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: 8c8b550f53e2051499bea9cd0a9fa1b5, type: 2}
+      action: {fileID: 5023802871358973376, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: 4861822cf572eef43a7cbfca56333175, type: 2}
+      action: {fileID: 2347495083442255480, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: b2e5237c0e58fad4184c46cec872110b, type: 2}
+      action: {fileID: -5910156182953414340, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: 11ba13480451f574e8c6ecdc13111c23, type: 2}
+      action: {fileID: -1011556241823590168, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: c1cc2bb641eded5418bde62176409957, type: 2}
+      action: {fileID: 2141139948079019871, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: ff4dcd1715d1d3749abc905aba2a3ef5, type: 2}
+      action: {fileID: -4618411714609103689, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: 31d6a9f945e14824c9375269fc201fa2, type: 2}
+      action: {fileID: 4562765374428807731, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    <IsActive>k__BackingField: 1
+  - <Name>k__BackingField: Editor
+    links:
+    - value: {fileID: 11400000, guid: 6b479f728bac27547a06816953edd747, type: 2}
+      action: {fileID: 228731808590265303, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    <IsActive>k__BackingField: 1
+  - <Name>k__BackingField: Development
+    links:
+    - value: {fileID: 11400000, guid: a73721fbfbb9bdc40b4ceafb087654ea, type: 2}
+      action: {fileID: 1704132375156580209, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    <IsActive>k__BackingField: 1
+  - <Name>k__BackingField: UI
+    links:
+    - value: {fileID: 11400000, guid: d287971872d4d7e408da675ecc5e0da7, type: 2}
+      action: {fileID: 7635530670321881424, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    <IsActive>k__BackingField: 1
