@@ -74,6 +74,7 @@ crashlytics-build.properties
 
 # Custom
 /.idea/*
+/.vsconfig
 
 # Save data
 /[Aa]ssets/MMData

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Editarrr.Input;
 using Singletons;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -52,6 +53,13 @@ namespace LevelEditor
 
         public EditorTileSO PlayerSpawn;
         private bool _isHoverTilesEnabled;
+
+
+        #region Input
+        [field: SerializeField] private InputValue MousePosition { get; set; }
+        [field: SerializeField] private InputValue MouseLeftButton { get; set; }
+        [field: SerializeField] private InputValue MouseRightButton { get; set; }
+        #endregion
 
         #region LevelSetup
 
@@ -580,7 +588,7 @@ namespace LevelEditor
                 return;
             }
 
-            Vector3 point = _camera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 point = _camera.ScreenToWorldPoint(this.MousePosition.Read<Vector2>());
             Vector3Int selectedTile = _currentTilemap.WorldToCell(point);
             if (_isMouseLeftClick || _isMouseRightClick)
             {
@@ -616,30 +624,30 @@ namespace LevelEditor
         {
             _isMouseLeftClick = false;
             _isMouseRightClick = false;
-            if (Input.GetMouseButtonDown(0))
+            if (this.MouseLeftButton.WasPressed)
             {
                 _isMouseLeftClick = true;
             }
-            else if (Input.GetMouseButton(0))
+            else if (this.MouseLeftButton.IsPressed)
             {
                 _isMouseLeftDown = true;
             }
-            else if (Input.GetMouseButtonUp(0))
+            else if (this.MouseLeftButton.WasReleased)
             {
                 _isMouseLeftDown = false;
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (this.MouseRightButton.WasPressed)
             {
                 _isMouseRightClick = true;
 
             }
-            else if (Input.GetMouseButton(1))
+            else if (this.MouseRightButton.IsPressed)
             {
                 _isMouseRightDown = true;
 
             }
-            else if (Input.GetMouseButtonUp(1))
+            else if (this.MouseRightButton.WasReleased)
             {
                 _isMouseRightDown = false;
             }

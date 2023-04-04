@@ -1,3 +1,4 @@
+using Editarrr.Input;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,10 @@ namespace LevelEditor
         private TextMeshProUGUI itemFrameCount;
         [SerializeField]
         private Button[] itemFrameArrowButtons;
+
+        #region Input
+        [field: SerializeField] private InputValue UINext { get; set; }
+        #endregion
 
         public Color allowedColour = Color.blue;
         public Color disallowedColour = Color.red;
@@ -90,7 +95,7 @@ namespace LevelEditor
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (this.UINext.WasPressed)
             {
                 NextItem();
             }

@@ -1,3 +1,4 @@
+using Editarrr.Input;
 using UnityEngine;
 
 namespace Legacy
@@ -11,6 +12,9 @@ namespace Legacy
 
         private int _keyCount;
         private bool _isHiddenObjectActive;
+
+
+        [field: SerializeField] private InputValue SecretKey { get; set; }
 
         private void Start()
         {
@@ -30,7 +34,7 @@ namespace Legacy
             }
 
             // Secret key to press.
-            if (Input.GetKeyDown(KeyCode.Y))
+            if (this.SecretKey.WasPressed)
             {
                 _keyCount++;
             }
