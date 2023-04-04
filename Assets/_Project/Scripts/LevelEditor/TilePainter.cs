@@ -1,7 +1,7 @@
-using System;
-using System.IO;
 using Editarrr.Input;
 using Singletons;
+using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -56,9 +56,12 @@ namespace LevelEditor
 
 
         #region Input
-        [field: SerializeField] private InputValue MousePosition { get; set; }
+        [field: SerializeField, Header("Input")] private InputValue MousePosition { get; set; }
         [field: SerializeField] private InputValue MouseLeftButton { get; set; }
+        [field: SerializeField] private InputValue MouseMiddleButton { get; set; }
         [field: SerializeField] private InputValue MouseRightButton { get; set; }
+
+        [field: SerializeField] private InputValue SelectTile { get; set; }
         #endregion
 
         #region LevelSetup
@@ -69,101 +72,101 @@ namespace LevelEditor
             {
                 // @todo fix moving platforms.
                 // WallSO, SpikesSO, PlayerSpawnSO, PlayerWinSO, EnemySO, EnemyFollowSO, MovingPlatformSO, MovingPlatformDeathSO
-                WallSO, SpikesSO, PlayerSpawnSO, PlayerWinSO, EnemySO, EnemyFollowSO
+                this.WallSO, this.SpikesSO, this.PlayerSpawnSO, this.PlayerWinSO, this.EnemySO, this.EnemyFollowSO
             };
         }
 
         private void RemoveAllTiles()
         {
-            TilemapBackground.ClearAllTiles();
-            TilemapDamage.ClearAllTiles();
-            TilemapPlatform.ClearAllTiles();
-            TilemapElements.ClearAllTiles();
+            this.TilemapBackground.ClearAllTiles();
+            this.TilemapDamage.ClearAllTiles();
+            this.TilemapPlatform.ClearAllTiles();
+            this.TilemapElements.ClearAllTiles();
         }
 
         private void PaintDefaultTiles()
         {
-            Tile = WallTile;
-            _currentTilemap = TilemapWalls;
-            _currentTileSO = WallSO;
-            for (int x = 0; x <= (maxPosition.x - minPosition.x); x++)
+            this.Tile = this.WallTile;
+            this._currentTilemap = this.TilemapWalls;
+            this._currentTileSO = this.WallSO;
+            for (int x = 0; x <= (this.maxPosition.x - this.minPosition.x); x++)
             {
-                for (int y = 0; y <= (maxPosition.y - minPosition.y); y++)
+                for (int y = 0; y <= (this.maxPosition.y - this.minPosition.y); y++)
                 {
-                    Vector3 point = new Vector3(x, y, 0) + minPosition;
-                    Vector3Int selectedTile = _currentTilemap.WorldToCell(point);
-                    PaintTile(selectedTile, true, false);
+                    Vector3 point = new Vector3(x, y, 0) + this.minPosition;
+                    Vector3Int selectedTile = this._currentTilemap.WorldToCell(point);
+                    this.PaintTile(selectedTile, true, false);
                 }
             }
         }
 
         private void PaintTilesFromFile()
         {
-            _currentTileSO = BackgroundSO;
-            _currentTilemap = TilemapBackground;
-            foreach (var groundTile in _currentLevelSave.groundTiles)
+            this._currentTileSO = this.BackgroundSO;
+            this._currentTilemap = this.TilemapBackground;
+            foreach (var groundTile in this._currentLevelSave.groundTiles)
             {
-                PaintTile(groundTile, false, false);
+                this.PaintTile(groundTile, false, false);
             }
 
-            _currentTileSO = WallSO;
-            foreach (var wallTile in _currentLevelSave.wallTiles)
+            this._currentTileSO = this.WallSO;
+            foreach (var wallTile in this._currentLevelSave.wallTiles)
             {
-                _currentTilemap = TilemapBackground;
-                PaintTile(wallTile, false, false);
+                this._currentTilemap = this.TilemapBackground;
+                this.PaintTile(wallTile, false, false);
 
-                if (!IsEditorScene)
+                if (!this.IsEditorScene)
                 {
-                    _currentTilemap = TilemapWalls;
-                    PaintTile(wallTile, false, false);
+                    this._currentTilemap = this.TilemapWalls;
+                    this.PaintTile(wallTile, false, false);
                 }
             }
 
-            _currentTileSO = WallSO;
-            _currentTilemap = TilemapPlatform;
-            foreach (var platformTile in _currentLevelSave.platformTiles)
+            this._currentTileSO = this.WallSO;
+            this._currentTilemap = this.TilemapPlatform;
+            foreach (var platformTile in this._currentLevelSave.platformTiles)
             {
-                PaintTile(platformTile, false, false);
+                this.PaintTile(platformTile, false, false);
             }
 
-            _currentTileSO = SpikesSO;
-            _currentTilemap = TilemapDamage;
-            foreach (var spikeTile in _currentLevelSave.spikeTiles)
+            this._currentTileSO = this.SpikesSO;
+            this._currentTilemap = this.TilemapDamage;
+            foreach (var spikeTile in this._currentLevelSave.spikeTiles)
             {
-                PaintTile(spikeTile, false, false);
+                this.PaintTile(spikeTile, false, false);
             }
 
-            if (IsEditorScene)
+            if (this.IsEditorScene)
             {
                 // Player spawn.
-                if (_currentLevelSave.playerSpawn != Vector3Int.zero)
+                if (this._currentLevelSave.playerSpawn != Vector3Int.zero)
                 {
-                    _currentTileSO = PlayerSpawnSO;
-                    _currentTilemap = TilemapElements;
-                    PaintTile(_currentLevelSave.playerSpawn, false, true);
+                    this._currentTileSO = this.PlayerSpawnSO;
+                    this._currentTilemap = this.TilemapElements;
+                    this.PaintTile(this._currentLevelSave.playerSpawn, false, true);
                 }
 
                 // Player win.
-                if (_currentLevelSave.playerWin != Vector3Int.zero)
+                if (this._currentLevelSave.playerWin != Vector3Int.zero)
                 {
-                    _currentTileSO = PlayerWinSO;
-                    _currentTilemap = TilemapElements;
-                    PaintTile(_currentLevelSave.playerWin, false, true);
+                    this._currentTileSO = this.PlayerWinSO;
+                    this._currentTilemap = this.TilemapElements;
+                    this.PaintTile(this._currentLevelSave.playerWin, false, true);
                 }
 
                 // Enemies.
-                foreach (var enemyTile in _currentLevelSave.enemyTiles)
+                foreach (var enemyTile in this._currentLevelSave.enemyTiles)
                 {
-                    _currentTileSO = EnemySO;
-                    _currentTilemap = TilemapElements;
-                    PaintTile(enemyTile, false, true);
+                    this._currentTileSO = this.EnemySO;
+                    this._currentTilemap = this.TilemapElements;
+                    this.PaintTile(enemyTile, false, true);
                 }
 
-                foreach (var enemyTile in _currentLevelSave.enemyFollowTiles)
+                foreach (var enemyTile in this._currentLevelSave.enemyFollowTiles)
                 {
-                    _currentTileSO = EnemyFollowSO;
-                    _currentTilemap = TilemapElements;
-                    PaintTile(enemyTile, false, true);
+                    this._currentTileSO = this.EnemyFollowSO;
+                    this._currentTilemap = this.TilemapElements;
+                    this.PaintTile(enemyTile, false, true);
                 }
 
                 // @todo fix moving platforms
@@ -181,35 +184,35 @@ namespace LevelEditor
                 // }
             }
 
-            if (!IsEditorScene)
+            if (!this.IsEditorScene)
             {
-                if (_currentLevelSave.playerSpawn != Vector3Int.zero && PlayerSpawnSO.prefab != null)
+                if (this._currentLevelSave.playerSpawn != Vector3Int.zero && this.PlayerSpawnSO.prefab != null)
                 {
-                    Instantiate(PlayerSpawnSO.prefab, (Vector3) _currentLevelSave.playerSpawn + new Vector3(0.5f, 0.5f, 0),
+                    Instantiate(this.PlayerSpawnSO.prefab, (Vector3)this._currentLevelSave.playerSpawn + new Vector3(0.5f, 0.5f, 0),
                         Quaternion.identity);
                 }
 
-                if (_currentLevelSave.playerWin != Vector3Int.zero && PlayerWinSO.prefab != null)
+                if (this._currentLevelSave.playerWin != Vector3Int.zero && this.PlayerWinSO.prefab != null)
                 {
-                    Instantiate(PlayerWinSO.prefab, (Vector3) _currentLevelSave.playerWin + new Vector3(0.5f, 0.5f, 0),
+                    Instantiate(this.PlayerWinSO.prefab, (Vector3)this._currentLevelSave.playerWin + new Vector3(0.5f, 0.5f, 0),
                         Quaternion.identity);
                 }
 
-                if (EnemySO.prefab != null)
+                if (this.EnemySO.prefab != null)
                 {
-                    foreach (var enemyTile in _currentLevelSave.enemyTiles)
+                    foreach (var enemyTile in this._currentLevelSave.enemyTiles)
                     {
                         // Instantiate(EnemySO.prefab, (Vector3) enemyTile, Quaternion.identity);
-                        Instantiate(EnemySO.prefab, (Vector3) enemyTile + new Vector3(0.5f, 0.5f, 0),
+                        Instantiate(this.EnemySO.prefab, (Vector3)enemyTile + new Vector3(0.5f, 0.5f, 0),
                             Quaternion.identity);
                     }
                 }
 
-                if (EnemyFollowSO.prefab != null)
+                if (this.EnemyFollowSO.prefab != null)
                 {
-                    foreach (var enemyTile in _currentLevelSave.enemyFollowTiles)
+                    foreach (var enemyTile in this._currentLevelSave.enemyFollowTiles)
                     {
-                        Instantiate(EnemyFollowSO.prefab, (Vector3) enemyTile + new Vector3(0.5f, 0.5f, 0),
+                        Instantiate(this.EnemyFollowSO.prefab, (Vector3)enemyTile + new Vector3(0.5f, 0.5f, 0),
                             Quaternion.identity);
                     }
                 }
@@ -243,8 +246,8 @@ namespace LevelEditor
             }
 
             // Reset current tile and UI for start of level.
-            SwapTile(WallSO);
-            OnTilePlaced?.Invoke(_currentTileSO);
+            this.SwapTile(this.WallSO);
+            OnTilePlaced?.Invoke(this._currentTileSO);
         }
 
         #endregion
@@ -256,19 +259,19 @@ namespace LevelEditor
          */
         public void SaveAndReset()
         {
-            SaveLevel();
-            ResetEditorSave();
+            this.SaveLevel();
+            this.ResetEditorSave();
         }
 
         public void PrepareTestLevel()
         {
-            if (_levelCode.Length > 0)
+            if (this._levelCode.Length > 0)
             {
-                SaveLevel();
+                this.SaveLevel();
             }
             else
             {
-                SaveIfNotLevel();
+                this.SaveIfNotLevel();
             }
         }
 
@@ -277,8 +280,8 @@ namespace LevelEditor
          */
         public void SaveLevel()
         {
-            string data = JsonUtility.ToJson(_currentLevelSave);
-            EditorLevelStorage.Instance.SaveLevel(_levelCode, data, true);
+            string data = JsonUtility.ToJson(this._currentLevelSave);
+            EditorLevelStorage.Instance.SaveLevel(this._levelCode, data, true);
         }
 
         /**
@@ -289,12 +292,12 @@ namespace LevelEditor
             // @todo!! Everything breaks if you are testing a saved level :P
 
             // Only update current if we are not in a level.
-            if (_levelCode.Length > 0)
+            if (this._levelCode.Length > 0)
             {
                 return;
             }
 
-            string data = JsonUtility.ToJson(_currentLevelSave);
+            string data = JsonUtility.ToJson(this._currentLevelSave);
             File.WriteAllText(EditorLevelStorage.LevelStorageEditorLevel, data);
         }
 
@@ -303,11 +306,11 @@ namespace LevelEditor
          */
         public void ResetLevel()
         {
-            ResetEditorSave();
-            RemoveAllTiles();
-            PaintDefaultTiles();
+            this.ResetEditorSave();
+            this.RemoveAllTiles();
+            this.PaintDefaultTiles();
             EditorItemManager.Instance.ResetTraps();
-            _camera.transform.position = _cameraAtStart;
+            this._camera.transform.position = this._cameraAtStart;
         }
 
         /**
@@ -317,7 +320,7 @@ namespace LevelEditor
         {
             string data = JsonUtility.ToJson("");
             File.WriteAllText(EditorLevelStorage.LevelStorageEditorLevel, data);
-            _currentLevelSave = JsonUtility.FromJson<LevelSave>(data);
+            this._currentLevelSave = JsonUtility.FromJson<LevelSave>(data);
         }
 
         #endregion
@@ -326,155 +329,156 @@ namespace LevelEditor
 
         private bool CanPaintHoverTile()
         {
-            return _isHoverTilesEnabled;
+            return this._isHoverTilesEnabled;
         }
 
         private void PaintHoverTile(Vector3Int selectedTile)
         {
-            if (!CanPaintHoverTile())
+            if (!this.CanPaintHoverTile())
             {
                 return;
             }
 
-            ClearHoverTile();
+            this.ClearHoverTile();
 
-            _previousHoverTilePosition = _currentTileSO.GetPlacedTilePosition(_currentTilemap, selectedTile) ?? selectedTile;
-            if (_currentTileSO.canPaint(_currentTilemap, _previousHoverTilePosition))
+            this._previousHoverTilePosition = this._currentTileSO.GetPlacedTilePosition(this._currentTilemap, selectedTile) ?? selectedTile;
+            if (this._currentTileSO.canPaint(this._currentTilemap, this._previousHoverTilePosition))
             {
-                _currentTileSO.Paint(TilemapHover, _previousHoverTilePosition, null);
+                this._currentTileSO.Paint(this.TilemapHover, this._previousHoverTilePosition, null);
             }
-            else if (_currentTileSO.HasOptions() && _currentTilemap.GetTile(_previousHoverTilePosition) != null) {
-                _currentTileSO.Highlight(TilemapHover, _previousHoverTilePosition, Color.red);
+            else if (this._currentTileSO.HasOptions() && this._currentTilemap.GetTile(this._previousHoverTilePosition) != null)
+            {
+                this._currentTileSO.Highlight(this.TilemapHover, this._previousHoverTilePosition, Color.red);
             }
         }
 
         private void ClearHoverTile()
         {
-            if (!CanPaintHoverTile())
+            if (!this.CanPaintHoverTile())
             {
                 return;
             }
 
-            if (!IsEditorScene || _currentTileSO == null)
+            if (!this.IsEditorScene || this._currentTileSO == null)
             {
                 return;
             }
 
-            _currentTileSO.UnPaint(TilemapHover, _previousHoverTilePosition);
+            this._currentTileSO.UnPaint(this.TilemapHover, this._previousHoverTilePosition);
         }
 
         private void PaintTile(Vector3Int selectedTile, bool store = true, bool track = true)
         {
             TileOptions options = null;
-            if (_currentTileSO.HasOptions())
+            if (this._currentTileSO.HasOptions())
             {
-                options = GetCurrentOptions(selectedTile);
+                options = this.GetCurrentOptions(selectedTile);
             }
 
-            PaintTile(selectedTile, store, track, options);
+            this.PaintTile(selectedTile, store, track, options);
         }
 
 
         private void PaintTile(Vector3Int selectedTile, bool store, bool track, TileOptions options)
         {
-            if (_currentTileSO == null)
+            if (this._currentTileSO == null)
             {
                 return;
             }
 
-            if (track && !_currentTileSO.isInfinite() && _currentTileSO.getCurrentItemCount() < 1)
+            if (track && !this._currentTileSO.isInfinite() && this._currentTileSO.getCurrentItemCount() < 1)
             {
                 return;
             }
 
-            if (!_currentTileSO.canPaint(_currentTilemap, selectedTile))
+            if (!this._currentTileSO.canPaint(this._currentTilemap, selectedTile))
             {
                 return;
             }
 
             if (track)
             {
-                _currentTileSO.reduceItemCount();
+                this._currentTileSO.reduceItemCount();
             }
 
             if (store)
             {
-                _currentLevelSave.StorePlacedTile(_currentTileSO, selectedTile, options);
+                this._currentLevelSave.StorePlacedTile(this._currentTileSO, selectedTile, options);
             }
 
-            OnTilePlaced?.Invoke(_currentTileSO);
-            _currentTileSO.Paint(_currentTilemap, selectedTile, options);
+            OnTilePlaced?.Invoke(this._currentTileSO);
+            this._currentTileSO.Paint(this._currentTilemap, selectedTile, options);
         }
 
         private void UnPaintTile(Vector3Int selectedTile, bool store = true, bool track = true)
         {
             TileOptions options = null;
-            if (_currentTileSO.HasOptions())
+            if (this._currentTileSO.HasOptions())
             {
-                options = GetCurrentOptions(selectedTile);
+                options = this.GetCurrentOptions(selectedTile);
             }
 
-            UnPaintTile(selectedTile, store, track, options);
+            this.UnPaintTile(selectedTile, store, track, options);
         }
 
         private void UnPaintTile(Vector3Int selectedTile, bool track, bool store, TileOptions options)
         {
-            if (_currentTileSO == null)
+            if (this._currentTileSO == null)
             {
                 return;
             }
 
-            if (!_currentTileSO.canUnPaint(_currentTilemap, selectedTile))
+            if (!this._currentTileSO.canUnPaint(this._currentTilemap, selectedTile))
             {
                 return;
             }
 
             if (track)
             {
-                _currentTileSO.increaseItemCount();
+                this._currentTileSO.increaseItemCount();
             }
 
             if (store)
             {
-                Vector3Int storedPosition = _currentTileSO.GetPlacedTilePosition(_currentTilemap, selectedTile) ?? selectedTile;
-                _currentLevelSave.RemovePlacedTile(_currentTileSO, storedPosition, options);
+                Vector3Int storedPosition = this._currentTileSO.GetPlacedTilePosition(this._currentTilemap, selectedTile) ?? selectedTile;
+                this._currentLevelSave.RemovePlacedTile(this._currentTileSO, storedPosition, options);
             }
 
-            OnTileRemoved?.Invoke(_currentTileSO);
-            _currentTileSO.UnPaint(_currentTilemap, selectedTile);
+            OnTileRemoved?.Invoke(this._currentTileSO);
+            this._currentTileSO.UnPaint(this._currentTilemap, selectedTile);
         }
 
         private TileOptions GetCurrentOptions(Vector3Int selectedTile)
         {
-            var position = _currentTileSO.GetPlacedTilePosition(_currentTilemap, selectedTile);
+            var position = this._currentTileSO.GetPlacedTilePosition(this._currentTilemap, selectedTile);
             if (position == null)
             {
                 position = selectedTile;
             }
 
-            return _currentLevelSave.GetTileOptions((Vector3Int) position);
+            return this._currentLevelSave.GetTileOptions((Vector3Int)position);
         }
 
         private void ToggleOptions(Vector3Int selectedTile)
         {
-            if (!_currentTileSO.HasOptions())
+            if (!this._currentTileSO.HasOptions())
             {
                 return;
             }
 
-            TileOptions options = GetCurrentOptions(selectedTile);
-            options = _currentTileSO.NextOption(options);
+            TileOptions options = this.GetCurrentOptions(selectedTile);
+            options = this._currentTileSO.NextOption(options);
 
-            var position = _currentTileSO.GetPlacedTilePosition(_currentTilemap, selectedTile);
+            var position = this._currentTileSO.GetPlacedTilePosition(this._currentTilemap, selectedTile);
 
             if (position == null)
             {
                 return;
             }
 
-            selectedTile = (Vector3Int) position;
-            _currentLevelSave.StorePlacedTile(_currentTileSO, selectedTile, options);
-            _currentTileSO.Paint(_currentTilemap, selectedTile, options);
+            selectedTile = (Vector3Int)position;
+            this._currentLevelSave.StorePlacedTile(this._currentTileSO, selectedTile, options);
+            this._currentTileSO.Paint(this._currentTilemap, selectedTile, options);
         }
 
         private Tilemap GetMapFromTile(IFrameSelectable tile)
@@ -483,23 +487,23 @@ namespace LevelEditor
             {
                 default:
                 case TilemapPainterLayer.Background:
-                    return TilemapBackground;
+                    return this.TilemapBackground;
                 case TilemapPainterLayer.Damage:
-                    return TilemapDamage;
+                    return this.TilemapDamage;
                 case TilemapPainterLayer.Platform:
-                    return TilemapPlatform;
+                    return this.TilemapPlatform;
                 case TilemapPainterLayer.Elements:
-                    return TilemapElements;
+                    return this.TilemapElements;
             }
         }
 
         private void SwapTile(IFrameSelectable tileFrame)
         {
-            ClearHoverTile();
+            this.ClearHoverTile();
             IFrameSelectable tileSO = tileFrame;
-            Tile = tileSO.getTile();
-            _currentTileSO = tileSO;
-            _currentTilemap = GetMapFromTile(tileSO);
+            this.Tile = tileSO.getTile();
+            this._currentTileSO = tileSO;
+            this._currentTilemap = this.GetMapFromTile(tileSO);
         }
 
         #endregion
@@ -509,193 +513,190 @@ namespace LevelEditor
         private void Awake()
         {
             // General setup
-            _camera = Camera.main;
-            _currentLevelSave = new LevelSave();
-            _isHoverTilesEnabled = TilemapHover.IsNull("Hover Tilemap is not set so hover tiles are disabled.");;
+            this._camera = Camera.main;
+            this._currentLevelSave = new LevelSave();
+            this._isHoverTilesEnabled = this.TilemapHover.IsNull("Hover Tilemap is not set so hover tiles are disabled."); ;
 
             string data = File.ReadAllText(EditorLevelStorage.LevelStorageEditorLevel);
-            _levelCode = PlayerPrefs.GetString("EditorCode");
-            if (_levelCode.Length > 0)
+            this._levelCode = PlayerPrefs.GetString("EditorCode");
+            if (this._levelCode.Length > 0)
             {
-                string fileName = EditorLevelStorage.LevelStoragePath + _levelCode + ".json";
+                string fileName = EditorLevelStorage.LevelStoragePath + this._levelCode + ".json";
                 if (File.Exists(fileName))
                 {
                     data = File.ReadAllText(fileName);
                 }
-                else if (File.Exists(EditorLevelStorage.DistroLevelStoragePath + _levelCode + ".json"))
+                else if (File.Exists(EditorLevelStorage.DistroLevelStoragePath + this._levelCode + ".json"))
                 {
-                    data = File.ReadAllText(EditorLevelStorage.DistroLevelStoragePath + _levelCode + ".json");
+                    data = File.ReadAllText(EditorLevelStorage.DistroLevelStoragePath + this._levelCode + ".json");
                 }
             }
 
             if (data.Length > 2)
             {
-                _currentLevelSave = JsonUtility.FromJson<LevelSave>(data);
-                _resetLevel = false;
+                this._currentLevelSave = JsonUtility.FromJson<LevelSave>(data);
+                this._resetLevel = false;
             }
 
             string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
-            if (_currentLevelSave.creator.Length == 0)
+            if (this._currentLevelSave.creator.Length == 0)
             {
-                _currentLevelSave.creator = userName;
+                this._currentLevelSave.creator = userName;
             }
 
-            if (_currentLevelSave.creator.Length > 0 && _currentLevelSave.creator.ToLower() != userName.ToLower())
+            if (this._currentLevelSave.creator.Length > 0 && this._currentLevelSave.creator.ToLower() != userName.ToLower())
             {
-                Debug.Log("Not allowed to edit a level by: " + _currentLevelSave.creator);
-                _backToSelection = true;
+                Debug.Log("Not allowed to edit a level by: " + this._currentLevelSave.creator);
+                this._backToSelection = true;
             }
 
-            if (IsEditorScene)
+            if (this.IsEditorScene)
             {
-                if (_backToSelection)
+                if (this._backToSelection)
                 {
                     LevelManager.Instance.GotoLevel(LevelManager.LevelSelectionSceneName);
                 }
 
-                RegisterEditorSOs();
-                _cameraAtStart = _camera.transform.position;
+                this.RegisterEditorSOs();
+                this._cameraAtStart = this._camera.transform.position;
             }
         }
 
         private void Start()
         {
-            if (_resetLevel)
+            if (this._resetLevel)
             {
-                PaintDefaultTiles();
+                this.PaintDefaultTiles();
             }
             else
             {
-                PaintTilesFromFile();
+                this.PaintTilesFromFile();
             }
         }
 
         void Update()
         {
-            if (!IsEditorScene)
+            if (!this.IsEditorScene)
             {
                 return;
             }
 
-            if (_currentTilemap == null)
+            if (this._currentTilemap == null)
             {
                 return;
             }
 
             if (EventSystem.current.IsPointerOverGameObject())
             {
-                ClearHoverTile();
+                this.ClearHoverTile();
                 return;
             }
 
-            Vector3 point = _camera.ScreenToWorldPoint(MousePosition.Read<Vector2>());
-            Vector3Int selectedTile = _currentTilemap.WorldToCell(point);
-            if (_isMouseLeftClick || _isMouseRightClick)
+            Vector3 point = this._camera.ScreenToWorldPoint(this.MousePosition.Read<Vector2>());
+            Vector3Int selectedTile = this._currentTilemap.WorldToCell(point);
+            if (this._isMouseLeftClick || this._isMouseRightClick)
             {
-                _isPainting = true;
+                this._isPainting = true;
 
-                if (_isMouseLeftClick)
+                if (this._isMouseLeftClick)
                 {
-                    ToggleOptions(selectedTile);
+                    this.ToggleOptions(selectedTile);
                 }
             }
-            else if (_isPainting && _isMouseLeftDown)
+            else if (this._isPainting && this._isMouseLeftDown)
             {
-                PaintTile(selectedTile);
+                this.PaintTile(selectedTile);
             }
-            else if (_isPainting && _isMouseRightDown)
+            else if (this._isPainting && this._isMouseRightDown)
             {
-                UnPaintTile(selectedTile);
+                this.UnPaintTile(selectedTile);
             }
             else
             {
-                _isPainting = false;
-                if (selectedTile != _previousHoverTilePosition)
+                this._isPainting = false;
+                if (selectedTile != this._previousHoverTilePosition)
                 {
-                    PaintHoverTile(selectedTile);
+                    this.PaintHoverTile(selectedTile);
                 }
 
             }
 
-            HandleKeyInput(point);
-            HandleMouseInput();
+            this.HandleKeyInput(point);
+            this.HandleMouseInput();
         }
 
         private void HandleMouseInput()
         {
-            _isMouseLeftClick = false;
-            _isMouseRightClick = false;
-            if (MouseLeftButton.WasPressed)
+            this._isMouseLeftClick = false;
+            this._isMouseRightClick = false;
+            if (this.MouseLeftButton.WasPressed)
             {
-                _isMouseLeftClick = true;
+                this._isMouseLeftClick = true;
             }
-            else if (MouseLeftButton.IsPressed)
+            else if (this.MouseLeftButton.IsPressed)
             {
-                _isMouseLeftDown = true;
+                this._isMouseLeftDown = true;
             }
-            else if (MouseLeftButton.WasReleased)
+            else if (this.MouseLeftButton.WasReleased)
             {
-                _isMouseLeftDown = false;
+                this._isMouseLeftDown = false;
             }
 
-            if (MouseRightButton.WasPressed)
+            if (this.MouseRightButton.WasPressed)
             {
-                _isMouseRightClick = true;
+                this._isMouseRightClick = true;
 
             }
-            else if (MouseRightButton.IsPressed)
+            else if (this.MouseRightButton.IsPressed)
             {
-                _isMouseRightDown = true;
+                this._isMouseRightDown = true;
 
             }
-            else if (MouseRightButton.WasReleased)
+            else if (this.MouseRightButton.WasReleased)
             {
-                _isMouseRightDown = false;
+                this._isMouseRightDown = false;
             }
         }
 
         private void HandleKeyInput(Vector3 position)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (this.SelectTile.WasPressed || this.MouseMiddleButton.WasPressed) //Input.GetKeyDown(KeyCode.LeftShift))
             {
+                // public Tilemap TilemapBackground, TilemapPlatform, TilemapDamage, TilemapWalls, TilemapElements, TilemapHover;
 
-        // public Tilemap TilemapBackground, TilemapPlatform, TilemapDamage, TilemapWalls, TilemapElements, TilemapHover;
+                Vector3Int selectedTile = this._currentTilemap.WorldToCell(position);
 
-
-                Vector3Int selectedTile = _currentTilemap.WorldToCell(position);
-
-                if (CheckForTile(selectedTile, TilemapElements))
+                if (this.CheckForTile(selectedTile, this.TilemapElements))
                 {
-                    TileBase tile = TilemapElements.GetTile(selectedTile);
-                    SwapTileUntilFound(tile);
+                    TileBase tile = this.TilemapElements.GetTile(selectedTile);
+                    this.SwapTileUntilFound(tile);
                 }
-                else if (CheckForTile(selectedTile, TilemapWalls))
+                else if (this.CheckForTile(selectedTile, this.TilemapWalls))
                 {
-                    TileBase tile = TilemapWalls.GetTile(selectedTile);
-                    SwapTileUntilFound(tile);
+                    TileBase tile = this.TilemapWalls.GetTile(selectedTile);
+                    this.SwapTileUntilFound(tile);
                 }
-                else if (CheckForTile(selectedTile, TilemapPlatform))
+                else if (this.CheckForTile(selectedTile, this.TilemapPlatform))
                 {
-                    TileBase tile = TilemapPlatform.GetTile(selectedTile);
-                    SwapTileUntilFound(tile);
+                    TileBase tile = this.TilemapPlatform.GetTile(selectedTile);
+                    this.SwapTileUntilFound(tile);
                 }
-                else if (CheckForTile(selectedTile, TilemapDamage))
+                else if (this.CheckForTile(selectedTile, this.TilemapDamage))
                 {
-                    TileBase tile = TilemapDamage.GetTile(selectedTile);
-                    SwapTileUntilFound(tile);
+                    TileBase tile = this.TilemapDamage.GetTile(selectedTile);
+                    this.SwapTileUntilFound(tile);
                 }
-                else if (CheckForTile(selectedTile, TilemapBackground))
+                else if (this.CheckForTile(selectedTile, this.TilemapBackground))
                 {
-                    TileBase tile = TilemapBackground.GetTile(selectedTile);
-                    SwapTileUntilFound(tile);
+                    TileBase tile = this.TilemapBackground.GetTile(selectedTile);
+                    this.SwapTileUntilFound(tile);
                 }
-
             }
         }
 
         private void SwapTileUntilFound(TileBase tile)
         {
-            while (Tile != tile)
+            while (this.Tile != tile)
             {
                 EditorItemManager.Instance.NextTrap();
             }
@@ -708,12 +709,12 @@ namespace LevelEditor
 
         private void OnEnable()
         {
-            EditorItemManager.OnTileSelected += SwapTile;
+            EditorItemManager.OnTileSelected += this.SwapTile;
         }
 
         private void OnDisable()
         {
-            EditorItemManager.OnTileSelected -= SwapTile;
+            EditorItemManager.OnTileSelected -= this.SwapTile;
         }
 
         #endregion
