@@ -13,6 +13,7 @@ namespace Editarrr.Input
                 if (inputValue.WasPressed)
                 {
                     Debug.Log($"Was Pressed: {inputValue.InputAction.name}");
+                    Debug.Log($"Value {inputValue.Read<float>()}");
                 }
                 else if (inputValue.WasReleased)
                 {
