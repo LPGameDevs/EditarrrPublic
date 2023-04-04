@@ -1,3 +1,4 @@
+using Editarrr.Input;
 using UnityEngine;
 
 public class CameraDragger : MonoBehaviour
@@ -16,6 +17,12 @@ public class CameraDragger : MonoBehaviour
     private Vector3 _cameraStart;
     private Camera _camera;
 
+    #region Input
+    [field: SerializeField] private InputValue MousePosition { get; set; }
+    [field: SerializeField] private InputValue MouseScroll { get; set; }
+    [field: SerializeField] private InputValue MouseMiddleButton { get; set; }
+    #endregion
+
     private void Start()
     {
         _camera = GetComponent<Camera>();
@@ -23,18 +30,20 @@ public class CameraDragger : MonoBehaviour
 
     void Update()
     {
-        _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - Input.mouseScrollDelta.y * ScrollSpeed, ZoomMax, ZoomMin);
+        _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - this.MouseScroll.Read<Vector2>().y * ScrollSpeed, ZoomMax, ZoomMin);
 
-        if (Input.GetMouseButtonDown(2))
+        Vector3 mousePosition = this.MousePosition.Read<Vector2>();
+
+        if (this.MouseMiddleButton.WasPressed)
         {
-            _dragOrigin = Input.mousePosition;
+            _dragOrigin = mousePosition;
             _cameraStart = transform.position;
             return;
         }
 
-        if (!Input.GetMouseButton(2)) return;
+        if (!this.MouseMiddleButton.IsPressed) return;
 
-        Vector3 pos = _camera.ScreenToViewportPoint(Input.mousePosition - _dragOrigin);
+        Vector3 pos = _camera.ScreenToViewportPoint(mousePosition - _dragOrigin);
 
         Vector3 posNormalised = new Vector3(pos.x * DragSpeedX, pos.y * DragSpeedY, 0);
 

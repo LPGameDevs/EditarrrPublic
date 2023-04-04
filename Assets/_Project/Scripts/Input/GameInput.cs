@@ -73,6 +73,51 @@ namespace Editarrr.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""8685b7b3-bd13-4ed6-b37a-e6d7a39b2921"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseScroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""1aee3aac-0ee0-4aeb-9b06-0d21e4b2f78f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseLeftButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""554bc8f0-c107-4310-b9e3-d71cdb05ff1f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseMiddleButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""b2dc870a-c367-443b-89bd-37a991be5b42"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseRightButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""e08d4fc4-dd09-4a59-8ce5-97ad95652b71"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -295,6 +340,117 @@ namespace Editarrr.Input
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""818743b4-332f-47eb-b8fd-d848238e3855"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5e94387-fde5-42c9-8954-3465d783d798"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLeftButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ab3dbde-45e4-4d6d-a725-ed3a280fe6fe"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseRightButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""831a440b-24b0-461e-9cc6-63d70ca28fb4"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f990595c-f5b3-4ff2-aeb5-03fb162ecdef"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMiddleButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""c247256f-18eb-417c-b9b0-c1e0d02b564f"",
+            ""actions"": [
+                {
+                    ""name"": ""Next"",
+                    ""type"": ""Button"",
+                    ""id"": ""eb4e40d3-fd14-4424-974c-13b26e7954e9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d28a2eda-d107-4655-ad3a-3b2b2424d19d"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Next"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Development"",
+            ""id"": ""4b308e3a-0bb9-483a-9381-6c8300f3cb21"",
+            ""actions"": [
+                {
+                    ""name"": ""Secret"",
+                    ""type"": ""Button"",
+                    ""id"": ""499307bc-d59b-43f0-9915-41bd137bce8a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""21e8df07-e844-4ee7-93ac-d6fa01b2a7ed"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Secret"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -308,6 +464,17 @@ namespace Editarrr.Input
             m_Gameplay_Restart = m_Gameplay.FindAction("Restart", throwIfNotFound: true);
             m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
             m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+            m_Gameplay_MousePosition = m_Gameplay.FindAction("MousePosition", throwIfNotFound: true);
+            m_Gameplay_MouseScroll = m_Gameplay.FindAction("MouseScroll", throwIfNotFound: true);
+            m_Gameplay_MouseLeftButton = m_Gameplay.FindAction("MouseLeftButton", throwIfNotFound: true);
+            m_Gameplay_MouseMiddleButton = m_Gameplay.FindAction("MouseMiddleButton", throwIfNotFound: true);
+            m_Gameplay_MouseRightButton = m_Gameplay.FindAction("MouseRightButton", throwIfNotFound: true);
+            // UI
+            m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+            m_UI_Next = m_UI.FindAction("Next", throwIfNotFound: true);
+            // Development
+            m_Development = asset.FindActionMap("Development", throwIfNotFound: true);
+            m_Development_Secret = m_Development.FindAction("Secret", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -372,6 +539,11 @@ namespace Editarrr.Input
         private readonly InputAction m_Gameplay_Restart;
         private readonly InputAction m_Gameplay_Interact;
         private readonly InputAction m_Gameplay_Pause;
+        private readonly InputAction m_Gameplay_MousePosition;
+        private readonly InputAction m_Gameplay_MouseScroll;
+        private readonly InputAction m_Gameplay_MouseLeftButton;
+        private readonly InputAction m_Gameplay_MouseMiddleButton;
+        private readonly InputAction m_Gameplay_MouseRightButton;
         public struct GameplayActions
         {
             private @GameInput m_Wrapper;
@@ -381,6 +553,11 @@ namespace Editarrr.Input
             public InputAction @Restart => m_Wrapper.m_Gameplay_Restart;
             public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
             public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
+            public InputAction @MousePosition => m_Wrapper.m_Gameplay_MousePosition;
+            public InputAction @MouseScroll => m_Wrapper.m_Gameplay_MouseScroll;
+            public InputAction @MouseLeftButton => m_Wrapper.m_Gameplay_MouseLeftButton;
+            public InputAction @MouseMiddleButton => m_Wrapper.m_Gameplay_MouseMiddleButton;
+            public InputAction @MouseRightButton => m_Wrapper.m_Gameplay_MouseRightButton;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -405,6 +582,21 @@ namespace Editarrr.Input
                     @Pause.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
                     @Pause.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
                     @Pause.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                    @MousePosition.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMousePosition;
+                    @MousePosition.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMousePosition;
+                    @MousePosition.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMousePosition;
+                    @MouseScroll.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseScroll;
+                    @MouseScroll.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseScroll;
+                    @MouseScroll.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseScroll;
+                    @MouseLeftButton.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseLeftButton;
+                    @MouseLeftButton.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseLeftButton;
+                    @MouseLeftButton.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseLeftButton;
+                    @MouseMiddleButton.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseMiddleButton;
+                    @MouseMiddleButton.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseMiddleButton;
+                    @MouseMiddleButton.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseMiddleButton;
+                    @MouseRightButton.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseRightButton;
+                    @MouseRightButton.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseRightButton;
+                    @MouseRightButton.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMouseRightButton;
                 }
                 m_Wrapper.m_GameplayActionsCallbackInterface = instance;
                 if (instance != null)
@@ -424,10 +616,91 @@ namespace Editarrr.Input
                     @Pause.started += instance.OnPause;
                     @Pause.performed += instance.OnPause;
                     @Pause.canceled += instance.OnPause;
+                    @MousePosition.started += instance.OnMousePosition;
+                    @MousePosition.performed += instance.OnMousePosition;
+                    @MousePosition.canceled += instance.OnMousePosition;
+                    @MouseScroll.started += instance.OnMouseScroll;
+                    @MouseScroll.performed += instance.OnMouseScroll;
+                    @MouseScroll.canceled += instance.OnMouseScroll;
+                    @MouseLeftButton.started += instance.OnMouseLeftButton;
+                    @MouseLeftButton.performed += instance.OnMouseLeftButton;
+                    @MouseLeftButton.canceled += instance.OnMouseLeftButton;
+                    @MouseMiddleButton.started += instance.OnMouseMiddleButton;
+                    @MouseMiddleButton.performed += instance.OnMouseMiddleButton;
+                    @MouseMiddleButton.canceled += instance.OnMouseMiddleButton;
+                    @MouseRightButton.started += instance.OnMouseRightButton;
+                    @MouseRightButton.performed += instance.OnMouseRightButton;
+                    @MouseRightButton.canceled += instance.OnMouseRightButton;
                 }
             }
         }
         public GameplayActions @Gameplay => new GameplayActions(this);
+
+        // UI
+        private readonly InputActionMap m_UI;
+        private IUIActions m_UIActionsCallbackInterface;
+        private readonly InputAction m_UI_Next;
+        public struct UIActions
+        {
+            private @GameInput m_Wrapper;
+            public UIActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Next => m_Wrapper.m_UI_Next;
+            public InputActionMap Get() { return m_Wrapper.m_UI; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+            public void SetCallbacks(IUIActions instance)
+            {
+                if (m_Wrapper.m_UIActionsCallbackInterface != null)
+                {
+                    @Next.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNext;
+                    @Next.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNext;
+                    @Next.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNext;
+                }
+                m_Wrapper.m_UIActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Next.started += instance.OnNext;
+                    @Next.performed += instance.OnNext;
+                    @Next.canceled += instance.OnNext;
+                }
+            }
+        }
+        public UIActions @UI => new UIActions(this);
+
+        // Development
+        private readonly InputActionMap m_Development;
+        private IDevelopmentActions m_DevelopmentActionsCallbackInterface;
+        private readonly InputAction m_Development_Secret;
+        public struct DevelopmentActions
+        {
+            private @GameInput m_Wrapper;
+            public DevelopmentActions(@GameInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Secret => m_Wrapper.m_Development_Secret;
+            public InputActionMap Get() { return m_Wrapper.m_Development; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(DevelopmentActions set) { return set.Get(); }
+            public void SetCallbacks(IDevelopmentActions instance)
+            {
+                if (m_Wrapper.m_DevelopmentActionsCallbackInterface != null)
+                {
+                    @Secret.started -= m_Wrapper.m_DevelopmentActionsCallbackInterface.OnSecret;
+                    @Secret.performed -= m_Wrapper.m_DevelopmentActionsCallbackInterface.OnSecret;
+                    @Secret.canceled -= m_Wrapper.m_DevelopmentActionsCallbackInterface.OnSecret;
+                }
+                m_Wrapper.m_DevelopmentActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Secret.started += instance.OnSecret;
+                    @Secret.performed += instance.OnSecret;
+                    @Secret.canceled += instance.OnSecret;
+                }
+            }
+        }
+        public DevelopmentActions @Development => new DevelopmentActions(this);
         public interface IGameplayActions
         {
             void OnMove(InputAction.CallbackContext context);
@@ -435,6 +708,19 @@ namespace Editarrr.Input
             void OnRestart(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
             void OnPause(InputAction.CallbackContext context);
+            void OnMousePosition(InputAction.CallbackContext context);
+            void OnMouseScroll(InputAction.CallbackContext context);
+            void OnMouseLeftButton(InputAction.CallbackContext context);
+            void OnMouseMiddleButton(InputAction.CallbackContext context);
+            void OnMouseRightButton(InputAction.CallbackContext context);
+        }
+        public interface IUIActions
+        {
+            void OnNext(InputAction.CallbackContext context);
+        }
+        public interface IDevelopmentActions
+        {
+            void OnSecret(InputAction.CallbackContext context);
         }
     }
 }
