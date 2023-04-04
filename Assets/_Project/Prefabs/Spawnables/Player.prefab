@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5390691737254147757}
   - component: {fileID: 5390691737254147754}
+  - component: {fileID: 123399669}
+  - component: {fileID: 123399668}
+  - component: {fileID: 123399670}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -82,3 +85,56 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &123399669
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5390691737254147755}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!70 &123399668
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5390691737254147755}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.007265538, y: 0.055702507}
+  m_Size: {x: 0.47423738, y: 0.8520454}
+  m_Direction: 0
+--- !u!114 &123399670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5390691737254147755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f319f23f6a7a7785bc2ba5180944b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MoveInput>k__BackingField: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
+  <JumpInput>k__BackingField: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}
+  speed: 5
+  jumpForce: 5
