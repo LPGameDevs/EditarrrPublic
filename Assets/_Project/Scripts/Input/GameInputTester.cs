@@ -4,7 +4,7 @@ namespace Editarrr.Input
 {
     public class GameInputTester : MonoBehaviour
     {
-        [SerializeField] public InputValue[] InputValues { get; private set; }
+        [field: SerializeField] public InputValue[] InputValues { get; private set; }
 
         private void Update()
         {
