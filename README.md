@@ -2,7 +2,7 @@
 
 > A 2d platformer with level editor and easy level sharing tools to improve creative level design skills by getting quick feedback from playtesters and speedrunning leaderboards to increase replayability.
 
-Made with Unity version `2020.3.25f1`
+Made with Unity version ~~`2020.3.25f1`~~ `2021.3.22f1`
 
 
 Very simple prototype for now, but will be added to soon.
@@ -41,5 +41,3 @@ https://github.com/proyecto26/RestClient
 https://github.com/reunono/MMFeedbacksPublic
 
 A better paid version of this exists here, go check it out: https://feel.moremountains.com/ 
-
-

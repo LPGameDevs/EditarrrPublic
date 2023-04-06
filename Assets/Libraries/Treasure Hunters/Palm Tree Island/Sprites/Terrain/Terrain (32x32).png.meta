@@ -144,7 +144,7 @@ TextureImporter:
       213: -5709979240835780729
     second: Terrain (32x32)_46
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -165,6 +165,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -203,6 +204,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -242,6 +244,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1252,6 +1266,54 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Terrain (32x32)_0: -2113894134886356154
+      Terrain (32x32)_1: -9114847578740223409
+      Terrain (32x32)_10: 8103538333889938161
+      Terrain (32x32)_11: 9048098576551171047
+      Terrain (32x32)_12: 5550582127777731385
+      Terrain (32x32)_13: -7635356268976036439
+      Terrain (32x32)_14: 1157080223378462048
+      Terrain (32x32)_15: -6403107747435768202
+      Terrain (32x32)_16: -1544894614388092976
+      Terrain (32x32)_17: 4217461280459406555
+      Terrain (32x32)_18: -4930185675006519976
+      Terrain (32x32)_19: -4696632766430068495
+      Terrain (32x32)_2: 4239696434956193796
+      Terrain (32x32)_20: 1243350276117333252
+      Terrain (32x32)_21: 3385679346202453554
+      Terrain (32x32)_22: 8738314733589638094
+      Terrain (32x32)_23: 8666830670597921376
+      Terrain (32x32)_24: -2936791710745090628
+      Terrain (32x32)_25: -1707878253529702307
+      Terrain (32x32)_26: -8728383186345377599
+      Terrain (32x32)_27: -8776397432039939674
+      Terrain (32x32)_28: 5097210526339842007
+      Terrain (32x32)_29: -2513879346030493484
+      Terrain (32x32)_3: 8516645164251878092
+      Terrain (32x32)_30: -2969041350847514635
+      Terrain (32x32)_31: -1610354790490889277
+      Terrain (32x32)_32: -6560276675822979386
+      Terrain (32x32)_33: 4868307182515750219
+      Terrain (32x32)_34: 8889031353144245513
+      Terrain (32x32)_35: -12324268454884066
+      Terrain (32x32)_36: -1012594953271071554
+      Terrain (32x32)_37: -915352507628530066
+      Terrain (32x32)_38: 5504718189712137809
+      Terrain (32x32)_39: -6567338993810207375
+      Terrain (32x32)_4: 3709395470188729914
+      Terrain (32x32)_40: -1647517347931888083
+      Terrain (32x32)_41: 299559052996832441
+      Terrain (32x32)_42: 6502491142666883771
+      Terrain (32x32)_43: 6885127967015840319
+      Terrain (32x32)_44: -8283676517091711715
+      Terrain (32x32)_45: 8576845579221683551
+      Terrain (32x32)_46: -5709979240835780729
+      Terrain (32x32)_5: -1459069242253791122
+      Terrain (32x32)_6: 8749005635180653793
+      Terrain (32x32)_7: -2363056867471366736
+      Terrain (32x32)_8: -4332446442371571619
+      Terrain (32x32)_9: -8883423204702779729
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
