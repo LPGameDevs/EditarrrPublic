@@ -29,39 +29,39 @@ namespace LevelEditor
         {
             if (trap.getCurrentItemCount() > 0)
             {
-                this.itemFrameCountWrapper.color = this.allowedColour;
+                itemFrameCountWrapper.color = allowedColour;
             }
             else
             {
-                this.itemFrameCountWrapper.color = this.disallowedColour;
+                itemFrameCountWrapper.color = disallowedColour;
             }
 
-            if (!this._arrowsChecked)
+            if (!_arrowsChecked)
             {
-                this.UpdateArrows();
-                this._arrowsChecked = true;
+                UpdateArrows();
+                _arrowsChecked = true;
             }
 
-            this.itemFrameImage.sprite = trap.getItemFrameImage();
-            this.itemFrameCount.text = trap.getCurrentItemCount().ToString();
-            this.itemFrameCount.gameObject.transform.parent.gameObject.SetActive(trap.showCount());
+            itemFrameImage.sprite = trap.getItemFrameImage();
+            itemFrameCount.text = trap.getCurrentItemCount().ToString();
+            itemFrameCount.gameObject.transform.parent.gameObject.SetActive(trap.showCount());
         }
 
         protected void UpdateArrows()
         {
-            if (!this._trapsManager.HasMultipleTraps())
+            if (!_trapsManager.HasMultipleTraps())
             {
-                this.UpdateArrowButtons();
+                UpdateArrowButtons();
             }
             else
             {
-                this.UpdateArrowButtons(true);
+                UpdateArrowButtons(true);
             }
         }
 
         private void UpdateArrowButtons(bool interactable = false)
         {
-            foreach (var itemFrameArrowButton in this.itemFrameArrowButtons)
+            foreach (var itemFrameArrowButton in itemFrameArrowButtons)
             {
                 itemFrameArrowButton.interactable = interactable;
             }
@@ -69,97 +69,55 @@ namespace LevelEditor
 
         public void NextItem()
         {
-            if (!this._trapsManager.HasMultipleTraps())
+            if (!_trapsManager.HasMultipleTraps())
             {
                 return;
             }
 
-            this._trapsManager.NextTrap();
+            _trapsManager.NextTrap();
         }
 
         public void PreviousItem()
         {
-            if (!this._trapsManager.HasMultipleTraps())
+            if (!_trapsManager.HasMultipleTraps())
             {
                 return;
             }
 
-            this._trapsManager.PreviousTrap();
+            _trapsManager.PreviousTrap();
         }
 
         private void Awake()
         {
-            this._trapsManager = EditorItemManager.Instance;
+            _trapsManager = EditorItemManager.Instance;
         }
 
         private void Update()
         {
-            if (this.UINext.WasPressed)
+            if (UINext.WasPressed)
             {
-                this.NextItem();
+                NextItem();
             }
 
-            if (this.SelectTile.WasPressed)
+            if (SelectTile.WasPressed)
             {
-                int index = (int)this.SelectTile.Read<float>();
-                this._trapsManager.SelectTrap((index - 1).Loop(9));
+                int index = (int)SelectTile.Read<float>();
+                _trapsManager.SelectTrap((index - 1).Loop(9));
             }
-
-
-            //if (Input.GetKeyDown(KeyCode.Alpha1))
-            //{
-            //    this._trapsManager.SelectTrap(0);
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha2))
-            //{
-            //    this._trapsManager.SelectTrap(1);
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha3))
-            //{
-            //    this._trapsManager.SelectTrap(2);
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha4))
-            //{
-            //    this._trapsManager.SelectTrap(3);
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha5))
-            //{
-            //    this._trapsManager.SelectTrap(4);
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha6))
-            //{
-            //    this._trapsManager.SelectTrap(5);
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha7))
-            //{
-            //    this._trapsManager.SelectTrap(6);
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha8))
-            //{
-            //    this._trapsManager.SelectTrap(7);
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha9))
-            //{
-            //    this._trapsManager.SelectTrap(8);
-            //}
-            //else if (Input.GetKeyDown(KeyCode.Alpha0))
-            //{
-            //    this._trapsManager.SelectTrap(9);
-            //}
         }
 
         protected void OnEnable()
         {
-            EditorItemManager.OnTileSelected += this.UpdateTrapDisplay;
-            TilePainter.OnTilePlaced += this.UpdateTrapDisplay;
-            TilePainter.OnTileRemoved += this.UpdateTrapDisplay;
+            EditorItemManager.OnTileSelected += UpdateTrapDisplay;
+            TilePainter.OnTilePlaced += UpdateTrapDisplay;
+            TilePainter.OnTileRemoved += UpdateTrapDisplay;
         }
 
         protected void OnDisable()
         {
-            EditorItemManager.OnTileSelected -= this.UpdateTrapDisplay;
-            TilePainter.OnTilePlaced -= this.UpdateTrapDisplay;
-            TilePainter.OnTileRemoved -= this.UpdateTrapDisplay;
+            EditorItemManager.OnTileSelected -= UpdateTrapDisplay;
+            TilePainter.OnTilePlaced -= UpdateTrapDisplay;
+            TilePainter.OnTileRemoved -= UpdateTrapDisplay;
         }
     }
 }
