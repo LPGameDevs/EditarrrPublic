@@ -1,4 +1,5 @@
 using Editarrr.Input;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,17 +12,14 @@ namespace LevelEditor
 
         protected bool _arrowsChecked;
 
-        [SerializeField]
-        private Image itemFrameImage;
-        [SerializeField]
-        private Image itemFrameCountWrapper;
-        [SerializeField]
-        private TextMeshProUGUI itemFrameCount;
-        [SerializeField]
-        private Button[] itemFrameArrowButtons;
+        [SerializeField] private Image itemFrameImage;
+        [SerializeField] private Image itemFrameCountWrapper;
+        [SerializeField] private TextMeshProUGUI itemFrameCount;
+        [SerializeField] private Button[] itemFrameArrowButtons;
 
         #region Input
-        [field: SerializeField] private InputValue UINext { get; set; }
+        [field: SerializeField, Header("Input")] private InputValue UINext { get; set; }
+        [field: SerializeField] private InputValue SelectTile { get; set; }
         #endregion
 
         public Color allowedColour = Color.blue;
@@ -47,7 +45,6 @@ namespace LevelEditor
             itemFrameImage.sprite = trap.getItemFrameImage();
             itemFrameCount.text = trap.getCurrentItemCount().ToString();
             itemFrameCount.gameObject.transform.parent.gameObject.SetActive(trap.showCount());
-
         }
 
         protected void UpdateArrows()
@@ -76,6 +73,7 @@ namespace LevelEditor
             {
                 return;
             }
+
             _trapsManager.NextTrap();
         }
 
@@ -85,6 +83,7 @@ namespace LevelEditor
             {
                 return;
             }
+
             _trapsManager.PreviousTrap();
         }
 
@@ -98,6 +97,12 @@ namespace LevelEditor
             if (UINext.WasPressed)
             {
                 NextItem();
+            }
+
+            if (SelectTile.WasPressed)
+            {
+                int index = (int)SelectTile.Read<float>();
+                _trapsManager.SelectTrap((index - 1).Loop(9));
             }
         }
 

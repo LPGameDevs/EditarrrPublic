@@ -208,7 +208,9 @@ MonoBehaviour:
   PlayerSpawn: {fileID: 0}
   <MousePosition>k__BackingField: {fileID: 11400000, guid: 11ba13480451f574e8c6ecdc13111c23, type: 2}
   <MouseLeftButton>k__BackingField: {fileID: 11400000, guid: 8c8b550f53e2051499bea9cd0a9fa1b5, type: 2}
+  <MouseMiddleButton>k__BackingField: {fileID: 11400000, guid: 4861822cf572eef43a7cbfca56333175, type: 2}
   <MouseRightButton>k__BackingField: {fileID: 11400000, guid: b2e5237c0e58fad4184c46cec872110b, type: 2}
+  <SelectTile>k__BackingField: {fileID: 11400000, guid: 6b479f728bac27547a06816953edd747, type: 2}
 --- !u!1 &134486920
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,6 +689,7 @@ MonoBehaviour:
   - {fileID: 1869710094}
   - {fileID: 176108903}
   <UINext>k__BackingField: {fileID: 11400000, guid: d287971872d4d7e408da675ecc5e0da7, type: 2}
+  <SelectTile>k__BackingField: {fileID: 11400000, guid: 09fe98eb0b96c5843a102793839a1a5b, type: 2}
   allowedColour: {r: 0, g: 0, b: 1, a: 1}
   disallowedColour: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &421484905

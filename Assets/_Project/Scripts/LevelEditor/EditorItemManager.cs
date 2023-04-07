@@ -35,6 +35,11 @@ namespace LevelEditor
                         return EditorTiles.Length > 1;
                 }
 
+                public void SelectTrap(int key)
+                {
+                        SetCurrentTrap(key);
+                }
+
                 public void NextTrap()
                 {
                         SetCurrentTrap(_currentTrapIndex + 1);
@@ -80,6 +85,7 @@ namespace LevelEditor
         }
         public interface ITileManager
         {
+                public void SelectTrap(int key);
 
                 public void NextTrap();
 

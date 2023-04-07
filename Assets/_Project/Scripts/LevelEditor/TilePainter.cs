@@ -1,7 +1,7 @@
-using System;
-using System.IO;
 using Editarrr.Input;
 using Singletons;
+using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -56,9 +56,12 @@ namespace LevelEditor
 
 
         #region Input
-        [field: SerializeField] private InputValue MousePosition { get; set; }
+        [field: SerializeField, Header("Input")] private InputValue MousePosition { get; set; }
         [field: SerializeField] private InputValue MouseLeftButton { get; set; }
+        [field: SerializeField] private InputValue MouseMiddleButton { get; set; }
         [field: SerializeField] private InputValue MouseRightButton { get; set; }
+
+        [field: SerializeField] private InputValue SelectTile { get; set; }
         #endregion
 
         #region LevelSetup
@@ -185,13 +188,13 @@ namespace LevelEditor
             {
                 if (_currentLevelSave.playerSpawn != Vector3Int.zero && PlayerSpawnSO.prefab != null)
                 {
-                    Instantiate(PlayerSpawnSO.prefab, (Vector3) _currentLevelSave.playerSpawn + new Vector3(0.5f, 0.5f, 0),
+                    Instantiate(PlayerSpawnSO.prefab, (Vector3)_currentLevelSave.playerSpawn + new Vector3(0.5f, 0.5f, 0),
                         Quaternion.identity);
                 }
 
                 if (_currentLevelSave.playerWin != Vector3Int.zero && PlayerWinSO.prefab != null)
                 {
-                    Instantiate(PlayerWinSO.prefab, (Vector3) _currentLevelSave.playerWin + new Vector3(0.5f, 0.5f, 0),
+                    Instantiate(PlayerWinSO.prefab, (Vector3)_currentLevelSave.playerWin + new Vector3(0.5f, 0.5f, 0),
                         Quaternion.identity);
                 }
 
@@ -200,7 +203,7 @@ namespace LevelEditor
                     foreach (var enemyTile in _currentLevelSave.enemyTiles)
                     {
                         // Instantiate(EnemySO.prefab, (Vector3) enemyTile, Quaternion.identity);
-                        Instantiate(EnemySO.prefab, (Vector3) enemyTile + new Vector3(0.5f, 0.5f, 0),
+                        Instantiate(EnemySO.prefab, (Vector3)enemyTile + new Vector3(0.5f, 0.5f, 0),
                             Quaternion.identity);
                     }
                 }
@@ -209,7 +212,7 @@ namespace LevelEditor
                 {
                     foreach (var enemyTile in _currentLevelSave.enemyFollowTiles)
                     {
-                        Instantiate(EnemyFollowSO.prefab, (Vector3) enemyTile + new Vector3(0.5f, 0.5f, 0),
+                        Instantiate(EnemyFollowSO.prefab, (Vector3)enemyTile + new Vector3(0.5f, 0.5f, 0),
                             Quaternion.identity);
                     }
                 }
@@ -343,7 +346,8 @@ namespace LevelEditor
             {
                 _currentTileSO.Paint(TilemapHover, _previousHoverTilePosition, null);
             }
-            else if (_currentTileSO.HasOptions() && _currentTilemap.GetTile(_previousHoverTilePosition) != null) {
+            else if (_currentTileSO.HasOptions() && _currentTilemap.GetTile(_previousHoverTilePosition) != null)
+            {
                 _currentTileSO.Highlight(TilemapHover, _previousHoverTilePosition, Color.red);
             }
         }
@@ -452,7 +456,7 @@ namespace LevelEditor
                 position = selectedTile;
             }
 
-            return _currentLevelSave.GetTileOptions((Vector3Int) position);
+            return _currentLevelSave.GetTileOptions((Vector3Int)position);
         }
 
         private void ToggleOptions(Vector3Int selectedTile)
@@ -472,7 +476,7 @@ namespace LevelEditor
                 return;
             }
 
-            selectedTile = (Vector3Int) position;
+            selectedTile = (Vector3Int)position;
             _currentLevelSave.StorePlacedTile(_currentTileSO, selectedTile, options);
             _currentTileSO.Paint(_currentTilemap, selectedTile, options);
         }
@@ -511,7 +515,7 @@ namespace LevelEditor
             // General setup
             _camera = Camera.main;
             _currentLevelSave = new LevelSave();
-            _isHoverTilesEnabled = TilemapHover.IsNull("Hover Tilemap is not set so hover tiles are disabled.");;
+            _isHoverTilesEnabled = TilemapHover.IsNull("Hover Tilemap is not set so hover tiles are disabled."); ;
 
             string data = File.ReadAllText(EditorLevelStorage.LevelStorageEditorLevel);
             _levelCode = PlayerPrefs.GetString("EditorCode");
@@ -617,6 +621,7 @@ namespace LevelEditor
 
             }
 
+            HandleKeyInput(point);
             HandleMouseInput();
         }
 
@@ -651,6 +656,55 @@ namespace LevelEditor
             {
                 _isMouseRightDown = false;
             }
+        }
+
+        private void HandleKeyInput(Vector3 position)
+        {
+            if (SelectTile.WasPressed || MouseMiddleButton.WasPressed) //Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                // public Tilemap TilemapBackground, TilemapPlatform, TilemapDamage, TilemapWalls, TilemapElements, TilemapHover;
+
+                Vector3Int selectedTile = _currentTilemap.WorldToCell(position);
+
+                if (CheckForTile(selectedTile, TilemapElements))
+                {
+                    TileBase tile = TilemapElements.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+                else if (CheckForTile(selectedTile, TilemapWalls))
+                {
+                    TileBase tile = TilemapWalls.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+                else if (CheckForTile(selectedTile, TilemapPlatform))
+                {
+                    TileBase tile = TilemapPlatform.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+                else if (CheckForTile(selectedTile, TilemapDamage))
+                {
+                    TileBase tile = TilemapDamage.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+                else if (CheckForTile(selectedTile, TilemapBackground))
+                {
+                    TileBase tile = TilemapBackground.GetTile(selectedTile);
+                    SwapTileUntilFound(tile);
+                }
+            }
+        }
+
+        private void SwapTileUntilFound(TileBase tile)
+        {
+            while (Tile != tile)
+            {
+                EditorItemManager.Instance.NextTrap();
+            }
+        }
+
+        private bool CheckForTile(Vector3Int position, Tilemap tilemapElements)
+        {
+            return tilemapElements.HasTile(position);
         }
 
         private void OnEnable()
