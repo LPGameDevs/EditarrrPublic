@@ -30,10 +30,16 @@ namespace Editarrr.LevelEditor
 
         private EditorTileState[,] Tiles { get; set; }
 
+        private LevelEditorStage Stage { get; set; }
+
+
 
         // From System
         private Camera SceneCamera { get; set; }
         private Tilemap Tilemap { get; set; }
+
+
+
 
         public void SetSceneCamera(Camera camera)
         {
@@ -60,7 +66,7 @@ namespace Editarrr.LevelEditor
 
         public override void DoUpdate()
         {
-            if (this.MouseLeftButton.IsPressed)
+            if (this.MouseLeftButton.IsPressed && !this.EditorTileSelection.IsUIHover)
             {
                 this.ClampPosition(this.GetCursorTilePosition(), out int x, out int y);
 
@@ -178,6 +184,13 @@ namespace Editarrr.LevelEditor
             this.Tiles[x, y] = null;
 
             // if(current.TileData.Tile.)
+        }
+
+        private enum LevelEditorStage
+        {
+            None,
+            Paint,
+            Remove
         }
     }
 }

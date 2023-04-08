@@ -26,6 +26,8 @@ namespace Editarrr.UI.LevelEditor
                 this.ContainerElement = visualElement.Q<VisualElement>(this.ContainerName);
 
                 this.RotateButtonElement = this.ContainerElement.Q<Button>(this.RotateButtonName);
+                this.RotateButtonElement.RegisterCallback<PointerEnterEvent>(LevelEditorScreen.PointerEnter);
+                this.RotateButtonElement.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
                 this.TilePreviewElement = this.ContainerElement.Q<VisualElement>(this.TilePreviewName);
 
                 this.RotateButtonElement.clicked += this.RotateButtonElement_Clicked;
@@ -48,14 +50,17 @@ namespace Editarrr.UI.LevelEditor
             private void SetActiveElement(EditorTileData editorTileData)
             {
                 Sprite sprite = null;
-                
-                if (editorTileData != null)
-                    sprite = editorTileData.UISprite;
-
                 float rotate = 0;
 
-                if (editorTileData.Tile.CanRotate)
-                    rotate = this.EditorTileGroupManager.Rotation.ToDegree();
+                if (editorTileData != null)
+                {
+                    sprite = editorTileData.UISprite;
+
+                    if (editorTileData.Tile.CanRotate)
+                        rotate = this.EditorTileGroupManager.Rotation.ToDegree();
+                }
+
+
 
                 this.TilePreviewElement.style.backgroundImage = new StyleBackground(sprite);
                 this.TilePreviewElement.style.rotate = new StyleRotate(new Rotate(-rotate));

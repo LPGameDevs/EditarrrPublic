@@ -34,6 +34,8 @@ namespace Editarrr.UI.LevelEditor
 
                     // Create Visuals and add to Container
                     TemplateContainer template = this.TileDataSlotTemplate.Instantiate();
+                    template.RegisterCallback<PointerEnterEvent>(LevelEditorScreen.PointerEnter);
+                    template.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
                     this.TileDataSlotContainerElement.Add(template);
 
                     Button button = template.Q<Button>(name);
@@ -83,6 +85,8 @@ namespace Editarrr.UI.LevelEditor
 
             private void TileDataSlotElements_Clicked(EventBase eventBase)
             {
+                Debug.Log("UI: " + Time.time);
+
                 if (!(eventBase.target is Button button))
                     return;
 

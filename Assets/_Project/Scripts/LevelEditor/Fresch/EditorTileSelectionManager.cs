@@ -1,5 +1,6 @@
 ﻿using Editarrr.Managers;
 using Editarrr.Misc;
+using Editarrr.UI.LevelEditor;
 using System;
 using UnityEngine;
 
@@ -19,11 +20,29 @@ namespace Editarrr.LevelEditor
         public int ActiveGroupIndex { get; private set; }
         public int ActiveElementIndex { get; private set; }
         public Rotation Rotation { get; private set; }
+        public bool IsUIHover { get; private set; }
 
         public override void DoAwake()
         {
             this.ClearEvents();
             this.SetActiveGroupIndex(0);
+        }
+
+        public override void DoStart()
+        {
+            // Register UI Events
+            LevelEditorScreen.OnPointerEnter += this.LevelEditorScreen_OnPointerEnter;
+            LevelEditorScreen.OnPointerLeave += this.LevelEditorScreen_OnPointerLeave;
+        }
+
+        private void LevelEditorScreen_OnPointerEnter()
+        {
+            this.IsUIHover = true;
+        }
+
+        private void LevelEditorScreen_OnPointerLeave()
+        {
+            this.IsUIHover = false;
         }
 
         private void ClearEvents()

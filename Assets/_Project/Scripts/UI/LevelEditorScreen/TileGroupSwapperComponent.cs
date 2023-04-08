@@ -18,6 +18,8 @@ namespace Editarrr.UI.LevelEditor
             public override void Initialize(UIElement root, VisualElement visualElement)
             {
                 this.TileGroupSwapperElement = visualElement.Q<Button>(this.TileGroupSwapperName);
+                this.TileGroupSwapperElement.RegisterCallback<PointerEnterEvent>(LevelEditorScreen.PointerEnter);
+                this.TileGroupSwapperElement.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
 
                 this.TileGroupSwapperElement.clicked += this.TileGroupSwapperElement_Clicked;
 
