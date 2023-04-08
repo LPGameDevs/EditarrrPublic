@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/StyleSheets/ProjectStyleSheet.uss?fileID=7433441132597879392&amp;guid=cd4aeef013304774294ae2622f37e9df&amp;type=3#ProjectStyleSheet" />
+    <ui:Button display-tooltip-when-elided="true" name="TileDataSlot" focusable="false" class="button button-square-medium text-medium button-blank">
+        <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Assets/_Project/Art/Tiles/Terrain%20(32x32).png?fileID=5504718189712137809&amp;guid=6ce8822ae70bdd2fa95b5efe4226647c&amp;type=3#Terrain (32x32)_38&apos;); width: 80%; height: 80%; -unity-background-scale-mode: scale-to-fit;" />
+    </ui:Button>
+</ui:UXML>

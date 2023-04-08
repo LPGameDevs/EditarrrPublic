@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945057cb888aefc4ba164f4c25a040fb, type: 3}
+  m_Name: Editor Level Manager
+  m_EditorClassIdentifier: 
+  <Settings>k__BackingField: {fileID: 11400000, guid: 0f937ce089015664eb44321c92f97c15, type: 2}
+  <PrefabPool>k__BackingField: {fileID: 11400000, guid: 322e48f29e8f44e4d8c8b4bbd323545a, type: 2}
+  <EditorTileSelection>k__BackingField: {fileID: 11400000, guid: b10f562adc978bb468e22b320a6a39dd, type: 2}
+  <MousePosition>k__BackingField: {fileID: 11400000, guid: 11ba13480451f574e8c6ecdc13111c23, type: 2}
+  <MouseLeftButton>k__BackingField: {fileID: 11400000, guid: 8c8b550f53e2051499bea9cd0a9fa1b5, type: 2}
+  <MouseRightButton>k__BackingField: {fileID: 11400000, guid: b2e5237c0e58fad4184c46cec872110b, type: 2}
