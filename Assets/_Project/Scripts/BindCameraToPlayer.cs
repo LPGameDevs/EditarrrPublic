@@ -11,7 +11,7 @@ public class BindCameraToPlayer : MonoBehaviour
         if (!_playerFound)
         {
             // find the player object
-            Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+            Transform player = GameObject.FindGameObjectWithTag("Player")?.transform;
             if (player != null)
             {
                 _playerFound = true;
@@ -21,6 +21,10 @@ public class BindCameraToPlayer : MonoBehaviour
                 cameraFollowTarget.localPosition = Vector3.zero;
                 // clean up this object/script
                 Destroy(gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("No player object found");
             }
         }
     }
