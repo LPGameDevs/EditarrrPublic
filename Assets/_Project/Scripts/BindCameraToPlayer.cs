@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Singletons;
 using UnityEngine;
 
 public class BindCameraToPlayer : MonoBehaviour
@@ -24,7 +23,9 @@ public class BindCameraToPlayer : MonoBehaviour
             }
             else
             {
+                // The level cannot be played if there is no player.
                 Debug.LogWarning("No player object found");
+                LevelManager.Instance.GotoLevel(LevelManager.CreateLevelSceneName);
             }
         }
     }
