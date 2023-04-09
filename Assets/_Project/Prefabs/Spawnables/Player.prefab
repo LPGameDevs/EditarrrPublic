@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 123399670}
   m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,18 +138,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MoveInput>k__BackingField: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
   <JumpInput>k__BackingField: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}
-  groundMask:
+  _characterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0.24, y: 0.3, z: 0}
+  _groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  collisionBounds:
-    m_Center: {x: 0, y: 0.07, z: 0}
-    m_Extent: {x: 0.25, y: 0.44, z: 1}
-  _raycastInset: 0.05
-  _raycastCount: 3
-  _raycastDistance: 0.03
-  maxSpeed: 5
-  acceleration: 5
-  deceleration: 5
-  jumpForce: 5
-  gravity: 9
-  maxFallSpeed: 5
+  _detectorCount: 3
+  _detectionRayLength: 0.1
+  _rayBuffer: 0.02
+  _acceleration: 60
+  _moveClamp: 10
+  _deAcceleration: 60
+  _apexBonus: 2
+  _fallClamp: -40
+  _minFallSpeed: 40
+  _maxFallSpeed: 80
+  _jumpHeight: 20
+  _jumpApexThreshold: 10
+  _coyoteTimeThreshold: 0.1
+  _jumpBuffer: 0.1
+  _jumpEndEarlyGravityModifier: 3
+  _freeColliderIterations: 20

@@ -1,26 +1,23 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Editarrr.Input;
 using UnityEngine;
 
 namespace Player
 {
     /// <summary>
-    /// Hey!
-    /// Tarodev here. I built this controller as there was a severe lack of quality & free 2D controllers out there.
-    /// Right now it only contains movement and jumping, but it should be pretty easy to expand... I may even do it myself
-    /// if there's enough interest. You can play and compete for best times here: https://tarodev.itch.io/
-    /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/GqeHHnhHpz
+    /// Adapted from Tarodev's Ultimate 2D controller, found here: https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller
     /// </summary>
-    public class PlayerController : MonoBehaviour, IPlayerController
+    public class PlayerController : MonoBehaviour
     {
-        // Public for external hooks
-        public Vector3 Velocity { get; private set; }
-        public FrameInput Input { get; private set; }
-        public bool JumpingThisFrame { get; private set; }
-        public bool LandingThisFrame { get; private set; }
-        public Vector3 RawMovement { get; private set; }
-        public bool Grounded => _colDown;
+        // events
+        public static event Action OnPlayerJumped;
+        public static event Action OnPlayerLanded;
 
+
+        private Vector3 _velocity;
+        private Vector3 _rawMovement;
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
 
@@ -33,7 +30,7 @@ namespace Player
         {
             if (!_active) return;
             // Calculate velocity
-            Velocity = (transform.position - _lastPosition) / Time.deltaTime;
+            _velocity = (transform.position - _lastPosition) / Time.deltaTime;
             _lastPosition = transform.position;
 
             GatherInput();
@@ -45,22 +42,34 @@ namespace Player
             CalculateJump(); // Possibly overrides vertical
 
             MoveCharacter(); // Actually perform the axis movement
+            HandleSpriteDirection();
         }
 
 
         #region Gather Input
+        [field: SerializeField, Tooltip("Move input map")] private InputValue MoveInput { get; set; }
+        [field: SerializeField, Tooltip("Jump input map")] private InputValue JumpInput { get; set; }
+        private bool _isMoving;
+        private bool _jumpStartThisFrame;
+        private bool _jumpReleaseThisFrame;
+        private float _movementValue;
+
 
         private void GatherInput()
         {
-            Input = new FrameInput
+            _isMoving = MoveInput.IsPressed;
+            _movementValue = MoveInput.Read<Vector2>().x;
+
+            _jumpStartThisFrame = _jumpReleaseThisFrame = false;
+
+            if (JumpInput.WasPressed)
             {
-                JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
-                JumpUp = UnityEngine.Input.GetButtonUp("Jump"),
-                X = UnityEngine.Input.GetAxisRaw("Horizontal")
-            };
-            if (Input.JumpDown)
-            {
+                _jumpStartThisFrame = true;
                 _lastJumpPressed = Time.time;
+            }
+            else if (JumpInput.WasReleased)
+            {
+                _jumpReleaseThisFrame = true;
             }
         }
 
@@ -69,13 +78,13 @@ namespace Player
         #region Collisions
 
         [Header("COLLISION")][SerializeField] private Bounds _characterBounds;
-        [SerializeField] private LayerMask _groundLayer;
-        [SerializeField] private int _detectorCount = 3;
-        [SerializeField] private float _detectionRayLength = 0.1f;
-        [SerializeField][Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
+        [SerializeField, Tooltip("Layer(s) to interact with for neutral collisions")] private LayerMask _groundLayer;
+        [SerializeField, Tooltip("Number of ray casts per bounding box side")] private int _detectorCount = 3;
+        [SerializeField, Tooltip("Length of collision raycasts")] private float _detectionRayLength = 0.1f;
+        [SerializeField, Range(0, 0.3f), Tooltip("Inset distance of raycasts")] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
 
-        private RayRange _raysUp, _raysRight, _raysDown, _raysLeft;
-        private bool _colUp, _colRight, _colDown, _colLeft;
+        private Direction2D<RayRange> _rays = new Direction2D<RayRange>(new RayRange());
+        private Direction2D<bool> _collisions = new Direction2D<bool>(false);
 
         private float _timeLeftGrounded;
 
@@ -83,24 +92,23 @@ namespace Player
         private void RunCollisionChecks()
         {
             // Generate ray ranges. 
-            CalculateRayRanged();
+            CalculateRayRanges();
 
             // Ground
-            LandingThisFrame = false;
-            var groundedCheck = RunDetection(_raysDown);
-            if (_colDown && !groundedCheck) _timeLeftGrounded = Time.time; // Only trigger when first leaving
-            else if (!_colDown && groundedCheck)
+            var groundedCheck = RunDetection(_rays.down);
+            if (_collisions.down && !groundedCheck) _timeLeftGrounded = Time.time; // Only trigger when first leaving
+            else if (!_collisions.down && groundedCheck)
             {
                 _coyoteUsable = true; // Only trigger when first touching
-                LandingThisFrame = true;
+                OnPlayerLanded?.Invoke();
             }
 
-            _colDown = groundedCheck;
+            _collisions.down = groundedCheck;
 
             // The rest
-            _colUp = RunDetection(_raysUp);
-            _colLeft = RunDetection(_raysLeft);
-            _colRight = RunDetection(_raysRight);
+            _collisions.up = RunDetection(_rays.up);
+            _collisions.left = RunDetection(_rays.left);
+            _collisions.right = RunDetection(_rays.right);
 
             bool RunDetection(RayRange range)
             {
@@ -108,15 +116,17 @@ namespace Player
             }
         }
 
-        private void CalculateRayRanged()
+        private void CalculateRayRanges()
         {
-            // This is crying out for some kind of refactor. 
-            var b = new Bounds(transform.position + _characterBounds.center, _characterBounds.size);
+            float bottom = _characterBounds.min.y + transform.position.y;
+            float top = _characterBounds.max.y + transform.position.y;
+            float left = _characterBounds.min.x + transform.position.x;
+            float right = _characterBounds.max.x + transform.position.x;
 
-            _raysDown = new RayRange(b.min.x + _rayBuffer, b.min.y, b.max.x - _rayBuffer, b.min.y, Vector2.down);
-            _raysUp = new RayRange(b.min.x + _rayBuffer, b.max.y, b.max.x - _rayBuffer, b.max.y, Vector2.up);
-            _raysLeft = new RayRange(b.min.x, b.min.y + _rayBuffer, b.min.x, b.max.y - _rayBuffer, Vector2.left);
-            _raysRight = new RayRange(b.max.x, b.min.y + _rayBuffer, b.max.x, b.max.y - _rayBuffer, Vector2.right);
+            _rays.down = new RayRange(left + _rayBuffer, bottom, right - _rayBuffer, bottom, Vector2.down);
+            _rays.up = new RayRange(left + _rayBuffer, top, right - _rayBuffer, top, Vector2.up);
+            _rays.left = new RayRange(left, bottom + _rayBuffer, left, top - _rayBuffer, Vector2.left);
+            _rays.right = new RayRange(right, bottom + _rayBuffer, right, top - _rayBuffer, Vector2.right);
         }
 
 
@@ -138,9 +148,9 @@ namespace Player
             // Rays
             if (!Application.isPlaying)
             {
-                CalculateRayRanged();
+                CalculateRayRanges();
                 Gizmos.color = Color.blue;
-                foreach (var range in new List<RayRange> { _raysUp, _raysRight, _raysDown, _raysLeft })
+                foreach (var range in new List<RayRange> { _rays.up, _rays.right, _rays.down, _rays.left })
                 {
                     foreach (var point in EvaluateRayPositions(range))
                     {
@@ -163,22 +173,22 @@ namespace Player
         #region Walk
 
         [Header("WALKING")][SerializeField] private float _acceleration = 90;
-        [SerializeField] private float _moveClamp = 13;
+        [SerializeField, Tooltip("Maximum move speed")] private float _maxMoveSpeed = 13;
         [SerializeField] private float _deAcceleration = 60f;
         [SerializeField] private float _apexBonus = 2;
 
         private void CalculateWalk()
         {
-            if (Input.X != 0)
+            if (_isMoving)
             {
                 // Set horizontal move speed
-                _currentHorizontalSpeed += Input.X * _acceleration * Time.deltaTime;
+                _currentHorizontalSpeed += _movementValue * _acceleration * Time.deltaTime;
 
                 // clamped by max frame movement
-                _currentHorizontalSpeed = Mathf.Clamp(_currentHorizontalSpeed, -_moveClamp, _moveClamp);
+                _currentHorizontalSpeed = Mathf.Clamp(_currentHorizontalSpeed, -_maxMoveSpeed, _maxMoveSpeed);
 
                 // Apply bonus at the apex of a jump
-                var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
+                var apexBonus = Mathf.Sign(_movementValue) * _apexBonus * _apexPoint;
                 _currentHorizontalSpeed += apexBonus * Time.deltaTime;
             }
             else
@@ -187,7 +197,7 @@ namespace Player
                 _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
             }
 
-            if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft)
+            if (_currentHorizontalSpeed > 0 && _collisions.right || _currentHorizontalSpeed < 0 && _collisions.left)
             {
                 // Don't walk through walls
                 _currentHorizontalSpeed = 0;
@@ -205,7 +215,7 @@ namespace Player
 
         private void CalculateGravity()
         {
-            if (_colDown)
+            if (_collisions.down)
             {
                 // Move out of the ground
                 if (_currentVerticalSpeed < 0) _currentVerticalSpeed = 0;
@@ -236,15 +246,15 @@ namespace Player
         private bool _endedJumpEarly = true;
         private float _apexPoint; // Becomes 1 at the apex of a jump
         private float _lastJumpPressed;
-        private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
-        private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
+        private bool CanUseCoyote => _coyoteUsable && !_collisions.down && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
+        private bool HasBufferedJump => _collisions.down && _lastJumpPressed + _jumpBuffer > Time.time;
 
         private void CalculateJumpApex()
         {
-            if (!_colDown)
+            if (!_collisions.down)
             {
                 // Gets stronger the closer to the top of the jump
-                _apexPoint = Mathf.InverseLerp(_jumpApexThreshold, 0, Mathf.Abs(Velocity.y));
+                _apexPoint = Mathf.InverseLerp(_jumpApexThreshold, 0, Mathf.Abs(_velocity.y));
                 _fallSpeed = Mathf.Lerp(_minFallSpeed, _maxFallSpeed, _apexPoint);
             }
             else
@@ -256,27 +266,23 @@ namespace Player
         private void CalculateJump()
         {
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
-            if (Input.JumpDown && CanUseCoyote || HasBufferedJump)
+            if (_jumpStartThisFrame && CanUseCoyote || HasBufferedJump)
             {
                 _currentVerticalSpeed = _jumpHeight;
                 _endedJumpEarly = false;
                 _coyoteUsable = false;
                 _timeLeftGrounded = float.MinValue;
-                JumpingThisFrame = true;
-            }
-            else
-            {
-                JumpingThisFrame = false;
+                OnPlayerJumped?.Invoke();
             }
 
             // End the jump early if button released
-            if (!_colDown && Input.JumpUp && !_endedJumpEarly && Velocity.y > 0)
+            if (!_collisions.down && _jumpReleaseThisFrame && !_endedJumpEarly && _velocity.y > 0)
             {
                 // _currentVerticalSpeed = 0;
                 _endedJumpEarly = true;
             }
 
-            if (_colUp)
+            if (_collisions.up)
             {
                 if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;
             }
@@ -294,8 +300,8 @@ namespace Player
         private void MoveCharacter()
         {
             var pos = transform.position + _characterBounds.center;
-            RawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally
-            var move = RawMovement * Time.deltaTime;
+            _rawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally
+            var move = _rawMovement * Time.deltaTime;
             var furthestPoint = pos + move;
 
             // check furthest movement. If nothing hit, move and don't do extra checks
@@ -330,6 +336,14 @@ namespace Player
                 }
 
                 positionToMoveTo = posToTry;
+            }
+        }
+
+        private void HandleSpriteDirection()
+        {
+            if (_movementValue != 0)
+            {
+                transform.localScale = new Vector2(Mathf.Sign(_movementValue), 1f);
             }
         }
 
