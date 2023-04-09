@@ -147,14 +147,14 @@ MonoBehaviour:
   _detectorCount: 3
   _detectionRayLength: 0.1
   _rayBuffer: 0.02
-  _acceleration: 60
-  _moveClamp: 10
+  _acceleration: 50
+  _maxMoveSpeed: 9
   _deAcceleration: 60
   _apexBonus: 2
   _fallClamp: -40
   _minFallSpeed: 40
   _maxFallSpeed: 80
-  _jumpHeight: 20
+  _jumpHeight: 18
   _jumpApexThreshold: 10
   _coyoteTimeThreshold: 0.1
   _jumpBuffer: 0.1
