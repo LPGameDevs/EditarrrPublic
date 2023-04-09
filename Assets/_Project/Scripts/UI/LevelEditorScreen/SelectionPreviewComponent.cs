@@ -21,6 +21,8 @@ namespace Editarrr.UI.LevelEditor
             private Button RotateButtonElement { get; set; }
             private VisualElement TilePreviewElement { get; set; }
 
+            EditorTileData ActiveEditorTileData { get; set; }
+
             public override void Initialize(UIElement root, VisualElement visualElement)
             {
                 this.ContainerElement = visualElement.Q<VisualElement>(this.ContainerName);
@@ -32,7 +34,11 @@ namespace Editarrr.UI.LevelEditor
 
                 this.RotateButtonElement.clicked += this.RotateButtonElement_Clicked;
 
-                EditorTileSelectionManager.ActiveElementChanged += this.SetActiveElement;
+                EditorTileSelectionManager.ActiveElementChanged += this.EditorTileSelectionManage_ActiveElementChanged;
+                EditorTileSelectionManager.RotationChanged += this.EditorTileSelectionManager_RotationChanged;
+
+                this.ActiveEditorTileData = this.EditorTileGroupManager.ActiveElement;
+
                 this.UpdatePreview();
             }
 
@@ -44,26 +50,30 @@ namespace Editarrr.UI.LevelEditor
 
             private void UpdatePreview()
             {
-                this.SetActiveElement(this.EditorTileGroupManager.ActiveElement);
-            }
-
-            private void SetActiveElement(EditorTileData editorTileData)
-            {
                 Sprite sprite = null;
                 float rotate = 0;
 
-                if (editorTileData != null)
+                if (this.ActiveEditorTileData != null)
                 {
-                    sprite = editorTileData.UISprite;
+                    sprite = this.ActiveEditorTileData.UISprite;
 
-                    if (editorTileData.Tile.CanRotate)
+                    if (this.ActiveEditorTileData.Tile.CanRotate)
                         rotate = this.EditorTileGroupManager.Rotation.ToDegree();
                 }
 
-
-
                 this.TilePreviewElement.style.backgroundImage = new StyleBackground(sprite);
                 this.TilePreviewElement.style.rotate = new StyleRotate(new Rotate(-rotate));
+            }
+
+            private void EditorTileSelectionManage_ActiveElementChanged(EditorTileData editorTileData)
+            {
+                this.ActiveEditorTileData = editorTileData;
+                this.UpdatePreview();
+            }
+
+            private void EditorTileSelectionManager_RotationChanged(Rotation rotation)
+            {
+                this.UpdatePreview();
             }
         }
     }

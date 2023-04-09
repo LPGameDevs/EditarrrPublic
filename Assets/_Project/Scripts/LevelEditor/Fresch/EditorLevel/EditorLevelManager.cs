@@ -66,24 +66,41 @@ namespace Editarrr.LevelEditor
 
         public override void DoUpdate()
         {
-            if (this.MouseLeftButton.IsPressed && !this.EditorTileSelection.IsUIHover)
-            {
-                this.ClampPosition(this.GetCursorTilePosition(), out int x, out int y);
+            if (this.EditorTileSelection.IsUIHover)
+                return;
 
+            this.ClampPosition(this.GetCursorTilePosition(), out int x, out int y);
+
+            if (this.MouseLeftButton.WasPressed)
+            {
+                EditorTileState state = this.Get(x, y);
+
+                if (state != null &&
+                    state.TileData == this.EditorTileSelection.ActiveElement &&
+                    state.Rotation == this.EditorTileSelection.Rotation)
+                {
+                    Debug.Log("Change Settings");
+                }
+            }
+            else if (this.MouseLeftButton.IsPressed)
+            {
                 this.Set(x, y, this.EditorTileSelection.ActiveElement);
             }
             else if (this.MouseRightButton.IsPressed)
             {
-                this.ClampPosition(this.GetCursorTilePosition(), out int x, out int y);
-
                 this.Unset(x, y);
             }
         }
 
         private void ClampPosition(Vector3Int position, out int x, out int y)
         {
-            x = position.x.Clamp(0, this.Settings.EditorLevelScaleX);
-            y = position.y.Clamp(0, this.Settings.EditorLevelScaleY);
+            this.ClampPosition(position.x, position.y, out x, out y);
+        }
+
+        private void ClampPosition(int x, int y, out int oX, out int oY)
+        {
+            oX = x.Clamp(0, this.Settings.EditorLevelScaleX);
+            oY = y.Clamp(0, this.Settings.EditorLevelScaleY);
         }
 
         private Vector3Int GetCursorTilePosition()
@@ -184,6 +201,13 @@ namespace Editarrr.LevelEditor
             this.Tiles[x, y] = null;
 
             // if(current.TileData.Tile.)
+        }
+
+        public EditorTileState Get(int x, int y)
+        {
+            this.ClampPosition(x, y, out x, out y);
+
+            return this.Tiles[x, y];
         }
 
         private enum LevelEditorStage

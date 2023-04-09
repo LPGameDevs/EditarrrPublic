@@ -1,4 +1,5 @@
-﻿using Editarrr.Managers;
+﻿using Editarrr.Input;
+using Editarrr.Managers;
 using Editarrr.Misc;
 using Editarrr.UI.LevelEditor;
 using System;
@@ -11,11 +12,16 @@ namespace Editarrr.LevelEditor
     {
         public static Action<EditorTileGroupData> ActiveGroupChanged { get; set; }
         public static Action<EditorTileData> ActiveElementChanged { get; set; }
+        public static Action<Rotation> RotationChanged { get; set; }
 
-        [field: SerializeField] private EditorTileGroupDataPool GroupPool { get; set; }
+        [field: SerializeField, Header("Groups")] private EditorTileGroupDataPool GroupPool { get; set; }
         [field: SerializeField] public EditorTileGroupData ActiveGroup { get; private set; }
 
-        [field: SerializeField] public EditorTileData ActiveElement { get; private set; }
+        [field: SerializeField, Header("Elements")] public EditorTileData ActiveElement { get; private set; }
+
+        #region Input
+        [field: SerializeField, Header("Input")] private InputValue Rotate { get; set; }
+        #endregion
 
         public int ActiveGroupIndex { get; private set; }
         public int ActiveElementIndex { get; private set; }
@@ -35,6 +41,12 @@ namespace Editarrr.LevelEditor
             LevelEditorScreen.OnPointerLeave += this.LevelEditorScreen_OnPointerLeave;
         }
 
+        public override void DoUpdate()
+        {
+            if (this.Rotate.WasPressed)
+                this.NextRotation();
+        }
+
         private void LevelEditorScreen_OnPointerEnter()
         {
             this.IsUIHover = true;
@@ -49,6 +61,7 @@ namespace Editarrr.LevelEditor
         {
             EditorTileSelectionManager.ActiveGroupChanged = null;
             EditorTileSelectionManager.ActiveElementChanged = null;
+            EditorTileSelectionManager.RotationChanged = null;
         }
 
 
@@ -78,6 +91,8 @@ namespace Editarrr.LevelEditor
         public void NextRotation()
         {
             this.Rotation = (Rotation)(((int)this.Rotation + 1) % 4);
+
+            EditorTileSelectionManager.RotationChanged?.Invoke(this.Rotation);
         }
     }
 }
