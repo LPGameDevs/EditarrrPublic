@@ -15,6 +15,7 @@ namespace Player
         public static event Action OnPlayerJumped;
         public static event Action OnPlayerLanded;
 
+        private HealthSystem _health;
 
         private Vector3 _velocity;
         private Vector3 _rawMovement;
@@ -23,7 +24,13 @@ namespace Player
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
-        void Awake() => Invoke(nameof(Activate), 0.5f);
+
+        void Awake()
+        {
+            Invoke(nameof(Activate), 0.5f);
+            _health = GetComponent<HealthSystem>();
+        }
+
         void Activate() => _active = true;
 
         private void Update()
@@ -91,7 +98,7 @@ namespace Player
         // We use these raycast checks for pre-collision information
         private void RunCollisionChecks()
         {
-            // Generate ray ranges. 
+            // Generate ray ranges.
             CalculateRayRanges();
 
             // Ground
