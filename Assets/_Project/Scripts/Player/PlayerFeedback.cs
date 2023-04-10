@@ -14,6 +14,7 @@ namespace Player
         private void Awake()
         {
             _player = GetComponentInParent<PlayerController>();
+            _health = GetComponentInParent<HealthSystem>();
         }
 
         private void Update()
