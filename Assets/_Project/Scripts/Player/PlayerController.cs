@@ -17,6 +17,8 @@ namespace Player
 
         private HealthSystem _health;
 
+        public bool IsMoving => _isMoving;
+
         private Vector3 _velocity;
         private Vector3 _rawMovement;
         private Vector3 _lastPosition;
