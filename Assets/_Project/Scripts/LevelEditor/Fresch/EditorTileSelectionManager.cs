@@ -21,6 +21,7 @@ namespace Editarrr.LevelEditor
 
         #region Input
         [field: SerializeField, Header("Input")] private InputValue Rotate { get; set; }
+        [field: SerializeField] private InputValue SelectTile { get; set; }
         #endregion
 
         public int ActiveGroupIndex { get; private set; }
@@ -45,6 +46,15 @@ namespace Editarrr.LevelEditor
         {
             if (this.Rotate.WasPressed)
                 this.NextRotation();
+
+            if (this.SelectTile.WasPressed)
+            {
+                int index = (int)this.SelectTile.Read<float>();
+
+                index = (index - 1).Loop(10);
+
+                this.SetActiveElementIndex(index);
+            }
         }
 
         private void LevelEditorScreen_OnPointerEnter()

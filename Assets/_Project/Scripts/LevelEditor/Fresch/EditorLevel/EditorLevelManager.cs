@@ -30,13 +30,12 @@ namespace Editarrr.LevelEditor
 
         private EditorTileState[,] Tiles { get; set; }
 
-        private LevelEditorStage Stage { get; set; }
-
-
 
         // From System
         private Camera SceneCamera { get; set; }
         private Tilemap Tilemap { get; set; }
+
+        private EditorHoverTile EditorHoverTile { get; set; }
 
 
 
@@ -62,34 +61,61 @@ namespace Editarrr.LevelEditor
             this.Tiles = new EditorTileState[this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY];
 
             this.Tilemap.transform.localPosition = new Vector3(this.Settings.EditorLevelScaleX / -2, this.Settings.EditorLevelScaleY / -2, 0);
+
+            this.EditorHoverTile = GameObject.Instantiate(this.PrefabPool.EditorHoverTile);
+            this.DisableHoverTile();
         }
 
         public override void DoUpdate()
         {
             if (this.EditorTileSelection.IsUIHover)
+            {
+                this.DisableHoverTile();
                 return;
+            }
 
-            this.ClampPosition(this.GetCursorTilePosition(), out int x, out int y);
+            this.ClampPosition(this.GetCursorTileMapPosition(), out int x, out int y);
+
+            EditorTileData tileData = this.EditorTileSelection.ActiveElement;
 
             if (this.MouseLeftButton.WasPressed)
             {
                 EditorTileState state = this.Get(x, y);
 
                 if (state != null &&
-                    state.TileData == this.EditorTileSelection.ActiveElement &&
+                    state.TileData == tileData &&
                     state.Rotation == this.EditorTileSelection.Rotation)
                 {
-                    Debug.Log("Change Settings");
+                    // Use same Rotation in if ???
+                    // Change Options/Variations/Show Options Modify UI....
                 }
             }
             else if (this.MouseLeftButton.IsPressed)
             {
-                this.Set(x, y, this.EditorTileSelection.ActiveElement);
+                if (tileData == null)
+                    return;
+
+                this.Set(x, y, tileData);
             }
             else if (this.MouseRightButton.IsPressed)
             {
                 this.Unset(x, y);
             }
+
+            this.EnableHoverTile();
+            this.EditorHoverTile.transform.position = new Vector3(x - this.Settings.EditorLevelScaleX / 2, y - this.Settings.EditorLevelScaleY / 2, 0);
+
+            this.EditorHoverTile.Set(this.EditorTileSelection.ActiveElement, this.EditorTileSelection.Rotation);
+        }
+
+        private void EnableHoverTile()
+        {
+            this.EditorHoverTile.SetActive(true);
+        }
+
+        private void DisableHoverTile()
+        {
+            this.EditorHoverTile.SetActive(false);
         }
 
         private void ClampPosition(Vector3Int position, out int x, out int y)
@@ -103,7 +129,7 @@ namespace Editarrr.LevelEditor
             oY = y.Clamp(0, this.Settings.EditorLevelScaleY);
         }
 
-        private Vector3Int GetCursorTilePosition()
+        private Vector3Int GetCursorTileMapPosition()
         {
             Vector3 point = this.SceneCamera.ScreenToWorldPoint(MousePosition.Read<Vector2>());
             Vector3Int tilePosition = this.Tilemap.WorldToCell(point);
@@ -112,11 +138,6 @@ namespace Editarrr.LevelEditor
             //tilePosition.y += this.Settings.EditorLevelScaleY / 2;
 
             return tilePosition;
-        }
-
-        private void UpdateInput()
-        {
-
         }
 
         public void Set(int x, int y, EditorTileData tileData)
@@ -208,13 +229,6 @@ namespace Editarrr.LevelEditor
             this.ClampPosition(x, y, out x, out y);
 
             return this.Tiles[x, y];
-        }
-
-        private enum LevelEditorStage
-        {
-            None,
-            Paint,
-            Remove
         }
     }
 }

@@ -8,6 +8,8 @@ namespace Editarrr.LevelEditor
         Wall,
         Spike,
         Player,
-        Goal
+        Goal,
+        Enemy_001,
+        Enemy_002
     }
 }

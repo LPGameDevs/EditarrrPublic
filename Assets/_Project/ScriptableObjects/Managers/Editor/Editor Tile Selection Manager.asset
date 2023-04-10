@@ -15,3 +15,5 @@ MonoBehaviour:
   <GroupPool>k__BackingField: {fileID: 11400000, guid: f9fdc8e593c7714489b243f712c1654e, type: 2}
   <ActiveGroup>k__BackingField: {fileID: 11400000, guid: d75edcf86d558ae45a289e8e4423c876, type: 2}
   <ActiveElement>k__BackingField: {fileID: 11400000, guid: 225829ca3ea4d8641b1761a27779526f, type: 2}
+  <Rotate>k__BackingField: {fileID: 11400000, guid: 9783b11421ea29b4187d9ea30aadae04, type: 2}
+  <SelectTile>k__BackingField: {fileID: 11400000, guid: 09fe98eb0b96c5843a102793839a1a5b, type: 2}

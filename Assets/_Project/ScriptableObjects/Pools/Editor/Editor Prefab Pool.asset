@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Editor Prefab Pool
   m_EditorClassIdentifier: 
   <EditorGrid>k__BackingField: {fileID: 678120249599684140, guid: e1ab5eb5892d0f247b3ac31133d0acd6, type: 3}
+  <EditorHoverTile>k__BackingField: {fileID: 2385633740082966627, guid: c254d8afadb00164b8595f09dae8d03b, type: 3}
