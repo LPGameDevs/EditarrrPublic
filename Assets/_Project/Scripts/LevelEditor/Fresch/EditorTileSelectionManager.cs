@@ -90,6 +90,8 @@ namespace Editarrr.LevelEditor
             this.ActiveElement = this.ActiveGroup.GroupElements[this.ActiveElementIndex];
 
             EditorTileSelectionManager.ActiveElementChanged?.Invoke(this.ActiveElement);
+
+            this.SetRotation(Rotation.North);
         }
 
 
@@ -100,8 +102,12 @@ namespace Editarrr.LevelEditor
 
         public void NextRotation()
         {
-            this.Rotation = (Rotation)(((int)this.Rotation + 1) % 4);
+            this.SetRotation((Rotation)(((int)this.Rotation - 1).Loop(4)));
+        }
 
+        private void SetRotation(Rotation rotation)
+        {
+            this.Rotation = rotation;
             EditorTileSelectionManager.RotationChanged?.Invoke(this.Rotation);
         }
     }
