@@ -5,7 +5,6 @@ namespace Player
 {
     public class HealthSystem : MonoBehaviour
     {
-
         private int _hitPoints = 0;
         [SerializeField, Tooltip("Maximum hit points")] private int _maxHitPoints = 20;
         [SerializeField, Tooltip("Initial hit points, limited to max hit points")] private int _startingHitPoints = 20;
@@ -18,10 +17,12 @@ namespace Player
             _hitPoints = Mathf.Min(_maxHitPoints, _startingHitPoints);
         }
 
+        public class OnHealthChangedArgs : OnValueChangedArgs<int> { };
+
         public event EventHandler OnDeath;
         public event EventHandler OnInvincibleStarted;
-        public event EventHandler OnInvincibleEnd;
-        public event EventHandler OnHitPointsChanged;
+        public event EventHandler OnInvincibleEnded;
+        public event EventHandler<OnHealthChangedArgs> OnHitPointsChanged;
 
         private void Update()
         {
@@ -42,10 +43,11 @@ namespace Player
                 return;
             }
 
+            int prevHitPoints = _hitPoints;
             _hitPoints -= amount;
             _hitPoints = Mathf.Max(_hitPoints, 0);
 
-            OnHitPointsChanged?.Invoke(this, _hitPoints);
+            OnHitPointsChanged?.Invoke(this, new OnHealthChangedArgs { previousValue = prevHitPoints, value = _hitPoints });
 
             if (_hitPoints == 0)
             {
@@ -54,14 +56,15 @@ namespace Player
             else if (_hasDamageCooldown)
             {
                 _damageCooldownTimeRemaining = _damageCooldown;
-                OnInvincibleStarted?.Invoke(this.EventArgs.Empty);
+                OnInvincibleStarted?.Invoke(this, EventArgs.Empty);
             }
         }
 
         public void SetHitPoints(int amount)
         {
+            int prevHitPoints = _hitPoints;
             _hitPoints = Mathf.Clamp(amount, 0, _maxHitPoints);
-            OnHitPointsChanged?.Invoke(this, EventArgs.Empty);
+            OnHitPointsChanged?.Invoke(this, new OnHealthChangedArgs { previousValue = prevHitPoints, value = _hitPoints });
         }
 
         public float GetHealthNormalised()
