@@ -12,6 +12,9 @@ namespace Editarrr.LevelEditor
     [CreateAssetMenu(fileName = "Editor Level Manager", menuName = "Managers/Editor/new Editor Level Manager")]
     public class EditorLevelManager : ManagerComponent
     {
+        public static TileSet OnTileSet { get; set; }
+        public static TileSet OnTileUnset { get; set; }
+
         [field: SerializeField, Header("Settings")] public EditorLevelSettings Settings { get; private set; }
 
         [field: SerializeField, Header("Pools")] public EditorPrefabPool PrefabPool { get; private set; }
@@ -26,7 +29,6 @@ namespace Editarrr.LevelEditor
         #endregion
 
         Dictionary<TileType, List<Int2D>> TileLocations { get; set; }
-
 
         private EditorTileState[,] Tiles { get; set; }
 
@@ -52,6 +54,8 @@ namespace Editarrr.LevelEditor
 
         public override void DoAwake()
         {
+            this.ClearEvents();
+
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
 
             SpriteRenderer editorGrid = GameObject.Instantiate(this.PrefabPool.EditorGrid);
@@ -64,6 +68,12 @@ namespace Editarrr.LevelEditor
 
             this.EditorHoverTile = GameObject.Instantiate(this.PrefabPool.EditorHoverTile);
             this.DisableHoverTile();
+        }
+
+        private void ClearEvents()
+        {
+            EditorLevelManager.OnTileSet = null;
+            EditorLevelManager.OnTileUnset = null;
         }
 
         public override void DoUpdate()
@@ -145,10 +155,10 @@ namespace Editarrr.LevelEditor
             TileType tileType = tileData.Tile.Type;
             bool updateLocations = !tileData.IsInfinite;
 
+            int count = 0;
+
             if (updateLocations)
             {
-                int count = 0;
-
                 if (this.TileLocations.ContainsKey(tileType))
                     count = this.TileLocations[tileType].Count;
 
@@ -187,6 +197,8 @@ namespace Editarrr.LevelEditor
                 this.Tiles[x, y] = new EditorTileState(tileData, Rotation.North);
             }
 
+            count = 0;
+
             if (updateLocations)
             {
                 // Update Location
@@ -194,7 +206,10 @@ namespace Editarrr.LevelEditor
                     this.TileLocations.Add(tileType, new List<Int2D>());
 
                 this.TileLocations[tileType].Add(new Int2D(x, y));
+                count = this.TileLocations[tileType].Count;
             }
+
+            EditorLevelManager.OnTileSet?.Invoke(tileData, tileType, count);
         }
 
         public void Unset(int x, int y)
@@ -204,24 +219,24 @@ namespace Editarrr.LevelEditor
             if (current == null)
                 return;
 
+            TileType tileType = current.TileData.Tile.Type;
+            int count = 0;
+
             if (!current.TileData.IsInfinite)
             {
-                TileType tileType = current.TileData.Tile.Type;
-
                 if (this.TileLocations.ContainsKey(tileType))
                 {
                     Int2D remove = new Int2D(x, y);
 
-                    Debug.Log($"Remove: {this.TileLocations[tileType].Count}");
                     this.TileLocations[tileType].Remove(remove);
-                    Debug.Log($"Removed: {this.TileLocations[tileType].Count}");
+                    count = this.TileLocations[tileType].Count;
                 }
             }
 
             this.Tilemap.SetTile(new Vector3Int(x, y, 0), null);
             this.Tiles[x, y] = null;
 
-            // if(current.TileData.Tile.)
+            EditorLevelManager.OnTileUnset?.Invoke(current.TileData, tileType, count);
         }
 
         public EditorTileState Get(int x, int y)
@@ -230,5 +245,20 @@ namespace Editarrr.LevelEditor
 
             return this.Tiles[x, y];
         }
+
+        public int GetTileCount(EditorTileData editorTileData)
+        {
+            TileType key = editorTileData.Tile.Type;
+
+            if (this.TileLocations.ContainsKey(key))
+            {
+                return this.TileLocations[key].Count;
+            }
+
+            return 0;
+        }
+
+        public delegate void TileSet(EditorTileData data, TileType tileType, int inLevel);
+        public delegate void TileUnset(EditorTileData data, TileType tileType, int inLevel);
     }
 }

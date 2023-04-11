@@ -30,7 +30,8 @@ public class CameraDragger : MonoBehaviour
 
     void Update()
     {
-        _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - MouseScroll.Read<Vector2>().y * ScrollSpeed, ZoomMax, ZoomMin);
+        _camera.orthographicSize = 
+            Mathf.Clamp(_camera.orthographicSize - MouseScroll.Read<Vector2>().y * ScrollSpeed * Time.deltaTime * _camera.orthographicSize, ZoomMax, ZoomMin);
 
         Vector3 mousePosition = MousePosition.Read<Vector2>();
 

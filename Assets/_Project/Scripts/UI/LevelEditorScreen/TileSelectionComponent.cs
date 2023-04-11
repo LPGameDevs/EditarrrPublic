@@ -16,6 +16,8 @@ namespace Editarrr.UI.LevelEditor
             [field: SerializeField, Header("Names")] public string TileDataSlotContainerName { get; private set; } = "TileSelectionContainer";
             [field: SerializeField] public string TileDataSlotName { get; private set; } = "TileDataSlot";
             [field: SerializeField] public string TileDataSlotImageName { get; private set; } = "Image";
+            [field: SerializeField] public string TileDataSlotCountContainerName { get; private set; } = "Count";
+            [field: SerializeField] public string TileDataSlotCountContainerLabelName { get; private set; } = "Value";
 
 
             [field: SerializeField] private int TileDataSlotCount { get; set; } = 10;
@@ -44,14 +46,32 @@ namespace Editarrr.UI.LevelEditor
 
                     VisualElement image = button.Q<VisualElement>(this.TileDataSlotImageName);
 
-                    this.TileDataSlotElements[i] = new TileButton(button, image);
+                    VisualElement countContainer = template.Q<VisualElement>(this.TileDataSlotCountContainerName);
+                    Label countContainerValue = countContainer.Q<Label>(this.TileDataSlotCountContainerLabelName);
+
+                    this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue);
                 }
 
-                EditorTileSelectionManager.ActiveGroupChanged += this.SetActiveGroup;
-                EditorTileSelectionManager.ActiveElementChanged += this.SetActiveElement;
+                EditorTileSelectionManager.ActiveGroupChanged += this.EditorTileSelectionManager_ActiveGroupChanged;
+                EditorTileSelectionManager.ActiveElementChanged += this.EditorTileSelectionManager_ActiveElementChanged;
+                
+                EditorLevelManager.OnTileSet += this.EditorLevelManager_OnTileSet;
+                EditorLevelManager.OnTileUnset += this.EditorLevelManager_OnTileUnset;
+
                 this.SetActiveGroup(this.EditorTileSelectionManager.ActiveGroup);
                 this.SetActiveElement(this.EditorTileSelectionManager.ActiveElement);
             }
+
+            private void EditorTileSelectionManager_ActiveGroupChanged(EditorTileGroupData editorTileGroup)
+            {
+                this.SetActiveGroup(editorTileGroup);
+            }
+            
+            private void EditorTileSelectionManager_ActiveElementChanged(EditorTileData editorTileData)
+            {
+                this.SetActiveElement(editorTileData);
+            }
+
 
             private void SetActiveGroup(EditorTileGroupData editorTileGroup)
             {
@@ -64,17 +84,14 @@ namespace Editarrr.UI.LevelEditor
 
                 for (int i = 0; i < this.TileDataSlotCount; i++)
                 {
-                    Sprite sprite = null;
-
                     if (editorTileData != null && editorTileData.Length > i)
                     {
                         EditorTileData tileData = editorTileData[i];
 
-                        if (tileData != null)
-                            sprite = tileData.UISprite;
+                        this.TileDataSlotElements[i].SetData(tileData);
                     }
-
-                    this.TileDataSlotElements[i].Image.style.backgroundImage = new StyleBackground(sprite);
+                    else
+                        this.TileDataSlotElements[i].SetData(null);
                 }
             }
 
@@ -82,6 +99,7 @@ namespace Editarrr.UI.LevelEditor
             {
                 // Highlights etc??
             }
+
 
             private void TileDataSlotElements_Clicked(EventBase eventBase)
             {
@@ -94,15 +112,68 @@ namespace Editarrr.UI.LevelEditor
                 this.EditorTileSelectionManager.SetActiveElementIndex(index);
             }
 
+            private void EditorLevelManager_OnTileSet(EditorTileData editorTileData, TileType tileType, int inLevel)
+            {
+                this.UpdateButtonCount(editorTileData, inLevel);
+            }
+
+            private void EditorLevelManager_OnTileUnset(EditorTileData editorTileData, TileType tileType, int inLevel)
+            {
+                this.UpdateButtonCount(editorTileData, inLevel);
+            }
+
+            private void UpdateButtonCount(EditorTileData editorTileData, int inLevel)
+            {
+                for (int i = 0; i < this.TileDataSlotCount; i++)
+                {
+                    TileButton button = this.TileDataSlotElements[i];
+
+                    if (button.EditorTileData != editorTileData)
+                        continue;
+
+                    button.UpdateCount(editorTileData.LevelLimit - inLevel);
+                }
+            }
+
             private class TileButton
             {
                 public Button Button { get; private set; }
                 public VisualElement Image { get; private set; }
+                public VisualElement CountContainer { get; private set; }
+                public Label Count { get; private set; }
 
-                public TileButton(Button button, VisualElement image)
+                public EditorTileData EditorTileData { get; private set; }
+
+                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count)
                 {
                     this.Button = button;
                     this.Image = image;
+                    this.CountContainer = countContainer;
+                    this.Count = count;
+                }
+
+                public void SetData(EditorTileData editorTileData)
+                {
+                    this.EditorTileData = editorTileData;
+
+                    Sprite sprite = null;
+                    bool countContainer = false;
+
+                    if (editorTileData != null)
+                    {
+                        sprite = editorTileData.UISprite;
+                        countContainer = editorTileData.LevelLimit > 0;
+                    }
+
+                    this.Image.style.backgroundImage = new StyleBackground(sprite);
+                    this.CountContainer.style.visibility = new StyleEnum<Visibility>(countContainer ? Visibility.Visible : Visibility.Hidden);
+
+                    this.UpdateCount(0);
+                }
+
+                public void UpdateCount(int count)
+                {
+                    this.Count.text = $"{count}";
                 }
             }
         }

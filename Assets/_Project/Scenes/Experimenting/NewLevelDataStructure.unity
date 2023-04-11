@@ -345,6 +345,8 @@ MonoBehaviour:
     <TileDataSlotContainerName>k__BackingField: TileSelectionContainer
     <TileDataSlotName>k__BackingField: TileDataSlot
     <TileDataSlotImageName>k__BackingField: Image
+    <TileDataSlotCountContainerName>k__BackingField: Count
+    <TileDataSlotCountContainerLabelName>k__BackingField: Value
     <TileDataSlotCount>k__BackingField: 10
   <TileGroupSwapper>k__BackingField:
     <EditorTileSelectionManager>k__BackingField: {fileID: 11400000, guid: b10f562adc978bb468e22b320a6a39dd, type: 2}
@@ -354,6 +356,10 @@ MonoBehaviour:
     <ContainerName>k__BackingField: SelectionPreview
     <RotateButtonName>k__BackingField: Rotate
     <TilePreviewName>k__BackingField: TilePreview
+  <SaveAndPlay>k__BackingField:
+    <ContainerName>k__BackingField: SaveAndPlay
+    <PlayButtonName>k__BackingField: Play
+    <SaveButtonName>k__BackingField: Save
 --- !u!114 &1268458651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,6 +477,7 @@ GameObject:
   - component: {fileID: 1824080162}
   - component: {fileID: 1824080161}
   - component: {fileID: 1824080160}
+  - component: {fileID: 1824080163}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -544,6 +551,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1824080163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824080159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c08efd7dbef9b85d486f3727e3b75f03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScrollSpeed: 0.7
+  DragSpeedX: 3.5
+  DragSpeedY: 2
+  ZoomMax: 1
+  ZoomMin: 15
+  MaxDrag: {x: 50, y: 25, z: 0}
+  MinDrag: {x: -50, y: -25, z: 0}
+  <MousePosition>k__BackingField: {fileID: 11400000, guid: 11ba13480451f574e8c6ecdc13111c23, type: 2}
+  <MouseScroll>k__BackingField: {fileID: 11400000, guid: c1cc2bb641eded5418bde62176409957, type: 2}
+  <MouseMiddleButton>k__BackingField: {fileID: 11400000, guid: 4861822cf572eef43a7cbfca56333175, type: 2}
 --- !u!4 &1828293622 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5877094596324953958, guid: 38df39fd0b426f64c92523e432adcc05, type: 3}
