@@ -9,7 +9,7 @@ namespace Editarrr.UI.LevelEditor
         [System.Serializable]
         public class TileSelectionComponent : UIComponent
         {
-            [field: SerializeField, Header("Data")] private EditorTileSelectionManager EditorTileGroupManager { get; set; }
+            [field: SerializeField, Header("Data")] private EditorTileSelectionManager EditorTileSelectionManager { get; set; }
 
             [field: SerializeField, Header("Templates")] private VisualTreeAsset TileDataSlotTemplate { get; set; }
 
@@ -49,8 +49,8 @@ namespace Editarrr.UI.LevelEditor
 
                 EditorTileSelectionManager.ActiveGroupChanged += this.SetActiveGroup;
                 EditorTileSelectionManager.ActiveElementChanged += this.SetActiveElement;
-                this.SetActiveGroup(this.EditorTileGroupManager.ActiveGroup);
-                this.SetActiveElement(this.EditorTileGroupManager.ActiveElement);
+                this.SetActiveGroup(this.EditorTileSelectionManager.ActiveGroup);
+                this.SetActiveElement(this.EditorTileSelectionManager.ActiveElement);
             }
 
             private void SetActiveGroup(EditorTileGroupData editorTileGroup)
@@ -85,15 +85,13 @@ namespace Editarrr.UI.LevelEditor
 
             private void TileDataSlotElements_Clicked(EventBase eventBase)
             {
-                Debug.Log("UI: " + Time.time);
-
                 if (!(eventBase.target is Button button))
                     return;
 
                 if (!(button.userData is int index))
                     return;
 
-                this.EditorTileGroupManager.SetActiveElementIndex(index);
+                this.EditorTileSelectionManager.SetActiveElementIndex(index);
             }
 
             private class TileButton

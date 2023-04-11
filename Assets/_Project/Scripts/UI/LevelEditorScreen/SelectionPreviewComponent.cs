@@ -10,7 +10,7 @@ namespace Editarrr.UI.LevelEditor
         [System.Serializable]
         public class SelectionPreviewComponent : UIComponent
         {
-            [field: SerializeField, Header("Data")] private EditorTileSelectionManager EditorTileGroupManager { get; set; }
+            [field: SerializeField, Header("Data")] private EditorTileSelectionManager EditorTileSelectionManager { get; set; }
 
             [field: SerializeField, Header("Names")] public string ContainerName { get; private set; } = "SelectionPreview";
             [field: SerializeField] public string RotateButtonName { get; private set; } = "Rotate";
@@ -37,14 +37,14 @@ namespace Editarrr.UI.LevelEditor
                 EditorTileSelectionManager.ActiveElementChanged += this.EditorTileSelectionManage_ActiveElementChanged;
                 EditorTileSelectionManager.RotationChanged += this.EditorTileSelectionManager_RotationChanged;
 
-                this.ActiveEditorTileData = this.EditorTileGroupManager.ActiveElement;
+                this.ActiveEditorTileData = this.EditorTileSelectionManager.ActiveElement;
 
                 this.UpdatePreview();
             }
 
             private void RotateButtonElement_Clicked()
             {
-                this.EditorTileGroupManager.NextRotation();
+                this.EditorTileSelectionManager.NextRotation();
                 this.UpdatePreview();
             }
 
@@ -58,7 +58,7 @@ namespace Editarrr.UI.LevelEditor
                     sprite = this.ActiveEditorTileData.UISprite;
 
                     if (this.ActiveEditorTileData.Tile.CanRotate)
-                        rotate = this.EditorTileGroupManager.Rotation.ToDegree();
+                        rotate = this.EditorTileSelectionManager.Rotation.ToDegree();
                 }
 
                 this.TilePreviewElement.style.backgroundImage = new StyleBackground(sprite);

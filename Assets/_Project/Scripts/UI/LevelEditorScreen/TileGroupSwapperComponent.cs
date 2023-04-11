@@ -9,7 +9,7 @@ namespace Editarrr.UI.LevelEditor
         [System.Serializable]
         public class TileGroupSwapperComponent : UIComponent
         {
-            [field: SerializeField, Header("Data")] private EditorTileSelectionManager EditorTileGroupManager { get; set; }
+            [field: SerializeField, Header("Data")] private EditorTileSelectionManager EditorTileSelectionManager { get; set; }
 
             [field: SerializeField, Header("Names")] public string TileGroupSwapperName { get; private set; } = "TileGroupSwapper";
 
@@ -24,17 +24,17 @@ namespace Editarrr.UI.LevelEditor
                 this.TileGroupSwapperElement.clicked += this.TileGroupSwapperElement_Clicked;
 
                 EditorTileSelectionManager.ActiveGroupChanged += this.SetActiveGroup;
-                this.SetActiveGroup(this.EditorTileGroupManager.ActiveGroup);
+                this.SetActiveGroup(this.EditorTileSelectionManager.ActiveGroup);
             }
 
             private void SetActiveGroup(EditorTileGroupData editorTileGroup)
             {
-                this.TileGroupSwapperElement.text = $"{this.EditorTileGroupManager.ActiveGroupIndex + 1}";
+                this.TileGroupSwapperElement.text = $"{this.EditorTileSelectionManager.ActiveGroupIndex + 1}";
             }
 
             private void TileGroupSwapperElement_Clicked()
             {
-                this.EditorTileGroupManager.NextGroup();
+                this.EditorTileSelectionManager.NextGroup();
             }
         }
     }
