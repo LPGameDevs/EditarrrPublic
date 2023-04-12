@@ -15,6 +15,7 @@ MonoBehaviour:
   <Settings>k__BackingField: {fileID: 11400000, guid: 0f937ce089015664eb44321c92f97c15, type: 2}
   <Exchange>k__BackingField: {fileID: 11400000, guid: 61161e379b9c05e408ea006dcbf1b702, type: 2}
   <PrefabPool>k__BackingField: {fileID: 11400000, guid: 322e48f29e8f44e4d8c8b4bbd323545a, type: 2}
+  <EditorTileDataPool>k__BackingField: {fileID: 11400000, guid: ba7ae4e6c1f76e8478ea2b45a1266857, type: 2}
   <EditorTileSelection>k__BackingField: {fileID: 11400000, guid: b10f562adc978bb468e22b320a6a39dd, type: 2}
   <LevelManager>k__BackingField: {fileID: 11400000, guid: 6ec5814ececa3bb43a9c6ede42a65df3, type: 2}
   <MousePosition>k__BackingField: {fileID: 11400000, guid: 11ba13480451f574e8c6ecdc13111c23, type: 2}
