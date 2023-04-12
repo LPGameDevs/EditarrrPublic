@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   <GameObject>k__BackingField: {fileID: 0}
-  <GameObjectSprite>k__BackingField: {fileID: 0}
-  <CanRotate>k__BackingField: 0
   <TileMapTileBase>k__BackingField: {fileID: 0}
-  <Type>k__BackingField: 2
+  <Type>k__BackingField: 4
+  <CanRotate>k__BackingField: 0

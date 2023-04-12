@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 678120249599684143}
   - component: {fileID: 678120249599684140}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EditorGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}

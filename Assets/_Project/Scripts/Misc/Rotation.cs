@@ -1,5 +1,6 @@
 ﻿namespace Editarrr.Misc
 {
+    [System.Serializable]
     public enum Rotation
     {
         /// <summary>

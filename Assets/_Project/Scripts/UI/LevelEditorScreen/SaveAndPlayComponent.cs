@@ -9,6 +9,8 @@ namespace Editarrr.UI.LevelEditor
         [System.Serializable]
         public class SaveAndPlayComponent : UIComponent
         {
+            [field: SerializeField, Header("Manager")] private EditorLevelManager EditorLevelManager { get; set; }
+
             [field: SerializeField, Header("Names")] public string ContainerName { get; private set; } = "SaveAndPlay";
             [field: SerializeField] public string PlayButtonName { get; private set; } = "Play";
             [field: SerializeField] public string SaveButtonName { get; private set; } = "Save";
@@ -42,7 +44,7 @@ namespace Editarrr.UI.LevelEditor
 
             private void SaveButtonElement_Clicked()
             {
-#warning // TODO Add Code to Save Level here
+                this.EditorLevelManager.Save();
             }
         }
     }

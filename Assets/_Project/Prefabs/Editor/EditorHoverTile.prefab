@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2385633740071415746}
   - component: {fileID: 2385633740071415745}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2385633740082966628}
   - component: {fileID: 2385633740082966627}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EditorHoverTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2385633740785360522}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

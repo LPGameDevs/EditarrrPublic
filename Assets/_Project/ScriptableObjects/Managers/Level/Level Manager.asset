@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0f3e631f2b700344bba75b4c00b7afe, type: 3}
-  m_Name: Enemy_002
+  m_Script: {fileID: 11500000, guid: d7143bbb9871dee41a029050bce77f18, type: 3}
+  m_Name: Level Manager
   m_EditorClassIdentifier: 
-  <GameObject>k__BackingField: {fileID: 0}
-  <TileMapTileBase>k__BackingField: {fileID: 0}
-  <Type>k__BackingField: 7
-  <CanRotate>k__BackingField: 0
+  <LevelStorage>k__BackingField: {fileID: 11400000, guid: a3d923b6a33bcfc4caf0d7ca91cff603, type: 2}
+  <LevelsDirectoryName>k__BackingField: levels

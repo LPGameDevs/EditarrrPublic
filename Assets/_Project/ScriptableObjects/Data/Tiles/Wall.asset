@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Wall
   m_EditorClassIdentifier: 
   <GameObject>k__BackingField: {fileID: 0}
-  <GameObjectSprite>k__BackingField: {fileID: 0}
-  <CanRotate>k__BackingField: 0
   <TileMapTileBase>k__BackingField: {fileID: 11400000, guid: 3d5db691f22abc297b535276f5e894c1, type: 2}
-  <Type>k__BackingField: 0
+  <Type>k__BackingField: 2
+  <CanRotate>k__BackingField: 0

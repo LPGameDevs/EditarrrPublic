@@ -10,6 +10,7 @@ namespace Editarrr.UI.LevelEditor
         public class TileSelectionComponent : UIComponent
         {
             [field: SerializeField, Header("Data")] private EditorTileSelectionManager EditorTileSelectionManager { get; set; }
+            [field: SerializeField] private EditorLevelManager EditorLevelManager { get; set; }
 
             [field: SerializeField, Header("Templates")] private VisualTreeAsset TileDataSlotTemplate { get; set; }
 
@@ -89,6 +90,11 @@ namespace Editarrr.UI.LevelEditor
                         EditorTileData tileData = editorTileData[i];
 
                         this.TileDataSlotElements[i].SetData(tileData);
+                        if (tileData != null)
+                        {
+                            int count = this.EditorLevelManager.GetTileCount(tileData);
+                            this.TileDataSlotElements[i].UpdateCount(tileData.LevelLimit - count);
+                        }
                     }
                     else
                         this.TileDataSlotElements[i].SetData(null);
@@ -167,8 +173,6 @@ namespace Editarrr.UI.LevelEditor
 
                     this.Image.style.backgroundImage = new StyleBackground(sprite);
                     this.CountContainer.style.visibility = new StyleEnum<Visibility>(countContainer ? Visibility.Visible : Visibility.Hidden);
-
-                    this.UpdateCount(0);
                 }
 
                 public void UpdateCount(int count)
