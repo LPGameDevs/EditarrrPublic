@@ -301,7 +301,7 @@ namespace Editarrr.LevelEditor
             else
             {
                 // Open a new/clean Editor
-                this.LevelManager.Create(this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY);
+                this.LevelManager.Create();
             }
         }
 

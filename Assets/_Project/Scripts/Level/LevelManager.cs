@@ -10,14 +10,15 @@ namespace Editarrr.Level
     {
         [field: SerializeField, Header("Level")] public LevelState LevelState { get; private set; }
 
+        [field: SerializeField, Header("Settings")] private EditorLevelSettings Settings { get; set; }
 
         [field: SerializeField, Header("Storage")] public LevelStorageManager LevelStorage { get; private set; }
 
         LevelManager_LevelLoadedCallback LevelLoadedCallback { get; set; }
 
-        public void Create(int scaleX, int scaleY)
+        public void Create()
         {
-            this.LevelState = new LevelState(scaleX, scaleY);
+            this.LevelState = new LevelState(this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY);
 
             string code = this.LevelStorage.GetUniqueCode();
 
@@ -35,7 +36,6 @@ namespace Editarrr.Level
         {
             this.LevelState.SetTiles(editorTileData);
 
-
             LevelSave levelSave = this.LevelState.CreateSave();
             string data = JsonUtility.ToJson(levelSave);
 
@@ -52,9 +52,17 @@ namespace Editarrr.Level
 
         private void LevelStorage_LevelLoadedCallback(LevelSave levelSave)
         {
+            if (levelSave == null)
+            {
+#warning // TODO, Failed to load... >> Load default level, (Display Message???)
+                this.Create();
+                return;
+            }
+
             this.LevelState = new LevelState(levelSave);
 
             this.LevelLoadedCallback?.Invoke(this.LevelState);
+            this.LevelLoadedCallback = null;
         }
 
     }
