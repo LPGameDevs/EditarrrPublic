@@ -1,5 +1,6 @@
-﻿using Editarrr.Misc;
+﻿using System.Collections.Generic;
 using System.IO;
+using Editarrr.Misc;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -7,9 +8,9 @@ namespace Editarrr.Level
     [CreateAssetMenu(fileName = "Local Level Storage Manager", menuName = "Managers/Storage/new Local Level Storage Manager")]
     public class LocalLevelStorageManager : LevelStorageManager
     {
-        [field: SerializeField, 
-            Info("The LocalLevelStorageManager class is a C# subclass that manages the storage of levels locally on a device. It has properties that can be serialized for debug purposes, and methods for saving and loading levels in the device's persistent storage. It saves level data as JSON files, creates a directory for each level, and saves level screenshots in PNG format. If a level directory or level JSON file is not found, the class returns null."), 
-            Header("Path")] 
+        [field: SerializeField,
+            Info("The LocalLevelStorageManager class is a C# subclass that manages the storage of levels locally on a device. It has properties that can be serialized for debug purposes, and methods for saving and loading levels in the device's persistent storage. It saves level data as JSON files, creates a directory for each level, and saves level screenshots in PNG format. If a level directory or level JSON file is not found, the class returns null."),
+            Header("Path")]
         private string LocalDirectoryName { get; set; } = "levels";
 
 
@@ -68,7 +69,7 @@ namespace Editarrr.Level
 
             // Start at 2, 1 is reserved for Debug!
             int index = 2;
-            string code; // = index.ToString("00000");
+            string code;
 
             do
             {
@@ -109,10 +110,42 @@ namespace Editarrr.Level
 
             callback?.Invoke(levelSave);
         }
+
+        public override void LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback callback)
+        {
+            DirectoryInfo dir = new DirectoryInfo(LocalRootDirectory);
+
+            List<LevelSave> levels = new List<LevelSave>();
+
+            // Get all directories in dir.
+            foreach (DirectoryInfo levelDirectory in dir.GetDirectories())
+            {
+                string path = this.GetLevelPath(levelDirectory.Name);
+                string levelFilePath = path + "level.json";
+                if (!File.Exists(levelFilePath))
+                {
+                    continue;
+                }
+                string data = File.ReadAllText(levelFilePath);
+                LevelSave levelSave = JsonUtility.FromJson<LevelSave>(data);
+                levels.Add(levelSave);
+            }
+
+            callback?.Invoke(levels.ToArray());
+        }
+
+        public override void Delete(string code)
+        {
+            string path = this.GetLevelPath(code);
+
+            if (!Directory.Exists(path))
+            {
+                return;
+            }
+
+            File.Delete(path + "level.json");
+            File.Delete(path + "screenshot.png");
+            Directory.Delete(path);
+        }
     }
-
-    //public class LevelManagerSystem : SystemComponent<LevelManager>
-    //{
-
-    //}
 }

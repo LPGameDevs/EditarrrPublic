@@ -10,6 +10,7 @@ namespace CorgiExtension
     public class EditorLevel : MonoBehaviour
     {
         public static event Action<string> OnEditorLevelUpload;
+        public static event Action<string> OnEditorLevelDelete;
         public static event Action<string> OnLeaderboardRequest;
 
         public Text Title;
@@ -22,7 +23,10 @@ namespace CorgiExtension
 
         public void DeleteLevel()
         {
-            EditorLevelStorage.Instance.DeleteLevel(_code);
+            // @todo Remove this
+            // EditorLevelStorage.Instance.DeleteLevel(_code);
+
+            OnEditorLevelDelete?.Invoke(_code);
         }
 
         public void UploadLevel()

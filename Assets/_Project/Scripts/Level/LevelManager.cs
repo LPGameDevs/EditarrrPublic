@@ -1,4 +1,5 @@
-﻿using Editarrr.LevelEditor;
+﻿using System.Collections.Generic;
+using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace Editarrr.Level
         [field: SerializeField, Header("Storage")] public LevelStorageManager LevelStorage { get; private set; }
 
         LevelManager_LevelLoadedCallback LevelLoadedCallback { get; set; }
+        LevelManager_AllLevelsLoadedCallback LevelsLoadedCallback { get; set; }
 
         public void Create()
         {
@@ -33,6 +35,18 @@ namespace Editarrr.Level
             this.LevelLoadedCallback = loadedCallback;
 
             this.LevelStorage.LoadLevelData(code, this.LevelStorage_LevelLoadedCallback);
+        }
+
+        public void LoadAll(LevelManager_AllLevelsLoadedCallback loadedCallback)
+        {
+            this.LevelsLoadedCallback = loadedCallback;
+
+            this.LevelStorage.LoadAllLevelData(this.LevelStorage_AllLevelsLoadedCallback);
+        }
+
+        public void Delete(string code)
+        {
+            this.LevelStorage.Delete(code);
         }
 
         public void Save(EditorTileState[,] editorTileData, Texture2D screenshot)
@@ -68,7 +82,22 @@ namespace Editarrr.Level
             this.LevelLoadedCallback = null;
         }
 
+        private void LevelStorage_AllLevelsLoadedCallback(LevelSave[] levelSaves)
+        {
+
+            List<LevelState> levels = new List<LevelState>();
+
+            foreach (var levelSave in levelSaves)
+            {
+                levels.Add(new LevelState(levelSave));
+            }
+
+            this.LevelsLoadedCallback?.Invoke(levels.ToArray());
+            this.LevelsLoadedCallback = null;
+        }
+
     }
 
     public delegate void LevelManager_LevelLoadedCallback(LevelState levelState);
+    public delegate void LevelManager_AllLevelsLoadedCallback(LevelState[] levelStates);
 }

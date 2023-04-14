@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: LocalLevelStorageManager
   m_EditorClassIdentifier: 
   <LocalDirectoryName>k__BackingField: levels
-  <UseDebugCode>k__BackingField: 1
+  <UseDebugCode>k__BackingField: 0
   <DebugCode>k__BackingField: 00001

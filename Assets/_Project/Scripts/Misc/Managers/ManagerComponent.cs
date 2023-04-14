@@ -8,5 +8,7 @@ namespace Editarrr.Managers
         public virtual void DoStart() { }
         public virtual void DoUpdate() { }
         public virtual void DoLateUpdate() { }
+        public virtual void DoOnEnable() { }
+        public virtual void DoOnDisable() { }
     }
 }

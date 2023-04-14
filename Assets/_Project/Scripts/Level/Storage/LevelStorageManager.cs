@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Editarrr.Level
 {
@@ -8,6 +9,8 @@ namespace Editarrr.Level
         public abstract void SaveScreenshot(string code, byte[] screenshot);
         public abstract string GetUniqueCode();
         public abstract void LoadLevelData(string code, LevelStorage_LevelLoadedCallback callback);
+        public abstract void LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback callback);
+        public abstract void Delete(string code);
     }
 
     public class DatabaseLevelStorageManager : LevelStorageManager
@@ -22,26 +25,34 @@ namespace Editarrr.Level
 
         public override string GetUniqueCode()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void LoadLevelData(string code, LevelStorage_LevelLoadedCallback callback)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public override void LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback callback)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Save(string code, string data)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void SaveScreenshot(string code, byte[] screenshot)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
-    }
-    //public class LevelManagerSystem : SystemComponent<LevelManager>
-    //{
 
-    //}
+        public override void Delete(string code)
+        {
+            throw new NotImplementedException();
+        }
+
+
+    }
 }

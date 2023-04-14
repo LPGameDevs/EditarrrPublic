@@ -36,6 +36,20 @@ namespace Editarrr.Systems
             this.OnLateUpdate();
         }
 
+        private void OnEnable()
+        {
+            this.PreOnEnable();
+            this.Manager.DoOnEnable();
+            this.OnOnEnable();
+        }
+
+        private void OnDisable()
+        {
+            this.PreOnDisable();
+            this.Manager.DoOnDisable();
+            this.OnOnDisable();
+        }
+
         /// <summary>
         /// Is called, right before the Managers DoAwake is called.
         /// </summary>
@@ -59,5 +73,11 @@ namespace Editarrr.Systems
         /// </summary>
         protected virtual void PreLateUpdate() { }
         protected virtual void OnLateUpdate() { }
+
+        protected virtual void PreOnEnable() { }
+        protected virtual void OnOnEnable() { }
+
+        protected virtual void PreOnDisable() { }
+        protected virtual void OnOnDisable() { }
     }
 }
