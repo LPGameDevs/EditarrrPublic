@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Manager>k__BackingField: {fileID: 11400000, guid: 523fc9c1fa79b0c4ea3bea3e8d1d4677, type: 2}
-  doc: 0
   <ScreenshotCamera>k__BackingField: {fileID: 1293077195}
   <Camera>k__BackingField: {fileID: 1824080161}
   <Tilemap>k__BackingField: {fileID: 2124640300}
