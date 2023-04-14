@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿using Editarrr.Misc;
+using UnityEngine;
 
 namespace Editarrr.LevelEditor
 {
     [CreateAssetMenu(fileName = "Editor Level Settings", menuName = "Settings/Editor/new Editor Level Settings")]
     public class EditorLevelSettings : ScriptableObject
     {
-        [field: SerializeField] public int EditorLevelScaleX { get; private set; } = 100;
+        private const string Documentation = "This one probably doesnt need explaining.\r\n" +
+                                             "Settings for the level editor...";
+
+        [field: SerializeField, Info(Documentation)] public int EditorLevelScaleX { get; private set; } = 100;
         [field: SerializeField] public int EditorLevelScaleY { get; private set; } = 50;
     }
 }

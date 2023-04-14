@@ -1,10 +1,10 @@
-﻿using Editarrr.Input;
+﻿using System;
+using System.Collections.Generic;
+using Editarrr.Input;
 using Editarrr.Level;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Editarrr.Utilities;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -15,6 +15,14 @@ namespace Editarrr.LevelEditor
     {
         public static TileSet OnTileSet { get; set; }
         public static TileSet OnTileUnset { get; set; }
+
+        private const string Documentation =
+            "This component manages input, placement and storage of the level editor.\r\n" +
+            "Camera movement, tilemaps, loading, saving and screenshots all happen here.\r\n";
+
+        [Info(Documentation)]
+        [Tooltip("This does nothing...")]
+        public bool _documentation;
 
         [field: SerializeField, Header("Settings")] private EditorLevelSettings Settings { get; set; }
 
@@ -71,7 +79,7 @@ namespace Editarrr.LevelEditor
 
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
 
-            SpriteRenderer editorGrid = GameObject.Instantiate(this.PrefabPool.EditorGrid);
+            SpriteRenderer editorGrid = Instantiate(this.PrefabPool.EditorGrid);
             editorGrid.transform.position = Vector3.zero;
             editorGrid.size = new Vector2(this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY);
 
@@ -79,7 +87,7 @@ namespace Editarrr.LevelEditor
 
             this.Tilemap.transform.localPosition = new Vector3(this.Settings.EditorLevelScaleX / -2, this.Settings.EditorLevelScaleY / -2, 0);
 
-            this.EditorHoverTile = GameObject.Instantiate(this.PrefabPool.EditorHoverTile);
+            this.EditorHoverTile = Instantiate(this.PrefabPool.EditorHoverTile);
             this.DisableHoverTile();
         }
 
@@ -323,7 +331,7 @@ namespace Editarrr.LevelEditor
                         this.Set(x, y, null, Rotation.North);
                         continue;
                     }
-                    
+
                     editorTileData = this.EditorTileDataPool.Get(tileState.Type);
 
                     this.Set(x, y, editorTileData, tileState.Rotation);

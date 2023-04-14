@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 455f4fdfad7aff94bb244d14409501d0, type: 3}
   m_Name: EditorLevelExchange
   m_EditorClassIdentifier: 
-  <LoadOnStart>k__BackingField: 1
+  <LoadOnStart>k__BackingField: 0
   <CodeToLoad>k__BackingField: 00001

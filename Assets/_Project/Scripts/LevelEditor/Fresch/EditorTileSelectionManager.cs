@@ -10,14 +10,17 @@ namespace Editarrr.LevelEditor
     [CreateAssetMenu(fileName = "Editor Tile Selection Manager", menuName = "Managers/Editor/new Editor Tile Selection Manager")]
     public class EditorTileSelectionManager : ManagerComponent
     {
+        private const string Documentation = "This manager is responsible for helping the user select tiles.\r\n"
+            + "It responds to Input to provide shortcuts for editor tile selection.\r\n";
         public static Action<EditorTileGroupData> ActiveGroupChanged { get; set; }
         public static Action<EditorTileData> ActiveElementChanged { get; set; }
         public static Action<Rotation> RotationChanged { get; set; }
 
-        [field: SerializeField, Header("Groups")] private EditorTileGroupDataPool GroupPool { get; set; }
-        [field: SerializeField] public EditorTileGroupData ActiveGroup { get; private set; }
+        [field: SerializeField, Info(Documentation)] private EditorTileGroupDataPool GroupPool { get; set; }
+        public EditorTileGroupData ActiveGroup { get; private set; }
 
-        [field: SerializeField, Header("Elements")] public EditorTileData ActiveElement { get; private set; }
+        [field: SerializeField, Header("Elements")] public EditorTileData DefaultElement { get; private set; }
+        public EditorTileData ActiveElement { get; private set; }
 
         #region Input
         [field: SerializeField, Header("Input")] private InputValue Rotate { get; set; }
@@ -33,6 +36,11 @@ namespace Editarrr.LevelEditor
         {
             this.ClearEvents();
             this.SetActiveGroupIndex(0);
+
+            // @todo This feature allows us to always use the same tile at the start
+            // of level editing. If we want to track whatever the most recent tile was
+            // just uncomment this line.
+            ActiveElement = DefaultElement;
         }
 
         public override void DoStart()

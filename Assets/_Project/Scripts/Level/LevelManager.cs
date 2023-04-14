@@ -1,6 +1,6 @@
 ﻿using Editarrr.LevelEditor;
 using Editarrr.Managers;
-using Editarrr.Systems;
+using Editarrr.Misc;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -8,7 +8,10 @@ namespace Editarrr.Level
     [CreateAssetMenu(fileName = "Level Manager", menuName = "Managers/Level/new Level Manager")]
     public class LevelManager : ManagerComponent
     {
-        [field: SerializeField, Header("Level")] public LevelState LevelState { get; private set; }
+        private const string Documentation = "The level manager is a wrapper around level storage and creation.\r\n" +
+                                             "It chooses a storage manager and delegates create / load / save calls.";
+
+        [field: SerializeField, Info(Documentation)] public LevelState LevelState { get; private set; }
 
         [field: SerializeField, Header("Settings")] private EditorLevelSettings Settings { get; set; }
 

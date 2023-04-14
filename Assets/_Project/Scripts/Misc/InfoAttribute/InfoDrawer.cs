@@ -12,7 +12,7 @@ namespace Editarrr.Misc
     public class InfoDrawer : DecoratorDrawer
     {
         // Margin between the HelpBox and the property below it
-        const int HeightMargin = 2;
+        const int HeightMargin = 25;
 
         // Minimum height needed to display the HelpBox with the icon
         const int HeightMin = 42;

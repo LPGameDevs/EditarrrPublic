@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Editarrr.Misc;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace Editarrr.LevelEditor
@@ -6,7 +7,11 @@ namespace Editarrr.LevelEditor
     [CreateAssetMenu(fileName = "Editor Tile Data", menuName = "Data/Editor/new Editor Tile Data")]
     public class EditorTileData : ScriptableObject
     {
-        [field: SerializeField] public Sprite UISprite { get; private set; }
+        private const string Documentation = "Editor Tiles are a represenation of something that can be placed in the Level Editor.\r\n" +
+                                             "It contains information necessary for level editing, not level playing.\r\n" +
+                                             "Any property that is necessary for both editing and playing should be stored on TileData.\r\n";
+
+        [field: SerializeField, Info(Documentation)] public Sprite UISprite { get; private set; }
 
         [field: SerializeField] public TileBase EditorGridTile { get; private set; }
 
