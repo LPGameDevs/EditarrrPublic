@@ -1,4 +1,5 @@
 ﻿using Editarrr.LevelEditor;
+using Singletons;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -39,12 +40,13 @@ namespace Editarrr.UI.LevelEditor
 
             private void PlayButtonElement_Clicked()
             {
-#warning // TODO Add Code to test Level here
+                LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
             }
 
             private void SaveButtonElement_Clicked()
             {
                 this.EditorLevelManager.Save();
+                LevelManager.Instance.GotoLevel(LevelManager.LevelSelectionSceneName);
             }
         }
     }

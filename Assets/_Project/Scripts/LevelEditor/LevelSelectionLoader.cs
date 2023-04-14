@@ -35,16 +35,9 @@ public class LevelSelectionLoader : MonoBehaviour
         _loadedLevels = new List<Transform>();
 
         var info = EditorLevelStorage.Instance.GetStoredLevelFiles();
-        foreach (FileInfo f in info)
+        foreach (string levelCode in info)
         {
-            // Ignore the level reset template.
-            if (f.Name == "level.json")
-            {
-                continue;
-            }
-
             // Get the level code from the file name without the extension.
-            string levelCode = f.Name.Remove(f.Name.Length - f.Extension.Length);
             SetupLevelPrefabByCode(levelCode);
         }
     }

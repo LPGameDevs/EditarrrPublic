@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LevelEditor
@@ -56,11 +58,24 @@ namespace LevelEditor
             }
         }
 
-        public FileInfo[] GetStoredLevelFiles()
+        public string[] GetStoredLevelFiles()
         {
             CheckLevelDirectoriesExists();
             DirectoryInfo dir = new DirectoryInfo(LevelStoragePath);
-            FileInfo[] info = dir.GetFiles("*.json");
+
+            List<string> info = new List<string>();
+
+            // Get all directories in dir.
+            foreach (DirectoryInfo directory in dir.GetDirectories())
+            {
+                FileInfo[] files = directory.GetFiles("*.json");
+                if (files.Length == 0)
+                {
+                    continue;
+                }
+
+                info.Add(directory.Name);
+            }
 
             // We may want to package a few levels with the game
             // so that the player can play without having to download
@@ -68,12 +83,19 @@ namespace LevelEditor
             if (_includeDistroLevels)
             {
                 DirectoryInfo dir2 = new DirectoryInfo(DistroLevelStoragePath);
-                FileInfo[] info2 = dir2.GetFiles("*.json");
 
-                info = info.Concat(info2).ToArray();
+                foreach (DirectoryInfo directory in dir2.GetDirectories())
+                {
+                    FileInfo[] files = directory.GetFiles("*.json");
+                    if (files.Length == 0)
+                    {
+                        continue;
+                    }
+                    info.Add(directory.Name);
+                }
             }
 
-            return info;
+            return info.ToArray();
         }
 
         public LevelSave GetLevelData(string levelCode)
@@ -119,8 +141,10 @@ namespace LevelEditor
                 return;
             }
 
-            File.Delete(LevelStoragePath + code + ".json");
-            File.Delete(ScreenshotStoragePath + code + ".png");
+            // @todo rewrite this to loop through files in directory and delete.
+            File.Delete(LevelStoragePath + code + "/level.json");
+            File.Delete(LevelStoragePath + code + "/screenshot.png");
+            Directory.Delete(LevelStoragePath + code);
 
             OnLevelRefresh?.Invoke();
         }
