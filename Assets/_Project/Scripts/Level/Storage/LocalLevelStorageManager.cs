@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Editarrr.Misc;
+using System.IO;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -6,7 +7,10 @@ namespace Editarrr.Level
     [CreateAssetMenu(fileName = "Local Level Storage Manager", menuName = "Managers/Storage/new Local Level Storage Manager")]
     public class LocalLevelStorageManager : LevelStorageManager
     {
-        [field: SerializeField, Header("Path")] private string LocalDirectoryName { get; set; } = "levels";
+        [field: SerializeField, 
+            Info("The LocalLevelStorageManager class is a C# subclass that manages the storage of levels locally on a device. It has properties that can be serialized for debug purposes, and methods for saving and loading levels in the device's persistent storage. It saves level data as JSON files, creates a directory for each level, and saves level screenshots in PNG format. If a level directory or level JSON file is not found, the class returns null."), 
+            Header("Path")] 
+        private string LocalDirectoryName { get; set; } = "levels";
 
 
         [field: SerializeField, Header("Debug")] private bool UseDebugCode { get; set; }
