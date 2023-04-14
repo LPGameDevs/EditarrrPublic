@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 484af98e89bc197479b5aea9cc02a937, type: 3}
-  m_Name: Editor Tile Selection Manager
+  m_Name: EditorTileSelectionManager
   m_EditorClassIdentifier: 
   <GroupPool>k__BackingField: {fileID: 11400000, guid: f9fdc8e593c7714489b243f712c1654e, type: 2}
   <ActiveGroup>k__BackingField: {fileID: 11400000, guid: d75edcf86d558ae45a289e8e4423c876, type: 2}

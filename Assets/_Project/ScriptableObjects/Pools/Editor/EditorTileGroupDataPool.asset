@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02759b00dc87381418353be62d12c6af, type: 3}
-  m_Name: Editor Tile Group Data Pool
+  m_Name: EditorTileGroupDataPool
   m_EditorClassIdentifier: 
   <GroupData>k__BackingField:
   - {fileID: 11400000, guid: d75edcf86d558ae45a289e8e4423c876, type: 2}

@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14b482d9973b7e2409d0050f95392f31, type: 3}
-  m_Name: Game Data
+  m_Script: {fileID: 11500000, guid: 00dbe4b078642364bab2431061242ada, type: 3}
+  m_Name: LocalLevelStorageManager
   m_EditorClassIdentifier: 
-  <EditorTileGroupManager>k__BackingField: {fileID: 11400000, guid: b10f562adc978bb468e22b320a6a39dd, type: 2}
+  <LocalDirectoryName>k__BackingField: levels
+  <UseDebugCode>k__BackingField: 1
+  <DebugCode>k__BackingField: 00001

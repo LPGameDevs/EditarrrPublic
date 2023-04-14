@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 945057cb888aefc4ba164f4c25a040fb, type: 3}
-  m_Name: Editor Level Manager
-  m_EditorClassIdentifier: 
+  m_Name: EditorLevelManager
+  m_EditorClassIdentifier:
+  _documentation: 0
   <Settings>k__BackingField: {fileID: 11400000, guid: 0f937ce089015664eb44321c92f97c15, type: 2}
   <Exchange>k__BackingField: {fileID: 11400000, guid: 61161e379b9c05e408ea006dcbf1b702, type: 2}
   <PrefabPool>k__BackingField: {fileID: 11400000, guid: 322e48f29e8f44e4d8c8b4bbd323545a, type: 2}
