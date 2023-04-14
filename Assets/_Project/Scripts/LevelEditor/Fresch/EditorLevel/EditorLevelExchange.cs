@@ -13,5 +13,15 @@ namespace Editarrr.LevelEditor
 
         [field: SerializeField, Header("Level Loading"), Info(Documentation)] public bool LoadOnStart { get; private set; }
         [field: SerializeField] public string CodeToLoad { get; private set; }
+
+        public void SetCode(string code)
+        {
+            CodeToLoad = code;
+        }
+
+        public void SetAutoload(bool loadOnStart)
+        {
+            LoadOnStart = loadOnStart;
+        }
     }
 }

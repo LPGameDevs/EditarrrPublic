@@ -85,6 +85,11 @@ namespace Editarrr.Level
             this.Code = code;
         }
 
+        public void SetCreator(string creator)
+        {
+            this.Creator = creator;
+        }
+
         public LevelSave CreateSave()
         {
             return new LevelSave(this);

@@ -49,13 +49,21 @@ public class LevelSelectionManager : ManagerComponent
         DestroyAndRefreshLevels();
     }
 
+    private void OnLevelSelected(string code)
+    {
+        Exchange.SetCode(code);
+        Exchange.SetAutoload(code.Length > 0);
+    }
+
     public override void DoOnEnable()
     {
+        EditorLevel.OnEditorLevelSelected += OnLevelSelected;
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
     }
 
     public override void DoOnDisable()
     {
+        EditorLevel.OnEditorLevelSelected -= OnLevelSelected;
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
     }
 }

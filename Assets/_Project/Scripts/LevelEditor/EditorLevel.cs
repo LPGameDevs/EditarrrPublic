@@ -9,6 +9,7 @@ namespace CorgiExtension
 {
     public class EditorLevel : MonoBehaviour
     {
+        public static event Action<string> OnEditorLevelSelected;
         public static event Action<string> OnEditorLevelUpload;
         public static event Action<string> OnEditorLevelDelete;
         public static event Action<string> OnLeaderboardRequest;
@@ -42,14 +43,13 @@ namespace CorgiExtension
 
         private void CheckCodePreferences()
         {
+            string newCode = "";
             if (_code.Length > 0)
             {
-                PlayerPrefs.SetString("EditorCode", _code);
+                newCode = _code;
             }
-            else
-            {
-                PlayerPrefs.SetString("EditorCode", "");
-            }
+
+            OnEditorLevelSelected?.Invoke(newCode);
         }
 
         public void GetLevelLeaderboard()
@@ -128,7 +128,6 @@ namespace CorgiExtension
                 ScreenshotImage.texture = tex;
                 ScreenshotImage.color = Color.white;
             }
-
         }
     }
 }

@@ -28,6 +28,10 @@ namespace Editarrr.Level
             string code = this.LevelStorage.GetUniqueCode();
 
             this.LevelState.SetCode(code);
+
+            string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+
+            this.LevelState.SetCreator(userName);
         }
 
         public void Load(string code, LevelManager_LevelLoadedCallback loadedCallback)
