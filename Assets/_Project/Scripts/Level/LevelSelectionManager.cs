@@ -13,6 +13,7 @@ public class LevelSelectionManager : ManagerComponent
     [field: SerializeField, Info(Documentation)] private EditorLevelExchange Exchange { get; set; }
 
     [field: SerializeField, Header("Managers")] private LevelManager LevelManager { get; set; }
+
     // From system
     private LevelSelectionLoader _levelLoader { get; set; }
 

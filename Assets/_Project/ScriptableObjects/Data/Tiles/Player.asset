@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0f3e631f2b700344bba75b4c00b7afe, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  <GameObject>k__BackingField: {fileID: 0}
+  <GameObject>k__BackingField: {fileID: 5390691737254147755, guid: 4045cb584cb19e7478c15bd08b5f9715, type: 3}
   <TileMapTileBase>k__BackingField: {fileID: 0}
   <Type>k__BackingField: 4
   <CanRotate>k__BackingField: 0

@@ -40,6 +40,7 @@ namespace Editarrr.UI.LevelEditor
 
             private void PlayButtonElement_Clicked()
             {
+                this.EditorLevelManager.Save();
                 LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
             }
 
