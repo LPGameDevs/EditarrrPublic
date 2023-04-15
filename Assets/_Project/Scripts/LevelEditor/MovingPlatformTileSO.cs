@@ -17,38 +17,11 @@ namespace LevelEditor
             return true;
         }
 
-        public override TileOptions NextOption(TileOptions currentOption)
+
+
+        public override void Paint(Tilemap tilemap, Vector3Int position)
         {
-            if (currentOption == null)
-            {
-                currentOption = new TileOptions();
-            }
-
-            MovingPlatformOptions platformOptions = JsonUtility.FromJson<MovingPlatformOptions>(currentOption.options);
-
-            if (platformOptions == null)
-            {
-                platformOptions = new MovingPlatformOptions();
-            }
-
-            platformOptions.Toggle();
-            return new TileOptions(JsonUtility.ToJson(platformOptions));
-        }
-
-        public override void Paint(Tilemap tilemap, Vector3Int position, TileOptions options)
-        {
-            position = GetPlacedTilePosition(tilemap, position) ?? position;
-
-            MovingPlatformOptions platformOptions = options != null ? JsonUtility.FromJson<MovingPlatformOptions>(options.options) : new MovingPlatformOptions();
-            TileBase leftTile = platformOptions.direction == 1 ? TileLeft : TileArrowLeft;
-            TileBase rightTile = platformOptions.direction == 1 ? TileArrowRight : TileRight;
-
-            Debug.Log(leftTile);
-            Debug.Log(rightTile);
-
-            tilemap.SetTile(position + Vector3Int.left, leftTile);
-            tilemap.SetTile(position, Tile);
-            tilemap.SetTile(position + Vector3Int.right, rightTile);
+            throw new NotImplementedException();
         }
 
         public override void UnPaint(Tilemap tilemap, Vector3Int position)

@@ -2983,7 +2983,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1618315838}
   - component: {fileID: 1618315839}
-  - component: {fileID: 1618315840}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -3026,47 +3025,6 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &1618315840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1618315837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e0ccd7041022ea1d9825b10b1b143eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Tile: {fileID: 0}
-  TilemapBackground: {fileID: 2009914521}
-  TilemapPlatform: {fileID: 663117708}
-  TilemapDamage: {fileID: 696310446}
-  TilemapWalls: {fileID: 1989388549}
-  TilemapElements: {fileID: 0}
-  TilemapHover: {fileID: 0}
-  IsEditorScene: 0
-  minPosition: {x: -15, y: -9, z: 0}
-  maxPosition: {x: 15, y: -9, z: 0}
-  BackgroundTile: {fileID: 0}
-  WallTile: {fileID: 11400000, guid: 3d5db691f22abc297b535276f5e894c1, type: 2}
-  PlatformTile: {fileID: 0}
-  SpikeTile: {fileID: 11400000, guid: 680424469863939b5a394b53966e537a, type: 2}
-  SpawnTile: {fileID: 0}
-  WinTile: {fileID: 0}
-  BackgroundSO: {fileID: 0}
-  SpikesSO: {fileID: 11400000, guid: 36efc526e78891c26980e8f46ac21ce5, type: 2}
-  WallSO: {fileID: 11400000, guid: 112b538e30ae0f05fac391238ce51351, type: 2}
-  PlayerSpawnSO: {fileID: 11400000, guid: aaef4afe49ef634919d611aee0f274c5, type: 2}
-  PlayerWinSO: {fileID: 11400000, guid: e5c207a599d039786aee1a96e835c857, type: 2}
-  EnemySO: {fileID: 11400000, guid: 0b8fd96f50da964e3a64cfcc2bf1f26a, type: 2}
-  EnemyFollowSO: {fileID: 11400000, guid: f02cd4c27439ed386a5fba9b63431eb6, type: 2}
-  PlayerSpawn: {fileID: 11400000, guid: aaef4afe49ef634919d611aee0f274c5, type: 2}
-  <MousePosition>k__BackingField: {fileID: 0}
-  <MouseLeftButton>k__BackingField: {fileID: 0}
-  <MouseMiddleButton>k__BackingField: {fileID: 0}
-  <MouseRightButton>k__BackingField: {fileID: 0}
-  <SelectTile>k__BackingField: {fileID: 0}
 --- !u!20 &1674258895
 Camera:
   m_ObjectHideFlags: 0

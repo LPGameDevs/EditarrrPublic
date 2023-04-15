@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using Editarrr.Level;
 using Proyecto26;
 using UnityEditor;
 using UnityEngine;
@@ -78,8 +79,6 @@ namespace LevelEditor
                     data = res.data[0].attributes.field_data,
                 };
 
-                EditorLevelStorage.OnRequestComplete?.Invoke(DatabaseRequestType.GetData, responseData);
-
                 string saveLevelScreenshotPath = $"{EditorLevelStorage.ScreenshotStoragePath}{code}.png";
 
                 if (!File.Exists(saveLevelScreenshotPath))
@@ -113,7 +112,6 @@ namespace LevelEditor
             yield return www;
             File.WriteAllBytes(path, www.bytes);
 
-            EditorLevelStorage.OnRequestComplete?.Invoke(DatabaseRequestType.FileDownload, new PostRequestData());
             Debug.Log("level created for " + code + " - " + url);
         }
 
@@ -121,8 +119,8 @@ namespace LevelEditor
         {
             // Post request to /node/level
             // Error handling for code already exists (if unique code checks fail)
-            LevelSave level = JsonUtility.FromJson<LevelSave>(data);
-            string user = level.creator;
+            LevelState level = JsonUtility.FromJson<LevelState>(data);
+            string user = level.Creator;
 
             DrupalRequest request = new DrupalRequest
             {
@@ -150,7 +148,6 @@ namespace LevelEditor
 
                 UploadImage(res.data.id, res.data.attributes.title);
 
-                EditorLevelStorage.OnRequestComplete?.Invoke(DatabaseRequestType.InsertData, responseData);
                 LogMessage ("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
@@ -197,7 +194,6 @@ namespace LevelEditor
                             UploadImage(res.data.id, res.data.attributes.title);
                         }
 
-                        EditorLevelStorage.OnRequestComplete?.Invoke(DatabaseRequestType.UpdateData, responseData);
                         LogMessage ("Update", JsonUtility.ToJson(res, true));
                     }).Catch(err =>
                     {
@@ -245,8 +241,6 @@ namespace LevelEditor
                     // @see https://www.drupal.org/docs/core-modules-and-themes/core-modules/jsonapi-module/updating-existing-resources-patch
                     RestClient.Post<DrupalResponseSingle>($"{drupalCommentUrl}", request).Then(res =>
                     {
-                        EditorLevelStorage.OnRequestComplete?.Invoke(DatabaseRequestType.InsertComment, responseData);
-
                         LogMessage ("Update", JsonUtility.ToJson(res, true));
                     }).Catch(err =>
                     {
@@ -270,17 +264,6 @@ namespace LevelEditor
                     string uuid = res.data[0].id;
                     RestClient.Get<DrupalCommentRequestMultiple>($"{drupalCommentUrl}?filter[entity_id.id][value]={uuid}&filter[status]=1").Then(res =>
                     {
-                        List<CommentResponseData> comments = new List<CommentResponseData>();
-                        foreach (DrupalCommentRequestData data in res.data)
-                        {
-                            comments.Add(new CommentResponseData(data.attributes.comment_body.value, data.attributes.subject));
-                        }
-
-                        CommentsResponseData responseData = new CommentsResponseData()
-                        {
-                            comments = comments.ToArray()
-                        };
-                        EditorLevelStorage.OnCommentsRequestComplete?.Invoke(DatabaseRequestType.GetLevelComments, responseData);
 
                         LogMessage ("Comments", JsonUtility.ToJson(res, true));
 

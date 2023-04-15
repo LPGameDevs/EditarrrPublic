@@ -499,6 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Manager>k__BackingField: {fileID: 11400000, guid: b10f562adc978bb468e22b320a6a39dd, type: 2}
+  _documentation: 0
 --- !u!1 &1688104146
 GameObject:
   m_ObjectHideFlags: 0

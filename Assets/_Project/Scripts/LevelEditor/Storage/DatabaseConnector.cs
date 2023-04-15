@@ -8,6 +8,16 @@ using Random = UnityEngine.Random;
 namespace LevelEditor
 {
 
+    public enum DatabaseRequestType
+    {
+        GetData,
+        InsertData,
+        UpdateData,
+        InsertComment,
+        GetLevelComments,
+        FileDownload,
+    }
+
     public class DatabaseConnector : MonoBehaviour, IDbConnector
     {
         private const string codeChars = "bcdfghjklmnpqrstvwxyz123456789";
@@ -98,7 +108,6 @@ namespace LevelEditor
             else
             {
                 PostRequestData result = JsonUtility.FromJson<PostRequestData>(www.downloadHandler.text);
-                EditorLevelStorage.OnRequestComplete?.Invoke(method, result);
             }
         }
 
@@ -118,6 +127,15 @@ namespace LevelEditor
 
             return code;
         }
+    }
+
+    [Serializable]
+    public class PostRequestData
+    {
+        public string method;
+        public string user;
+        public string code;
+        public string data;
     }
 
     public interface IDbConnector
