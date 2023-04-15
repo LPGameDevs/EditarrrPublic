@@ -40,6 +40,12 @@ namespace Editarrr.Level
             return levelDirectory;
         }
 
+        public override string GetScreenshotPath(string code)
+        {
+            string path = this.GetCreateLevelPath(code) + "screenshot.png";
+            return path;
+        }
+
         public override void Save(string code, string data)
         {
             string path = this.GetCreateLevelPath(code) + "level.json";

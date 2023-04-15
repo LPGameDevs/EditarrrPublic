@@ -100,6 +100,10 @@ namespace Editarrr.Level
             this.LevelsLoadedCallback = null;
         }
 
+        public string GetScreenshotPath(string levelCode)
+        {
+            return this.LevelStorage.GetScreenshotPath(levelCode);
+        }
     }
 
     public delegate void LevelManager_LevelLoadedCallback(LevelState levelState);

@@ -7,6 +7,7 @@ namespace Editarrr.Level
     {
         public abstract void Save(string code, string data);
         public abstract void SaveScreenshot(string code, byte[] screenshot);
+        public abstract string GetScreenshotPath(string code);
         public abstract string GetUniqueCode();
         public abstract void LoadLevelData(string code, LevelStorage_LevelLoadedCallback callback);
         public abstract void LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback callback);
@@ -22,6 +23,11 @@ namespace Editarrr.Level
         /// </summary>
         [field: SerializeField] public string ConnectionString { get; private set; }
         [field: SerializeField] public string OtherStuff { get; private set; }
+
+        public override string GetScreenshotPath(string code)
+        {
+            throw new NotImplementedException();
+        }
 
         public override string GetUniqueCode()
         {

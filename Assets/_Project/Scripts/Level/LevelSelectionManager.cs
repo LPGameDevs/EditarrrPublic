@@ -40,7 +40,8 @@ public class LevelSelectionManager : ManagerComponent
     {
         foreach (var level in levels)
         {
-            _levelLoader.AddLevelPrefabFromData(level);
+            string screenshotPath = LevelManager.GetScreenshotPath(level.Code);
+            _levelLoader.AddLevelPrefabFromData(level, screenshotPath);
         }
     }
 

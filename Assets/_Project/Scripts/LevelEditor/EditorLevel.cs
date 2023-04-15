@@ -102,23 +102,8 @@ namespace CorgiExtension
             Creator.text = creator.ToUpper();
         }
 
-        public void SetScreenshot(string code)
+        public void SetScreenshot(string path)
         {
-            // create texture from image file
-            string path = $"{EditorLevelStorage.ScreenshotStoragePath}{code}.png";
-
-            bool isDistroLevel = false;
-            if (!File.Exists(path) && File.Exists($"{EditorLevelStorage.DistroLevelStoragePath}{code}.png"))
-            {
-                path = $"{EditorLevelStorage.DistroLevelStoragePath}{code}.png";
-                isDistroLevel = true;
-            }
-
-            if (isDistroLevel)
-            {
-                HideDeleteButton();
-            }
-
             if (ScreenshotImage && File.Exists(path))
             {
                 var bytes = File.ReadAllBytes(path);

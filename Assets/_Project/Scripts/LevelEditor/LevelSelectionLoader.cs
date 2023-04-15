@@ -38,7 +38,7 @@ public class LevelSelectionLoader : MonoBehaviour
     /**
      * Lookup the saved level data from the filename and create a level prefab.
      */
-    public void AddLevelPrefabFromData(LevelState levelData)
+    public void AddLevelPrefabFromData(LevelState levelData, string screenshotPath)
     {
         string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
         EditorLevel level;
@@ -55,7 +55,7 @@ public class LevelSelectionLoader : MonoBehaviour
         // Set visual information on the level from data.
         level.SetTitle(levelData.Code);
         level.SetCreator(levelData.Creator);
-        level.SetScreenshot(levelData.Code);
+        level.SetScreenshot(screenshotPath);
 
         // Dont allow someone to edit a level if they didnt create it.
         if (levelData.Creator.ToLower() != userName.ToLower())
