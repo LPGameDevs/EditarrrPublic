@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using CorgiExtension;
 using Editarrr.Level;
-using LevelEditor;
 using UnityEngine;
 
 /**
@@ -64,15 +63,5 @@ public class LevelSelectionLoader : MonoBehaviour
         }
 
         _loadedLevels.Add(level.transform);
-    }
-
-    private void OnEnable()
-    {
-        EditorLevelStorage.OnLevelRefresh += DestroyAndRefreshLevels;
-    }
-
-    private void OnDisable()
-    {
-        EditorLevelStorage.OnLevelRefresh -= DestroyAndRefreshLevels;
     }
 }

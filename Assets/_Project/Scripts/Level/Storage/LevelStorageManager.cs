@@ -12,6 +12,12 @@ namespace Editarrr.Level
         public abstract void LoadLevelData(string code, LevelStorage_LevelLoadedCallback callback);
         public abstract void LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback callback);
         public abstract void Delete(string code);
+
+        // This is optional depending on if it is required.
+        public virtual void Initialize()
+        {
+
+        }
     }
 
     public class DatabaseLevelStorageManager : LevelStorageManager
@@ -23,6 +29,11 @@ namespace Editarrr.Level
         /// </summary>
         [field: SerializeField] public string ConnectionString { get; private set; }
         [field: SerializeField] public string OtherStuff { get; private set; }
+
+        public override void Initialize()
+        {
+            throw new NotImplementedException();
+        }
 
         public override string GetScreenshotPath(string code)
         {

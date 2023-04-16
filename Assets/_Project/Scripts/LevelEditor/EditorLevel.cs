@@ -55,7 +55,6 @@ namespace CorgiExtension
         public void GetLevelLeaderboard()
         {
             OnLeaderboardRequest?.Invoke(_code);
-            EditorLevelStorage.Instance.GetLevelScores(_code);
         }
 
         public void GoToReplay()

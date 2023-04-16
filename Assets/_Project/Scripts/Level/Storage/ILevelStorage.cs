@@ -2,6 +2,10 @@
 {
     public interface ILevelStorage
     {
+        /**
+         * Optional setup tasks for the storage mechanism.
+         */
+        public void Initialize();
         public void Save(string code, string data);
         public void SaveScreenshot(string code, byte[] screenshot);
         public string GetUniqueCode();

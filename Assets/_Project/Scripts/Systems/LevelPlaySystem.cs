@@ -17,7 +17,6 @@ namespace Systems
 
         protected override void PreAwake()
         {
-            Debug.Log("preawake");
             this.Manager.SetTilemapWalls(this.Walls);
             this.Manager.SetTilemapDamage(this.Damage);
         }

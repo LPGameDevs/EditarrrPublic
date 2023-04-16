@@ -242,6 +242,28 @@
                 },
                 {
                     "name": "",
+                    "id": "3c29484e-f929-45f4-af75-37f7364b2327",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "be198a3d-b6ff-4abb-8c62-68a78493256a",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "70de1350-c905-4c2e-9c69-6ca141b996ef",
                     "path": "<Keyboard>/r",
                     "interactions": "",

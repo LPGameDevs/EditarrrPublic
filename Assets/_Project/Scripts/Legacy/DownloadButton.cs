@@ -1,4 +1,4 @@
-using LevelEditor;
+using Editarrr.Level;
 using UnityEngine;
 
 namespace Legacy
@@ -7,7 +7,8 @@ namespace Legacy
     {
         void Start()
         {
-            if (!EditorLevelStorage._remoteStorageEnabled)
+            // Hide this button when we cannot download levels.
+            if (!LevelManager.RemoteStorageEnabled)
             {
                 gameObject.SetActive(false);
             }

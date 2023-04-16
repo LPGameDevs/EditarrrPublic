@@ -17,9 +17,23 @@ namespace Editarrr.Level
         [field: SerializeField, Header("Settings")] private EditorLevelSettings Settings { get; set; }
 
         [field: SerializeField, Header("Storage")] public LevelStorageManager LevelStorage { get; private set; }
+        [field: SerializeField] public LevelStorageManager RemoteLevelStorage { get; private set; }
 
         LevelManager_LevelLoadedCallback LevelLoadedCallback { get; set; }
         LevelManager_AllLevelsLoadedCallback LevelsLoadedCallback { get; set; }
+
+        public static bool RemoteStorageEnabled = false;
+        public static bool DistributionStorageEnabled = false;
+
+        public override void DoAwake()
+        {
+            LevelStorage.Initialize();
+
+            if (RemoteStorageEnabled)
+            {
+                RemoteLevelStorage.Initialize();
+            }
+        }
 
         public void Create()
         {

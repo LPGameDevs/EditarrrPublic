@@ -1,6 +1,5 @@
 using System;
 using Editarrr.Level;
-using LevelEditor;
 using TMPro;
 using UnityEngine;
 
@@ -58,7 +57,6 @@ namespace Legacy
         public void SubmitScore()
         {
             OnScoreSubmit?.Invoke(_code, _time);
-            EditorLevelStorage.Instance.SubmitLevelScore(_code, _time);
         }
 
         private void FinishSubmitScore()

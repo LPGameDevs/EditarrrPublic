@@ -1,5 +1,4 @@
 using System;
-using LevelEditor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,22 +43,11 @@ namespace Legacy
         public void SubmitForm()
         {
             OnLevelDownload?.Invoke(LevelCodeInput.text);
-            EditorLevelStorage.Instance.DownloadLevel(LevelCodeInput.text);
         }
 
         private void SubmitFormComplete()
         {
             OnSubmitFormComplete?.Invoke();
-        }
-
-        private void OnEnable()
-        {
-            EditorLevelStorage.OnLevelRefresh += SubmitFormComplete;
-        }
-
-        private void OnDisable()
-        {
-            EditorLevelStorage.OnLevelRefresh -= SubmitFormComplete;
         }
     }
 }

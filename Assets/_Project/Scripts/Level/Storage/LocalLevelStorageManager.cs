@@ -17,12 +17,16 @@ namespace Editarrr.Level
         [field: SerializeField, Header("Debug")] private bool UseDebugCode { get; set; }
         [field: SerializeField] private string DebugCode { get; set; } = "00001";
 
-        public string LocalRootDirectory { get; private set; }
+        public string LocalRootDirectory => Application.persistentDataPath + $"/{this.LocalDirectoryName}/";
+        public string DistroRootDirectory => Application.streamingAssetsPath + "/levels/";
 
 
-        private void OnEnable()
+        public override void Initialize()
         {
-            this.LocalRootDirectory = Application.persistentDataPath + $"/{this.LocalDirectoryName}/";
+            if (!Directory.Exists(LocalRootDirectory))
+            {
+                Directory.CreateDirectory(LocalRootDirectory);
+            }
         }
 
         private string GetLevelPath(string code)
@@ -35,7 +39,10 @@ namespace Editarrr.Level
             string levelDirectory = this.GetLevelPath(code);
 
             // Create Directory if not exists
-            Directory.CreateDirectory(levelDirectory);
+            if (!Directory.Exists(levelDirectory))
+            {
+                Directory.CreateDirectory(levelDirectory);
+            }
 
             return levelDirectory;
         }
@@ -137,6 +144,12 @@ namespace Editarrr.Level
                 levels.Add(levelSave);
             }
 
+            if (LevelManager.DistributionStorageEnabled)
+            {
+                // @todo Load distribution levels from
+                string path = DistroRootDirectory;
+            }
+
             callback?.Invoke(levels.ToArray());
         }
 
@@ -149,6 +162,7 @@ namespace Editarrr.Level
                 return;
             }
 
+            // @todo Loop through files and delete everything.
             File.Delete(path + "level.json");
             File.Delete(path + "screenshot.png");
             Directory.Delete(path);
