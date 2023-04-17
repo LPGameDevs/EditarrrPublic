@@ -1,5 +1,5 @@
 using System;
-using LevelEditor;
+using Editarrr.Level;
 using TMPro;
 using UnityEngine;
 
@@ -20,22 +20,21 @@ namespace Legacy
         private string _user;
         private string _time;
 
-        private void Start()
+        public void SetCode(string code)
         {
-            _code = PlayerPrefs.GetString("EditorCode");
-            LevelSave levelData = EditorLevelStorage.Instance.GetLevelData(_code);
-            if (LevelCode != null)
-            {
-                LevelCode.text = _code.ToUpper();
-            }
+            _code = code;
+            LevelCode.text = _code.ToUpper();
+        }
 
-            if (levelData.creator.Length > 0)
+        public void SetLevelData(LevelState levelData)
+        {
+            if (levelData.Creator.Length > 0)
             {
-                _user = levelData.creator;
+                _user = levelData.Creator;
                 LevelCode.text += " by " + _user;
             }
 
-            if (levelData.published)
+            if (levelData.Published)
             {
                 SubmitButton.gameObject.SetActive(true);
                 BackButton.gameObject.SetActive(true);
@@ -58,22 +57,15 @@ namespace Legacy
         public void SubmitScore()
         {
             OnScoreSubmit?.Invoke(_code, _time);
-            EditorLevelStorage.Instance.SubmitLevelScore(_code, _time);
         }
 
-        private void FinishSubmitScore(DatabaseRequestType type, PostRequestData data)
+        private void FinishSubmitScore()
         {
-            if (type != DatabaseRequestType.InsertComment)
-            {
-                return;
-            }
-
             OnScoreSubmitted?.Invoke();
         }
 
         protected void OnEnable()
         {
-            EditorLevelStorage.OnRequestComplete += FinishSubmitScore;
             Timer.OnTimeStop += SetTimeText;
         }
 

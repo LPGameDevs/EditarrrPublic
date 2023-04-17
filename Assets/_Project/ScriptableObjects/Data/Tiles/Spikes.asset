@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f3e631f2b700344bba75b4c00b7afe, type: 3}
+  m_Name: Spikes
+  m_EditorClassIdentifier: 
+  <GameObject>k__BackingField: {fileID: 1182490266025708483, guid: 9ebe793d2bdc8d1498b2c50a319bcbed, type: 3}
+  <TileMapTileBase>k__BackingField: {fileID: 0}
+  <Type>k__BackingField: 3
+  <CanRotate>k__BackingField: 1

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeeeb473e34df3b41ba316ec974b710c, type: 3}
+  m_Name: EditorTileDataPool
+  m_EditorClassIdentifier: 
+  <TileData>k__BackingField:
+  - {fileID: 11400000, guid: 367ddd2ed294ea142987554efeb1cfa9, type: 2}
+  - {fileID: 11400000, guid: 873e5c13c2c81c4499b85efd8f7d19cf, type: 2}
+  - {fileID: 11400000, guid: cf6cf6dcc7fcf934f8b5be105fcec612, type: 2}
+  - {fileID: 11400000, guid: 0de81d5da247a8c4e9dbc3c7c5d61bfd, type: 2}
+  - {fileID: 11400000, guid: 225829ca3ea4d8641b1761a27779526f, type: 2}
+  - {fileID: 11400000, guid: 8415205eb348efa43b452cd6a9b1ca58, type: 2}

@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7143bbb9871dee41a029050bce77f18, type: 3}
+  m_Name: LevelManager
+  m_EditorClassIdentifier:
+  <Settings>k__BackingField: {fileID: 11400000, guid: 0f937ce089015664eb44321c92f97c15, type: 2}
+  <LevelStorage>k__BackingField: {fileID: 11400000, guid: a3d923b6a33bcfc4caf0d7ca91cff603, type: 2}

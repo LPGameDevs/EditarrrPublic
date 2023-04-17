@@ -1,6 +1,7 @@
+using Editarrr.Level;
 using LevelEditor;
-using Singletons;
 using UnityEngine;
+using LevelManager = Singletons.LevelManager;
 
 /**
  * Button logic for leaving the game level and returning to the editor.
@@ -19,13 +20,10 @@ public class BackButton : MonoBehaviour
      * Safety mechanism to prevent levels being edited once they are
      * published.
      */
-    public void ButtonClicked()
+    public void ButtonClicked(LevelState levelData)
     {
-        string code = PlayerPrefs.GetString("EditorCode");
-        var level = EditorLevelStorage.Instance.GetLevelData(code);
-
         // Once the level is published it can no longer be edited.
-        if (level.published)
+        if (levelData.Published)
         {
             _selector.LevelName = LevelManager.LevelSelectionSceneName;
         }

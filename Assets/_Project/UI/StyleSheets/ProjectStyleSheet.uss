@@ -1,0 +1,85 @@
+.button {
+    border-left-width: 4px;
+    border-right-width: 4px;
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.button-square-medium {
+    width: 96px;
+    height: 96px;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-square-small {
+    width: 48px;
+    height: 48px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-blank {
+    background-color: rgba(80, 80, 80, 0);
+    border-left-color: rgba(40, 40, 40, 255);
+    border-right-color: rgba(40, 40, 40, 255);
+    border-top-color: rgba(40, 40, 40, 255);
+    border-bottom-color: rgba(32, 32, 32, 255);
+}
+
+.button-blank:hover {
+    background-color: rgba(80, 80, 80, 0.31);
+}
+
+.text-medium {
+    font-size: 22px;
+}
+
+.panel {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.panel-border-medium {
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+}
+
+.panel-border-dark {
+    border-left-color: rgb(38, 38, 38);
+    border-right-color: rgb(38, 38, 38);
+    border-top-color: rgb(38, 38, 38);
+    border-bottom-color: rgb(30, 30, 30);
+}
+
+.panel-background-light {
+    background-color: rgba(60, 60, 60, 0.5);
+}

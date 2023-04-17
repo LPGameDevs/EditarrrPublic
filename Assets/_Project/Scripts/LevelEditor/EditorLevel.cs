@@ -9,7 +9,9 @@ namespace CorgiExtension
 {
     public class EditorLevel : MonoBehaviour
     {
+        public static event Action<string> OnEditorLevelSelected;
         public static event Action<string> OnEditorLevelUpload;
+        public static event Action<string> OnEditorLevelDelete;
         public static event Action<string> OnLeaderboardRequest;
 
         public Text Title;
@@ -22,7 +24,10 @@ namespace CorgiExtension
 
         public void DeleteLevel()
         {
-            EditorLevelStorage.Instance.DeleteLevel(_code);
+            // @todo Remove this
+            // EditorLevelStorage.Instance.DeleteLevel(_code);
+
+            OnEditorLevelDelete?.Invoke(_code);
         }
 
         public void UploadLevel()
@@ -38,20 +43,18 @@ namespace CorgiExtension
 
         private void CheckCodePreferences()
         {
+            string newCode = "";
             if (_code.Length > 0)
             {
-                PlayerPrefs.SetString("EditorCode", _code);
+                newCode = _code;
             }
-            else
-            {
-                PlayerPrefs.SetString("EditorCode", "");
-            }
+
+            OnEditorLevelSelected?.Invoke(newCode);
         }
 
         public void GetLevelLeaderboard()
         {
             OnLeaderboardRequest?.Invoke(_code);
-            EditorLevelStorage.Instance.GetLevelScores(_code);
         }
 
         public void GoToReplay()
@@ -98,23 +101,8 @@ namespace CorgiExtension
             Creator.text = creator.ToUpper();
         }
 
-        public void SetScreenshot(string code)
+        public void SetScreenshot(string path)
         {
-            // create texture from image file
-            string path = $"{EditorLevelStorage.ScreenshotStoragePath}{code}.png";
-
-            bool isDistroLevel = false;
-            if (!File.Exists(path) && File.Exists($"{EditorLevelStorage.DistroLevelStoragePath}{code}.png"))
-            {
-                path = $"{EditorLevelStorage.DistroLevelStoragePath}{code}.png";
-                isDistroLevel = true;
-            }
-
-            if (isDistroLevel)
-            {
-                HideDeleteButton();
-            }
-
             if (ScreenshotImage && File.Exists(path))
             {
                 var bytes = File.ReadAllBytes(path);
@@ -124,7 +112,6 @@ namespace CorgiExtension
                 ScreenshotImage.texture = tex;
                 ScreenshotImage.color = Color.white;
             }
-
         }
     }
 }

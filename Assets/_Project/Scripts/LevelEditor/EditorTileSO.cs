@@ -3,8 +3,16 @@ using UnityEngine.Tilemaps;
 
 namespace LevelEditor
 {
+    public enum TilemapPainterLayer
+    {
+        Background = 0,
+        Platform = 10,
+        Elements = 20,
+        Damage = 30,
+    }
+
     [CreateAssetMenu()]
-    public class EditorTileSO : ScriptableObject, ISerializationCallbackReceiver, IFrameSelectable
+    public class EditorTileSO : ScriptableObject, ISerializationCallbackReceiver
     {
 
         public Transform prefab;
@@ -64,11 +72,6 @@ namespace LevelEditor
             return false;
         }
 
-        public virtual TileOptions NextOption(TileOptions currentOption)
-        {
-            return null;
-        }
-
         public TilemapPainterLayer getLayer()
         {
             return Layer;
@@ -107,7 +110,7 @@ namespace LevelEditor
             return true;
         }
 
-        public virtual void Paint(Tilemap tilemap, Vector3Int position, TileOptions options)
+        public virtual void Paint(Tilemap tilemap, Vector3Int position)
         {
             tilemap.SetTile(position, Tile);
         }

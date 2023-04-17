@@ -1,6 +1,5 @@
 using System;
 using CorgiExtension;
-using LevelEditor;
 using TMPro;
 using UnityEngine;
 
@@ -46,7 +45,6 @@ namespace Legacy
 
         public void SubmitForm()
         {
-            EditorLevelStorage.Instance.UploadLevel(_code.ToLower());
             OnLevelUpload?.Invoke(_code.ToLower());
             ClosePopup();
         }

@@ -1,5 +1,3 @@
-using System.IO;
-using LevelEditor;
 using Singletons;
 using TMPro;
 using UnityEngine;
@@ -34,10 +32,7 @@ public class UserNameForm : MonoBehaviour
         if (oldUserName != newUserName)
         {
             // Reset any previous level data.
-            if (File.Exists(EditorLevelStorage.LevelStorageEditorLevel))
-            {
-                File.WriteAllText(EditorLevelStorage.LevelStorageEditorLevel, "{}");
-            }
+            // @todo If there is any temporary level data unsaved, remove it.
         }
 
         // We store the username in player prefs. Its not sensitive data so this is fine.

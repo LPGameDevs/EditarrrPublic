@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
-using System.IO;
 using CorgiExtension;
-using LevelEditor;
+using Editarrr.Level;
 using UnityEngine;
 
 /**
@@ -14,11 +14,6 @@ public class LevelSelectionLoader : MonoBehaviour
 
     private List<Transform> _loadedLevels = new List<Transform>();
 
-    void Start()
-    {
-        DestroyAndRefreshLevels();
-    }
-
     /**
      * Destroy all levels in the selection scene and reload.
      *
@@ -26,39 +21,28 @@ public class LevelSelectionLoader : MonoBehaviour
      */
     private void DestroyAndRefreshLevels()
     {
+        throw new NotImplementedException("This method is no longer in use.");
+    }
+
+    public void DestroyLevels()
+    {
         // Remove all existing levels.
         foreach (var level in _loadedLevels)
         {
             Destroy(level.gameObject);
         }
-
         _loadedLevels = new List<Transform>();
-
-        var info = EditorLevelStorage.Instance.GetStoredLevelFiles();
-        foreach (FileInfo f in info)
-        {
-            // Ignore the level reset template.
-            if (f.Name == "level.json")
-            {
-                continue;
-            }
-
-            // Get the level code from the file name without the extension.
-            string levelCode = f.Name.Remove(f.Name.Length - f.Extension.Length);
-            SetupLevelPrefabByCode(levelCode);
-        }
     }
 
     /**
      * Lookup the saved level data from the filename and create a level prefab.
      */
-    private void SetupLevelPrefabByCode(string code)
+    public void AddLevelPrefabFromData(LevelState levelData, string screenshotPath)
     {
-        LevelSave levelData = EditorLevelStorage.Instance.GetLevelData(code);
         string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
         EditorLevel level;
 
-        if (levelData.published)
+        if (levelData.Published)
         {
             level = Instantiate(LevelPrefab, transform);
         }
@@ -68,26 +52,16 @@ public class LevelSelectionLoader : MonoBehaviour
         }
 
         // Set visual information on the level from data.
-        level.SetTitle(code);
-        level.SetCreator(levelData.creator);
-        level.SetScreenshot(code);
+        level.SetTitle(levelData.Code);
+        level.SetCreator(levelData.Creator);
+        level.SetScreenshot(screenshotPath);
 
         // Dont allow someone to edit a level if they didnt create it.
-        if (levelData.creator.ToLower() != userName.ToLower())
+        if (levelData.Creator.ToLower() != userName.ToLower())
         {
             level.HideEditorTools();
         }
 
         _loadedLevels.Add(level.transform);
-    }
-
-    private void OnEnable()
-    {
-        EditorLevelStorage.OnLevelRefresh += DestroyAndRefreshLevels;
-    }
-
-    private void OnDisable()
-    {
-        EditorLevelStorage.OnLevelRefresh -= DestroyAndRefreshLevels;
     }
 }

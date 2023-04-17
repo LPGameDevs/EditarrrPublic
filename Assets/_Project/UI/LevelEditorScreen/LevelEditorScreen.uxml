@@ -1,0 +1,33 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/StyleSheets/ProjectStyleSheet.uss?fileID=7433441132597879392&amp;guid=cd4aeef013304774294ae2622f37e9df&amp;type=3#ProjectStyleSheet" />
+    <ui:VisualElement name="Row" style="flex-direction: row;">
+        <ui:VisualElement name="Column" style="flex-direction: row; margin-left: 16px; margin-right: 16px; margin-top: 16px; margin-bottom: 16px;">
+            <ui:Button text="0" display-tooltip-when-elided="true" name="TileGroupSwapper" class="text-medium button-square-medium button" />
+        </ui:VisualElement>
+        <ui:VisualElement name="TileSelectionContainer" style="flex-direction: row; flex-grow: 1; justify-content: center; margin-left: 16px; margin-right: 16px; margin-top: 16px; margin-bottom: 16px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Row" style="flex-grow: 1; -unity-background-scale-mode: scale-and-crop; flex-direction: row;">
+        <ui:VisualElement name="Column" style="flex-grow: 1;" />
+        <ui:VisualElement name="Column">
+            <ui:VisualElement name="SaveAndPlay">
+                <ui:VisualElement name="Panel" class="panel panel-border-medium panel-border-dark panel-background-light" style="align-items: center; margin-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-right-width: 0;">
+                    <ui:Button display-tooltip-when-elided="true" name="Play" focusable="false" class="button button-blank button-square-medium">
+                        <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Assets/_Project/Visuals/Editor/PlayTest.png?fileID=21300000&amp;guid=f31980cd757defd4db43104ad12b6dee&amp;type=3#PlayTest&apos;); width: 64px; height: 64px; -unity-background-scale-mode: scale-to-fit;" />
+                    </ui:Button>
+                    <ui:Button display-tooltip-when-elided="true" name="Save" focusable="false" class="button button-blank button-square-medium">
+                        <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Assets/_Project/Visuals/Editor/Save.png?fileID=21300000&amp;guid=a1be2bb4bc4add8468e1614566e393af&amp;type=3#Save&apos;); width: 64px; height: 64px; -unity-background-scale-mode: scale-to-fit;" />
+                    </ui:Button>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Row" style="flex-grow: 1;" />
+            <ui:VisualElement name="SelectionPreview">
+                <ui:VisualElement name="Panel" class="panel panel-border-medium panel-border-dark panel-background-light" style="align-items: center; margin-right: 0; margin-bottom: 0; border-right-width: 0; border-bottom-width: 0; border-top-right-radius: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+                    <ui:Button display-tooltip-when-elided="true" name="Rotate" focusable="false" class="button-square-small button button-blank">
+                        <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Packages/com.unity.collab-proxy/Editor/PlasticSCM/Assets/Images/d_refresh@2x.png?fileID=21300000&amp;guid=602b72d4617c3694aa94419fc1b68e04&amp;type=3#d_refresh@2x&apos;); width: 32px; height: 32px; -unity-background-scale-mode: scale-to-fit;" />
+                    </ui:Button>
+                    <ui:VisualElement name="TilePreview" style="width: 96px; height: 96px; background-image: url(&apos;project://database/Assets/_Project/Art/Tiles/Terrain%20(32x32).png?fileID=5504718189712137809&amp;guid=6ce8822ae70bdd2fa95b5efe4226647c&amp;type=3#Terrain (32x32)_38&apos;);" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

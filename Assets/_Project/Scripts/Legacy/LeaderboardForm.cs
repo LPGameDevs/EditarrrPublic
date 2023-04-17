@@ -27,22 +27,13 @@ namespace Legacy
             _code = code;
         }
 
-        public void OpenPopup(CommentsResponseData response)
+        public void OpenPopup()
         {
             Title.text = $"{_code.ToUpper()} LEADERBOARD";
             Leaders.gameObject.SetActive(true);
             StringBuilder sb = new StringBuilder();
 
-            List<CommentResponseData> comments = response.comments.ToList();
-            comments.Sort((x, y) => String.Compare(x.time, y.time, StringComparison.Ordinal));
-
-            int i = 0;
-            foreach (CommentResponseData comment in comments)
-            {
-                i++;
-                if (i > 5) break;
-                sb.AppendLine($"{comment.time} by {comment.user}");
-            }
+            //@todo add scores.
 
             Leaders.text = sb.ToString();
             _popup.Open();
@@ -54,25 +45,14 @@ namespace Legacy
             _popup.Close();
         }
 
-        private void DatabaseRequestComplete(DatabaseRequestType type, CommentsResponseData response)
-        {
-            if (type != DatabaseRequestType.GetLevelComments)
-            {
-                return;
-            }
-
-            OpenPopup(response);
-        }
 
         private void OnEnable()
         {
-            EditorLevelStorage.OnCommentsRequestComplete += DatabaseRequestComplete;
             EditorLevel.OnLeaderboardRequest += SetCode;
         }
 
         private void OnDisable()
         {
-            EditorLevelStorage.OnCommentsRequestComplete -= DatabaseRequestComplete;
             EditorLevel.OnLeaderboardRequest -= SetCode;
         }
     }
