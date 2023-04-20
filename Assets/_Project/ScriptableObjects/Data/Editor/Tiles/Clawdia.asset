@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
+  m_Name: Clawdia
+  m_EditorClassIdentifier: 
+  <UISprite>k__BackingField: {fileID: 21300000, guid: 6e690e25b92f892838ba4962ed9b4dfa, type: 3}
+  <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 067a02ef022f718b7882de5e2d0025a3, type: 2}
+  <Tile>k__BackingField: {fileID: 11400000, guid: cdc3022af8342373188fe3da826ed5fd, type: 2}
+  <LevelLimit>k__BackingField: 5
