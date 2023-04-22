@@ -286,8 +286,8 @@ MonoBehaviour:
   PlayMethod: 1
   MinVolume: 1
   MaxVolume: 1
-  MinPitch: 1
-  MaxPitch: 1
+  MinPitch: 0.9
+  MaxPitch: 1.1
   SfxAudioMixerGroup: {fileID: -5282791370902551564, guid: ab21718944d4b7c4388cecbb60b17c06, type: 2}
 --- !u!114 &3434608097211236143
 MonoBehaviour:

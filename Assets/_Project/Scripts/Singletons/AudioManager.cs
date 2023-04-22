@@ -1,5 +1,3 @@
-using Editarrr.Misc;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -72,8 +70,8 @@ namespace Editarrr.Audio
         {
             if (audioDict.ContainsKey(clipName))
             {
-                float pitch = 1f + UnityEngine.Random.Range(-pitchVariance, pitchVariance);
-                float volume = 1f + UnityEngine.Random.Range(-volumeVariance, volumeVariance);
+                float pitch = 1f + Random.Range(-pitchVariance, pitchVariance);
+                float volume = 1f + Random.Range(-volumeVariance, volumeVariance);
                 sfxSources[currentSFXSource].pitch = pitch;
                 sfxSources[currentSFXSource].volume = volume;
                 sfxSources[currentSFXSource].PlayOneShot(audioDict[clipName]);
@@ -86,5 +84,3 @@ namespace Editarrr.Audio
         }
     }
 }
-
-
