@@ -18,7 +18,12 @@ namespace Editarrr.Audio
 
         AudioSource[] sfxSources;
         int currentSFXSource = 0;
-        Dictionary<string, AudioClip> audioDict = new Dictionary<string, AudioClip>();
+        [SerializeField] MultiSound[] multiSounds;
+        private int currentSource = 0;
+
+         Dictionary<string, AudioClip> audioDict = new Dictionary<string, AudioClip>();
+         Dictionary<string, MultiSound> multiSoundDict = new Dictionary<string, MultiSound>();
+
 
         [SerializeField] Transform sfxSourceParent;
         void Awake()
@@ -51,6 +56,11 @@ namespace Editarrr.Audio
             {
                 audioDict.Add(clip.name, clip);
             }
+
+            foreach (MultiSound sound in multiSounds)
+            {
+                multiSoundDict.Add(sound.name, sound);
+            }
         }
 
         public void PlayAudioClip(string clipName)
@@ -80,6 +90,28 @@ namespace Editarrr.Audio
             else
             {
                 Debug.Log("AudioManager: AudioClip " + clipName + " not found in dictionary.");
+            }
+        }
+
+        public void PlayShuffledSound(string soundName, float pitchVariance, float volumeVariance)
+        {
+            if (multiSoundDict.ContainsKey(soundName))
+            {
+                float pitch = 1f + Random.Range(-pitchVariance, pitchVariance);
+                float volume = 1f + Random.Range(-volumeVariance, volumeVariance);
+                sfxSources[currentSource].pitch = pitch;
+                sfxSources[currentSource].volume = volume;
+                var temp = multiSoundDict[soundName].GetShuffledClip();
+                if (temp != null)
+                {
+                    sfxSources[currentSource].PlayOneShot(temp);
+                    currentSource = (currentSource + 1) % sfxSources.Length;
+                }
+
+            }
+            else
+            {
+                Debug.Log("AudioManager: AudioClip " + soundName + " not found in multi sound dictionary.");
             }
         }
     }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b774270c9a675614f8fb07c87b23adfc, type: 3}
-  m_Name: audioClips
+  m_Name: AudioClipsPool
   m_EditorClassIdentifier: 
   clips:
   - {fileID: 8300000, guid: 43ae41311b8012c4c88b91d95fd6b354, type: 3}
@@ -19,3 +19,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4badfe28611b20d46bbe0a404627f8ad, type: 3}
   - {fileID: 8300000, guid: bea841e7569c9ed4babd9731250e3d1f, type: 3}
   - {fileID: 8300000, guid: 2ea5ff44c5c389c4e9016e918170b39a, type: 3}
+  - {fileID: 8300000, guid: 463eb11c4a44df041a3714f0474469ed, type: 3}
+  - {fileID: 8300000, guid: 37ad6db0ef783974d9b19a2e1a42d549, type: 3}
+  - {fileID: 8300000, guid: a87ac7bb78a85474f94e448a3ee2e784, type: 3}
