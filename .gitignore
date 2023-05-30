@@ -83,5 +83,4 @@ crashlytics-build.properties
 steam_build_output/*
 
 # Filetypes
-*.sh
 *.xcf
