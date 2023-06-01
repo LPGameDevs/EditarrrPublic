@@ -208,13 +208,15 @@ Alternates ([AWS Lambda supported](https://docs.aws.amazon.com/lambda/latest/dg/
 
 # Action Items (https://github.com/LPGameDevs/EditarrrPublic/issues/48)
 
-*******To be turned into issues:*******
+**All open Issues related to the backend can be found [here](https://github.com/LPGameDevs/EditarrrPublic/issues?q=is%3Aopen+is%3Aissue+label%3Abackend)**
 
-- [ ] Set up the cloud services
-- [ ] Set up a repo (put this summary in its README)
-- [ ] Define the APIs (GET from an ID?)
-- [ ] Define the DB storage (assuming key-value store, keyed on an ID?)
+- [ ] Set up the cloud services (https://github.com/LPGameDevs/EditarrrPublic/issues/48)
+- [x] Set up a repo
+- [ ] Define the APIs & DB Storage (https://github.com/LPGameDevs/EditarrrPublic/issues/53)
 - [ ] Implement APIs
+    - [ ] Level Data APIs (https://github.com/LPGameDevs/EditarrrPublic/issues/54)
+    - [ ] Preview Image APIs (https://github.com/LPGameDevs/EditarrrPublic/issues/55)
+    - [ ] High Score APIs (https://github.com/LPGameDevs/EditarrrPublic/issues/56)
 
 # Appendix
 
