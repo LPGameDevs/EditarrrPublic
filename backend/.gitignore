@@ -1,3 +1,7 @@
 # Deployment Artifacts
 out.yml
 bucket-name.txt
+function.zip
+
+# Sample Requests
+!requests/*.sh

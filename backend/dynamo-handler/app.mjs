@@ -6,15 +6,24 @@ import {
   GetCommand,
   DeleteCommand,
 } from "@aws-sdk/lib-dynamodb";
+import crypto from "crypto";
 
 const client = new DynamoDBClient({});
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-const tableName = "http-crud-tutorial-items";
+const tableName = "levels-table";
+
+// From https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid - not sure if this is reliable haha
+function uuidv4() {
+  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
 
 export const handler = async (event, context) => {
   let body;
+  let requestJSON;
   let statusCode = 200;
   const headers = {
     "Content-Type": "application/json",
@@ -22,18 +31,24 @@ export const handler = async (event, context) => {
 
   try {
     switch (event.routeKey) {
-      case "DELETE /items/{id}":
+      case "POST /levels":
+        requestJSON = JSON.parse(event.body);
+        let generatedLevelId = uuidv4();
         await dynamo.send(
-          new DeleteCommand({
+          new PutCommand({
             TableName: tableName,
-            Key: {
-              id: event.pathParameters.id,
+            Item: {
+              id: generatedLevelId,
+              lastUpdated: Date.now().toString(),
+              name: requestJSON.name,
+              creator: requestJSON.username,
+              levelData: requestJSON.levelData,
             },
           })
         );
-        body = `Deleted item ${event.pathParameters.id}`;
+        body = `Created new level ${generatedLevelId}`;
         break;
-      case "GET /items/{id}":
+      case "GET /levels/{id}":
         body = await dynamo.send(
           new GetCommand({
             TableName: tableName,
@@ -42,27 +57,42 @@ export const handler = async (event, context) => {
             },
           })
         );
-        body = body.Item;
+        body = body.Level;
         break;
-      case "GET /items":
+      case "GET /levels":
         body = await dynamo.send(
-          new ScanCommand({ TableName: tableName })
+          new ScanCommand({ 
+            TableName: tableName,
+            Limit: 10,
+          })
         );
-        body = body.Items;
+        body = body.Items.sort((a, b) => b.lastUpdated - a.lastUpdated);
         break;
-      case "PUT /items":
-        let requestJSON = JSON.parse(event.body);
+      case "PUT /levels":
+        requestJSON = JSON.parse(event.body);
         await dynamo.send(
           new PutCommand({
             TableName: tableName,
             Item: {
               id: requestJSON.id,
-              price: requestJSON.price,
+              lastUpdated: Date.now().toString(),
               name: requestJSON.name,
+              levelData: requestJSON.levelData,
             },
           })
         );
-        body = `Put item ${requestJSON.id}`;
+        body = `Updated level ${requestJSON.id}`;
+        break;
+      case "DELETE /levels/{id}":
+        await dynamo.send(
+          new DeleteCommand({
+            TableName: tableName,
+            Key: {
+              id: event.pathParameters.id,
+            },
+          })
+        );
+        body = `Deleted level ${event.pathParameters.id}`;
         break;
       default:
         throw new Error(`Unsupported route: "${event.routeKey}"`);
