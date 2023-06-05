@@ -6,5 +6,5 @@ REGION=$(aws configure get region)
 URL="https://$APIID.execute-api.$REGION.amazonaws.com"
 
 curl -X "POST" -H "Content-Type: application/json" -d \
-    '{"name": "First Level", "username": "MurphysDad", "levelData": {"foo": "bar"} }' \
-    ${URL}/levels
+    '{"name": "First Level", "username": "MurphysDad", "status": "published", "levelData": {"foo": "bar"} }' \
+    ${URL}/levels | python3 -m json.tool

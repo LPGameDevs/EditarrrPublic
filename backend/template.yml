@@ -36,7 +36,7 @@ Resources:
         UpdateLevel:
           Type: HttpApi
           Properties:
-            Path: /levels
+            Path: /levels/{id}
             Method: PUT
         DeleteAnLevel:
           Type: HttpApi
@@ -54,17 +54,19 @@ Resources:
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
+        - AttributeName: status
+          AttributeType: S
         - AttributeName: lastUpdated
           AttributeType: S
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       GlobalSecondaryIndexes:
-      - IndexName: LastUpdatedIndex
+      - IndexName: StatusLastUpdatedIndex
         KeySchema:
-          - AttributeName: "lastUpdated"
+          - AttributeName: "status"
             KeyType: "HASH"
-          - AttributeName: "id"
+          - AttributeName: "lastUpdated"
             KeyType: "RANGE"
         Projection:
           ProjectionType: "ALL"

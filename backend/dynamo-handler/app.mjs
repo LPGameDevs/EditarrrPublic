@@ -2,6 +2,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
   ScanCommand,
+  QueryCommand,
   PutCommand,
   GetCommand,
   DeleteCommand,
@@ -42,6 +43,7 @@ export const handler = async (event, context) => {
               lastUpdated: Date.now().toString(),
               name: requestJSON.name,
               creator: requestJSON.username,
+              status: requestJSON.status,
               levelData: requestJSON.levelData,
             },
           })
@@ -57,31 +59,39 @@ export const handler = async (event, context) => {
             },
           })
         );
-        body = body.Level;
         break;
       case "GET /levels":
         body = await dynamo.send(
-          new ScanCommand({ 
+          new QueryCommand({ 
             TableName: tableName,
+            IndexName: "StatusLastUpdatedIndex",
             Limit: 10,
+            KeyConditionExpression: "#status = :status",
+            ExpressionAttributeNames: {
+              "#status": "status"
+            },
+            ExpressionAttributeValues: {
+              ":status": "published"
+            },
+            ScanIndexForward: false,
           })
         );
-        body = body.Items.sort((a, b) => b.lastUpdated - a.lastUpdated);
         break;
-      case "PUT /levels":
+      case "PUT /levels/{id}":
         requestJSON = JSON.parse(event.body);
         await dynamo.send(
           new PutCommand({
             TableName: tableName,
             Item: {
-              id: requestJSON.id,
+              id: event.pathParameters.id,
               lastUpdated: Date.now().toString(),
               name: requestJSON.name,
+              status: requestJSON.status,
               levelData: requestJSON.levelData,
             },
           })
         );
-        body = `Updated level ${requestJSON.id}`;
+        body = `Updated level ${event.pathParameters.id}`;
         break;
       case "DELETE /levels/{id}":
         await dynamo.send(
