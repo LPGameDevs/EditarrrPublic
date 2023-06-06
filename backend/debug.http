@@ -1,0 +1,24 @@
+# The following contains some examples of how to use the API.
+# This is primarily for use in the Jetbrains Rider IDE.
+
+PUT https://69lp13fk79.execute-api.eu-north-1.amazonaws.com/dev/items
+Content-Type: application/json
+
+{"id": "123", "price": 12346, "name": "mynewItem"}
+
+###
+
+GET https://69lp13fk79.execute-api.eu-north-1.amazonaws.com/dev/items/123
+Content-Type: application/json
+
+###
+
+GET https://69lp13fk79.execute-api.eu-north-1.amazonaws.com/dev/items
+Accept: application/json
+
+###
+
+DELETE https://69lp13fk79.execute-api.eu-north-1.amazonaws.com/dev/items/123
+Accept: application/json
+
+###

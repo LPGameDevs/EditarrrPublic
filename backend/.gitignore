@@ -1,4 +1,5 @@
 # Deployment Artifacts
+*.zip
 out.yml
 bucket-name.txt
 function.zip
