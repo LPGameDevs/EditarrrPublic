@@ -46,35 +46,43 @@ resource "aws_apigatewayv2_integration" "editarrr_lambda_integration" {
   integration_method = "POST"
 }
 
-# Create an api route for fetching all items.
-resource "aws_apigatewayv2_route" "get_items" {
+# Create an api route for fetching all levels.
+resource "aws_apigatewayv2_route" "get_levels" {
   api_id = aws_apigatewayv2_api.main.id
 
-  route_key = "GET /items"
+  route_key = "GET /levels"
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 
-# Create an api route for fetching an item by id.
-resource "aws_apigatewayv2_route" "get_item_by_id" {
+# Create an api route for fetching a level by id.
+resource "aws_apigatewayv2_route" "get_level_by_id" {
   api_id = aws_apigatewayv2_api.main.id
 
-  route_key = "GET /items/{id}"
+  route_key = "GET /levels/{id}"
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 
-# Create an api route for creating/updating an item.
-resource "aws_apigatewayv2_route" "put_items" {
+# Create an api route for creating a level.
+resource "aws_apigatewayv2_route" "post_level" {
   api_id = aws_apigatewayv2_api.main.id
 
-  route_key = "PUT /items"
+  route_key = "POST /levels"
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 
-# Create an api route for deleting an item by id.
-resource "aws_apigatewayv2_route" "delete_item_by_id" {
+# Create an api route for updating a level.
+resource "aws_apigatewayv2_route" "put_level" {
   api_id = aws_apigatewayv2_api.main.id
 
-  route_key = "DELETE /items/{id}"
+  route_key = "PUT /levels/{id}"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
+# Create an api route for deleting an level by id.
+resource "aws_apigatewayv2_route" "delete_level_by_id" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "DELETE /levels/{id}"
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 

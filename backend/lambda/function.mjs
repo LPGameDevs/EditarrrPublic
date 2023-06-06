@@ -1,20 +1,30 @@
-import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
     DynamoDBDocumentClient,
     ScanCommand,
+    QueryCommand,
     PutCommand,
     GetCommand,
     DeleteCommand,
 } from "@aws-sdk/lib-dynamodb";
+import crypto from "crypto";
 
 const client = new DynamoDBClient({});
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-const tableName = "http-crud-tutorial-items";
+const tableName = "editarrr-level-storage";
+
+// From https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid - not sure if this is reliable haha
+function uuidv4() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
 
 export const handler = async (event, context) => {
     let body;
+    let requestJSON;
     let statusCode = 200;
     const headers = {
         "Content-Type": "application/json",
@@ -22,7 +32,71 @@ export const handler = async (event, context) => {
 
     try {
         switch (event.requestContext.resourceId) {
-            case "DELETE /items/{id}":
+            case "GET /levels":
+                body = await dynamo.send(
+                    new QueryCommand({
+                        TableName: tableName,
+                        IndexName: "StatusLastUpdatedIndex",
+                        Limit: 10,
+                        KeyConditionExpression: "#status = :status",
+                        ExpressionAttributeNames: {
+                            "#status": "status"
+                        },
+                        ExpressionAttributeValues: {
+                            ":status": "published"
+                        },
+                        ScanIndexForward: false,
+                    })
+                );
+                break;
+            case "GET /levels/{id}":
+                body = await dynamo.send(
+                    new GetCommand({
+                        TableName: tableName,
+                        Key: {
+                            id: event.pathParameters.id,
+                        },
+                    })
+                );
+                if (!body.Item) throw new Error(`Item ${event.pathParameters.id} not found`);
+                body = body.Item;
+                break;
+            case "POST /levels":
+                const requestData = JSON.parse(event.body);
+                let generatedLevelId = uuidv4();
+                await dynamo.send(
+                    new PutCommand({
+                        TableName: tableName,
+                        Item: {
+                            id: generatedLevelId,
+                            lastUpdated: Date.now().toString(),
+                            name: requestData.name,
+                            creator: requestData.username,
+                            status: requestData.status,
+                            levelData: requestData.levelData,
+                        },
+                    })
+                );
+                body = `Created new level ${generatedLevelId}`;
+                break;
+            case "PUT /levels/{id}":
+                let requestJSON = JSON.parse(event.body);
+                await dynamo.send(
+                    new PutCommand({
+                        TableName: tableName,
+                        Item: {
+                            id: event.pathParameters.id,
+                            lastUpdated: Date.now().toString(),
+                            name: requestJSON.name,
+                            status: requestJSON.status,
+                            creator: requestData.username,
+                            levelData: requestJSON.levelData,
+                        },
+                    })
+                );
+                body = `Updated level ${event.pathParameters.id}`;
+                break;
+            case "DELETE /levels/{id}":
                 // We dont actually want to delete so lets just unpublish.
 
                 // await dynamo.send(
@@ -57,38 +131,6 @@ export const handler = async (event, context) => {
 
                 body = `Deleted item ${event.pathParameters.id}`;
                 break;
-            case "GET /items/{id}":
-                body = await dynamo.send(
-                    new GetCommand({
-                        TableName: tableName,
-                        Key: {
-                            id: event.pathParameters.id,
-                        },
-                    })
-                );
-                if (!body.Item) throw new Error(`Item ${event.pathParameters.id} not found`);
-                body = body.Item;
-                break;
-            case "GET /items":
-                body = await dynamo.send(
-                    new ScanCommand({TableName: tableName})
-                );
-                body = body.Items;
-                break;
-            case "PUT /items":
-                let requestJSON = JSON.parse(event.body);
-                await dynamo.send(
-                    new PutCommand({
-                        TableName: tableName,
-                        Item: {
-                            id: requestJSON.id,
-                            price: requestJSON.price,
-                            name: requestJSON.name,
-                        },
-                    })
-                );
-                body = `Put item ${requestJSON.id}`;
-                break;
             default:
                 throw new Error(`Unsupported route: "${event.requestContext.resourceId}"`);
         }
@@ -101,38 +143,7 @@ export const handler = async (event, context) => {
 
     return {
         statusCode,
-        body: JSON.stringify({
-            data: body,
-            // debug: event,
-        }),
+        body,
         headers,
     };
 };
-
-
-// export const handler = async (event, context) => {
-//     console.log('Event: ', event);
-//     let responseMessage = 'Hello, World!!!';
-//
-//     if (event.queryStringParameters && event.queryStringParameters['Name']) {
-//         responseMessage = 'Hello, ' + event.queryStringParameters['Name'] + '!';
-//     }
-//
-//     if (event.httpMethod === 'POST') {
-//         const body = JSON.parse(event.body);
-//         responseMessage = 'Hello, ' + body.name + '!';
-//     }
-//
-//     const response = {
-//         statusCode: 200,
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//             message: responseMessage,
-//             other: event,
-//         }),
-//     };
-//
-//     return response;
-// };

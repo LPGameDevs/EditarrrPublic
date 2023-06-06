@@ -1,24 +1,42 @@
 # The following contains some examples of how to use the API.
 # This is primarily for use in the Jetbrains Rider IDE.
 
-PUT https://69lp13fk79.execute-api.eu-north-1.amazonaws.com/dev/items
+POST https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels
 Content-Type: application/json
 
-{"id": "123", "price": 12346, "name": "mynewItem"}
+{
+  "name": "12345",
+  "username": "yanniboi",
+  "status": "published",
+  "levelData": {}
+}
 
 ###
 
-GET https://69lp13fk79.execute-api.eu-north-1.amazonaws.com/dev/items/123
+PUT https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels/9deb954f-ab7f-4554-81f9-bf090b3ed456
+Content-Type: application/json
+
+{
+  "creator": "cheese",
+  "status": "published",
+  "levelData": {
+  },
+  "name": "12345"
+}
+
+###
+
+GET https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels/9deb954f-ab7f-4554-81f9-bf090b3ed456
 Content-Type: application/json
 
 ###
 
-GET https://69lp13fk79.execute-api.eu-north-1.amazonaws.com/dev/items
+GET https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels
 Accept: application/json
 
 ###
 
-DELETE https://69lp13fk79.execute-api.eu-north-1.amazonaws.com/dev/items/123
+DELETE https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels/123
 Accept: application/json
 
 ###

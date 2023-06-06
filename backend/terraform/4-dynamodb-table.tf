@@ -6,6 +6,24 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     name = "id"
     type = "S"
   }
+  attribute {
+    name = "status"
+    type = "S"
+  }
+  attribute {
+    name = "lastUpdated"
+    type = "S"
+  }
+
+  # Add additional indexes.
+  global_secondary_index {
+    name            = "StatusLastUpdatedIndex"
+    hash_key        = "status"
+    range_key       = "lastUpdated"
+    projection_type = "ALL"
+    write_capacity  = 1
+    read_capacity   = 1
+  }
 
   billing_mode                = "PAY_PER_REQUEST"
   deletion_protection_enabled = "false"
