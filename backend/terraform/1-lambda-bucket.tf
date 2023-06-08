@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "lambda_bucket" {
   force_destroy = true
 }
 
-# We set the public access block to true so that the bucket is not public.
+# We set the public access block to true so that the bucket is public.
 resource "aws_s3_bucket_public_access_block" "lambda_bucket" {
   bucket = aws_s3_bucket.lambda_bucket.id
   block_public_acls       = true
