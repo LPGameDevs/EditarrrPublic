@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Example template for an HTTP API that creates, updates, and deletes items in DynamoDB
+  POC of how we might implement the backend for Editarrr level storage
   
 Globals:
   Function:
@@ -16,41 +16,68 @@ Resources:
       Runtime: nodejs18.x
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ItemsTable
+            TableName: !Ref LevelsTable
       Events:
-        GetAllItems:
+        CreateLevel:
           Type: HttpApi
           Properties:
-            Path: /items
+            Path: /levels
+            Method: POST
+        GetAllLevels:
+          Type: HttpApi
+          Properties:
+            Path: /levels
             Method: GET
-        GetAnItem:
+        GetLevel:
           Type: HttpApi
           Properties:
-            Path: /items/{id}
+            Path: /levels/{id}
             Method: GET
-        DeleteAnItem:
+        UpdateLevel:
           Type: HttpApi
           Properties:
-            Path: /items/{id}
-            Method: DELETE
-        CreateOrUpdateItem:
-          Type: HttpApi
-          Properties:
-            Path: /items
+            Path: /levels/{id}
             Method: PUT
+        DeleteAnLevel:
+          Type: HttpApi
+          Properties:
+            Path: /levels/{id}
+            Method: DELETE
 
-  ItemsTable:
-    Type: AWS::Serverless::SimpleTable
+  LevelsTable:
+    Type: AWS::DynamoDB::Table
     Properties:
-      PrimaryKey:
-        Name: id
-        Type: String
-      TableName: http-crud-tutorial-items
+      TableName: levels-table
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: lastUpdated
+          AttributeType: S
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      GlobalSecondaryIndexes:
+      - IndexName: StatusLastUpdatedIndex
+        KeySchema:
+          - AttributeName: "status"
+            KeyType: "HASH"
+          - AttributeName: "lastUpdated"
+            KeyType: "RANGE"
+        Projection:
+          ProjectionType: "ALL"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 
 Outputs:
   ApiEndpoint:
     Description: "The invoke URL for our HTTP API"
-    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/items"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/levels"
   Function:
     Description: "DynamoDB handler function ARN"
     Value: !GetAtt DDBHandlerFunction.Arn
