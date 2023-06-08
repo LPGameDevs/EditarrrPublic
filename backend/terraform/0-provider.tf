@@ -6,6 +6,7 @@ terraform {
       version = "~> 4.0"
     }
     random = {
+      # Generates a random string for the S3 bucket
       source  = "hashicorp/random"
       version = "~> 3.3.0"
     }
