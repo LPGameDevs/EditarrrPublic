@@ -1,0 +1,42 @@
+# The following contains some examples of how to use the API.
+# This is primarily for use in the Jetbrains Rider IDE.
+
+POST https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels
+Content-Type: application/json
+
+{
+  "name": "12345",
+  "username": "yanniboi",
+  "status": "published",
+  "levelData": {}
+}
+
+###
+
+PUT https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels/9deb954f-ab7f-4554-81f9-bf090b3ed456
+Content-Type: application/json
+
+{
+  "creator": "cheese",
+  "status": "published",
+  "levelData": {
+  },
+  "name": "12345"
+}
+
+###
+
+GET https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels/9deb954f-ab7f-4554-81f9-bf090b3ed456
+Content-Type: application/json
+
+###
+
+GET https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels
+Accept: application/json
+
+###
+
+DELETE https://ygfmolwgd9.execute-api.eu-north-1.amazonaws.com/dev/levels/123
+Accept: application/json
+
+###
