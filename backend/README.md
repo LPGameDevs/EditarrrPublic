@@ -1,15 +1,45 @@
-# Overview
+# Editarrr Backend
 
-Editarrr needs backend storage to persist player-created levels.
+Backend storage to persist player-created levels.
 
-The purpose of this summary is to:
+## Architecture
+```mermaid
+graph LR
+APIGateway --> Lambda
+Lambda -- level object data --> DynamoDB
+Lambda -- level screenshots --> S3
+```
 
-1. Gather feedback on the different options for implementing the Editarrr backend for level storage and decide on an approach
-2. Communicate the plan so that everyone is on the same page and developers who are interested can contribute
+We use [terraform](./terraform/README.md) to deploy the cloud services (do NOT use the CloudFormation folder - that's left over from development).
 
-This summary is focused on the backend services and data storage - NOT the code in the game client that will make the calls to this backend.
+## APIs
 
-# Background
+TODO Flesh these out in detail: https://github.com/LPGameDevs/EditarrrPublic/issues/53
+
+The backend API would have the following APIs:
+- CreateLevel
+- GetLevel (Open Question: Based on an ID?)
+- UpdateLevel (including metadata)
+- DeleteLevel
+- UploadPreviewImage
+- GetPreviewImage
+- AddHighScore
+- GetHighScoresForLevel
+
+These would be called by the `IDbConnector` interface in Unity via HTTP requests with authentication
+
+The structure for each API can be tailored to whatever the JSON schema for the C# objects in the game ends up being.
+
+## Data Schema
+
+TODO Flesh this out in detail: https://github.com/LPGameDevs/EditarrrPublic/issues/53
+
+We don’t have complex querying requirements, so we’re going with a simple NoSQL key-value store.
+
+TBD, but likely we’ll simply key on an ID and store the serialized JSON blob as the value
+
+
+## Background
 
 The Editarrr game code has the following interface for interacting with level storage:
 
@@ -46,11 +76,11 @@ However, the primary weakness of this approach was the work and code required to
 
 The level of effort to translate data structures combined with the desire to have the level browser accessible in-game (negating the benefits of DrupalCMS) is why we’re going to implement a new backend level storage for the next iteration of Editarrr.
 
-# Requirements
+### Backend Requirements
 
 See mockups of the UI [here](https://github.com/LPGameDevs/EditarrrPublic/wiki/Scene-Mockups)
 
-## Functional (V1)
+#### Functional (V1)
 
 - Player Identification
     - Loose identification of a player for the sake of associating levels with them.
@@ -74,18 +104,18 @@ See mockups of the UI [here](https://github.com/LPGameDevs/EditarrrPublic/wiki/S
         - Add a new high score for a published level
         - Get a sorted & paged list of high scores for a level
 
-## Non-Functional
+#### Non-Functional
 
 - Infrastructure must be low cost (Budget: <$5/month)
 - Simplicity - as an open-source, community project, it should be easy for new developers to understand the system and contribute
 - Flexibility - it should be easy for us to swap out the backends and have alternative storage options if we choose to switch or support multiple at once
 
-## Nice to Have
+#### Nice to Have
 
 - The ability for a player to “login to their account” from different devices
 - Make the backend generic, so that other games can use it for level storage
 
-## Out-of-Scope
+#### Out-of-Scope
 
 - Store private player feedback associated with levels (https://github.com/LPGameDevs/EditarrrPublic/issues/42) (only viewable by level creator). This feedback should be reviewable by “Admins”
 - Store player ratings associated with levels (https://github.com/LPGameDevs/EditarrrPublic/issues/42) (only viewable by level creator)
@@ -95,19 +125,9 @@ See mockups of the UI [here](https://github.com/LPGameDevs/EditarrrPublic/wiki/S
 - Levels protected and shared by codes
 - Browsing levels, filtering by criteria, page results, showing metadata (but not the level itself)
 
-# Implementation Options
+### Implementation Options
 
-## Proposed
-
-```mermaid
-graph LR
-APIGateway --> Lambda
-Lambda -- level object data --> DynamoDB
-Lambda -- level screenshots --> S3
-```
-
-A POC has been built here: https://github.com/HaywardMorihara/editarrr-poc
-
+#### Current
 AWS:
 - API Gateway in front of Lambda Functions
 - DynamoDB for storage of the level objects
@@ -120,7 +140,7 @@ Pros:
 Cons:
 - AWS can get expensive, but unlikely to be a problem given the low scale we’re dealing with
 
-## Alternates Considered
+#### Alternates Considered
 
 - Cloud Providers
     - DigitalOcean (Pro: yanniboi often has some up for work that can be piggybacked on)
@@ -131,7 +151,7 @@ Cons:
 - Storage
     - RDS (Aurora Serverless) (NOT because likely more expensive for this small scale project)
 
-# Cost Estimation
+### Cost Estimation
 
 Estimates:
 
@@ -154,15 +174,15 @@ It assumes:
 
 Alternate: $5/month (Digital Ocean boxes)
 
-# Implementation Details
+### Implementation Details
 
-## API Authentication
+#### API Authentication
 
 ****To ensure bad actors aren’t using our cloud services****
 
 TBD
 
-## User Identification
+#### User Identification
 
 Generate a random ID for every game client. This ID is used as “user identification”. This ID is stored on the player’s device (Unity PlayerPrefs).
 
@@ -172,29 +192,7 @@ Open Questions:
 - [ ] Should we encrypt or anything on storage?
 - [ ] How to generate the random ID? Maybe could hash based on the device or something to guarantee uniqueness (but it would be very low probability that a randomly generated ID would pose problems, given our small player base)
 
-## APIs
-
-The backend API would have the following APIs:
-- CreateLevel
-- GetLevel (Open Question: Based on an ID?)
-- UpdateLevel (including metadata)
-- DeleteLevel
-- UploadPreviewImage
-- GetPreviewImage
-- AddHighScore
-- GetHighScoresForLevel
-
-These would be called by the `IDbConnector` interface in Unity via HTTP requests with authentication
-
-The structure for each API can be tailored to whatever the JSON schema for the C# objects in the game ends up being.
-
-## Data Schema
-
-We don’t have complex querying requirements, so we’re going with a simple NoSQL key-value store.
-
-TBD, but likely we’ll simply key on an ID and store the serialized JSON blob as the value
-
-## Language
+#### Language
 
 NodeJS, because it has the strongest documentation and support for AWS Lambda (it's the default in the tutorial). 
 
@@ -206,7 +204,7 @@ Alternates ([AWS Lambda supported](https://docs.aws.amazon.com/lambda/latest/dg/
 - Go (Pro: MurphysDad has a lot of familiarity)
 - Ruby
 
-# Action Items (https://github.com/LPGameDevs/EditarrrPublic/issues/48)
+### Action Items (https://github.com/LPGameDevs/EditarrrPublic/issues/48)
 
 *******To be turned into issues:*******
 
@@ -216,7 +214,7 @@ Alternates ([AWS Lambda supported](https://docs.aws.amazon.com/lambda/latest/dg/
 - [ ] Define the DB storage (assuming key-value store, keyed on an ID?)
 - [ ] Implement APIs
 
-# Appendix
+### Appendix
 
 [Discord Discussion](https://discord.com/channels/716412098242150421/1094247243097325678)
 

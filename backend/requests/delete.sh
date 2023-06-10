@@ -1,7 +1,11 @@
 #!/bin/bash
 set -eo pipefail
-APIID=$(aws cloudformation describe-stack-resource --stack-name editarrr-poc --logical-resource-id ServerlessHttpApi --query 'StackResourceDetail.PhysicalResourceId' --output text)
-REGION=$(aws configure get region)
 
-LEVEL_TO_DELETE="<LEVEL_ID>"
-curl -X "DELETE" https://$APIID.execute-api.$REGION.amazonaws.com/levels/${LEVEL_TO_DELETE} | python3 -m json.tool
+. requests/set-vars.sh
+
+LEVEL_ID="<LEVEL_ID>"
+if [ $# -eq 1 ]; then
+  LEVEL_ID=$1
+fi
+
+curl -X "DELETE" ${URL}/${LEVEL_ID} | python3 -m json.tool
