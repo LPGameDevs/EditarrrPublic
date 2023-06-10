@@ -1,6 +1,6 @@
 #!/bin/bash
 set -eo pipefail
-APIID=$(aws cloudformation describe-stack-resource --stack-name editarrr-poc --logical-resource-id ServerlessHttpApi --query 'StackResourceDetail.PhysicalResourceId' --output text)
-REGION=$(aws configure get region)
 
-curl https://$APIID.execute-api.$REGION.amazonaws.com/levels | python3 -m json.tool
+. requests/set-vars.sh
+
+curl ${URL} | python3 -m json.tool
