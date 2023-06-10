@@ -13,22 +13,161 @@ Lambda -- level screenshots --> S3
 We use [terraform](./terraform/README.md) to deploy the cloud services (do NOT use the CloudFormation folder - that's left over from development).
 
 ## APIs
-
-TODO Flesh these out in detail: https://github.com/LPGameDevs/EditarrrPublic/issues/53
-
-The backend API would have the following APIs:
-- CreateLevel
-- GetLevel (Open Question: Based on an ID?)
-- UpdateLevel (including metadata)
-- DeleteLevel
-- UploadPreviewImage
-- GetPreviewImage
-- AddHighScore
-- GetHighScoresForLevel
-
-These would be called by the `IDbConnector` interface in Unity via HTTP requests with authentication
+The APIs will be called by the `IDbConnector` interface in Unity via HTTP requests with authentication
 
 The structure for each API can be tailored to whatever the JSON schema for the C# objects in the game ends up being.
+
+The backend API would have the following APIs:
+
+### Create Level
+
+**POST `/levels`**
+
+**Request:**
+```json
+{
+  "name": "Name of Level",
+  "creator": {
+    "id": "UUID",
+    "name": "User DisplayName"
+  },
+  "status": "published|draft",
+  "data": {}, // This can be whatever Unity needs
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Success or Error"
+}
+```
+
+### Get Levels
+
+**GET `/levels`**
+
+**Query Params:**
+* `creator-id` returns ALL levels for a creator (published and drafts) ordered by most recently updated
+
+**Response:**
+```json
+{
+  "levels": [ // 10 most recently updated published levels
+    {
+      "id": "UUID",
+      "name": "Name of Level",
+      "creator": {
+        "id": "UUID",
+        "name": "User DisplayName"
+      },
+      "status": "published|draft",
+      "createdAt": 1686495335,
+      "updatedAt": 1686495335,
+    }
+  ]
+}
+```
+
+### Get Level
+
+**GET `/levels/{id}`**
+
+**Response:**
+```json
+{
+  "id": "UUID",
+  "name": "Name of Level",
+  "creator": {
+    "id": "UUID",
+    "name": "User DisplayName"
+  },
+  "status": "published|draft",
+  "createdAt": 1686495335,
+  "updatedAt": 1686495335,
+  "data": {}
+}
+```
+
+### Update Level
+
+**PATCH `/levels/{id}`**
+
+**Request:**
+```json
+// Only one of the fields need be provided - all other fields will remain unchanged
+{
+  "name": "Name of Level",
+  "status": "published|draft",
+  "data": {}, // The 'data' is replaced as a whole with whatever is provided
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Success or Error"
+}
+```
+
+### Upload Preview Image
+
+**PUT `/levels/{id}/preview`**
+
+**Headers:**
+```json
+{
+  "Content-Type": "image/png"
+}
+```
+
+### Get Preview Image
+
+**GET `/levels/{id}/preview`**
+
+**Headers:**
+```json
+{
+  "Content-Type": "image/png"
+}
+```
+
+### Add High Score
+
+**POST `/levels/{id}/scores`**
+
+**Request:**
+```json
+{
+  "score": 123,
+  "playerName": "Display Name"
+}
+```
+
+**Response:**
+```json
+{
+  "message": "Success or Error"
+}
+```
+
+### Get High Scores For Level
+
+**GET `/levels/{id}/scores`**
+
+**Response:**
+```json
+{
+  "highScores": [ // 10 highest scores, from highest to lowest
+    {
+      "score": 123,
+      "playerName": "Display Name"
+    }
+  ]
+}
+```
+
+TODO At some point, if the project grows enough, look into RAML or Swagger or something for managing, encoding & documenting these definitions.
 
 ## Data Schema
 
