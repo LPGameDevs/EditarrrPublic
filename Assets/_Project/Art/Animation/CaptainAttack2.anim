@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CaptainDamageRight
+  m_Name: CaptainAttack2
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,13 +20,11 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 6f4afeaecff716d02b35a6bfe031e75a, type: 3}
+      value: {fileID: 21300000, guid: 1e0dadb3543a9c54b9469268a8c15d1b, type: 3}
     - time: 0.083333336
-      value: {fileID: 21300000, guid: 34bd122346cd9b4328ee7ed93587458c, type: 3}
-    - time: 0.25
-      value: {fileID: 21300000, guid: 9d95394f3d1e33e09ad820caa5eeff7c, type: 3}
+      value: {fileID: 21300000, guid: 98f856c5bccdeb45bb56c7992db04508, type: 3}
     - time: 0.33333334
-      value: {fileID: 21300000, guid: dea3cc9ae7b60683e90c1b08ca36408b, type: 3}
+      value: {fileID: 21300000, guid: 695cd30fed707c25085e8e8245172c80, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -46,10 +44,9 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 6f4afeaecff716d02b35a6bfe031e75a, type: 3}
-    - {fileID: 21300000, guid: 34bd122346cd9b4328ee7ed93587458c, type: 3}
-    - {fileID: 21300000, guid: 9d95394f3d1e33e09ad820caa5eeff7c, type: 3}
-    - {fileID: 21300000, guid: dea3cc9ae7b60683e90c1b08ca36408b, type: 3}
+    - {fileID: 21300000, guid: 1e0dadb3543a9c54b9469268a8c15d1b, type: 3}
+    - {fileID: 21300000, guid: 98f856c5bccdeb45bb56c7992db04508, type: 3}
+    - {fileID: 21300000, guid: 695cd30fed707c25085e8e8245172c80, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
