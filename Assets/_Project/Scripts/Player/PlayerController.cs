@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Input;
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Player
@@ -16,6 +17,7 @@ namespace Player
         public static event Action OnPlayerLanded;
 
         private HealthSystem _health;
+        private Animator _animator;
 
         public bool IsMoving => _isMoving;
 
@@ -31,6 +33,7 @@ namespace Player
         {
             Invoke(nameof(Activate), 0.5f);
             _health = GetComponent<HealthSystem>();
+            _animator = GetComponent<Animator>();
         }
 
         void Activate() => _active = true;
@@ -52,6 +55,18 @@ namespace Player
 
             MoveCharacter(); // Actually perform the axis movement
             HandleSpriteDirection();
+
+            HandleAnimationVariables();
+        }
+
+        private void HandleAnimationVariables()
+        {
+            _animator.SetFloat(VerticalVelocityAnim, _currentVerticalSpeed);
+            _animator.SetBool(GroundedAnim, _collisions.down);
+
+            // @todo Should we take collision checks into account here?
+            _animator.SetBool(IsMovingAnim, _isMoving);
+            _animator.SetBool(JumpStartedAnim, _jumpStartThisFrame);
         }
 
 
@@ -304,6 +319,11 @@ namespace Player
         [Header("MOVE")]
         [SerializeField, Tooltip("Raising this value increases collision accuracy at the cost of performance.")]
         private int _freeColliderIterations = 10;
+
+        private static readonly int IsMovingAnim = Animator.StringToHash("IsMoving");
+        private static readonly int GroundedAnim = Animator.StringToHash("Grounded");
+        private static readonly int JumpStartedAnim = Animator.StringToHash("JumpStarted");
+        private static readonly int VerticalVelocityAnim = Animator.StringToHash("VerticalVelocity");
 
         // We cast our bounds before moving to avoid future collisions
         private void MoveCharacter()
