@@ -2,42 +2,106 @@
 
 # Create the dynamodb table.
 resource "aws_dynamodb_table" "editarrr-level-storage" {
-  attribute {
-    name = "id"
-    type = "S"
-  }
-  attribute {
-    name = "status"
-    type = "S"
-  }
-  attribute {
-    name = "lastUpdated"
-    type = "S"
-  }
-
-  # Add additional indexes.
-  global_secondary_index {
-    name            = "StatusLastUpdatedIndex"
-    hash_key        = "status"
-    range_key       = "lastUpdated"
-    projection_type = "ALL"
-    write_capacity  = 1
-    read_capacity   = 1
-  }
-
-  billing_mode                = "PAY_PER_REQUEST"
-  deletion_protection_enabled = "false"
-  hash_key                    = "id"
   name                        = "editarrr-level-storage"
+  billing_mode                = "PAY_PER_REQUEST"
+  table_class                 = "STANDARD"
+  read_capacity               = "0"
+  write_capacity              = "0"
+  stream_enabled              = "false"
+  deletion_protection_enabled = "false"
 
   point_in_time_recovery {
     enabled = "false"
   }
 
-  read_capacity  = "0"
-  stream_enabled = "false"
-  table_class    = "STANDARD"
-  write_capacity = "0"
+  hash_key  = "pk"
+  range_key = "sk"
+  attribute {
+    name = "pk"
+    type = "S"
+  }
+  attribute {
+    name = "sk"
+    type = "S"
+  }
+
+  # Items
+  # Note: In the DynamoDB configuration, you can only define attributes that are keyed/indexed
+  #       Commenting non-indexed attributes as well for completeness
+
+  # Level Items
+  # pk: LEVEL#<levelId>
+  # sk: LEVEL#<levelId>
+  attribute {
+    name = "levelCreatorId"
+    type = "S" #userId
+  }
+
+  attribute {
+    name = "levelStatus"
+    type = "S" # PUBLISHED|DRAFT
+  }
+  
+  attribute {
+    name = "levelUpdatedAt"
+    type = "N" # Epoch
+  }
+  # attribute {
+  #   name = "levelName"
+  #   type = "S"
+  # }
+  # attribute {
+  #   name = "levelCreatedAt"
+  #   type = "N" # Epoch
+  # }
+  # attribute {
+  #   name = "levelData"
+  #   type = "M" # JSON Blob
+  # }
+
+  # Score Items
+  # pk: LEVEL#<levelId>
+  # sk: SCORE#<score>
+  # attribute {
+  #   name = "scoreUserId"
+  #   type = "S" # userId # optional - only for "logged in" users
+  # }
+  # attribute {
+  #   name = "scorePlayerName"
+  #   type = "S" # not necessarily the userName, because it might not be a "logged in" user
+  # }
+  # attribute {
+  #   name = "scoreSubmittedAt"
+  #   type = "N" # Epoch
+  # }
+
+  # User Items
+  # pk: USER#<userId>
+  # sk: USER#<userId>
+  # attribute {
+  #   name = "userName"
+  #   type = "S"
+  # }
+
+  global_secondary_index {
+    name            = "levelCreatorId-levelUpdatedAt-index"
+    hash_key        = "levelCreatorId"
+    range_key       = "levelUpdatedAt"
+    write_capacity  = 1
+    read_capacity   = 1
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "pk", "levelName", "levelStatus"]
+  }
+
+  global_secondary_index {
+    name            = "levelStatus-levelUpdatedAt-index"
+    hash_key        = "levelStatus"
+    range_key       = "levelUpdatedAt"
+    write_capacity  = 1
+    read_capacity   = 1
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId"]
+  }
 }
 
 # IAM policy for the lambda to access the dynamodb table.

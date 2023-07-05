@@ -48,12 +48,15 @@ The backend API would have the following APIs:
 **GET `/levels`**
 
 **Query Params:**
-* `creator-id` returns ALL levels for a creator (published and drafts) ordered by most recently updated
+* `status` (Required) filters to levels of the provided status
+* `limit` (Optional) page limit, default: 10
+* `skip` (Optional) page skip, default: 0
+* `creator-id` (Optional) filters to levels for a creator
 
 **Response:**
 ```json
 {
-  "levels": [ // 10 most recently updated published levels
+  "levels": [ // default sort order: most recently updated
     {
       "id": "UUID",
       "name": "Name of Level",
@@ -158,7 +161,7 @@ The backend API would have the following APIs:
 **Response:**
 ```json
 {
-  "highScores": [ // 10 highest scores, from highest to lowest
+  "highScores": [ // Default: 10 highest scores, from highest to lowest
     {
       "score": 123,
       "playerName": "Display Name"
@@ -169,13 +172,72 @@ The backend API would have the following APIs:
 
 TODO At some point, if the project grows enough, look into RAML or Swagger or something for managing, encoding & documenting these definitions.
 
-## Data Schema
+## Database
 
-TODO Flesh this out in detail: https://github.com/LPGameDevs/EditarrrPublic/issues/53
+[AWS DynamoDB](https://aws.amazon.com/dynamodb/) is the current storage for Editarrr levels. 
 
-We don’t have complex querying requirements, so we’re going with a simple NoSQL key-value store.
+### Schema
+See the [Terraform configuration](./terraform/4-dynamodb-table.tf) for the DB schema.
 
-TBD, but likely we’ll simply key on an ID and store the serialized JSON blob as the value
+![Table Schema](./assets/table-schema.png)
+![levelStatus-levelUpdatedAt Index](./assets/levelStatus-levelUpdatedAt-index.png)
+![levelCreatorId-levelUpdatedAt Index](./assets/levelCreatorId-levelUpdatedAt-index.png)
+
+### About DynamoDB
+We don’t have complex query requirements, so we chose to go with a simple NoSQL key-value store and selected DynamoDB.
+* AWS DynamoDB is a NoSQL key-value storage
+* A DynamoDB consists of
+  * Tables that have Items (think rows in the table)
+  * Items have Attributes (think columns in the table)
+* DynamoDB is schemaless, so there isn't any enforcement of attributes _except_ for key attributes
+* Every Item in the table _must_ have an attribute(s) that serve as the primary key. The primary key can either:
+  * Be a single, unique value 
+  * A Partition Key (aka "Hash Attribute") + Sort Key (aka "Range Attribute") 
+* If the Table uses a PK + SK, then the data is stored into partitions of sorted items (think a folder of sorted files)
+* Tables can have Global Secondary Indices (GSIs) that create duplicate tables organized with different attributes as PKs (and SKs) to support different queries
+
+DynamoDB Best Practices:
+* [As few tables as possible; keep related data together](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-general-nosql-design.html)
+* [Effective and efficient use of DDB means avoiding Scan() and avoiding the use of filterExpressions that you know will throw away lots of the data read.](https://stackoverflow.com/questions/64557433/how-to-query-and-order-on-two-separate-sort-keys-in-dynamodb)
+* Try to not use IDs as keys if appropriate - they have limited queries they can support. But keep in mind that dynamic attributes won't serve as keys either
+* Partition Keys - Ideally high cardinality and evenly distributed set of possible partition keys to avoid hotspots (since DynamoDB actually partitions based on this, meaning hotspots don't scale)
+* Sort Keys - [consider how it could be used for range queries](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-sort-keys.html)
+  * Consider if there’s anything hierarchical you could represent with it. 
+    * Use composite keys of attributes to guarantee uniqueness (e.g. partition key: customerID#productID#countryCode, sort key: orderDate). 
+      * But then, that attributes is literally a concatenated strings…so you have to plan this ahead ([you can NOT use individual attributes](https://stackoverflow.com/questions/64356291/setting-composite-sort-keys-for-dynamodb-with-serverless-framework)) 
+      * [Setting composite sort keys for dynamodb with serverless framework - Stack Overflow](https://stackoverflow.com/questions/64356291/setting-composite-sort-keys-for-dynamodb-with-serverless-framework)
+
+
+### Data Schema Decision History
+
+#### June 2023 - Initializing the Table
+In DynamoDB, it is critical to understand the expected queries in order to plan the appropriate partition key / sort key schema for the database.
+
+When initially designing the Editarrr Level Storage Table schema, the following queries were accounted for:
+1. Get details about a specific level
+2. Get a paged list published level metadata, sorted by most recently updated
+3. Get a paged list of level metadata for a user, filtered by status, sorted by most recently updated
+4. Get the top 10 highest scores and the player who got them for a level  
+
+The design we came up with calls for 3 "types" of items with the following PK+SKs:
+1. Level Items (PK: `LEVEL#<levelId>`, SK: `LEVEL#<levelId>`)
+2. Level Score Items (PK: `LEVEL#<levelId>`, SK: `SCORE#<score>`)
+3. User Items (PK: `USER#<userId>`, SK: `USER#<userId>`)
+
+Strengths of the design:
+* All defined queries are supported by either the PK/SK structure or a GSI
+* Main partitions are high-cardinality
+* Sorting of high scores & most recently updated levels is taken care of by the database
+* Generic "pk" and "sk" means there's flexibility to add new types of items into the table
+
+Weaknesses of the design:
+* Hot spot partition of levels by status in the GSI. We've decided to accept this tradeoff because the scale of our data is expected to be low. If this really becomes a problem, we could have a denormalized store and maintaining only the 10 latest levels
+
+Alternates Considered:
+| Description | Problems |
+| - | - |
+| PK: User + SK: Level |  Problems: You can't query directly for a single level w/o a GSI, maintaining a sorted list of scores might get expensive |
+| Same schema, no GSIs | Expensive Scans operations, which would likely incur latency & costs |
 
 
 ## Background
