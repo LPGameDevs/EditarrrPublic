@@ -2,6 +2,16 @@
 
 Backend storage to persist player-created levels.
 
+## How to Run Locally
+Dependencies:
+* AWS CLI
+* docker (for DynamoDB)
+* Nodejs
+
+Steps
+
+How to use Codespaces
+
 ## Architecture
 ```mermaid
 graph LR
