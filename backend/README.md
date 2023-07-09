@@ -7,10 +7,15 @@ Dependencies:
 * AWS CLI
 * docker (for DynamoDB)
 * Nodejs
+If you create a Codespace using the codepsace configuration, you get all of these dependencies out of the box.
+TODO How do use Codespaces
+TODO Should make the codepsace I made specific to 'backend'
 
 Steps
-
-How to use Codespaces
+1. Start the DynamoDB
+2. Set up the table for the DynamoDB
+3. Start the lambda (npm install, npm run...)
+4. Make the query
 
 ## Architecture
 ```mermaid
