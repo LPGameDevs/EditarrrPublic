@@ -3,19 +3,26 @@
 Backend storage to persist player-created levels.
 
 ## How to Run Locally
-Dependencies:
-* AWS CLI
-* docker (for DynamoDB)
-* Nodejs
-If you create a Codespace using the codepsace configuration, you get all of these dependencies out of the box.
-TODO How do use Codespaces
-TODO Should make the codepsace I made specific to 'backend'
+Prerequisites:
+* [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+* [Docker](https://www.docker.com/products/docker-desktop/)
+* [Nodejs](https://nodejs.dev/en/download/)
 
-Steps
-1. Start the DynamoDB
-2. Set up the table for the DynamoDB
-3. Start the lambda (npm install, npm run...)
-4. Make the query
+There is a [GitHub Codespace configuration for this repo](../.devcontainer/devcontainer.json) that you can use that comes with all the dependencies pre-installed. 
+More on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart).
+
+To start the backend locally, run shell script:
+```sh
+cd backend
+./scripts/start-local.sh # Starts the DynamoDB and
+```
+If you're on Windows, you can use the [configured Codespace](../.devcontainer/devcontainer.json) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+
+To stop the backend, run:
+```sh
+cd backend
+./scripts/stop-local.sh
+```
 
 ## Architecture
 ```mermaid
