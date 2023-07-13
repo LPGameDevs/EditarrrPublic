@@ -4,8 +4,9 @@ Backend storage to persist player-created levels.
 
 ## How to Run Locally
 Prerequisites:
-* [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * [Docker](https://www.docker.com/products/docker-desktop/)
+* [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+* [AWS SAM CLI](https://aws.amazon.com/serverless/sam/)
 * [Nodejs](https://nodejs.dev/en/download/)
 
 There is a [GitHub Codespace configuration for this repo](../.devcontainer/devcontainer.json) that you can use that comes with all the dependencies pre-installed. 
