@@ -1,23 +1,52 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  Foo:
+    Type: String
+
 Resources:
   LambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.handler
+      Handler: function.handler
       Runtime: nodejs18.x
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Ref LevelsTable
+      Environment:
+        Variables:
+          Foo: !Ref Foo
       Events:
         CreateLevel:
           Type: HttpApi
           Properties:
             Path: /levels
             Method: POST
-  
-  Outputs:
-    ApiEndpoint:
-      Description: "The invoke URL for our HTTP API"
-      Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/levels"
+            Auth:
+              Authorizer: NONE
+        GetAllLevels:
+          Type: HttpApi
+          Properties:
+            Path: /levels
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        GetLevel:
+          Type: HttpApi
+          Properties:
+            Path: /levels/{id}
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        UpdateLevel:
+          Type: HttpApi
+          Properties:
+            Path: /levels/{id}
+            Method: PUT
+            Auth:
+              Authorizer: NONE
+        DeleteAnLevel:
+          Type: HttpApi
+          Properties:
+            Path: /levels/{id}
+            Method: DELETE
+            Auth:
+              Authorizer: NONE

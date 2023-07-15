@@ -10,7 +10,7 @@ set -eo pipefail
 
 PORT=8000
 DDB="dynamodb"
-TABLE_NAME="editarrr-level-storagee"
+TABLE_NAME="editarrr-level-storage"
 
 # Set up mock AWS credentials
 if [ ! -d ~/.aws ]; then 
@@ -92,6 +92,6 @@ fi
 
 
 # TODO Start the Nodejs lambda
-
+# sam local start-api --parameter-overrides Foo=bar
 
 # TODO Make a confirmation query

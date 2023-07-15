@@ -9,7 +9,14 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import crypto from "crypto";
 
-const client = new DynamoDBClient({});
+let options = {}
+
+
+if(process.env.AWS_SAM_LOCAL) {
+    options.endpoint = "http://localhost:8000"
+}
+
+const client = new DynamoDBClient(options);
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
@@ -30,22 +37,15 @@ export const handler = async (event, context) => {
         "Content-Type": "application/json",
     };
 
+    console.log(process.env.Foo)
+
     try {
-        switch (event.requestContext.resourceId) {
+        switch (event.requestContext.routeKey) {
+        // switch (event.requestContext.resourceId) {
             case "GET /levels":
                 body = await dynamo.send(
-                    new QueryCommand({
-                        TableName: tableName,
-                        IndexName: "StatusLastUpdatedIndex",
-                        Limit: 10,
-                        KeyConditionExpression: "#status = :status",
-                        ExpressionAttributeNames: {
-                            "#status": "status"
-                        },
-                        ExpressionAttributeValues: {
-                            ":status": "published"
-                        },
-                        ScanIndexForward: false,
+                    new ScanCommand({
+                        TableName: tableName
                     })
                 );
                 break;
@@ -68,12 +68,9 @@ export const handler = async (event, context) => {
                     new PutCommand({
                         TableName: tableName,
                         Item: {
-                            id: generatedLevelId,
-                            lastUpdated: Date.now().toString(),
-                            name: requestData.name,
-                            creator: requestData.username,
-                            status: requestData.status,
-                            levelData: requestData.levelData,
+                            pk: "USER#user1",
+                            sk: "USER#user1",
+                            userName: "User 1"
                         },
                     })
                 );
