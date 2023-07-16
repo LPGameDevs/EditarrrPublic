@@ -45,7 +45,7 @@ Resources:
             Method: PUT
             Auth:
               Authorizer: NONE
-        DeleteAnLevel:
+        DeleteLevel:
           Type: HttpApi
           Properties:
             Path: /levels/{id}

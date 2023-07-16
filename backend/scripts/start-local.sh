@@ -5,8 +5,7 @@ set -eo pipefail
 # 1. Set up mock AWS creds + config
 # 2. Start the local DynamoDB
 # 3. Set up the table for the DynamoDB
-# 4. Start the Nodejs lambda (npm install, npm run...)
-# 5. Make a confirmation query
+# 4. Start the Nodejs Lambda + local API Gateway for querying
 
 PORT=8000
 DDB="dynamodb"
@@ -86,12 +85,12 @@ else
         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
         --endpoint-url http://localhost:${PORT}
 fi
-# Other DynamoDB commands:
+# Other helpful DynamoDB commands:
 # aws dynamodb list-tables --endpoint-url http://localhost:${PORT}
 # aws dynamodb delete-table --endpoint-url http://localhost:${PORT} --table-name <table-name> 
 
 
-# Start the Nodejs lambda
+# Start the Nodejs Lambda + API Gateway for local queries
 DDB_IP_ADDR=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${DDB})
 if [[ $my_variable == *"Error"* ]]; then
   echo "Failed to determine the IP Address of the DynamoDB Container: '${DDB_IP_ADDR}'"
@@ -100,5 +99,3 @@ fi
 echo "IP Address of DynamoDB Container: ${DDB_IP_ADDR}"
 echo "Starting Lambda..."
 (cd ./lambda && sam local start-api --parameter-overrides ParameterKey=DdbIpAddr,ParameterValue=${DDB_IP_ADDR})
-
-# TODO Make a confirmation query
