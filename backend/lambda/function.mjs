@@ -10,10 +10,10 @@ import {
 import crypto from "crypto";
 
 let options = {}
-
-
 if(process.env.AWS_SAM_LOCAL) {
-    options.endpoint = "http://localhost:8000"
+    console.log("Setting IP Address of local DynamoDB Container to: %s", process.env.DDB_IP_ADDR);
+    options.endpoint = "http://" + process.env.DDB_IP_ADDR + ":8000";
+    console.log(JSON.stringify(options))
 }
 
 const client = new DynamoDBClient(options);
@@ -37,11 +37,8 @@ export const handler = async (event, context) => {
         "Content-Type": "application/json",
     };
 
-    console.log(process.env.Foo)
-
     try {
         switch (event.requestContext.routeKey) {
-        // switch (event.requestContext.resourceId) {
             case "GET /levels":
                 body = await dynamo.send(
                     new ScanCommand({

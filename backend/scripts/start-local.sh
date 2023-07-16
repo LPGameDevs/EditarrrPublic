@@ -91,7 +91,14 @@ fi
 # aws dynamodb delete-table --endpoint-url http://localhost:${PORT} --table-name <table-name> 
 
 
-# TODO Start the Nodejs lambda
-# sam local start-api --parameter-overrides Foo=bar
+# Start the Nodejs lambda
+DDB_IP_ADDR=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${DDB})
+if [[ $my_variable == *"Error"* ]]; then
+  echo "Failed to determine the IP Address of the DynamoDB Container: '${DDB_IP_ADDR}'"
+  exit 1
+fi
+echo "IP Address of DynamoDB Container: ${DDB_IP_ADDR}"
+echo "Starting Lambda..."
+(cd ./lambda && sam local start-api --parameter-overrides ParameterKey=DdbIpAddr,ParameterValue=${DDB_IP_ADDR})
 
 # TODO Make a confirmation query

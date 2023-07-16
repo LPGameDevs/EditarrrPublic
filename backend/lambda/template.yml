@@ -2,7 +2,9 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
 Parameters:
-  Foo:
+  # Note: Parameter name can NOT contain non-alphanumeric characters:
+  # https://stackoverflow.com/questions/59706797/aws-sam-local-and-environment-parameters
+  DdbIpAddr:
     Type: String
 
 Resources:
@@ -13,7 +15,7 @@ Resources:
       Runtime: nodejs18.x
       Environment:
         Variables:
-          Foo: !Ref Foo
+          DDB_IP_ADDR: !Ref DdbIpAddr
       Events:
         CreateLevel:
           Type: HttpApi
