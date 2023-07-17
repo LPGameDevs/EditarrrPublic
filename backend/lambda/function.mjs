@@ -9,11 +9,10 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import crypto from "crypto";
 
-let options = {}
+let options = {};
 if(process.env.AWS_SAM_LOCAL) {
     console.log("Setting IP Address of local DynamoDB Container to: %s", process.env.DDB_IP_ADDR);
     options.endpoint = "http://" + process.env.DDB_IP_ADDR + ":8000";
-    console.log(JSON.stringify(options))
 }
 
 const client = new DynamoDBClient(options);
@@ -62,6 +61,7 @@ export const handler = async (event, context) => {
                 const requestData = JSON.parse(event.body);
                 let generatedLevelId = uuidv4();
                 await dynamo.send(
+                    // TODO Actual implementation, this was just inserting some dummy data for testing
                     new PutCommand({
                         TableName: tableName,
                         Item: {
