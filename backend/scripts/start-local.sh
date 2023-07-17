@@ -13,7 +13,7 @@ TABLE_NAME="editarrr-level-storage"
 
 # Set up mock AWS credentials
 if [ ! -d ~/.aws ]; then 
-    echo "Setting up mock AWS config & creds..."
+    echo "No AWS credentials found. Setting up fakse AWS config & creds so that AWS commands can be run..."
     mkdir -p ~/.aws
     echo -e "[default]\nregion = eu-north-1" > ~/.aws/config
     echo -e "[default]\naws_access_key_id=fakeAccessKey\naws_secret_access_key=fakeSecretKey" > ~/.aws/credentials; 
@@ -36,6 +36,9 @@ else
     fi
     sleep 5 # Give DynamoDB 5 seconds to start up
 fi
+# Other helpful Docker commands:
+# docker stop ${DDB}
+# docker rm ${DDB}
 
 
 # Set up the DynamoDB Table

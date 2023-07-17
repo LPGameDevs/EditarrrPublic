@@ -7,9 +7,9 @@ Prerequisites:
 * [Docker](https://www.docker.com/products/docker-desktop/)
 * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * [AWS SAM CLI](https://aws.amazon.com/serverless/sam/)
-* [Nodejs](https://nodejs.dev/en/download/)
 
 There is a [GitHub Codespace configuration for this repo](../.devcontainer/devcontainer.json) that you can use that comes with all the dependencies pre-installed. 
+
 More on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart).
 
 To start the backend locally, run shell script:
@@ -17,13 +17,8 @@ To start the backend locally, run shell script:
 cd backend
 ./scripts/start-local.sh # Starts the DynamoDB and
 ```
-If you're on Windows, you can use the [configured Codespace](../.devcontainer/devcontainer.json) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+If you're on Windows, you can use the [configured Codespace](../.devcontainer/devcontainer.json) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) to run the command.
 
-To stop the backend, run:
-```sh
-cd backend
-./scripts/stop-local.sh
-```
 
 ## Architecture
 ```mermaid
