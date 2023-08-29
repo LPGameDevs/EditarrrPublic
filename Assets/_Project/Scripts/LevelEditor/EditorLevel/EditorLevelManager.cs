@@ -310,6 +310,11 @@ namespace Editarrr.LevelEditor
             {
                 // Open a new/clean Editor
                 this.LevelManager.Create();
+
+                // Trigger an event to update the level code in the Exchange.
+                string code = this.LevelManager.LevelState.Code;
+                this.Exchange.SetCode(code);
+                this.Exchange.SetAutoload(code.Length > 0);
             }
         }
 
