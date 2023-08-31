@@ -41,7 +41,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     name = "levelStatus"
     type = "S" # PUBLISHED|DRAFT
   }
-  
+
   attribute {
     name = "levelUpdatedAt"
     type = "N" # Epoch
@@ -87,8 +87,8 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     name            = "levelCreatorId-levelUpdatedAt-index"
     hash_key        = "levelCreatorId"
     range_key       = "levelUpdatedAt"
-    write_capacity  = 1
-    read_capacity   = 1
+    write_capacity  = 0
+    read_capacity   = 0
     projection_type = "INCLUDE"
     non_key_attributes = [ "pk", "levelName", "levelStatus"]
   }
@@ -97,8 +97,8 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     name            = "levelStatus-levelUpdatedAt-index"
     hash_key        = "levelStatus"
     range_key       = "levelUpdatedAt"
-    write_capacity  = 1
-    read_capacity   = 1
+    write_capacity  = 0
+    read_capacity   = 0
     projection_type = "INCLUDE"
     non_key_attributes = [ "pk", "levelName", "levelCreatorId"]
   }
@@ -106,7 +106,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
 
 # IAM policy for the lambda to access the dynamodb table.
 resource "aws_iam_policy" "dynamoDBLambdaPolicy" {
-  name = "DynamoDBLambdaPolicy"
+  name = "DynamoDBLambdaPolicyEditarrr"
 
   policy = jsonencode({
     Version = "2012-10-17"
