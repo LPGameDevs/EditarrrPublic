@@ -8,16 +8,21 @@ Prerequisites:
 * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * [AWS SAM CLI](https://aws.amazon.com/serverless/sam/)
 
-There is a [GitHub Codespace configuration for this repo](../.devcontainer/devcontainer.json) that you can use that comes with all the dependencies pre-installed. 
+There is a [GitHub Codespace configuration for this repo](../.devcontainer/devcontainer.json) that you can use that comes with all the above dependencies pre-installed (more on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart)).
 
-More on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart).
-
-To start the backend locally, run shell script:
+To start the backend, run shell script:
 ```sh
 cd backend
-./scripts/start-local.sh # Starts the DynamoDB and
+./scripts/start-local.sh # Starts the DynamoDB, API Gateway, and Lambda locally
 ```
-If you're on Windows, you can use the [configured Codespace](../.devcontainer/devcontainer.json) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) to run the command.
+*If you're on Windows, you can use the [configured Codespace](../.devcontainer/devcontainer.json).*
+
+You can make requests locally using the scripts in the [requests](./requests/) directory:
+```sh
+./requests/post.sh
+./requests/get-all.sh
+```
+If you want to make remote requests, set `export REMOTE=true`.
 
 
 ## Architecture
