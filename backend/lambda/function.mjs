@@ -40,6 +40,7 @@ export const handler = async (event, context) => {
         switch (event.requestContext.routeKey) {
             case "GET /levels":
                 body = await dynamo.send(
+                    // TODO Actual Implementation
                     new ScanCommand({
                         TableName: tableName
                     })
