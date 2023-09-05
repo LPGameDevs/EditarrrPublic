@@ -2,28 +2,27 @@
 
 Backend storage to persist player-created levels.
 
-## How to Run Locally
-Prerequisites:
-* [Docker](https://www.docker.com/products/docker-desktop/)
-* [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-* [AWS SAM CLI](https://aws.amazon.com/serverless/sam/)
+## How to Develop
+There is a [GitHub Codespace configuration for this repo](../.devcontainer/devcontainer.json) 
+that you can use that comes with all the dependencies 
+([Docker](https://www.docker.com/products/docker-desktop/), 
+[AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html), 
+[AWS SAM CLI](https://aws.amazon.com/serverless/sam/)) 
+pre-installed 
+(more on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart)).
 
-There is a [GitHub Codespace configuration for this repo](../.devcontainer/devcontainer.json) that you can use that comes with all the above dependencies pre-installed (more on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart)).
-
-To start the backend, run shell script:
+To start the backend, from the Codespace, run shell script:
 ```sh
 cd backend
 ./scripts/start-local.sh # Starts the DynamoDB, API Gateway, and Lambda locally
 ```
-*If you're on Windows, you can use the [configured Codespace](../.devcontainer/devcontainer.json).*
 
 You can make requests locally using the scripts in the [requests](./requests/) directory:
 ```sh
 ./requests/post.sh
 ./requests/get-all.sh
 ```
-If you want to make remote requests, set `export REMOTE=true`.
-
+(if you want to make remote requests to the actual AWS service, set `export REMOTE=true`)
 
 ## Architecture
 ```mermaid
