@@ -1,0 +1,55 @@
+# NOT for deployment use - only intended for local development
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  # Note: Parameter name can NOT contain non-alphanumeric characters:
+  # https://stackoverflow.com/questions/59706797/aws-sam-local-and-environment-parameters
+  DdbIpAddr:
+    Type: String
+
+Resources:
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: function.handler
+      Runtime: nodejs18.x
+      Environment:
+        Variables:
+          DDB_IP_ADDR: !Ref DdbIpAddr
+      Events:
+        CreateLevel:
+          Type: HttpApi
+          Properties:
+            Path: /levels
+            Method: POST
+            Auth:
+              Authorizer: NONE
+        GetAllLevels:
+          Type: HttpApi
+          Properties:
+            Path: /levels
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        GetLevel:
+          Type: HttpApi
+          Properties:
+            Path: /levels/{id}
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        UpdateLevel:
+          Type: HttpApi
+          Properties:
+            Path: /levels/{id}
+            Method: PUT
+            Auth:
+              Authorizer: NONE
+        DeleteLevel:
+          Type: HttpApi
+          Properties:
+            Path: /levels/{id}
+            Method: DELETE
+            Auth:
+              Authorizer: NONE

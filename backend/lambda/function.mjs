@@ -9,7 +9,13 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import crypto from "crypto";
 
-const client = new DynamoDBClient({});
+let options = {};
+if(process.env.AWS_SAM_LOCAL) {
+    console.log("Setting IP Address of local DynamoDB Container to: %s", process.env.DDB_IP_ADDR);
+    options.endpoint = "http://" + process.env.DDB_IP_ADDR + ":8000";
+}
+
+const client = new DynamoDBClient(options);
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
@@ -31,21 +37,12 @@ export const handler = async (event, context) => {
     };
 
     try {
-        switch (event.requestContext.resourceId) {
+        switch (event.requestContext.routeKey) {
             case "GET /levels":
                 body = await dynamo.send(
-                    new QueryCommand({
-                        TableName: tableName,
-                        IndexName: "StatusLastUpdatedIndex",
-                        Limit: 10,
-                        KeyConditionExpression: "#status = :status",
-                        ExpressionAttributeNames: {
-                            "#status": "status"
-                        },
-                        ExpressionAttributeValues: {
-                            ":status": "published"
-                        },
-                        ScanIndexForward: false,
+                    // TODO Actual Implementation
+                    new ScanCommand({
+                        TableName: tableName
                     })
                 );
                 break;
@@ -65,15 +62,13 @@ export const handler = async (event, context) => {
                 const requestData = JSON.parse(event.body);
                 let generatedLevelId = uuidv4();
                 await dynamo.send(
+                    // TODO Actual implementation, this was just inserting some dummy data for testing
                     new PutCommand({
                         TableName: tableName,
                         Item: {
-                            id: generatedLevelId,
-                            lastUpdated: Date.now().toString(),
-                            name: requestData.name,
-                            creator: requestData.username,
-                            status: requestData.status,
-                            levelData: requestData.levelData,
+                            pk: "USER#user1",
+                            sk: "USER#user1",
+                            userName: "User 1"
                         },
                     })
                 );
