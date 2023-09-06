@@ -1,3 +1,4 @@
+using Editarrr.Level;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ namespace Gameplay.GUI
     public class GameplayGuiManager : MonoBehaviour
     {
         [SerializeField]
-        private Transform _winMenu;
+        private WinMenu _winMenu;
         [SerializeField]
         private Transform _loseMenu;
         [SerializeField]
@@ -19,10 +20,21 @@ namespace Gameplay.GUI
             SetOverlayAlpha(0);
         }
 
+        public void SetLevelCode(string code)
+        {
+            _winMenu.SetCode(code);
+        }
+
+        public void SetLevelState(LevelState levelState)
+        {
+            _winMenu.SetLevelData(levelState);
+        }
+
         private void ShowWinMenu()
         {
             SetOverlayAlpha(0.5f);
             _winMenu.gameObject.SetActive(true);
+            _winMenu.Show();
         }
 
         private void ShowLoseMenu()

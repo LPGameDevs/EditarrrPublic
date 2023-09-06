@@ -1,6 +1,7 @@
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Gameplay.GUI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TileData = Editarrr.LevelEditor.TileData;
@@ -20,6 +21,7 @@ namespace Editarrr.Level
         [field: SerializeField, Header("Pools")] private EditorTileDataPool EditorTileDataPool { get; set; }
 
         private Tilemap _walls, _damage;
+        private GameplayGuiManager _gameplayGuiManager;
 
         public void SetTilemapWalls(Tilemap walls)
         {
@@ -31,15 +33,23 @@ namespace Editarrr.Level
             _damage = damage;
         }
 
+        public void SetGuiManager(GameplayGuiManager gameplayGuiManager)
+        {
+            _gameplayGuiManager = gameplayGuiManager;
+        }
+
         public override void DoStart()
         {
             string code = Exchange.CodeToLoad;
+            _gameplayGuiManager.SetLevelCode(code);
+
             LevelManager.Load(code, OnLevelLoaded);
         }
 
         private void OnLevelLoaded(LevelState levelState)
         {
             PaintTilesFromFile(levelState);
+            _gameplayGuiManager.SetLevelState(levelState);
         }
 
         private void PaintTilesFromFile(LevelState level)
