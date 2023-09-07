@@ -247,6 +247,11 @@ namespace Player
 
         private void CalculateGravity()
         {
+            if (_isDisabled)
+            {
+                return;
+            }
+
             if (_collisions.down)
             {
                 // Move out of the ground
