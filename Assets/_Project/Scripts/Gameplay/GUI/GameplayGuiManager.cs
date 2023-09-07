@@ -1,3 +1,5 @@
+using System;
+using Editarrr.Input;
 using Editarrr.Level;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,17 +8,24 @@ namespace Gameplay.GUI
 {
     public class GameplayGuiManager : MonoBehaviour
     {
+        public static event Action<bool> OnGamePauseChanged;
+
         [SerializeField]
         private WinMenu _winMenu;
         [SerializeField]
-        private Transform _loseMenu;
+        private Transform _pauseMenu;
         [SerializeField]
         private Image _overlay;
+
+        [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
+
+
+        private bool _isPaused = false;
 
         private void Awake()
         {
             _winMenu.gameObject.SetActive(false);
-            _loseMenu.gameObject.SetActive(false);
+            _pauseMenu.gameObject.SetActive(false);
             SetOverlayAlpha(0);
         }
 
@@ -35,12 +44,35 @@ namespace Gameplay.GUI
             SetOverlayAlpha(0.5f);
             _winMenu.gameObject.SetActive(true);
             _winMenu.Show();
+            OnGamePauseChanged?.Invoke(true);
         }
 
-        private void ShowLoseMenu()
+        private void ShowPauseMenu()
         {
+            _isPaused = true;
+            OnGamePauseChanged?.Invoke(true);
             SetOverlayAlpha(0.5f);
-            _loseMenu.gameObject.SetActive(true);
+            _pauseMenu.gameObject.SetActive(true);
+        }
+
+        private void HidePauseMenu()
+        {
+            _isPaused = false;
+            OnGamePauseChanged?.Invoke(false);
+            SetOverlayAlpha(0f);
+            _pauseMenu.gameObject.SetActive(false);
+        }
+
+        private void TogglePauseMenu()
+        {
+            if (_isPaused)
+            {
+                HidePauseMenu();
+            }
+            else
+            {
+                ShowPauseMenu();
+            }
         }
 
         private void SetOverlayAlpha(float alpha)
@@ -49,6 +81,14 @@ namespace Gameplay.GUI
             Color color = _overlay.color;
             color.a = alpha;
             _overlay.color = color;
+        }
+
+        private void Update()
+        {
+            if (PauseInput.WasPressed)
+            {
+                TogglePauseMenu();
+            }
         }
 
         private void OnEnable()

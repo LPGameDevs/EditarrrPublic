@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Input;
+using Gameplay.GUI;
 using UnityEngine;
 
 namespace Player
@@ -77,9 +78,18 @@ namespace Player
         private bool _jumpReleaseThisFrame;
         private float _movementValue;
 
+        // Certain game events disable player input.
+        // Eg. Pause menu, or completing a level.
+        private bool _isDisabled = false;
+
 
         private void GatherInput()
         {
+            if (_isDisabled)
+            {
+                return;
+            }
+
             _isMoving = MoveInput.IsPressed;
             _movementValue = MoveInput.Read<Vector2>().x;
 
@@ -191,7 +201,6 @@ namespace Player
         }
 
         #endregion
-
 
         #region Walk
 
@@ -327,6 +336,11 @@ namespace Player
         // We cast our bounds before moving to avoid future collisions
         private void MoveCharacter()
         {
+            if (_isDisabled)
+            {
+                return;
+            }
+
             var pos = transform.position + _characterBounds.center;
             _rawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally
             var move = _rawMovement * Time.deltaTime;
@@ -376,5 +390,21 @@ namespace Player
         }
 
         #endregion
+
+        private void DisableController(bool isDisabled)
+        {
+            _isDisabled = isDisabled;
+        }
+
+        private void OnEnable()
+        {
+            GameplayGuiManager.OnGamePauseChanged += DisableController;
+
+        }
+
+        private void OnDisable()
+        {
+            GameplayGuiManager.OnGamePauseChanged -= DisableController;
+        }
     }
 }
