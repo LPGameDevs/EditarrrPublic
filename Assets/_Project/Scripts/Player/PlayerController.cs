@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Input;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Player

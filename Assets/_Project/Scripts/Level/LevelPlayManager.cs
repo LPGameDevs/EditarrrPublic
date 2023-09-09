@@ -114,7 +114,6 @@ namespace Editarrr.Level
 
          private void SetTile(Vector3Int position, TileBase tile)
          {
-
              _walls.SetTile(position, tile);
          }
     }
