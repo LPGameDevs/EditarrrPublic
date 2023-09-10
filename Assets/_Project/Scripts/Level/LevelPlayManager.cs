@@ -14,8 +14,7 @@ namespace Editarrr.Level
 
         [field: SerializeField, Info(Documentation)] private EditorLevelExchange Exchange { get; set; }
 
-        [field: SerializeField, Header("Managers")] private LevelManager LevelManager { get; set; }
-
+        [field: SerializeField, Header("Managers")] public LevelManager LevelManager { get; private set; }
 
         [field: SerializeField, Header("Pools")] private EditorTileDataPool EditorTileDataPool { get; set; }
 

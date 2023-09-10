@@ -1,4 +1,5 @@
 using Editarrr.Input;
+using Editarrr.LevelEditor;
 using UnityEngine;
 
 public class CameraDragger : MonoBehaviour
@@ -10,8 +11,8 @@ public class CameraDragger : MonoBehaviour
     public int ZoomMax = 1;
     public int ZoomMin = 15;
 
-    public Vector3 MaxDrag = new Vector3(50, 25, 0);
-    public Vector3 MinDrag = new Vector3(-50, -25, 0);
+    private Vector3 _maxDrag;
+    private Vector3 _minDrag;
 
     private Vector3 _dragOrigin;
     private Vector3 _cameraStart;
@@ -26,7 +27,11 @@ public class CameraDragger : MonoBehaviour
     private void Start()
     {
         _camera = GetComponent<Camera>();
-    }
+
+        EditorLevelSettings currentSettings = FindObjectOfType<EditorLevelSystem>().Manager.Settings;
+        _maxDrag = new Vector3(currentSettings.EditorLevelScaleX / 2f, currentSettings.EditorLevelScaleY / 2f, 0);
+        _minDrag = _maxDrag * -1f;
+}
 
     void Update()
     {
@@ -54,8 +59,8 @@ public class CameraDragger : MonoBehaviour
         var vertExtent = _camera.orthographicSize;
         var horzExtent = vertExtent * Screen.width / Screen.height;
 
-        move.x = Mathf.Clamp(move.x, MinDrag.x + horzExtent, MaxDrag.x - horzExtent);
-        move.y = Mathf.Clamp(move.y, MinDrag.y + vertExtent, MaxDrag.y - vertExtent);
+        move.x = Mathf.Clamp(move.x, _minDrag.x + horzExtent, _maxDrag.x - horzExtent);
+        move.y = Mathf.Clamp(move.y, _minDrag.y + vertExtent, _maxDrag.y - vertExtent);
         move.z = transform.position.z;
         transform.position = move;
     }
