@@ -38,7 +38,7 @@ namespace CorgiExtension
         public void GoToEditorLevel()
         {
             CheckCodePreferences();
-            LevelManager.Instance.GotoLevel(LevelManager.CreateLevelSceneName);
+            SceneManager.Instance.GoToScene(SceneManager.CreateLevelSceneName);
         }
 
         private void CheckCodePreferences()
@@ -60,13 +60,13 @@ namespace CorgiExtension
         public void GoToReplay()
         {
             CheckCodePreferences();
-            LevelManager.Instance.GotoLevel("EditorReplay");
+            SceneManager.Instance.GoToScene("EditorReplay");
         }
 
         public void GoToLevel()
         {
             CheckCodePreferences();
-            LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
+            SceneManager.Instance.GoToScene(SceneManager.TestLevelSceneName);
         }
 
         public void HideEditorTools()

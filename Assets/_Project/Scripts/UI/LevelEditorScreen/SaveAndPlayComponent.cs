@@ -41,13 +41,13 @@ namespace Editarrr.UI.LevelEditor
             private void PlayButtonElement_Clicked()
             {
                 this.EditorLevelManager.Save();
-                LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
+                SceneManager.Instance.GoToScene(SceneManager.TestLevelSceneName);
             }
 
             private void SaveButtonElement_Clicked()
             {
                 this.EditorLevelManager.Save();
-                LevelManager.Instance.GotoLevel(LevelManager.LevelSelectionSceneName);
+                SceneManager.Instance.GoToScene(SceneManager.LevelSelectionSceneName);
             }
         }
     }

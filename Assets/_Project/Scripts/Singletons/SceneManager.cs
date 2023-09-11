@@ -9,19 +9,19 @@ namespace Singletons
      * Level Manager Singleton
      *
      * Responsible for:
-     *  - Loading levels
+     *  - Loading scenes
      *  - Player spawning
      *  - Level/camera boundaries and collision
      *  - Player life/death tracking and respawn
      */
-    public class LevelManager : UnitySingleton<LevelManager>
+    public class SceneManager : UnitySingleton<SceneManager>
     {
         public static string LevelSelectionSceneName = "EditorSelection";
         public static string TestLevelSceneName = "EditorTest";
         public static string CreateLevelSceneName = "EditorCreate";
 
         [field: SerializeField, Tooltip("Restart input map")] private InputValue RestartInput { get; set; }
-        [field: SerializeField, Tooltip("Scene reloads after this duration")] private float TransitionTime { get; set; }
+        [field: SerializeField, Tooltip("Active scene reloads after this time")] private float TransitionTime { get; set; }
 
         bool restartInitiated;
 
@@ -41,14 +41,14 @@ namespace Singletons
                 TransitionedRestart();
         }
 
-        public void GotoLevel(string sceneName)
+        public void GoToScene(string sceneName)
         {
-            SceneManager.LoadScene(sceneName);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
         }
 
         public void RestartLevel()
         {
-            GotoLevel(SceneManager.GetActiveScene().name);
+            GoToScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
 
         public void TransitionedRestart()
