@@ -16,7 +16,7 @@ namespace LevelEditor
 
         public void GoToLevel()
         {
-            SceneTransitionManager.Instance.GoToScene(LevelName);
+            SceneManager.Instance.GoToScene(LevelName);
         }
 
         /**
@@ -24,13 +24,13 @@ namespace LevelEditor
         */
         public void RestartLevel()
         {
-            SceneTransitionManager.Instance.RestartLevel();
+            SceneManager.Instance.RestartLevel();
         }
 
 
         public void GoToLevelSelection()
         {
-            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
+            SceneManager.Instance.GoToScene(SceneManager.LevelSelectionSceneName);
         }
     }
 }
