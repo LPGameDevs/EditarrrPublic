@@ -9,12 +9,10 @@ namespace Player
         [SerializeField] private MMFeedbacks _move, _jump, _land, _damage, _death;
 
         private PlayerController _player;
-        private HealthSystem _health;
 
         private void Awake()
         {
             _player = GetComponentInParent<PlayerController>();
-            _health = GetComponentInParent<HealthSystem>();
         }
 
         private void Update()
@@ -55,16 +53,16 @@ namespace Player
         {
             PlayerController.OnPlayerJumped += OnJump;
             PlayerController.OnPlayerLanded += OnLand;
-            _health.OnHitPointsChanged += OnDamage;
-            _health.OnDeath += OnDeath;
+            HealthSystem.OnHitPointsChanged += OnDamage;
+            HealthSystem.OnDeath += OnDeath;
         }
 
         private void OnDisable()
         {
             PlayerController.OnPlayerJumped -= OnJump;
             PlayerController.OnPlayerLanded -= OnLand;
-            _health.OnHitPointsChanged -= OnDamage;
-            _health.OnDeath -= OnDeath;
+            HealthSystem.OnHitPointsChanged -= OnDamage;
+            HealthSystem.OnDeath -= OnDeath;
         }
     }
 }

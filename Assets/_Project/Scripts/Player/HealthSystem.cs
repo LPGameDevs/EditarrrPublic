@@ -21,10 +21,10 @@ namespace Player
 
         public class OnHealthChangedArgs : OnValueChangedArgs<int> { };
 
-        public event EventHandler OnDeath;
-        public event EventHandler OnInvincibleStarted;
-        public event EventHandler OnInvincibleEnded;
-        public event EventHandler<OnHealthChangedArgs> OnHitPointsChanged;
+        public static event EventHandler OnDeath;
+        public static event EventHandler OnInvincibleStarted;
+        public static event EventHandler OnInvincibleEnded;
+        public static event EventHandler<OnHealthChangedArgs> OnHitPointsChanged;
 
         private void Update()
         {
