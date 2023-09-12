@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Input;
 using Gameplay.GUI;
+using Systems;
 using UnityEngine;
 
 namespace Player
@@ -10,7 +11,7 @@ namespace Player
     /// <summary>
     /// Adapted from Tarodev's Ultimate 2D controller, found here: https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller
     /// </summary>
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IEventListener<GameEvent>
     {
         // events
         public static event Action OnPlayerJumped;
@@ -27,16 +28,21 @@ namespace Player
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
-        private bool _active;
+        private bool _active = false;
+        private bool _started = false;
 
         void Awake()
         {
-            Invoke(nameof(Activate), 0.5f);
             _health = GetComponent<HealthSystem>();
             _animator = GetComponent<Animator>();
         }
 
-        void Activate() => _active = true;
+        void Activate()
+        {
+            _active = true;
+            _started = true;
+        }
+
 
         private void Update()
         {
@@ -78,18 +84,9 @@ namespace Player
         private bool _jumpReleaseThisFrame;
         private float _movementValue;
 
-        // Certain game events disable player input.
-        // Eg. Pause menu, or completing a level.
-        private bool _isDisabled = false;
-
 
         private void GatherInput()
         {
-            if (_isDisabled)
-            {
-                return;
-            }
-
             _isMoving = MoveInput.IsPressed;
             _movementValue = MoveInput.Read<Vector2>().x;
 
@@ -247,11 +244,6 @@ namespace Player
 
         private void CalculateGravity()
         {
-            if (_isDisabled)
-            {
-                return;
-            }
-
             if (_collisions.down)
             {
                 // Move out of the ground
@@ -341,11 +333,6 @@ namespace Player
         // We cast our bounds before moving to avoid future collisions
         private void MoveCharacter()
         {
-            if (_isDisabled)
-            {
-                return;
-            }
-
             var pos = transform.position + _characterBounds.center;
             _rawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally
             var move = _rawMovement * Time.deltaTime;
@@ -396,20 +383,44 @@ namespace Player
 
         #endregion
 
-        private void DisableController(bool isDisabled)
+        private void UpdateActiveState(bool activate)
         {
-            _isDisabled = isDisabled;
+            if (_started)
+            {
+                _active = activate;
+            }
+            else
+            {
+                Invoke(nameof(Activate), 0.5f);
+            }
+        }
+
+        public void OnEvent(GameEvent gameEvent)
+        {
+            // We only care about pause events.
+            if (!new[] {GameEventType.Pause, GameEventType.Unpause}.Contains(gameEvent.Type))
+            {
+                return;
+            }
+
+            if (gameEvent.Type == GameEventType.Pause)
+            {
+                UpdateActiveState(false);
+            }
+            else
+            {
+                UpdateActiveState(true);
+            }
         }
 
         private void OnEnable()
         {
-            GameplayGuiManager.OnGamePauseChanged += DisableController;
-
+            this.EventStartListening<GameEvent>();
         }
 
         private void OnDisable()
         {
-            GameplayGuiManager.OnGamePauseChanged -= DisableController;
+            this.EventStopListening<GameEvent>();
         }
     }
 }

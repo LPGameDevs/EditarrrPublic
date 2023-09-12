@@ -1,6 +1,6 @@
-using System;
 using Editarrr.Input;
 using Editarrr.Level;
+using Systems;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +8,6 @@ namespace Gameplay.GUI
 {
     public class GameplayGuiManager : MonoBehaviour
     {
-        public static event Action<bool> OnGamePauseChanged;
-
         [SerializeField]
         private WinMenu _winMenu;
         [SerializeField]
@@ -21,6 +19,7 @@ namespace Gameplay.GUI
 
 
         private bool _isPaused = false;
+        private bool _isWin = false;
 
         private void Awake()
         {
@@ -41,16 +40,17 @@ namespace Gameplay.GUI
 
         private void ShowWinMenu()
         {
+            _isWin = true;
+            PauseGame();
             SetOverlayAlpha(0.5f);
             _winMenu.gameObject.SetActive(true);
             _winMenu.Show();
-            OnGamePauseChanged?.Invoke(true);
         }
 
         private void ShowPauseMenu()
         {
             _isPaused = true;
-            OnGamePauseChanged?.Invoke(true);
+            PauseGame();
             SetOverlayAlpha(0.5f);
             _pauseMenu.gameObject.SetActive(true);
         }
@@ -58,13 +58,19 @@ namespace Gameplay.GUI
         private void HidePauseMenu()
         {
             _isPaused = false;
-            OnGamePauseChanged?.Invoke(false);
+            UnPauseGame();
             SetOverlayAlpha(0f);
             _pauseMenu.gameObject.SetActive(false);
         }
 
         private void TogglePauseMenu()
         {
+            // We dont want to unpause the game if the Win menu is active.
+            if (_isWin)
+            {
+                return;
+            }
+
             if (_isPaused)
             {
                 HidePauseMenu();
@@ -81,6 +87,16 @@ namespace Gameplay.GUI
             Color color = _overlay.color;
             color.a = alpha;
             _overlay.color = color;
+        }
+
+        private void PauseGame()
+        {
+            GameEvent.Trigger(GameEventType.Pause);
+        }
+
+        private void UnPauseGame()
+        {
+            GameEvent.Trigger(GameEventType.Unpause);
         }
 
         private void Update()

@@ -1,11 +1,9 @@
 using System;
-using Gameplay;
-using Gameplay.GUI;
 using MoreMountains.Feedbacks;
 using TMPro;
 using UnityEngine;
 
-namespace Legacy
+namespace Gameplay.GUI
 {
     /**
      * Reference material.
@@ -24,7 +22,6 @@ namespace Legacy
         private bool _hasStarted;
         private bool _isFinished;
         private bool _isFlashing;
-        private bool _isPaused;
 
         private void Start()
         {
@@ -34,11 +31,6 @@ namespace Legacy
 
         void Update()
         {
-            if (_isPaused)
-            {
-                return;
-            }
-
             if (_isFinished || !_hasStarted)
             {
                 return;
@@ -98,21 +90,14 @@ namespace Legacy
             }
         }
 
-        private void PauseTimer(bool isPaused)
-        {
-            _isPaused = isPaused;
-        }
-
         private void OnEnable()
         {
             Chest.OnChestOpened += HideTimer;
-            GameplayGuiManager.OnGamePauseChanged += PauseTimer;
         }
 
         private void OnDisable()
         {
             Chest.OnChestOpened -= HideTimer;
-            GameplayGuiManager.OnGamePauseChanged -= PauseTimer;
         }
     }
 }
