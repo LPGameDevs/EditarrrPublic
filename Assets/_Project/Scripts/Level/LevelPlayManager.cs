@@ -3,6 +3,7 @@ using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Gameplay.GUI;
+using Systems;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TileData = Editarrr.LevelEditor.TileData;
@@ -61,6 +62,7 @@ namespace Editarrr.Level
         {
             PaintTilesFromFile(levelState);
             _gameplayGuiManager.SetLevelState(levelState);
+            GameEvent.Trigger(GameEventType.Unpause);
         }
 
         private void PaintTilesFromFile(LevelState level)

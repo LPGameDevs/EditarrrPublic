@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Input;
+using Gameplay.GUI;
+using Systems;
 using UnityEngine;
 
 namespace Player
@@ -9,7 +11,7 @@ namespace Player
     /// <summary>
     /// Adapted from Tarodev's Ultimate 2D controller, found here: https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller
     /// </summary>
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IEventListener<GameEvent>
     {
         // events
         public static event Action OnPlayerJumped;
@@ -26,16 +28,21 @@ namespace Player
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
-        private bool _active;
+        private bool _active = false;
+        private bool _started = false;
 
         void Awake()
         {
-            Invoke(nameof(Activate), 0.5f);
             _health = GetComponent<HealthSystem>();
             _animator = GetComponent<Animator>();
         }
 
-        void Activate() => _active = true;
+        void Activate()
+        {
+            _active = true;
+            _started = true;
+        }
+
 
         private void Update()
         {
@@ -191,7 +198,6 @@ namespace Player
         }
 
         #endregion
-
 
         #region Walk
 
@@ -376,5 +382,45 @@ namespace Player
         }
 
         #endregion
+
+        private void UpdateActiveState(bool activate)
+        {
+            if (_started)
+            {
+                _active = activate;
+            }
+            else
+            {
+                Invoke(nameof(Activate), 0.5f);
+            }
+        }
+
+        public void OnEvent(GameEvent gameEvent)
+        {
+            // We only care about pause events.
+            if (!new[] {GameEventType.Pause, GameEventType.Unpause}.Contains(gameEvent.Type))
+            {
+                return;
+            }
+
+            if (gameEvent.Type == GameEventType.Pause)
+            {
+                UpdateActiveState(false);
+            }
+            else
+            {
+                UpdateActiveState(true);
+            }
+        }
+
+        private void OnEnable()
+        {
+            this.EventStartListening<GameEvent>();
+        }
+
+        private void OnDisable()
+        {
+            this.EventStopListening<GameEvent>();
+        }
     }
 }

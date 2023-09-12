@@ -1,10 +1,9 @@
 using System;
-using Gameplay;
 using MoreMountains.Feedbacks;
 using TMPro;
 using UnityEngine;
 
-namespace Legacy
+namespace Gameplay.GUI
 {
     /**
      * Reference material.

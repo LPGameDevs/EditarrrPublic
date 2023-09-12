@@ -1,4 +1,5 @@
 using System;
+using Singletons;
 using UnityEngine;
 
 namespace Player
@@ -88,6 +89,9 @@ namespace Player
         {
             Debug.Log(gameObject.name + "has died");
             OnDeath?.Invoke(this, EventArgs.Empty);
+
+            // @todo put this somewhere more sensible.
+            LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
         }
     }
 }
