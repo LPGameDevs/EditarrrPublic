@@ -24,7 +24,7 @@ namespace Editarrr.LevelEditor
         [Tooltip("This does nothing...")]
         public bool _documentation;
 
-        [field: SerializeField, Header("Settings")] private EditorLevelSettings Settings { get; set; }
+        [field: SerializeField, Header("Settings")] public EditorLevelSettings Settings { get; private set; }
 
         [field: SerializeField, Header("Exchange")] private EditorLevelExchange Exchange { get; set; }
 
