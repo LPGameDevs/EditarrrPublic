@@ -24,7 +24,7 @@ namespace Editarrr.LevelEditor
         [Tooltip("This does nothing...")]
         public bool _documentation;
 
-        [field: SerializeField, Header("Settings")] private EditorLevelSettings Settings { get; set; }
+        [field: SerializeField, Header("Settings")] public EditorLevelSettings Settings { get; private set; }
 
         [field: SerializeField, Header("Exchange")] private EditorLevelExchange Exchange { get; set; }
 
@@ -310,6 +310,11 @@ namespace Editarrr.LevelEditor
             {
                 // Open a new/clean Editor
                 this.LevelManager.Create();
+
+                // Trigger an event to update the level code in the Exchange.
+                string code = this.LevelManager.LevelState.Code;
+                this.Exchange.SetCode(code);
+                this.Exchange.SetAutoload(code.Length > 0);
             }
         }
 

@@ -1,4 +1,5 @@
 using System;
+using Singletons;
 using UnityEngine;
 
 namespace Player
@@ -11,6 +12,8 @@ namespace Player
         [SerializeField, Tooltip("If entity becomes invincible for a short time after taking damage")] private bool _hasDamageCooldown = true;
         [SerializeField, Range(0, 3f), Tooltip("How long entity is invincible after taking damage")] private float _damageCooldown = 0.3f;
         private float _damageCooldownTimeRemaining = 0;
+
+        public int MaxHitPoints { get => _maxHitPoints; }
 
         private void Awake()
         {
@@ -86,6 +89,9 @@ namespace Player
         {
             Debug.Log(gameObject.name + "has died");
             OnDeath?.Invoke(this, EventArgs.Empty);
+
+            // @todo put this somewhere more sensible.
+            LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
         }
     }
 }

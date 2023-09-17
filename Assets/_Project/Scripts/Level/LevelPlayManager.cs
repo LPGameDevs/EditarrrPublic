@@ -1,9 +1,13 @@
+using Editarrr.Input;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Gameplay.GUI;
+using Systems;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TileData = Editarrr.LevelEditor.TileData;
+using LevelSceneManager = Singletons.LevelManager;
 
 namespace Editarrr.Level
 {
@@ -14,12 +18,14 @@ namespace Editarrr.Level
 
         [field: SerializeField, Info(Documentation)] private EditorLevelExchange Exchange { get; set; }
 
-        [field: SerializeField, Header("Managers")] private LevelManager LevelManager { get; set; }
+        [field: SerializeField, Header("Managers")] public LevelManager LevelManager { get; private set; }
 
+        [field: SerializeField, Tooltip("Restart level input map")] private InputValue RestartInput { get; set; }
 
         [field: SerializeField, Header("Pools")] private EditorTileDataPool EditorTileDataPool { get; set; }
 
         private Tilemap _walls, _damage;
+        private GameplayGuiManager _gameplayGuiManager;
 
         public void SetTilemapWalls(Tilemap walls)
         {
@@ -31,15 +37,32 @@ namespace Editarrr.Level
             _damage = damage;
         }
 
+        public void SetGuiManager(GameplayGuiManager gameplayGuiManager)
+        {
+            _gameplayGuiManager = gameplayGuiManager;
+        }
+
         public override void DoStart()
         {
             string code = Exchange.CodeToLoad;
+            _gameplayGuiManager.SetLevelCode(code);
+
             LevelManager.Load(code, OnLevelLoaded);
+        }
+
+        public override void DoUpdate()
+        {
+            if (RestartInput.WasPressed)
+            {
+                LevelSceneManager.Instance.RestartLevel();
+            }
         }
 
         private void OnLevelLoaded(LevelState levelState)
         {
             PaintTilesFromFile(levelState);
+            _gameplayGuiManager.SetLevelState(levelState);
+            GameEvent.Trigger(GameEventType.Unpause);
         }
 
         private void PaintTilesFromFile(LevelState level)
@@ -93,7 +116,6 @@ namespace Editarrr.Level
 
          private void SetTile(Vector3Int position, TileBase tile)
          {
-
              _walls.SetTile(position, tile);
          }
     }
