@@ -38,8 +38,19 @@ namespace Player
             _land.PlayFeedbacks();
         }
 
-        private void OnDamage(object sender, EventArgs e)
+        private void OnInvincible(object sender, OnValueChangedArgs<float> e)
         {
+            MMFeedbackFlicker invulnFlicker;
+            invulnFlicker = (MMFeedbackFlicker)_damage.Feedbacks.FindLast(x => x.GetType() == typeof(MMFeedbackFlicker));
+            invulnFlicker.FlickerDuration = e.value - invulnFlicker.Timing.InitialDelay;
+        }
+
+        private void OnDamage(object sender, OnValueChangedArgs<float> e)
+        {
+            MMFeedbackCameraShake cameraShake;
+            cameraShake = (MMFeedbackCameraShake)_damage.Feedbacks.Find(x => x.GetType() == typeof(MMFeedbackCameraShake));
+            cameraShake.CameraShakeProperties.Amplitude = e.previousValue - e.value;
+
             _damage.PlayFeedbacks();
         }
 
@@ -54,6 +65,7 @@ namespace Player
             PlayerController.OnPlayerJumped += OnJump;
             PlayerController.OnPlayerLanded += OnLand;
             HealthSystem.OnHitPointsChanged += OnDamage;
+            HealthSystem.OnInvincibleStarted += OnInvincible;
             HealthSystem.OnDeath += OnDeath;
         }
 
@@ -63,6 +75,7 @@ namespace Player
             PlayerController.OnPlayerJumped -= OnJump;
             PlayerController.OnPlayerLanded -= OnLand;
             HealthSystem.OnHitPointsChanged -= OnDamage;
+            HealthSystem.OnInvincibleStarted -= OnInvincible;
             HealthSystem.OnDeath -= OnDeath;
         }
 

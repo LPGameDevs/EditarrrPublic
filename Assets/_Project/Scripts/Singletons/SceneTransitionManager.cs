@@ -15,7 +15,7 @@ namespace Singletons
      *  - Level/camera boundaries and collision
      *  - Player life/death tracking and respawn
      */
-    public class SceneTransitionManager : UnityPersistentSingleton<SceneTransitionManager>
+    public class SceneTransitionManager : UnitySingleton<SceneTransitionManager>
     {
         public static string LevelSelectionSceneName = "EditorSelection";
         public static string TestLevelSceneName = "EditorTest";
@@ -27,6 +27,8 @@ namespace Singletons
         [field: SerializeField, Tooltip("Active scene reloads after this time")] private float TransitionTime { get; set; }
 
         bool restartInitiated;
+
+        private void Start() => DontDestroyOnLoad(this);
 
         private void OnEnable()
         {
@@ -40,9 +42,6 @@ namespace Singletons
 
         private void Update()
         {
-            if (RestartInput == null)
-                return;
-
             if (RestartInput.WasPressed)
                 RestartLevel();
         }
