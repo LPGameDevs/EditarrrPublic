@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Input;
-using Gameplay.GUI;
-using Systems;
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Player
@@ -13,7 +12,7 @@ namespace Player
     /// Adapted from Tarodev's Ultimate 2D controller, found here: https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller
     /// </summary>
     [RequireComponent(typeof(HealthSystem), typeof(PlayerForceReceiver))]
-    public class PlayerController : MonoBehaviour, IEventListener<GameEvent>
+    public class PlayerController : MonoBehaviour
     {
         // events
         public static event Action OnPlayerJumped;
@@ -31,24 +30,31 @@ namespace Player
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
 
-        // This is horrible, but for some reason colliders are not fully established when update starts...
-        private bool _active = false;
-        private bool _inputLocked = false;
-        private bool _started = false;
+        private bool _active, _inputLocked;
 
         void Awake()
         {
+            Invoke(nameof(Activate), 0.5f);
             _health = GetComponent<HealthSystem>();
             _animator = GetComponent<Animator>();
             _forceReceiver = GetComponent<PlayerForceReceiver>();
         }
 
-        void Activate()
+        private void OnEnable()
         {
-            _active = true;
-            _started = true;
+            Singletons.SceneTransitionManager.OnLevelRestart += Deactivate;
+            HealthSystem.OnDeath += Deactivate;
+            HealthSystem.OnHitPointsChanged += TakeDamage;
         }
 
+        private void OnDisable()
+        {
+            Singletons.SceneTransitionManager.OnLevelRestart -= Deactivate;
+            HealthSystem.OnDeath -= Deactivate;
+            HealthSystem.OnHitPointsChanged -= TakeDamage;
+        }
+
+        void Activate() => _active = true;
         void Deactivate()
         {
             _active = false;
@@ -243,6 +249,7 @@ namespace Player
 
         #endregion
 
+
         #region Walk
 
         [Header("WALKING")][SerializeField] private float _acceleration = 90;
@@ -269,10 +276,6 @@ namespace Player
                 // No input. Let's slow the character down
                 _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
             }
-
-            //Overwrite movement with external force if one is being applied, pre-collision adjustment
-            if (_forceReceiver.ForcedMove.HasValue)
-                _currentHorizontalSpeed = _forceReceiver.ForcedMove.Value.x;
 
             if (_currentHorizontalSpeed > 0 && _collisions.right || _currentHorizontalSpeed < 0 && _collisions.left)
             {
@@ -359,10 +362,6 @@ namespace Player
                 _endedJumpEarly = true;
             }
 
-            //Overwrite movement with external force if one is being applied, pre-collision adjustment
-            if (_forceReceiver.ForcedMove.HasValue)
-                _currentVerticalSpeed = _forceReceiver.ForcedMove.Value.y;
-
             if (_collisions.up)
             {
                 if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;
@@ -385,8 +384,14 @@ namespace Player
         // We cast our bounds before moving to avoid future collisions
         private void MoveCharacter()
         {
+            if(_forceReceiver.ForcedMove.HasValue)
+            {
+                _currentHorizontalSpeed = _forceReceiver.ForcedMove.Value.x;
+                _currentVerticalSpeed = _forceReceiver.ForcedMove.Value.y;
+            }
+
             var pos = transform.position + _characterBounds.center;
-            _rawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally
+            _rawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally            
             var move = _rawMovement * Time.deltaTime;
             var furthestPoint = pos + move;
 
@@ -434,51 +439,5 @@ namespace Player
         }
 
         #endregion
-
-        private void UpdateActiveState(bool activate)
-        {
-            if (_started)
-            {
-                _active = activate;
-            }
-            else
-            {
-                Invoke(nameof(Activate), 0.5f);
-            }
-        }
-
-        public void OnEvent(GameEvent gameEvent)
-        {
-            // We only care about pause events.
-            if (!new[] {GameEventType.Pause, GameEventType.Unpause}.Contains(gameEvent.Type))
-            {
-                return;
-            }
-
-            if (gameEvent.Type == GameEventType.Pause)
-            {
-                UpdateActiveState(false);
-            }
-            else
-            {
-                UpdateActiveState(true);
-            }
-        }
-
-        private void OnEnable()
-        {
-            this.EventStartListening<GameEvent>();
-            Singletons.SceneTransitionManager.OnLevelRestart += Deactivate;
-            HealthSystem.OnDeath += Deactivate;
-            HealthSystem.OnHitPointsChanged += TakeDamage;
-        }
-
-        private void OnDisable()
-        {
-            this.EventStopListening<GameEvent>();
-            Singletons.SceneTransitionManager.OnLevelRestart -= Deactivate;
-            HealthSystem.OnDeath -= Deactivate;
-            HealthSystem.OnHitPointsChanged -= TakeDamage;
-        }
     }
 }
