@@ -1,7 +1,7 @@
 using Editarrr.Level;
 using LevelEditor;
 using UnityEngine;
-using SceneManager = Singletons.SceneManager;
+using SceneTransitionManager = Singletons.SceneTransitionManager;
 
 /**
  * Button logic for leaving the game level and returning to the editor.
@@ -25,7 +25,7 @@ public class BackButton : MonoBehaviour
         // Once the level is published it can no longer be edited.
         if (levelData.Published)
         {
-            _selector.LevelName = SceneManager.LevelSelectionSceneName;
+            _selector.LevelName = SceneTransitionManager.LevelSelectionSceneName;
         }
 
         _selector.GoToLevel();

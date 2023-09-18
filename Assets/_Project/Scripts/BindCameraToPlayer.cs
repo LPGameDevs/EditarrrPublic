@@ -25,7 +25,7 @@ public class BindCameraToPlayer : MonoBehaviour
             {
                 // The level cannot be played if there is no player.
                 Debug.LogWarning("No player object found");
-                SceneManager.Instance.GoToScene(SceneManager.CreateLevelSceneName);
+                SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.CreateLevelSceneName);
             }
         }
     }
