@@ -10,7 +10,7 @@ namespace Player
         [SerializeField, Tooltip("Maximum hit points")] private int _maxHitPoints = 20;
         [SerializeField, Tooltip("Initial hit points, limited to max hit points")] private int _startingHitPoints = 20;
         [SerializeField, Tooltip("If entity becomes invincible for a short time after taking damage")] private bool _hasDamageCooldown = true;
-        [SerializeField, Range(0, 3f), Tooltip("How long entity is invincible after taking damage")] private float _damageCooldown = 0.3f;
+        [SerializeField, Range(0, 3f), Tooltip("How long entity is invincible after taking damage")] private float _baseDamageCooldown = 0.3f;
         private float _damageCooldownTimeRemaining = 0;
 
         public int MaxHitPoints { get => _maxHitPoints; }
@@ -20,12 +20,12 @@ namespace Player
             _hitPoints = Mathf.Min(_maxHitPoints, _startingHitPoints);
         }
 
-        public class OnHealthChangedArgs : OnValueChangedArgs<int> { };
+        public class OnHealthChangedArgs : OnValueChangedArgs<float> { public float disableDuration; };
 
-        public event EventHandler OnDeath;
-        public event EventHandler OnInvincibleStarted;
-        public event EventHandler OnInvincibleEnded;
-        public event EventHandler<OnHealthChangedArgs> OnHitPointsChanged;
+        public static event EventHandler OnDeath;
+        public static event EventHandler<OnValueChangedArgs<float>> OnInvincibleStarted;
+        public static event EventHandler OnInvincibleEnded;
+        public static event EventHandler<OnHealthChangedArgs> OnHitPointsChanged;
 
         private void Update()
         {
@@ -39,18 +39,18 @@ namespace Player
             }
         }
 
-        public void TakeDamage(int amount)
+        public void TakeDamage(int incomingDamage, float incomingDisableDuration)
         {
-            if (IsInvincible())
+            if (IsInvincible() || _hitPoints <= 0)
             {
                 return;
             }
 
             int prevHitPoints = _hitPoints;
-            _hitPoints -= amount;
+            _hitPoints -= incomingDamage;
             _hitPoints = Mathf.Max(_hitPoints, 0);
 
-            OnHitPointsChanged?.Invoke(this, new OnHealthChangedArgs { previousValue = prevHitPoints, value = _hitPoints });
+            OnHitPointsChanged?.Invoke(this, new OnHealthChangedArgs { previousValue = prevHitPoints, value = _hitPoints, disableDuration = incomingDisableDuration});
 
             if (_hitPoints == 0)
             {
@@ -58,8 +58,10 @@ namespace Player
             }
             else if (_hasDamageCooldown)
             {
-                _damageCooldownTimeRemaining = _damageCooldown;
-                OnInvincibleStarted?.Invoke(this, EventArgs.Empty);
+                _damageCooldownTimeRemaining = 2 * incomingDisableDuration + _baseDamageCooldown; //Remains shortly after regaining character control, based on time spent disabled
+                OnValueChangedArgs<float> invincibleArgs = new OnValueChangedArgs<float>();
+                invincibleArgs.value = _damageCooldownTimeRemaining;
+                OnInvincibleStarted?.Invoke(this, invincibleArgs);
             }
         }
 
@@ -91,7 +93,7 @@ namespace Player
             OnDeath?.Invoke(this, EventArgs.Empty);
 
             // @todo put this somewhere more sensible.
-            LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
+            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
         }
     }
 }

@@ -7,7 +7,6 @@ using Systems;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TileData = Editarrr.LevelEditor.TileData;
-using LevelSceneManager = Singletons.LevelManager;
 
 namespace Editarrr.Level
 {
@@ -19,8 +18,6 @@ namespace Editarrr.Level
         [field: SerializeField, Info(Documentation)] private EditorLevelExchange Exchange { get; set; }
 
         [field: SerializeField, Header("Managers")] public LevelManager LevelManager { get; private set; }
-
-        [field: SerializeField, Tooltip("Restart level input map")] private InputValue RestartInput { get; set; }
 
         [field: SerializeField, Header("Pools")] private EditorTileDataPool EditorTileDataPool { get; set; }
 
@@ -48,14 +45,6 @@ namespace Editarrr.Level
             _gameplayGuiManager.SetLevelCode(code);
 
             LevelManager.Load(code, OnLevelLoaded);
-        }
-
-        public override void DoUpdate()
-        {
-            if (RestartInput.WasPressed)
-            {
-                LevelSceneManager.Instance.RestartLevel();
-            }
         }
 
         private void OnLevelLoaded(LevelState levelState)
