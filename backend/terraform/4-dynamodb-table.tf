@@ -87,20 +87,20 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     name            = "levelCreatorId-levelUpdatedAt-index"
     hash_key        = "levelCreatorId"
     range_key       = "levelUpdatedAt"
-    write_capacity  = 0
-    read_capacity   = 0
     projection_type = "INCLUDE"
     non_key_attributes = [ "pk", "levelName", "levelStatus"]
+    write_capacity  = 0
+    read_capacity   = 0
   }
 
   global_secondary_index {
     name            = "levelStatus-levelUpdatedAt-index"
     hash_key        = "levelStatus"
     range_key       = "levelUpdatedAt"
-    write_capacity  = 0
-    read_capacity   = 0
     projection_type = "INCLUDE"
     non_key_attributes = [ "pk", "levelName", "levelCreatorId"]
+    write_capacity  = 0
+    read_capacity   = 0
   }
 }
 

@@ -11,6 +11,7 @@ namespace Singletons
 
         public GameObject WinScreen;
         public GameObject LoseScreen;
+        public GameObject PauseScreen;
         public GameObject HelpOverlay;
 
         public float WinDelay = 1f;
@@ -60,6 +61,16 @@ namespace Singletons
         public void ShowLoseMenu()
         {
             ShowMenu(LoseScreen);
+        }
+
+        public void ClosePauseMenu()
+        {
+            CloseMenu(PauseScreen);
+        }
+
+        public void ShowPauseMenu()
+        {
+            ShowMenu(PauseScreen);
         }
 
         #endregion

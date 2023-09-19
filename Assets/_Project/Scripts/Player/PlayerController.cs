@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Input;
-using UnityEditor.Animations;
+using Gameplay.GUI;
+using Systems;
 using UnityEngine;
 
 namespace Player
@@ -12,7 +13,7 @@ namespace Player
     /// Adapted from Tarodev's Ultimate 2D controller, found here: https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller
     /// </summary>
     [RequireComponent(typeof(HealthSystem), typeof(PlayerForceReceiver))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IEventListener<GameEvent>
     {
         // events
         public static event Action OnPlayerJumped;
@@ -30,11 +31,13 @@ namespace Player
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
 
-        private bool _active, _inputLocked;
+        // This is horrible, but for some reason colliders are not fully established when update starts...
+        private bool _active = false;
+        private bool _inputLocked = false;
+        private bool _started = false;
 
         void Awake()
         {
-            Invoke(nameof(Activate), 0.5f);
             _health = GetComponent<HealthSystem>();
             _animator = GetComponent<Animator>();
             _forceReceiver = GetComponent<PlayerForceReceiver>();
@@ -54,7 +57,12 @@ namespace Player
             HealthSystem.OnHitPointsChanged -= TakeDamage;
         }
 
-        void Activate() => _active = true;
+        void Activate()
+        {
+            _active = true;
+            _started = true;
+        }
+
         void Deactivate()
         {
             _active = false;
@@ -249,7 +257,6 @@ namespace Player
 
         #endregion
 
-
         #region Walk
 
         [Header("WALKING")][SerializeField] private float _acceleration = 90;
@@ -393,7 +400,7 @@ namespace Player
         private void MoveCharacter()
         {
             var pos = transform.position + _characterBounds.center;
-            _rawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally            
+            _rawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally
             var move = _rawMovement * Time.deltaTime;
             var furthestPoint = pos + move;
 
@@ -441,5 +448,45 @@ namespace Player
         }
 
         #endregion
+
+        private void UpdateActiveState(bool activate)
+        {
+            if (_started)
+            {
+                _active = activate;
+            }
+            else
+            {
+                Invoke(nameof(Activate), 0.5f);
+            }
+        }
+
+        public void OnEvent(GameEvent gameEvent)
+        {
+            // We only care about pause events.
+            if (!new[] {GameEventType.Pause, GameEventType.Unpause}.Contains(gameEvent.Type))
+            {
+                return;
+            }
+
+            if (gameEvent.Type == GameEventType.Pause)
+            {
+                UpdateActiveState(false);
+            }
+            else
+            {
+                UpdateActiveState(true);
+            }
+        }
+
+        private void OnEnable()
+        {
+            this.EventStartListening<GameEvent>();
+        }
+
+        private void OnDisable()
+        {
+            this.EventStopListening<GameEvent>();
+        }
     }
 }
