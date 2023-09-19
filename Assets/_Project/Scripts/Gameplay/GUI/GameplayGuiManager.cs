@@ -8,14 +8,12 @@ namespace Gameplay.GUI
 {
     public class GameplayGuiManager : MonoBehaviour
     {
-        [SerializeField]
-        private WinMenu _winMenu;
-        [SerializeField]
-        private Transform _pauseMenu;
-        [SerializeField]
-        private Image _overlay;
+        [SerializeField] private WinMenu _winMenu;
+        [SerializeField] private Transform _pauseMenu;
+        [SerializeField] private Image _overlay;
 
-        [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
+        [field: SerializeField, Tooltip("Pause input")]
+        private InputValue PauseInput { get; set; }
 
 
         private bool _isPaused = false;
