@@ -10,7 +10,7 @@ namespace Player
         [SerializeField, Tooltip("Maximum hit points")] private int _maxHitPoints = 20;
         [SerializeField, Tooltip("Initial hit points, limited to max hit points")] private int _startingHitPoints = 20;
         [SerializeField, Tooltip("If entity becomes invincible for a short time after taking damage")] private bool _hasDamageCooldown = true;
-        [SerializeField, Range(0, 3f), Tooltip("How long entity is invincible after taking damage")] private float _baseDamageCooldown = 0.3f; 
+        [SerializeField, Range(0, 3f), Tooltip("How long entity is invincible after taking damage")] private float _baseDamageCooldown = 0.3f;
         private float _damageCooldownTimeRemaining = 0;
 
         public int MaxHitPoints { get => _maxHitPoints; }
@@ -93,7 +93,7 @@ namespace Player
             OnDeath?.Invoke(this, EventArgs.Empty);
 
             // @todo put this somewhere more sensible.
-            LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
+            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
         }
     }
 }

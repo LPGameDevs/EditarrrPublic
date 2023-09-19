@@ -310,7 +310,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 119645424}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000009536743, y: 0, z: 0}
+  m_LocalPosition: {x: 0.03636837, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -591,9 +591,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d656ab9b925137b0ae497cc722957ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _winMenu: {fileID: 1166649768}
-  _loseMenu: {fileID: 1888957274}
+  _winMenu: {fileID: 1166649771}
+  _pauseMenu: {fileID: 0}
   _overlay: {fileID: 137011390}
+  <PauseInput>k__BackingField: {fileID: 11400000, guid: ff4dcd1715d1d3749abc905aba2a3ef5, type: 2}
 --- !u!1 &157413859
 GameObject:
   m_ObjectHideFlags: 3
@@ -1076,7 +1077,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 288665699}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.2585907, y: -1, z: -10}
+  m_LocalPosition: {x: -1.276619, y: -1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3008,6 +3009,7 @@ GameObject:
   - component: {fileID: 1166649768}
   - component: {fileID: 1166649770}
   - component: {fileID: 1166649769}
+  - component: {fileID: 1166649771}
   m_Layer: 5
   m_Name: WinScreen
   m_TagString: Untagged
@@ -3074,6 +3076,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1166649767}
   m_CullTransparentMesh: 1
+--- !u!114 &1166649771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166649767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99fe5879cd39a5b5ba2b839121e03966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LevelCode: {fileID: 0}
+  TimerText: {fileID: 0}
+  ReplayButton: {fileID: 0}
+  SubmitButton: {fileID: 0}
+  BackButton: {fileID: 0}
+  BackEditorButton: {fileID: 0}
+  IsReplay: 0
 --- !u!1 &1328523110
 GameObject:
   m_ObjectHideFlags: 0
@@ -3533,7 +3554,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1674819533}
   - component: {fileID: 1674258895}
-  - component: {fileID: 1960271930473069402}
   m_Layer: 0
   m_Name: UICamera
   m_TagString: Untagged
@@ -3672,6 +3692,7 @@ MonoBehaviour:
   <Manager>k__BackingField: {fileID: 11400000, guid: 64616958872fa37b6aaf8065553a3784, type: 2}
   <Walls>k__BackingField: {fileID: 1989388549}
   <Damage>k__BackingField: {fileID: 696310446}
+  <GameplayGuiManager>k__BackingField: {fileID: 154025341}
 --- !u!1 &1858949005
 GameObject:
   m_ObjectHideFlags: 0
@@ -4414,25 +4435,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &1960271930473069402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1674849259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6789723973e7318e1bcfb5a0254e134a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WinScreen: {fileID: 0}
-  LoseScreen: {fileID: 0}
-  HelpOverlay: {fileID: 0}
-  WinDelay: 0.5
-  LoseDelay: 0.25
-  HelpOverlaySize: 10
-  HelpSlideDuration: 1.5
 --- !u!4 &3979869065233818844
 Transform:
   m_ObjectHideFlags: 0

@@ -43,20 +43,6 @@ namespace Player
             _forceReceiver = GetComponent<PlayerForceReceiver>();
         }
 
-        private void OnEnable()
-        {
-            Singletons.SceneTransitionManager.OnLevelRestart += Deactivate;
-            HealthSystem.OnDeath += Deactivate;
-            HealthSystem.OnHitPointsChanged += TakeDamage;
-        }
-
-        private void OnDisable()
-        {
-            Singletons.SceneTransitionManager.OnLevelRestart -= Deactivate;
-            HealthSystem.OnDeath -= Deactivate;
-            HealthSystem.OnHitPointsChanged -= TakeDamage;
-        }
-
         void Activate()
         {
             _active = true;
@@ -482,11 +468,17 @@ namespace Player
         private void OnEnable()
         {
             this.EventStartListening<GameEvent>();
+            Singletons.SceneTransitionManager.OnLevelRestart += Deactivate;
+            HealthSystem.OnDeath += Deactivate;
+            HealthSystem.OnHitPointsChanged += TakeDamage;
         }
 
         private void OnDisable()
         {
             this.EventStopListening<GameEvent>();
+            Singletons.SceneTransitionManager.OnLevelRestart -= Deactivate;
+            HealthSystem.OnDeath -= Deactivate;
+            HealthSystem.OnHitPointsChanged -= TakeDamage;
         }
     }
 }
