@@ -91,9 +91,6 @@ namespace Player
         {
             Debug.Log(gameObject.name + "has died");
             OnDeath?.Invoke(this, EventArgs.Empty);
-
-            // @todo put this somewhere more sensible.
-            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
         }
     }
 }
