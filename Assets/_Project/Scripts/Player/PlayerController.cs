@@ -277,6 +277,10 @@ namespace Player
                 _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
             }
 
+            //Overwrite movement with external force if one is being applied, pre-collision adjustment
+            if (_forceReceiver.ForcedMove.HasValue)
+                _currentHorizontalSpeed = _forceReceiver.ForcedMove.Value.x;
+
             if (_currentHorizontalSpeed > 0 && _collisions.right || _currentHorizontalSpeed < 0 && _collisions.left)
             {
                 // Don't walk through walls
@@ -362,6 +366,10 @@ namespace Player
                 _endedJumpEarly = true;
             }
 
+            //Overwrite movement with external force if one is being applied, pre-collision adjustment
+            if (_forceReceiver.ForcedMove.HasValue)
+                _currentVerticalSpeed = _forceReceiver.ForcedMove.Value.y;
+
             if (_collisions.up)
             {
                 if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;
@@ -384,12 +392,6 @@ namespace Player
         // We cast our bounds before moving to avoid future collisions
         private void MoveCharacter()
         {
-            if(_forceReceiver.ForcedMove.HasValue)
-            {
-                _currentHorizontalSpeed = _forceReceiver.ForcedMove.Value.x;
-                _currentVerticalSpeed = _forceReceiver.ForcedMove.Value.y;
-            }
-
             var pos = transform.position + _characterBounds.center;
             _rawMovement = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed); // Used externally            
             var move = _rawMovement * Time.deltaTime;
