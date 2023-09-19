@@ -4,6 +4,7 @@ public class UnityPersistentSingleton<T> : MonoBehaviour	where T : Component
 
 {
     protected static T _instance;
+    public float InitializationTime;
 
     public static T Instance
     {
@@ -29,17 +30,26 @@ public class UnityPersistentSingleton<T> : MonoBehaviour	where T : Component
             return;
         }
 
+        InitializationTime=Time.time;
+
+        DontDestroyOnLoad (this.gameObject);
+        // we check for existing objects of the same type
+        T[] check = FindObjectsOfType<T>();
+        foreach (T searched in check)
+        {
+            if (searched!=this)
+            {
+                // if we find another object of the same type (not this), and if it's older than our current object, we destroy it.
+                if (searched.GetComponent<UnityPersistentSingleton<T>>().InitializationTime<InitializationTime)
+                {
+                    Destroy (searched.gameObject);
+                }
+            }
+        }
+
         if (_instance == null)
         {
             _instance = this as T;
-            DontDestroyOnLoad (transform.gameObject);
-        }
-        else
-        {
-            if(this != _instance)
-            {
-                Destroy(gameObject);
-            }
         }
     }
 }

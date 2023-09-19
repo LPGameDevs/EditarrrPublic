@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 10
-  _hitStopDuration: 0.5
+  _hitStopDuration: 0.2
   _knockbackDuration: 1
   _stunDuration: 0
   _knockbackCurveX:

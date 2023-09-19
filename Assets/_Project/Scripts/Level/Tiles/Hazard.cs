@@ -1,6 +1,4 @@
 using Player;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -13,9 +11,9 @@ public class Hazard : MonoBehaviour
     [SerializeField] AnimationCurve _knockbackCurveX;
 	[SerializeField] AnimationCurve _knockbackCurveY;
 
-	private void OnTriggerStay2D(Collider2D collider)
+	private void OnTriggerStay2D(Collider2D other)
     {
-		KnockBackPlayer(collider);
+		KnockBackPlayer(other);
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -23,13 +21,13 @@ public class Hazard : MonoBehaviour
 		KnockBackPlayer(collision.collider);
 	}
 
-	public void KnockBackPlayer(Collider2D collider)
+	public void KnockBackPlayer(Collider2D other)
 	{
 		HealthSystem healthSystem;
 		PlayerForceReceiver forceReceiver;
-		if (!collider.TryGetComponent<HealthSystem>(out healthSystem) || healthSystem.IsInvincible())
+		if (!other.TryGetComponent<HealthSystem>(out healthSystem) || healthSystem.IsInvincible())
 			return;
-		if (!collider.TryGetComponent<PlayerForceReceiver>(out forceReceiver))
+		if (!other.TryGetComponent<PlayerForceReceiver>(out forceReceiver))
 			return;
 
 		healthSystem.TakeDamage(_damage, _hitStopDuration + _knockbackDuration + _stunDuration);
