@@ -803,7 +803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InitializationTime: 0
   <RestartInput>k__BackingField: {fileID: 11400000, guid: 31d6a9f945e14824c9375269fc201fa2, type: 2}
-  <TransitionTime>k__BackingField: 3
+  <TransitionTime>k__BackingField: 1
 --- !u!1 &288665699
 GameObject:
   m_ObjectHideFlags: 0
