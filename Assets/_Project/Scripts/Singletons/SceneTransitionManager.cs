@@ -42,6 +42,9 @@ namespace Singletons
 
         private void Update()
         {
+            if (RestartInput == null)
+                return;
+
             if (RestartInput.WasPressed)
                 TransitionedRestart();
         }
