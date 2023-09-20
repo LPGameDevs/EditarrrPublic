@@ -439,7 +439,10 @@ namespace Player
         {
             if (_started)
             {
-                _active = activate;
+                if (activate)
+                    Activate();
+                else
+                    Deactivate();
             }
             else
             {
@@ -465,19 +468,22 @@ namespace Player
             }
         }
 
+        private void DeathInputLock(object sender, EventArgs e)
+        {
+            LockInput(true);
+        }
+
         private void OnEnable()
         {
             this.EventStartListening<GameEvent>();
-            Singletons.SceneTransitionManager.OnLevelRestart += Deactivate;
-            HealthSystem.OnDeath += Deactivate;
+            HealthSystem.OnDeath += DeathInputLock;
             HealthSystem.OnHitPointsChanged += TakeDamage;
         }
 
         private void OnDisable()
         {
             this.EventStopListening<GameEvent>();
-            Singletons.SceneTransitionManager.OnLevelRestart -= Deactivate;
-            HealthSystem.OnDeath -= Deactivate;
+            HealthSystem.OnDeath -= DeathInputLock;
             HealthSystem.OnHitPointsChanged -= TakeDamage;
         }
     }

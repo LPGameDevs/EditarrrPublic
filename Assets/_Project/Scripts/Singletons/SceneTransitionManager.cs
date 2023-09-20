@@ -44,7 +44,7 @@ namespace Singletons
                 return;
 
             if (RestartInput.WasPressed)
-                TransitionedRestart();
+                RestartLevel();
         }
 
         public void TransitionedRestart()
@@ -60,9 +60,15 @@ namespace Singletons
             Invoke(nameof(RestartLevel), TransitionTime);
         }
 
-        public void GoToScene(string sceneName) => UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        public void GoToScene(string sceneName)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        }
 
-        public void RestartLevel() => GoToScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        public void RestartLevel()
+        {
+            GoToScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        }
 
         private void OnDeath(object sender, System.EventArgs e) => TransitionedRestart();
     }

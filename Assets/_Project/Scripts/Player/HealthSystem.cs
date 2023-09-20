@@ -52,7 +52,7 @@ namespace Player
 
             OnHitPointsChanged?.Invoke(this, new OnHealthChangedArgs { previousValue = prevHitPoints, value = _hitPoints, disableDuration = incomingDisableDuration});
 
-            if (_hitPoints == 0)
+            if (_hitPoints < 1)
             {
                 Die();
             }
@@ -91,9 +91,6 @@ namespace Player
         {
             Debug.Log(gameObject.name + "has died");
             OnDeath?.Invoke(this, EventArgs.Empty);
-
-            // @todo put this somewhere more sensible.
-            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
         }
     }
 }
