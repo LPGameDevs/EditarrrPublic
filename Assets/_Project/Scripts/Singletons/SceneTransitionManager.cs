@@ -44,7 +44,7 @@ namespace Singletons
                 return;
 
             if (RestartInput.WasPressed)
-                TransitionedRestart();
+                RestartLevel();
         }
 
         public void TransitionedRestart()
