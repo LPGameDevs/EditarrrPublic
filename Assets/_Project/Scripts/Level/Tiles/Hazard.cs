@@ -1,3 +1,4 @@
+using Editarrr.Misc;
 using Player;
 using UnityEngine;
 
@@ -8,7 +9,10 @@ public class Hazard : MonoBehaviour
 	[SerializeField, Range(0.05f, 0.5f)] float _hitStopDuration;
 	[SerializeField, Range(0.2f, 3f)] float _knockbackDuration;
 	[SerializeField, Range(0f, 5f)] float _stunDuration;
-    [SerializeField] AnimationCurve _knockbackCurveX;
+
+    [Header("Knockback Path")]
+    [field: Info("For bursts of movement, use high initial values (5-10 and up) that curve downward in the desired shape.\n" +
+			     "In many cases, you will want the x and y curves to be similar."), SerializeField] AnimationCurve _knockbackCurveX;
 	[SerializeField] AnimationCurve _knockbackCurveY;
 
 	private void OnTriggerStay2D(Collider2D other)

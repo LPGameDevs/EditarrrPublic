@@ -56,7 +56,7 @@ namespace Player
             {
                 Die();
             }
-            else if (_hasDamageCooldown)
+            if (_hasDamageCooldown)
             {
                 _damageCooldownTimeRemaining = 2 * incomingDisableDuration + _baseDamageCooldown; //Remains shortly after regaining character control, based on time spent disabled
                 OnValueChangedArgs<float> invincibleArgs = new OnValueChangedArgs<float>();

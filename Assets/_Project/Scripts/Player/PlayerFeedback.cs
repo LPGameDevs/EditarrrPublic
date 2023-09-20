@@ -1,32 +1,31 @@
 using System;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Player
 {
+    [RequireComponent(typeof(AudioSource))]
     public class PlayerFeedback : MonoBehaviour
     {
         [SerializeField] private MMFeedbacks _move, _jump, _land, _damage, _death;
+        [SerializeField] private AudioSource _generalAudioSource, _moveAudioSource;
 
-        private PlayerController _player;
+        float _moveSfxDuration, _moveSfxTimer;
+        MMFeedbackSound soundFeedback;
+        MMSfxEvent.Delegate SoundDelegate => PlaySound;
 
-        private void Awake()
+        public void OnMove(bool movingOnGround)
         {
-            _player = GetComponentInParent<PlayerController>();
-        }
+            //if (isMoving)
+            //    _move.PlayFeedbacks();
+            //else
+            //    _move.StopFeedbacks();
 
-        private void Update()
-        {
-            if (_player.IsMoving)
-            {
-                OnMove();
-                return;
-            }
-        }
-
-        public void OnMove()
-        {
-            _move.PlayFeedbacks();
+            if (!_moveAudioSource.isPlaying && movingOnGround)
+                _moveAudioSource.Play();
+            else if (_moveAudioSource.isPlaying && !movingOnGround)
+                _moveAudioSource.Stop();
         }
 
         public void OnJump()
@@ -62,6 +61,7 @@ namespace Player
 
         private void OnEnable()
         {
+            PlayerController.OnPlayerMoved += OnMove;
             PlayerController.OnPlayerJumped += OnJump;
             PlayerController.OnPlayerLanded += OnLand;
             HealthSystem.OnHitPointsChanged += OnDamage;
@@ -71,11 +71,19 @@ namespace Player
 
         private void OnDisable()
         {
+            PlayerController.OnPlayerMoved -= OnMove;
             PlayerController.OnPlayerJumped -= OnJump;
             PlayerController.OnPlayerLanded -= OnLand;
             HealthSystem.OnHitPointsChanged -= OnDamage;
             HealthSystem.OnInvincibleStarted -= OnInvincible;
             HealthSystem.OnDeath -= OnDeath;
+        }
+
+        private void PlaySound(AudioClip clipToPlay, AudioMixerGroup audioGroup, float volume, float pitch)
+        {
+            _generalAudioSource.outputAudioMixerGroup = audioGroup;
+            _generalAudioSource.pitch = pitch;
+            _generalAudioSource.PlayOneShot(clipToPlay, volume);
         }
     }
 }
