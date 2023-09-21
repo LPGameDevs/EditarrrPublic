@@ -1,7 +1,8 @@
 ﻿using System;
+using Editarrr.Level;
 using UnityEngine;
 
-namespace Editarrr.Level
+namespace Level.Storage
 {
     public abstract class LevelStorageManager : ScriptableObject, ILevelStorage
     {

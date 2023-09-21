@@ -40,13 +40,13 @@ namespace Editarrr.UI.LevelEditor
 
             private void PlayButtonElement_Clicked()
             {
-                this.EditorLevelManager.Save();
+                this.EditorLevelManager.SaveLevelState();
                 SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
             }
 
             private void SaveButtonElement_Clicked()
             {
-                this.EditorLevelManager.Save();
+                this.EditorLevelManager.SaveLevelState();
                 SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
             }
         }

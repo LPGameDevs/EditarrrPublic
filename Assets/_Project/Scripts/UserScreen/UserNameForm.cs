@@ -1,4 +1,5 @@
 using Singletons;
+using SteamIntegration;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +12,12 @@ public class UserNameForm : MonoBehaviour
     public const string DefaultUserName = "anon";
 
     public TMP_InputField UserNameInput;
+
+    private void Awake()
+    {
+        // Initialise steam.
+        SteamManager.Instance.Init();
+    }
 
     private void Start()
     {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CorgiExtension;
 using Editarrr.Level;
@@ -13,16 +12,6 @@ public class LevelSelectionLoader : MonoBehaviour
     public EditorLevel DraftPrefab;
 
     private List<Transform> _loadedLevels = new List<Transform>();
-
-    /**
-     * Destroy all levels in the selection scene and reload.
-     *
-     * This is easier than trying to track what has changed.
-     */
-    private void DestroyAndRefreshLevels()
-    {
-        throw new NotImplementedException("This method is no longer in use.");
-    }
 
     public void DestroyLevels()
     {

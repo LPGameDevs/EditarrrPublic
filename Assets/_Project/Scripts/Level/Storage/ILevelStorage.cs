@@ -1,4 +1,6 @@
-﻿namespace Editarrr.Level
+﻿using Editarrr.Level;
+
+namespace Level.Storage
 {
     public interface ILevelStorage
     {

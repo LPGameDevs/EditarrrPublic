@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00dbe4b078642364bab2431061242ada, type: 3}
-  m_Name: LocalLevelStorageManager
+  m_Name: LevelStorageManagerLocal
   m_EditorClassIdentifier: 
   <LocalDirectoryName>k__BackingField: levels
   <UseDebugCode>k__BackingField: 0
