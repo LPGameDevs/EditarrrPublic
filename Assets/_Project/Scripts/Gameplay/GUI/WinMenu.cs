@@ -1,9 +1,8 @@
 using System;
 using Editarrr.Level;
-using Legacy;
+using Singletons;
 using TMPro;
 using UnityEngine;
-using LevelManager = Singletons.LevelManager;
 
 namespace Gameplay.GUI
 {
@@ -112,7 +111,7 @@ namespace Gameplay.GUI
 
         public void OnClickReplay()
         {
-            LevelManager.Instance.GotoLevel(LevelManager.TestLevelSceneName);
+            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
         }
 
         public void OnClickSubmit()
@@ -122,12 +121,12 @@ namespace Gameplay.GUI
 
         public void OnClickBack()
         {
-            LevelManager.Instance.GotoLevel(LevelManager.LevelSelectionSceneName);
+            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
         }
 
         public void OnClickBackEditor()
         {
-            LevelManager.Instance.GotoLevel(LevelManager.CreateLevelSceneName);
+            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.CreateLevelSceneName);
         }
 
         #endregion

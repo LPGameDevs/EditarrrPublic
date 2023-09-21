@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Input;
@@ -11,17 +12,21 @@ namespace Player
     /// <summary>
     /// Adapted from Tarodev's Ultimate 2D controller, found here: https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller
     /// </summary>
+    [RequireComponent(typeof(HealthSystem), typeof(PlayerForceReceiver))]
     public class PlayerController : MonoBehaviour, IEventListener<GameEvent>
     {
         // events
         public static event Action OnPlayerJumped;
         public static event Action OnPlayerLanded;
+        public static event Action<bool> OnPlayerMoved;
 
         private HealthSystem _health;
         private Animator _animator;
+        private PlayerForceReceiver _forceReceiver;
 
         public bool IsMoving => _isMoving;
 
+        [SerializeField] Rigidbody2D rigidBody;
         private Vector3 _velocity;
         private Vector3 _rawMovement;
         private Vector3 _lastPosition;
@@ -29,12 +34,14 @@ namespace Player
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active = false;
+        private bool _inputLocked = false;
         private bool _started = false;
 
         void Awake()
         {
             _health = GetComponent<HealthSystem>();
             _animator = GetComponent<Animator>();
+            _forceReceiver = GetComponent<PlayerForceReceiver>();
         }
 
         void Activate()
@@ -43,9 +50,43 @@ namespace Player
             _started = true;
         }
 
+        void Deactivate()
+        {
+            _active = false;
+            _velocity = Vector3.zero;
+            _rawMovement = Vector3.zero;
+            _currentHorizontalSpeed = 0f;
+            _currentVerticalSpeed = 0f;
+            _isMoving = false;
+        }
+
+        void Deactivate(object sender, System.EventArgs e) => Deactivate();
+
+        void LockInput(bool applyLock) => _inputLocked = applyLock;
+
+        void TakeDamage(object sender, HealthSystem.OnHealthChangedArgs healthArgs)
+        {
+            if (healthArgs.value <= 0)
+                return;
+
+            StartCoroutine(CoroutineStun(healthArgs.disableDuration));
+        }
+
+        IEnumerator CoroutineStun(float stunDuration)
+        {
+            LockInput(true);
+
+            yield return new WaitForSeconds(stunDuration);
+
+            LockInput(false);
+        }
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Tab))
+                LockInput(!_inputLocked);
+
+
             if (!_active) return;
             // Calculate velocity
             _velocity = (transform.position - _lastPosition) / Time.deltaTime;
@@ -67,6 +108,8 @@ namespace Player
 
         private void HandleAnimationVariables()
         {
+            OnPlayerMoved(_collisions.down && _isMoving);
+
             _animator.SetFloat(VerticalVelocityAnim, _currentVerticalSpeed);
             _animator.SetBool(GroundedAnim, _collisions.down);
 
@@ -87,10 +130,14 @@ namespace Player
 
         private void GatherInput()
         {
-            _isMoving = MoveInput.IsPressed;
-            _movementValue = MoveInput.Read<Vector2>().x;
-
             _jumpStartThisFrame = _jumpReleaseThisFrame = false;
+            _movementValue = _inputLocked ? 0f : MoveInput.Read<Vector2>().x;
+
+            _isMoving = MoveInput.IsPressed && !_inputLocked;
+
+            if (_inputLocked)
+                return;
+
 
             if (JumpInput.WasPressed)
             {
@@ -226,6 +273,10 @@ namespace Player
                 _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
             }
 
+            //Overwrite movement with external force if one is being applied, pre-collision adjustment
+            if (_forceReceiver.ForcedMove.HasValue)
+                _currentHorizontalSpeed = _forceReceiver.ForcedMove.Value.x;
+
             if (_currentHorizontalSpeed > 0 && _collisions.right || _currentHorizontalSpeed < 0 && _collisions.left)
             {
                 // Don't walk through walls
@@ -244,7 +295,7 @@ namespace Player
 
         private void CalculateGravity()
         {
-            if (_collisions.down)
+            if (_collisions.down || _forceReceiver.ForcedMove != null)
             {
                 // Move out of the ground
                 if (_currentVerticalSpeed < 0) _currentVerticalSpeed = 0;
@@ -310,6 +361,10 @@ namespace Player
                 // _currentVerticalSpeed = 0;
                 _endedJumpEarly = true;
             }
+
+            //Overwrite movement with external force if one is being applied, pre-collision adjustment
+            if (_forceReceiver.ForcedMove.HasValue)
+                _currentVerticalSpeed = _forceReceiver.ForcedMove.Value.y;
 
             if (_collisions.up)
             {
@@ -387,7 +442,10 @@ namespace Player
         {
             if (_started)
             {
-                _active = activate;
+                if (activate)
+                    Activate();
+                else
+                    Deactivate();
             }
             else
             {
@@ -413,14 +471,23 @@ namespace Player
             }
         }
 
+        private void DeathInputLock(object sender, EventArgs e)
+        {
+            LockInput(true);
+        }
+
         private void OnEnable()
         {
             this.EventStartListening<GameEvent>();
+            HealthSystem.OnDeath += DeathInputLock;
+            HealthSystem.OnHitPointsChanged += TakeDamage;
         }
 
         private void OnDisable()
         {
             this.EventStopListening<GameEvent>();
+            HealthSystem.OnDeath -= DeathInputLock;
+            HealthSystem.OnHitPointsChanged -= TakeDamage;
         }
     }
 }
