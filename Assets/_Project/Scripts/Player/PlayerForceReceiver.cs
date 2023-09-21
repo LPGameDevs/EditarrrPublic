@@ -6,11 +6,6 @@ public class PlayerForceReceiver : MonoBehaviour
 {
 	public Vector2? ForcedMove { get; private set; }
 
-    private void Update()
-    {
-		Debug.Log("ForcedMove: " + ForcedMove);
-	}
-
 	public void ReceiveImpulse(float hitStopDuration, float knockbackDuration, AnimationCurve knockbackCurveX, AnimationCurve knockbackCurveY)
 	{
 		StartCoroutine(CoroutineImpulse(hitStopDuration, knockbackDuration, knockbackCurveX, knockbackCurveY));
@@ -28,7 +23,7 @@ public class PlayerForceReceiver : MonoBehaviour
         {
 			float t = 1f - ((timeLimit - Time.time) / knockbackDuration);
 			ForcedMove = new Vector2(knockbackCurveX.Evaluate(t) * -transform.localScale.x, knockbackCurveY.Evaluate(t));
-			yield return null;
+			yield return new WaitForEndOfFrame();
         }
 
 		//while (Time.time < timeLimit)

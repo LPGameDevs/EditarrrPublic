@@ -18,6 +18,7 @@ namespace Player
         // events
         public static event Action OnPlayerJumped;
         public static event Action OnPlayerLanded;
+        public static event Action<bool> OnPlayerMoved;
 
         private HealthSystem _health;
         private Animator _animator;
@@ -107,6 +108,8 @@ namespace Player
 
         private void HandleAnimationVariables()
         {
+            OnPlayerMoved(_collisions.down && _isMoving);
+
             _animator.SetFloat(VerticalVelocityAnim, _currentVerticalSpeed);
             _animator.SetBool(GroundedAnim, _collisions.down);
 
