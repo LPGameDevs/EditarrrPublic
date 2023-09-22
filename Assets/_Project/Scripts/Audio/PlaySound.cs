@@ -10,13 +10,13 @@ namespace Editarrr.Audio
         [SerializeField] MultiSound sound;
         public void Play()
         {
-            AudioManager.instance.PlayAudioClip(clipName);
+            AudioManager.Instance.PlayAudioClip(clipName);
         }
 
         public void TestMultiSound()
         {
          
-            AudioManager.instance.PlayShuffledSound(sound.name,0,0);
+            AudioManager.Instance.PlayShuffledSound(sound.name,0,0);
         }
     }
 }

@@ -1,19 +1,19 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Editarrr.Audio
 {
-
-
-    public class AudioManager : MonoBehaviour
+    public class AudioManager : UnityPersistentSingleton<AudioManager>
     {
-        public static AudioManager instance;
+        public AudioSource BgmSourceOne { get => bgmSourceOne; }
+        public AudioSource BgmSourceTwo { get => bgmSourceTwo; }
 
         [Header("SFX")]
         [SerializeField] AudioSfxPool sfxPool;
 
         [Header("Music")]
-        [SerializeField] AudioSource bgmSource;
+        [SerializeField] AudioSource bgmSourceOne, bgmSourceTwo;
         [SerializeField] bool playBGM;
 
         AudioSource[] sfxSources;
@@ -26,20 +26,15 @@ namespace Editarrr.Audio
 
 
         [SerializeField] Transform sfxSourceParent;
-        void Awake()
+
+
+        private void Start()
         {
-
-            if (instance != null && instance != this)
-                Destroy(this.gameObject);
-            else
-            {
-                instance = this;
-
-            }
-
             InitSfxPoolAndSources();
 
-            if (playBGM && !bgmSource.isPlaying) bgmSource.Play();
+            if (playBGM && !bgmSourceOne.isPlaying) bgmSourceOne.Play();
+            if (playBGM && !bgmSourceTwo.isPlaying) bgmSourceTwo.Play();
+            BgmSourceTwo.volume = 0f;
         }
 
         void InitSfxPoolAndSources()
@@ -63,6 +58,25 @@ namespace Editarrr.Audio
             }
         }
 
+        public void FadeVolume(AudioSource source, float fadeLength, float targetVolume)
+        {
+            StartCoroutine(CoroutineFade(source, fadeLength, targetVolume));
+        }
+
+        private IEnumerator CoroutineFade(AudioSource source, float fadeLength, float targetVolume)
+        {
+            float timeLimit = Time.time + fadeLength;
+            float startingVolume = source.volume;
+            while (Time.time < timeLimit)
+            {
+                float t = 1 - ((timeLimit - Time.time) / fadeLength);
+                source.volume = Mathf.Lerp(startingVolume, targetVolume, t);
+                yield return null;
+            }
+
+            source.volume = targetVolume;
+        }
+
         public void PlayAudioClip(string clipName)
         {
             if (audioDict.ContainsKey(clipName))
@@ -74,6 +88,12 @@ namespace Editarrr.Audio
             {
                 Debug.Log("AudioManager: AudioClip " + clipName + " not found in dictionary.");
             }
+        }
+
+        public void PlayAudioClip(AudioClip clip)
+        {
+            sfxSources[currentSFXSource].PlayOneShot(clip);
+            currentSFXSource = (currentSFXSource + 1) % sfxSources.Length;
         }
 
         public void PlayRandomizedAudioClip(string clipName, float pitchVariance, float volumeVariance)
