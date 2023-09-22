@@ -23,33 +23,28 @@ public class UnityPersistentSingleton<T> : MonoBehaviour	where T : Component
         }
     }
 
-    protected virtual void Awake ()
+    protected virtual void Awake()
     {
         if (!Application.isPlaying)
         {
             return;
         }
 
-        InitializationTime=Time.time;
-
-        DontDestroyOnLoad (this.gameObject);
-        // we check for existing objects of the same type
-        T[] check = FindObjectsOfType<T>();
-        foreach (T searched in check)
-        {
-            if (searched!=this)
-            {
-                // if we find another object of the same type (not this), and if it's older than our current object, we destroy it.
-                if (searched.GetComponent<UnityPersistentSingleton<T>>().InitializationTime<InitializationTime)
-                {
-                    Destroy (searched.gameObject);
-                }
-            }
-        }
-
         if (_instance == null)
         {
+            //If I am the first instance, make me the Singleton
             _instance = this as T;
+            DontDestroyOnLoad(transform.gameObject);
+            //_enabled = true;
+        }
+        else
+        {
+            //If a Singleton already exists and you find
+            //another reference in scene, destroy it!
+            if (this != _instance)
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 }
