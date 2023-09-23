@@ -8,8 +8,13 @@ that you can use that comes with all the dependencies
 ([Docker](https://www.docker.com/products/docker-desktop/), 
 [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html), 
 [AWS SAM CLI](https://aws.amazon.com/serverless/sam/)) 
-pre-installed 
-(more on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart)).
+pre-installed. 
+
+To open your own Codepsace, from the repo homepage, simply click `Code > Create a codespace on develop`:
+
+![Starting a Github Codespace](./assets/how_to_open_codespace.gif)
+
+More on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart)).
 
 To start the backend, from the Codespace, run shell script:
 ```sh
