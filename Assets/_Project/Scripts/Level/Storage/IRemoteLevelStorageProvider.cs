@@ -9,7 +9,7 @@
         public void Upload(string code);
         public void Download(string code);
         public void LoadLevelData(string code);
-        public void LoadAllLevelData();
+        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
         bool SupportsLeaderboards();
         void SubmitScore();
     }

@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using Editarrr.Level;
+using UnityEngine;
+
 namespace Level.Storage
 {
     public class RemoteLevelStorageProviderSteam: IRemoteLevelStorageProvider
@@ -19,12 +24,44 @@ namespace Level.Storage
 
         public void LoadLevelData(string code)
         {
-            throw new System.NotImplementedException();
+            // Call async function.
+            LoadLevelDataAsync( code );
         }
 
-        public void LoadAllLevelData()
+        private async void LoadLevelDataAsync(string code)
         {
-            throw new System.NotImplementedException();
+            ulong ucode = Convert.ToUInt64( code );
+            var itemInfo = await Steamworks.Ugc.Item.GetAsync( ucode );
+        }
+
+        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
+        {
+            // Call async function.
+            LoadAllLevelDataAsync(callback);
+        }
+
+        private async void LoadAllLevelDataAsync(RemoteLevelStorage_AllLevelsLoadedCallback callback)
+        {
+            var q = Steamworks.Ugc.Query.Items
+                .WithTag("level")
+                .AllowCachedResponse(1)
+                .MatchAnyTag();
+
+            var result = await q.GetPageAsync( 1 );
+
+            Debug.Log( $"ResultCount: {result?.ResultCount}" );
+            Debug.Log( $"TotalCount: {result?.TotalCount}" );
+
+            var levels = new List<LevelSave>();
+
+            foreach ( Steamworks.Ugc.Item entry in result.Value.Entries )
+            {
+                var save = new LevelSave(entry.Owner.Name.ToString(), entry.Id.ToString());
+                levels.Add(save);
+                Debug.Log( $"{entry.Title}" );
+            }
+
+            callback?.Invoke(levels.ToArray());
         }
 
         public bool SupportsLeaderboards()

@@ -21,8 +21,14 @@ public class LevelBrowserManager : ManagerComponent
         _levelLoader = levelLoader;
     }
 
+    public override void DoAwake()
+    {
+        LevelManager.DoAwake();
+    }
+
     public override void DoStart()
     {
+        LevelManager.DoStart();
         this.DestroyAndRefreshLevels();
     }
 

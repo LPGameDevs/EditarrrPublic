@@ -67,9 +67,9 @@ namespace Level.Storage
         {
             foreach (var provider in _providers)
             {
-                provider.LoadAllLevelData();
+                provider.LoadAllLevelData(callback);
             }
-            callback?.Invoke(null);
+            // callback?.Invoke(null);
         }
 
         public void SubmitScore()

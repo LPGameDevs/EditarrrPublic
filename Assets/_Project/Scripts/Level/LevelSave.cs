@@ -15,10 +15,17 @@ namespace Editarrr.Level
         [field: SerializeField] public bool Published { get; private set; }
         [field: SerializeField] public string Code { get; private set; }
 
-        [field: SerializeField] public TileSave[] Tiles { get; private set; }
+        [field: SerializeField] public TileSave[] Tiles { get; private set; } = new TileSave[0];
 
         [field: SerializeField] public int ScaleX { get; private set; }
         [field: SerializeField] public int ScaleY { get; private set; }
+
+        public LevelSave(string creator, string code)
+        {
+            this.Creator = creator;
+            this.Published = false;
+            this.Code = code;
+        }
 
         public LevelSave(LevelState levelState)
         {

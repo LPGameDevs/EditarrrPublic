@@ -22,7 +22,7 @@ namespace Level.Storage
             throw new System.NotImplementedException();
         }
 
-        public void LoadAllLevelData()
+        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
         {
             throw new System.NotImplementedException();
         }

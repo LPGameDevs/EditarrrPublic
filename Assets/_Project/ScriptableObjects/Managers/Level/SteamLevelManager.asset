@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Settings>k__BackingField: {fileID: 11400000, guid: 0f937ce089015664eb44321c92f97c15, type: 2}
   <LevelStorage>k__BackingField: {fileID: 11400000, guid: a3d923b6a33bcfc4caf0d7ca91cff603, type: 2}
-  <RemoteLevelStorage>k__BackingField: {fileID: 11400000, guid: f82bc86a5ddf115d2aa94954732462b6, type: 2}
+  <RemoteLevelStorage>k__BackingField: {fileID: 11400000, guid: 79a5febd55b008be7b5403003fc17de8, type: 2}
   RemoteStorageEnabled: 1

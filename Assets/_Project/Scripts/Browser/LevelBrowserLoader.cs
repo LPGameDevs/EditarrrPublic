@@ -6,26 +6,12 @@ using UnityEngine;
 public class LevelBrowserLoader : MonoBehaviour
 {
     [SerializeField] private LevelBrowserLevel _levelPrefab;
-    [SerializeField] private LevelManager _levelManager;
-
     private List<Transform> _loadedLevels = new List<Transform>();
-
 
     private void Awake()
     {
         SteamManager.Instance.Init();
-        // _levelManager.LoadAll(this.LevelStorage_AllLevelsLoadedCallback);
     }
-
-
-    // private void LevelStorage_AllLevelsLoadedCallback(LevelState[] levels)
-    // {
-    //     foreach (var level in levels)
-    //     {
-    //         string screenshotPath = _levelManager.GetScreenshotPath(level.Code);
-    //         AddLevelPrefabFromData(level, screenshotPath);
-    //     }
-    // }
 
     public void DestroyLevels()
     {
