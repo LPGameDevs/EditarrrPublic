@@ -1,13 +1,16 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
     DynamoDBDocumentClient,
-    ScanCommand,
     QueryCommand,
     PutCommand,
     GetCommand,
-    DeleteCommand,
 } from "@aws-sdk/lib-dynamodb";
 import crypto from "crypto";
+import { request } from "http";
+
+/* TODO Refactor Ideas
+ * Separate files for different APIs?
+*/
 
 let options = {};
 if(process.env.AWS_SAM_LOCAL) {
@@ -28,9 +31,16 @@ function uuidv4() {
     );
 }
 
+class BadRequestException extends Error {
+    constructor(message) {
+        super(`error - Bad Request: ${message}`);
+        this.name = this.constructor.name;
+    }
+}
+
 export const handler = async (event, context) => {
-    let body;
     let requestJSON;
+    let responseBody;
     let statusCode = 200;
     const headers = {
         "Content-Type": "application/json",
@@ -39,66 +49,114 @@ export const handler = async (event, context) => {
     try {
         switch (event.requestContext.routeKey) {
             case "POST /levels":
-                // TODO Actual Implementation
                 requestJSON = JSON.parse(event.body);
-                var levelName = requestJSON.name; 
-                body = {
+                var levelName = requestJSON.name;
+                if (!levelName) throw new BadRequestException(`'name' must be provided in the request.`);
+                var levelCreator = requestJSON.creator;
+                if (!levelCreator) throw new BadRequestException(`'creator' must be provided in the request.`);
+                var levelCreatorId = levelCreator.id;
+                if (!levelCreatorId) throw new BadRequestException(`'creator.id' must be provided in the request.`);
+                var levelCreatorName = levelCreator.name;
+                if (!levelCreatorName) throw new BadRequestException(`'creator.name' must be provided in the request.`);
+                // TODO Further validation of creator - maybe checking that the ID even exists?
+                var levelStatus = requestJSON.status;
+                if (!levelStatus) throw new BadRequestException(`'status' must be provided in the request.`);
+                // TODO Further validation of status (ensuring it is a valid one)
+                var levelData = requestJSON.data; 
+                if (!levelData) throw new BadRequestException(`'data' must be provided in the request.`);
+                
+                var generatedLevelId = uuidv4();
+                var currentTimestamp = Date.now();
+
+                // TODO We aren't actually storing the levelCreatorName...should we? I think so
+
+                await dynamo.send(
+                    new PutCommand({
+                        TableName: tableName,
+                        Item: {
+                            pk: `LEVEL#${generatedLevelId}`,
+                            sk: `LEVEL#${generatedLevelId}`,
+                            levelName: levelName,
+                            levelCreatorId: levelCreatorId,
+                            levelStatus: levelStatus,
+                            levelCreatedAt: currentTimestamp,
+                            levelUpdatedAt: currentTimestamp,
+                            levelData: levelData
+                        },
+                    })
+                );
+                
+                responseBody = {
                     "message": `Success! Created level: ${levelName}`
                 }
-                // const requestData = JSON.parse(event.body);
-                // let generatedLevelId = uuidv4();
-                // await dynamo.send(
-                //     // TODO Actual implementation, this was just inserting some dummy data for testing
-                //     new PutCommand({
-                //         TableName: tableName,
-                //         Item: {
-                //             pk: "USER#user1",
-                //             sk: "USER#user1",
-                //             userName: "User 1"
-                //         },
-                //     })
-                // );
-                // body = `Created new level ${generatedLevelId}`;
                 break;
             case "GET /levels":
-                // TODO Actual Implementation
-                body = {
-                    "levels": [
-                        {
-                            "id": "level2",
-                            "name": "Level 2",
-                            "creator": {
-                                "id": "user2",
-                                "name": "User 2"
-                            },
-                            "status": "published",
-                            "createdAt": 1695649746,
-                            "updatedAt": 1695649746,
-                        },
-                        {
-                            "id": "level1",
-                            "name": "Level 1",
-                            "creator": {
-                                "id": "user1",
-                                "name": "User 1"
-                            },
-                            "status": "published",
-                            "createdAt": 1686495335,
-                            "updatedAt": 1686495335,
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var queryResponse = await dynamo.send(
+                    // Docs for QueryCommand:
+                    // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/classes/querycommand.html
+                    // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html
+                    new QueryCommand({
+                        TableName: tableName,
+                        IndexName: "levelStatus-levelUpdatedAt-index",
+                        Select: "ALL_PROJECTED_ATTRIBUTES",
+                        Limit: 10,
+                        ScanIndexForward: false,
+                        KeyConditionExpression: "levelStatus = :status",
+                        ExpressionAttributeValues: {
+                            ":status": "PUBLISHED"
                         }
-                    ]
-                  }
-                // body = await dynamo.send(
-                //     // TODO Actual Implementation
-                //     new ScanCommand({
-                //         TableName: tableName
-                //     })
-                // );
+                    })
+                );
+                // TODO Validation
+
+                var queryResponseLevels = queryResponse.Items;
+                // TODO Validation
+
+                var responseLevels = []; 
+                for (let i = 0; i < queryResponseLevels.length; i++) {
+                    var queryResponseLevel = queryResponseLevels[i];
+
+                    // TODO Validation
+
+                    // Use a regular expression to match and extract the ID
+                    const match = queryResponseLevel.pk.match(/#([0-9a-f-]+)/i);
+
+                    var id;
+                    if (match) {
+                        id = match[1];
+                        console.log("Extracted ID:", id);
+                    } else {
+                        console.log("ID not found in the string.");
+                    }
+                    
+                    // TODO Bug: CreatedAt not being returned?
+
+                    responseLevels.push({
+                        "id": id,
+                        "name": queryResponseLevel.levelName,
+                        "creator": {
+                            "id": queryResponseLevel.levelCreatorId,
+                            "name": queryResponseLevel.levelCreatorName
+                        },
+                        "status": queryResponseLevel.levelStatus,
+                        "createdAt": queryResponseLevel.levelCreatedAt,
+                        "updatedAt": queryResponseLevel.levelUpdatedAt,
+                    });
+                }
+
+                responseBody = {
+                    "levels": responseLevels
+                }
+
                 break;
             case "GET /levels/{id}":
                 // TODO Actual Implementation
                 var levelId = event.pathParameters.id;
-                body = {
+                responseBody = {
                     "id": levelId,
                     "name": `Level ${levelId}`,
                     "creator": {
@@ -125,7 +183,7 @@ export const handler = async (event, context) => {
                 // TODO Actual Implementation
                 requestJSON = JSON.parse(event.body);
                 var levelName = requestJSON.name; 
-                body = {
+                responseBody = {
                     "message": `Success! Update level: ${levelName}`
                 }
                 // let requestJSON = JSON.parse(event.body);
@@ -148,15 +206,19 @@ export const handler = async (event, context) => {
                 throw new Error(`Unsupported route: "${event.requestContext.resourceId}"`);
         }
     } catch (err) {
-        statusCode = 400;
-        body = err.message;
+        if (err instanceof BadRequestException) {
+            statusCode = 400;
+        } else {
+            statusCode = 500;
+        }
+        responseBody = err.message;   
     } finally {
-        body = JSON.stringify(body);
+        responseBody = JSON.stringify(responseBody);
     }
 
     return {
         statusCode,
-        body,
+        body: responseBody,
         headers,
     };
 };
