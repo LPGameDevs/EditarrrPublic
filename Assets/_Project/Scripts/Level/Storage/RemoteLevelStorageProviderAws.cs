@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Proyecto26;
 using UnityEditor;
 using UnityEngine;
@@ -56,9 +57,17 @@ namespace Level.Storage
             // Get request to /node/level
             RestClient.Get<AwsLevels>($"{_awsLevelUrl}/dev/levels").Then(res =>
             {
+                List<LevelStub> levelStubs = new List<LevelStub>();
+                foreach (AwsLevel level in res.levels)
+                {
+                    LevelStub levelStub = new LevelStub(level.id, level.creator.name, level.status == "published");
+                    levelStubs.Add(levelStub);
+                }
+                callback?.Invoke(levelStubs.ToArray());
                 this.LogMessage ("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
+                callback?.Invoke(null);
                 this.LogMessage("Error", err.Message);
             });
 

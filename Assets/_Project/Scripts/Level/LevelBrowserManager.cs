@@ -3,6 +3,7 @@ using Editarrr.Level;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Level.Storage;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelBrowserManager", menuName = "Managers/Level/new Level Browser Manager")]
@@ -39,7 +40,7 @@ public class LevelBrowserManager : ManagerComponent
         LevelManager.LoadAll(this.LevelStorage_AllLevelsLoadedCallback);
     }
 
-    private void LevelStorage_AllLevelsLoadedCallback(LevelState[] levels)
+    private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels)
     {
         foreach (var level in levels)
         {

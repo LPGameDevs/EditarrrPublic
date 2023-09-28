@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CorgiExtension;
 using Editarrr.Level;
+using Level.Storage;
 using UnityEngine;
 
 /**
@@ -26,7 +27,7 @@ public class LevelSelectionLoader : MonoBehaviour
     /**
      * Lookup the saved level data from the filename and create a level prefab.
      */
-    public void AddLevelPrefabFromData(LevelState levelData, string screenshotPath)
+    public void AddLevelPrefabFromData(LevelStub levelData, string screenshotPath)
     {
         string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
         EditorLevel level;

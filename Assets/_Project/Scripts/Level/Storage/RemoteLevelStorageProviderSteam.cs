@@ -52,11 +52,11 @@ namespace Level.Storage
             Debug.Log( $"ResultCount: {result?.ResultCount}" );
             Debug.Log( $"TotalCount: {result?.TotalCount}" );
 
-            var levels = new List<LevelSave>();
+            var levels = new List<LevelStub>();
 
             foreach ( Steamworks.Ugc.Item entry in result.Value.Entries )
             {
-                var save = new LevelSave(entry.Owner.Name.ToString(), entry.Id.ToString());
+                var save = new LevelStub(entry.Id.ToString(), entry.Owner.Name.ToString(), true);
                 levels.Add(save);
                 Debug.Log( $"{entry.Title}" );
             }

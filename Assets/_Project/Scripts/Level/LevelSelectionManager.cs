@@ -3,6 +3,7 @@ using Editarrr.Level;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Level.Storage;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelSelectionManager", menuName = "Managers/Level/new Level Selection Manager")]
@@ -36,7 +37,7 @@ public class LevelSelectionManager : ManagerComponent
         LevelManager.LoadAll(this.LevelStorage_AllLevelsLoadedCallback);
     }
 
-    private void LevelStorage_AllLevelsLoadedCallback(LevelState[] levels)
+    private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels)
     {
         foreach (var level in levels)
         {

@@ -1,4 +1,5 @@
-﻿using Editarrr.Level;
+﻿using System;
+using Editarrr.Level;
 
 namespace Level.Storage
 {
@@ -15,7 +16,21 @@ namespace Level.Storage
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
     }
 
-    public delegate void RemoteLevelStorage_LevelLoadedCallback(LevelSave levelSave);
-    public delegate void RemoteLevelStorage_AllLevelsLoadedCallback(LevelSave[] levelSaves);
+    public delegate void RemoteLevelStorage_LevelLoadedCallback(LevelStub levelStub);
+    public delegate void RemoteLevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs);
 
+    [Serializable]
+    public class LevelStub
+    {
+        public string Code { get; private set; }
+        public string Creator { get; private set; }
+        public bool Published { get; private set; }
+
+        public LevelStub(string code, string creator, bool published = false)
+        {
+            this.Code = code;
+            this.Creator = creator;
+            this.Published = published;
+        }
+    }
 }

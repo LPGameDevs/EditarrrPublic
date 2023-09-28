@@ -61,6 +61,7 @@ namespace Level.Storage
                 provider.LoadLevelData(code);
             }
             callback?.Invoke(null);
+            throw new NotImplementedException();
         }
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
@@ -69,7 +70,6 @@ namespace Level.Storage
             {
                 provider.LoadAllLevelData(callback);
             }
-            // callback?.Invoke(null);
         }
 
         public void SubmitScore()

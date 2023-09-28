@@ -95,18 +95,18 @@ namespace Editarrr.Level
                 this.LevelStorage.LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback);
             }
 
-            void LevelStorage_AllLevelsLoadedCallback(LevelSave[] levelSaves)
+            void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs)
             {
-                if (levelSaves == null)
+                if (levelStubs == null)
                 {
                     return;
                 }
 
-                List<LevelState> levels = new List<LevelState>();
+                List<LevelStub> levels = new List<LevelStub>();
 
-                foreach (var levelSave in levelSaves)
+                foreach (var levelStub in levelStubs)
                 {
-                    levels.Add(new LevelState(levelSave));
+                    levels.Add(levelStub);
                 }
 
                 this.LevelsLoadedCallback?.Invoke(levels.ToArray());
@@ -206,5 +206,5 @@ namespace Editarrr.Level
 
     public delegate void LevelManager_LevelLoadedCallback(LevelState levelState);
 
-    public delegate void LevelManager_AllLevelsLoadedCallback(LevelState[] levelStates);
+    public delegate void LevelManager_AllLevelsLoadedCallback(LevelStub[] levelStates);
 }

@@ -129,7 +129,7 @@ namespace Editarrr.Level
         {
             DirectoryInfo dir = new DirectoryInfo(LocalRootDirectory);
 
-            List<LevelSave> levels = new List<LevelSave>();
+            List<LevelStub> levelsStubs = new List<LevelStub>();
 
             // Get all directories in dir.
             foreach (DirectoryInfo levelDirectory in dir.GetDirectories())
@@ -142,7 +142,10 @@ namespace Editarrr.Level
                 }
                 string data = File.ReadAllText(levelFilePath);
                 LevelSave levelSave = JsonUtility.FromJson<LevelSave>(data);
-                levels.Add(levelSave);
+
+                LevelStub stub = new LevelStub(levelSave.Code, levelSave.Creator, levelSave.Published);
+
+                levelsStubs.Add(stub);
             }
 
             if (LevelManager.DistributionStorageEnabled)
@@ -151,7 +154,7 @@ namespace Editarrr.Level
                 string path = DistroRootDirectory;
             }
 
-            callback?.Invoke(levels.ToArray());
+            callback?.Invoke(levelsStubs.ToArray());
         }
 
         public override void Delete(string code)

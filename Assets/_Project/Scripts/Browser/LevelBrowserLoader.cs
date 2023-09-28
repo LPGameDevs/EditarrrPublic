@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Editarrr.Level;
+using Level.Storage;
 using SteamIntegration;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ public class LevelBrowserLoader : MonoBehaviour
         _loadedLevels = new List<Transform>();
     }
 
-    public void AddLevelPrefabFromData(LevelState levelData, string screenshotPath)
+    public void AddLevelPrefabFromData(LevelStub levelData, string screenshotPath)
     {
         string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
         LevelBrowserLevel level;
