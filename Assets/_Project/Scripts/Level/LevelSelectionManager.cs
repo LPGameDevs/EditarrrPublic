@@ -24,6 +24,10 @@ public class LevelSelectionManager : ManagerComponent
         _levelLoader = levelLoader;
     }
 
+    public override void DoAwake()
+    {
+        LevelManager.DoAwake();
+    }
 
     public override void DoStart()
     {
@@ -52,6 +56,12 @@ public class LevelSelectionManager : ManagerComponent
         DestroyAndRefreshLevels();
     }
 
+    private void OnLevelUploaded(string code)
+    {
+        LevelManager.Upload(code, true);
+        DestroyAndRefreshLevels();
+    }
+
     private void OnLevelSelected(string code)
     {
         Exchange.SetCode(code);
@@ -62,11 +72,13 @@ public class LevelSelectionManager : ManagerComponent
     {
         EditorLevel.OnEditorLevelSelected += OnLevelSelected;
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
+        EditorLevel.OnEditorLevelUpload += OnLevelUploaded;
     }
 
     public override void DoOnDisable()
     {
         EditorLevel.OnEditorLevelSelected -= OnLevelSelected;
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
+        EditorLevel.OnEditorLevelUpload -= OnLevelUploaded;
     }
 }

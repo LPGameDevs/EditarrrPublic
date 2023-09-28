@@ -12,7 +12,7 @@ namespace Level.Storage
             throw new System.NotImplementedException();
         }
 
-        public void Upload(string code)
+        public void Upload(LevelSave levelSave)
         {
             throw new System.NotImplementedException();
         }

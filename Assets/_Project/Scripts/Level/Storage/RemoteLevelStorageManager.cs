@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Editarrr.Level;
 using Editarrr.Misc;
 using UnityEngine;
 
@@ -23,6 +24,7 @@ namespace Level.Storage
 
         public void Initialize()
         {
+            _providers.Clear();
             if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
             {
                 _providers.Add(new RemoteLevelStorageProviderSteam());
@@ -33,11 +35,11 @@ namespace Level.Storage
             }
         }
 
-        public void Upload(string code, string data)
+        public void Upload(LevelSave levelSave)
         {
             foreach (var provider in _providers)
             {
-                provider.Upload(code);
+                provider.Upload(levelSave);
             }
         }
 

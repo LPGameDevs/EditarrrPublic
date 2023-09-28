@@ -69,6 +69,8 @@ namespace Editarrr.LevelEditor
 
         public override void DoAwake()
         {
+            LevelManager.DoAwake();
+
             this.ClearEvents();
 
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
@@ -343,7 +345,7 @@ namespace Editarrr.LevelEditor
         {
             this.ScreenshotCamera.orthographicSize = this.SceneCamera.orthographicSize;
             Texture2D screenshot = CreateScreenshot(this.ScreenshotCamera);
-            this.LevelManager.Save(this.Tiles, screenshot);
+            this.LevelManager.SaveTiles(this.Tiles, screenshot);
 
             Texture2D CreateScreenshot(Camera cam)
             {

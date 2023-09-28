@@ -26,6 +26,11 @@ namespace Editarrr.Level
         private Tilemap _walls, _damage;
         private GameplayGuiManager _gameplayGuiManager;
 
+        public override void DoAwake()
+        {
+            LevelManager.DoAwake();
+        }
+
         public void SetTilemapWalls(Tilemap walls)
         {
             _walls = walls;

@@ -31,6 +31,7 @@ namespace Editarrr.Level
         LevelManager_AllLevelsLoadedCallback LevelsLoadedCallback { get; set; }
 
         [SerializeField] private bool RemoteStorageEnabled = false;
+        [SerializeField] private bool UploadsAllowed = false;
         public static bool DistributionStorageEnabled = false;
 
         #endregion
@@ -39,7 +40,7 @@ namespace Editarrr.Level
         {
             LevelStorage.Initialize();
 
-            if (RemoteStorageEnabled)
+            if (RemoteStorageEnabled || UploadsAllowed)
             {
                 RemoteLevelStorage.Initialize();
             }
@@ -121,29 +122,44 @@ namespace Editarrr.Level
             this.LevelStorage.Delete(code);
         }
 
-        public void Save(EditorTileState[,] editorTileData, Texture2D screenshot)
+        public void SaveTiles(EditorTileState[,] editorTileData, Texture2D screenshot)
         {
             // Update state with changes.
             this.LevelState.SetTiles(editorTileData);
 
+            this.Save(this.LevelState, screenshot);
+        }
+
+        private void Save(LevelState levelState)
+        {
+            DoSave(levelState);
+        }
+
+        private void Save(LevelState levelState, Texture2D screenshot)
+        {
+            DoSave(levelState);
+
+            // Store screenshot to filesystem.
+            SaveScreenshot(levelState.Code, screenshot);
+
+            void SaveScreenshot(string code, Texture2D screenshot)
+            {
+                byte[] byteArray = screenshot.EncodeToPNG();
+                this.LevelStorage.SaveScreenshot(code, byteArray);
+            }
+        }
+
+        private void DoSave(LevelState levelState)
+        {
             // Store state to filesystem.
-            LevelSave levelSave = this.LevelState.CreateSave();
+            LevelSave levelSave = levelState.CreateSave();
             string data = JsonUtility.ToJson(levelSave);
             this.LevelStorage.Save(levelSave.Code, data);
 
             // @todo Store the state to remote storage.
-            if (RemoteStorageEnabled)
+            if (UploadsAllowed)
             {
-                this.RemoteLevelStorage.Upload(levelSave.Code, data);
-            }
-
-            // Store screenshot to filesystem.
-            SaveScreenshot(levelSave, screenshot);
-
-            void SaveScreenshot(LevelSave levelSave, Texture2D screenshot)
-            {
-                byte[] byteArray = screenshot.EncodeToPNG();
-                this.LevelStorage.SaveScreenshot(levelSave.Code, byteArray);
+                this.RemoteLevelStorage.Upload(levelSave);
             }
         }
 
@@ -151,14 +167,36 @@ namespace Editarrr.Level
 
         #region Remote Operations
 
-        public void Upload(string code, string data)
+        public void Upload(string code, bool setPublished = false)
         {
-            if (!RemoteStorageEnabled)
+            if (!UploadsAllowed)
             {
                 Debug.LogError("Remote operations are not enabled for this LevelManager.");
                 return;
             }
-            RemoteLevelStorage.Upload(code, data);
+
+            if (setPublished)
+            {
+                LevelStorage.LoadLevelData(code, DoPublishAndUpload);
+            }
+            else
+            {
+                LevelStorage.LoadLevelData(code, DoUpload);
+            }
+        }
+
+        public void DoPublishAndUpload(LevelSave levelSave)
+        {
+            LevelState state = new LevelState(levelSave);
+            state.SetPublished();
+
+            this.Save(state);
+        }
+
+        public void DoUpload(LevelSave levelSave)
+        {
+            LevelState state = new LevelState(levelSave);
+            this.Save(state);
         }
 
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
@@ -173,8 +211,8 @@ namespace Editarrr.Level
 
         public void SaveDownloadedLevel(LevelSave levelSave)
         {
-            string data = JsonUtility.ToJson(levelSave);
-            this.LevelStorage.Save(levelSave.Code, data);
+            LevelState levelState = new LevelState(levelSave);
+            this.Save(levelState);
         }
 
         public void SubmitScore()
@@ -187,20 +225,10 @@ namespace Editarrr.Level
             RemoteLevelStorage.SubmitScore();
         }
 
-        public void Publish()
+        public void Publish(string code)
         {
-            if (!RemoteStorageEnabled)
-            {
-                Debug.LogError("Remote operations are not enabled for this LevelManager.");
-                return;
-            }
 
-            this.LevelState.SetPublished();
-            LevelSave levelSave = this.LevelState.CreateSave();
-            string data = JsonUtility.ToJson(levelSave);
-            this.LevelStorage.Save(levelSave.Code, data);
-
-            Upload(levelSave.Code, data);
+            Upload(code, true);
         }
 
         #endregion

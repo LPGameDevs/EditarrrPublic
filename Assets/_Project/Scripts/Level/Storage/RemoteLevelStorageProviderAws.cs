@@ -7,9 +7,8 @@ using UnityEngine;
 
 namespace Level.Storage
 {
-    public class RemoteLevelStorageProviderAws: IRemoteLevelStorageProvider
+    public class RemoteLevelStorageProviderAws : IRemoteLevelStorageProvider
     {
-
         private const string _awsLevelUrl = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com";
         private bool _showDebug = false;
 
@@ -18,18 +17,41 @@ namespace Level.Storage
             throw new NotImplementedException();
         }
 
-        public void Upload(string code)
+        public void Upload(LevelSave levelSave)
         {
-            throw new NotImplementedException();
+            string user = levelSave.Creator;
+
+            AwsLevel request = new AwsLevel
+            {
+                id = levelSave.Code,
+                name = levelSave.Code,
+                creator = new AwsCreator()
+                {
+                    name = user
+                },
+                status = levelSave.Published ? "published" : "draft",
+                data = new AwsData()
+                {
+                    scaleX = levelSave.ScaleX,
+                    scaleY = levelSave.ScaleY,
+                    tiles = levelSave.Tiles
+                }
+            };
+
+            RestClient.Post<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels", JsonUtility.ToJson(request)).Then(res =>
+            {
+                this.LogMessage("Levels", JsonUtility.ToJson(res, true));
+            }).Catch(err => { this.LogMessage("Error", err.Message); });
         }
+
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
+            string response =
+                "{  \"id\": \"00001\",  \"name\": \"Level 00001\",  \"creator\": {    \"id\": \"user1\",    \"name\": \"User 1\"  },  \"status\": \"published\",  \"createdAt\": 1686495335,  \"updatedAt\": 1686495335,  \"data\": {}}";
 
-            string response = "{  \"id\": \"00001\",  \"name\": \"Level 00001\",  \"creator\": {    \"id\": \"user1\",    \"name\": \"User 1\"  },  \"status\": \"published\",  \"createdAt\": 1686495335,  \"updatedAt\": 1686495335,  \"data\": {}}";
 
-
-            RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{code}").Then(res => {
-
+            RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{code}").Then(res =>
+            {
                 LevelState state = new LevelState(res.data.scaleX, res.data.scaleY);
                 state.SetCode(res.id);
                 state.SetCreator(res.creator.name);
@@ -40,7 +62,6 @@ namespace Level.Storage
 
                 // @todo return level data.
                 this.LogMessage(res.id, JsonUtility.ToJson(res, true));
-
             }).Catch(err =>
             {
                 callback?.Invoke(null);
@@ -67,8 +88,9 @@ namespace Level.Storage
                     LevelStub levelStub = new LevelStub(level.id, level.creator.name, level.status == "published");
                     levelStubs.Add(levelStub);
                 }
+
                 callback?.Invoke(levelStubs.ToArray());
-                this.LogMessage ("Levels", JsonUtility.ToJson(res, true));
+                this.LogMessage("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
                 callback?.Invoke(null);
@@ -86,11 +108,12 @@ namespace Level.Storage
             throw new NotImplementedException();
         }
 
-        private void LogMessage(string title, string message) {
+        private void LogMessage(string title, string message)
+        {
 #if UNITY_EDITOR
             if (_showDebug)
             {
-                EditorUtility.DisplayDialog (title, message, "Ok");
+                EditorUtility.DisplayDialog(title, message, "Ok");
             }
             else
             {
@@ -132,5 +155,12 @@ namespace Level.Storage
     {
         public int scaleX;
         public int scaleY;
+        public TileSave[] tiles;
+    }
+
+    [Serializable]
+    public class AwsUploadResponse
+    {
+        public string message;
     }
 }

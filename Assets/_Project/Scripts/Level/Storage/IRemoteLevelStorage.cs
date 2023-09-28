@@ -9,7 +9,7 @@ namespace Level.Storage
          * Optional setup tasks for the storage mechanism.
          */
         public void Initialize();
-        public void Upload(string code, string data);
+        public void Upload(LevelSave levelSave);
         public void UploadScreenshot(string code, byte[] screenshot);
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback);
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
