@@ -54,10 +54,7 @@ The backend API would have the following APIs:
 ```json
 {
   "name": "Name of Level",
-  "creator": {
-    "id": "UUID",
-    "name": "User DisplayName"
-  },
+  "creatorId": "UUID",
   "status": "published|draft",
   "data": {}, // This can be whatever Unity needs
 }
@@ -125,7 +122,7 @@ The backend API would have the following APIs:
 
 **Request:**
 ```json
-// Only one of the fields need be provided - all other fields will remain unchanged
+// At least one of these 3 fields needs be provided. All other fields not provided will remain unchanged
 {
   "name": "Name of Level",
   "status": "published|draft",
