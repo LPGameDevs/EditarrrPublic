@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1527377427}
   - component: {fileID: 1527377426}
   m_Layer: 5
-  m_Name: Button_1
+  m_Name: DownloadButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -200, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &1527377428
@@ -598,12 +598,12 @@ GameObject:
   - component: {fileID: 7232421831684039324}
   - component: {fileID: 7232421831684039323}
   m_Layer: 5
-  m_Name: Button
+  m_Name: UploadButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7232421831684039322
 RectTransform:
   m_ObjectHideFlags: 0
@@ -622,7 +622,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -200, y: 0}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &7232421831684039325
@@ -841,7 +841,7 @@ GameObject:
   - component: {fileID: 7232421832042442878}
   - component: {fileID: 5157802081767063974}
   m_Layer: 5
-  m_Name: Level
+  m_Name: BrowserLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -889,6 +889,7 @@ MonoBehaviour:
   EditButton: {fileID: 0}
   UploadButton: {fileID: 0}
   DeleteButton: {fileID: 0}
+  DownloadButton: {fileID: 1527377425}
 --- !u!1 &7774503468946763959
 GameObject:
   m_ObjectHideFlags: 0

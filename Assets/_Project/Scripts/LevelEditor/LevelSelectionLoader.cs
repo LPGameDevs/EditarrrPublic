@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using CorgiExtension;
 using Editarrr.Level;
 using Level.Storage;
+using Singletons;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 /**
@@ -53,5 +55,10 @@ public class LevelSelectionLoader : MonoBehaviour
         }
 
         _loadedLevels.Add(level.transform);
+    }
+
+    public void GoToBrowser()
+    {
+        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.BrowserSceneName);
     }
 }

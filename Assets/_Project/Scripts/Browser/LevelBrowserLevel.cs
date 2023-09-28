@@ -7,6 +7,8 @@ public class LevelBrowserLevel : EditorLevel
 {
     public static event Action<string> OnBrowserLevelDownload;
 
+    public Transform DownloadButton;
+
     public void OnUploadButtonPressed()
     {
         Debug.Log("up pressed");
@@ -49,6 +51,11 @@ public class LevelBrowserLevel : EditorLevel
     {
 
 
+    }
+
+    public void SetDownloaded()
+    {
+        DownloadButton.gameObject.SetActive(false);
     }
 }
 

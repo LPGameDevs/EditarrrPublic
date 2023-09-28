@@ -50,17 +50,28 @@ public class LevelBrowserManager : ManagerComponent
         }
     }
 
-    private void OnLevelDownloadStarted(string code)
+    private void OnLevelDownloadRequested(string code)
     {
-        Debug.Log("Download started for level " + code + ".");
+        Debug.Log("Download requested for level " + code + ".");
         LevelManager.Download(code, OnLevelDownloadComplete);
 
-        // Update display.
-        DestroyAndRefreshLevels();
+        // Update display - this is only necessary with long downloads.
+        // DestroyAndRefreshLevels();
     }
 
-    private void OnLevelDownloadComplete(LevelStub level)
+    private void OnLevelDownloadStarted(LevelStub level)
     {
+        Debug.Log("Download started for level " + level.Code + ".");
+
+        // Update display - this is only necessary with long downloads.
+        // DestroyAndRefreshLevels();
+    }
+
+    private void OnLevelDownloadComplete(LevelSave level)
+    {
+        // save level to local storage.
+        LevelManager.SaveDownloadedLevel(level);
+
         Debug.Log("Download finished for level " + level.Code + ".");
 
         // Update display.
@@ -69,14 +80,14 @@ public class LevelBrowserManager : ManagerComponent
 
     public override void DoOnEnable()
     {
-        LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadStarted;
+        LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
         // LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownload;
         // LevelBrowserLevel.OnBrowserLevelDownloadComplete += OnLevelDownloadComplete;
     }
 
     public override void DoOnDisable()
     {
-        LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadStarted;
+        LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
         // LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownload;
         // LevelBrowserLevel.OnBrowserLevelDownloadComplete -= OnLevelDownloadComplete;
     }

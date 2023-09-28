@@ -56,6 +56,7 @@ namespace Editarrr.Level
 
         public override void Save(string code, string data)
         {
+            code = code.ToLower();
             string path = this.GetCreateLevelPath(code) + "level.json";
 
             Debug.Log($"Local Save: {path}");
@@ -98,6 +99,24 @@ namespace Editarrr.Level
             } while (true);
 
             return code;
+        }
+
+        public override bool LevelExists(string code)
+        {
+            string path = this.GetLevelPath(code);
+
+            if (!Directory.Exists(path))
+            {
+                return false;
+            }
+
+            string levelFilePath = path + "level.json";
+            if (!File.Exists(levelFilePath))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public override void LoadLevelData(string code, LevelStorage_LevelLoadedCallback callback)

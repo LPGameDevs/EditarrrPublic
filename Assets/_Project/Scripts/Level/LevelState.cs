@@ -80,9 +80,9 @@ namespace Editarrr.Level
             }
         }
 
-        public void SetPublished()
+        public void SetPublished(bool isPublished = true)
         {
-            this.Published = true;
+            this.Published = isPublished;
         }
 
 

@@ -3,6 +3,7 @@ using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Level.Storage;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -170,6 +171,12 @@ namespace Editarrr.Level
             RemoteLevelStorage.Download(code, callback);
         }
 
+        public void SaveDownloadedLevel(LevelSave levelSave)
+        {
+            string data = JsonUtility.ToJson(levelSave);
+            this.LevelStorage.Save(levelSave.Code, data);
+        }
+
         public void SubmitScore()
         {
             if (!RemoteStorageEnabled)
@@ -201,6 +208,11 @@ namespace Editarrr.Level
         public string GetScreenshotPath(string levelCode)
         {
             return this.LevelStorage.GetScreenshotPath(levelCode);
+        }
+
+        public bool LevelExists(string levelCode)
+        {
+            return this.LevelStorage.LevelExists(levelCode);
         }
     }
 

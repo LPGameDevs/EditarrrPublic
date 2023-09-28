@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Editarrr.Level;
 using Proyecto26;
 using UnityEditor;
 using UnityEngine;
@@ -29,8 +30,13 @@ namespace Level.Storage
 
             RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{code}").Then(res => {
 
-                LevelStub stub = new LevelStub(res.id, res.creator.name, res.status == "published");
-                callback?.Invoke(stub);
+                LevelState state = new LevelState(res.data.scaleX, res.data.scaleY);
+                state.SetCode(res.id);
+                state.SetCreator(res.creator.name);
+                state.SetPublished(res.status == "published");
+
+                LevelSave save = state.CreateSave();
+                callback?.Invoke(save);
 
                 // @todo return level data.
                 this.LogMessage(res.id, JsonUtility.ToJson(res, true));
@@ -124,7 +130,7 @@ namespace Level.Storage
     [Serializable]
     public class AwsData
     {
-        public string id;
-        public string name;
+        public int scaleX;
+        public int scaleY;
     }
 }

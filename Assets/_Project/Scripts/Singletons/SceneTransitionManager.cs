@@ -21,6 +21,7 @@ namespace Singletons
         public static string LevelSelectionSceneName = "EditorSelection";
         public static string TestLevelSceneName = "EditorTest";
         public static string CreateLevelSceneName = "EditorCreate";
+        public static string BrowserSceneName = "LevelBrowser";
 
         public static Action OnLevelRestart;
 

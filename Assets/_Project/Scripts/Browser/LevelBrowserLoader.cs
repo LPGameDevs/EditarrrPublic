@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Editarrr.Level;
 using Level.Storage;
+using Singletons;
 using SteamIntegration;
 using UnityEngine;
 
@@ -43,6 +44,11 @@ public class LevelBrowserLoader : MonoBehaviour
         level.SetCreator(levelData.Creator);
         level.SetScreenshot(screenshotPath);
 
+        if (this._levelManager.LevelExists(levelData.Code))
+        {
+            level.SetDownloaded();
+        }
+
         // Dont allow someone to edit a level if they didnt create it.
         if (levelData.Creator.ToLower() != userName.ToLower())
         {
@@ -50,5 +56,10 @@ public class LevelBrowserLoader : MonoBehaviour
         }
 
         _loadedLevels.Add(level.transform);
+    }
+
+    public void GoToSelection()
+    {
+        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
     }
 }
