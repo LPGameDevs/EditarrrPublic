@@ -35,11 +35,11 @@ namespace Level.Storage
             }
         }
 
-        public void Upload(LevelSave levelSave)
+        public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
             foreach (var provider in _providers)
             {
-                provider.Upload(levelSave);
+                provider.Upload(levelSave, callback);
             }
         }
 

@@ -28,6 +28,7 @@ namespace Editarrr.Level
         [field: SerializeField] public RemoteLevelStorageManager RemoteLevelStorage { get; private set; }
 
         LevelManager_LevelLoadedCallback LevelLoadedCallback { get; set; }
+        LevelManager_LevelUploadedCallback LevelUploadedCallback { get; set; }
         LevelManager_AllLevelsLoadedCallback LevelsLoadedCallback { get; set; }
 
         [SerializeField] private bool RemoteStorageEnabled = false;
@@ -159,7 +160,13 @@ namespace Editarrr.Level
             // @todo Store the state to remote storage.
             if (UploadsAllowed)
             {
-                this.RemoteLevelStorage.Upload(levelSave);
+                this.RemoteLevelStorage.Upload(levelSave, UploadCompleted);
+            }
+
+            void UploadCompleted(LevelSave levelSave)
+            {
+                this.LevelUploadedCallback?.Invoke(levelSave);
+                this.LevelUploadedCallback = null;
             }
         }
 
@@ -167,7 +174,7 @@ namespace Editarrr.Level
 
         #region Remote Operations
 
-        public void Upload(string code, bool setPublished = false)
+        public void Upload(string code, LevelManager_LevelUploadedCallback callback)
         {
             if (!UploadsAllowed)
             {
@@ -175,14 +182,8 @@ namespace Editarrr.Level
                 return;
             }
 
-            if (setPublished)
-            {
-                LevelStorage.LoadLevelData(code, DoPublishAndUpload);
-            }
-            else
-            {
-                LevelStorage.LoadLevelData(code, DoUpload);
-            }
+            this.LevelUploadedCallback = callback;
+            LevelStorage.LoadLevelData(code, DoPublishAndUpload);
         }
 
         public void DoPublishAndUpload(LevelSave levelSave)
@@ -225,12 +226,6 @@ namespace Editarrr.Level
             RemoteLevelStorage.SubmitScore();
         }
 
-        public void Publish(string code)
-        {
-
-            Upload(code, true);
-        }
-
         #endregion
 
         public string GetScreenshotPath(string levelCode)
@@ -245,6 +240,7 @@ namespace Editarrr.Level
     }
 
     public delegate void LevelManager_LevelLoadedCallback(LevelState levelState);
+    public delegate void LevelManager_LevelUploadedCallback(LevelSave levelSave);
 
     public delegate void LevelManager_AllLevelsLoadedCallback(LevelStub[] levelStates);
 }

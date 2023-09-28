@@ -12,7 +12,7 @@ namespace Level.Storage
             throw new System.NotImplementedException();
         }
 
-        public void Upload(LevelSave levelSave)
+        public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
             throw new System.NotImplementedException();
         }

@@ -17,7 +17,7 @@ namespace Level.Storage
             throw new NotImplementedException();
         }
 
-        public void Upload(LevelSave levelSave)
+        public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
             string user = levelSave.Creator;
 
@@ -40,6 +40,7 @@ namespace Level.Storage
 
             RestClient.Post<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels", JsonUtility.ToJson(request)).Then(res =>
             {
+                callback?.Invoke(levelSave);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err => { this.LogMessage("Error", err.Message); });
         }
