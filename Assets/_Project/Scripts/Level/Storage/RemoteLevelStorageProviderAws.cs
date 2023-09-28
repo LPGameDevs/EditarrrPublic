@@ -19,15 +19,27 @@ namespace Level.Storage
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
-            string user = levelSave.Creator;
 
+            RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{levelSave.Code}").Then(res =>
+            {
+               // Existing level found.
+               this.Update(levelSave, callback);
+            }).Catch(err =>
+            {
+                // No level found.
+                this.Insert(levelSave, callback);
+            });
+        }
+
+        private void Insert(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
+        {
             AwsLevel request = new AwsLevel
             {
                 id = levelSave.Code,
                 name = levelSave.Code,
                 creator = new AwsCreator()
                 {
-                    name = user
+                    name = levelSave.Creator
                 },
                 status = levelSave.Published ? "published" : "draft",
                 data = new AwsData()
@@ -39,6 +51,31 @@ namespace Level.Storage
             };
 
             RestClient.Post<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels", JsonUtility.ToJson(request)).Then(res =>
+            {
+                callback?.Invoke(levelSave);
+                this.LogMessage("Levels", JsonUtility.ToJson(res, true));
+            }).Catch(err => { this.LogMessage("Error", err.Message); });
+        }
+        private void Update(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback) {
+
+            AwsLevel request = new AwsLevel
+            {
+                id = levelSave.Code,
+                name = levelSave.Code,
+                creator = new AwsCreator()
+                {
+                    name = levelSave.Creator
+                },
+                status = levelSave.Published ? "published" : "draft",
+                data = new AwsData()
+                {
+                    scaleX = levelSave.ScaleX,
+                    scaleY = levelSave.ScaleY,
+                    tiles = levelSave.Tiles
+                }
+            };
+
+            RestClient.Put<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels/{request.id}", JsonUtility.ToJson(request)).Then(res =>
             {
                 callback?.Invoke(levelSave);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
