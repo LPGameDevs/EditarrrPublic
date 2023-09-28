@@ -17,21 +17,56 @@ namespace Level.Storage
             throw new System.NotImplementedException();
         }
 
-        public void Download(string code)
+        public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
             throw new System.NotImplementedException();
+
+            DownloadAsync(code);
         }
 
-        public void LoadLevelData(string code)
+        private async void DownloadAsync(string code)
         {
-            // Call async function.
-            LoadLevelDataAsync( code );
-        }
+            ulong ucode = Convert.ToUInt64(code);
+            var itemInfo = await Steamworks.Ugc.Item.GetAsync(ucode);
 
-        private async void LoadLevelDataAsync(string code)
-        {
-            ulong ucode = Convert.ToUInt64( code );
-            var itemInfo = await Steamworks.Ugc.Item.GetAsync( ucode );
+            if (!itemInfo.HasValue)
+            {
+                Debug.Log("Item not found");
+                return;
+            }
+
+            var item = itemInfo.Value;
+
+            Debug.Log($"Title: {item.Title}");
+            Debug.Log($"IsInstalled: {item.IsInstalled}");
+            Debug.Log($"IsDownloading: {item.IsDownloading}");
+            Debug.Log($"IsDownloadPending: {item.IsDownloadPending}");
+            Debug.Log($"IsSubscribed: {item.IsSubscribed}");
+            Debug.Log($"NeedsUpdate: {item.NeedsUpdate}");
+            Debug.Log($"Description: {item.Description}");
+
+            if (item.IsInstalled || item.IsDownloading || item.IsDownloadPending)
+            {
+                Debug.Log("Item is already downloaded or downloading");
+                return;
+            }
+
+            var downloadProgress = new Action<float>((progress) =>
+            {
+                Debug.Log($"Download Progress: {progress}");
+
+                if (progress >= 1f)
+                {
+                    // OnBrowserLevelDownloadComplete?.Invoke(item.Id.ToString() ?? "");
+                }
+            });
+
+            // OnBrowserLevelDownload?.Invoke(item);
+
+            bool isSubscribing = await item.Subscribe();
+            bool isDownloading = await item.DownloadAsync(downloadProgress);
+            Debug.Log("Subscribing" + isSubscribing);
+            Debug.Log("Downloading" + isDownloading);
         }
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)

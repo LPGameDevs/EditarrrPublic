@@ -6,12 +6,19 @@ using UnityEngine;
 
 public class LevelBrowserLoader : MonoBehaviour
 {
+    private LevelManager _levelManager;
+
     [SerializeField] private LevelBrowserLevel _levelPrefab;
     private List<Transform> _loadedLevels = new List<Transform>();
 
     private void Awake()
     {
         SteamManager.Instance.Init();
+    }
+
+    public void SetLevelManager(LevelManager levelManager)
+    {
+        _levelManager = levelManager;
     }
 
     public void DestroyLevels()

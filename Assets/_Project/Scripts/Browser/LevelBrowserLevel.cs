@@ -1,11 +1,11 @@
 using System;
 using CorgiExtension;
+using Level.Storage;
 using UnityEngine;
 
 public class LevelBrowserLevel : EditorLevel
 {
-    public static event Action<Steamworks.Ugc.Item> OnBrowserLevelDownload;
-    public static event Action<string> OnBrowserLevelDownloadComplete;
+    public static event Action<string> OnBrowserLevelDownload;
 
     public void OnUploadButtonPressed()
     {
@@ -15,8 +15,8 @@ public class LevelBrowserLevel : EditorLevel
 
     public void OnDownloadButtonPressed()
     {
-        Debug.Log("down pressed");
-        DownloadItem();
+        string code = Title.text;
+        OnBrowserLevelDownload?.Invoke(code);
     }
 
 
@@ -47,48 +47,8 @@ public class LevelBrowserLevel : EditorLevel
 
     private async void DownloadItem()
     {
-        string code = Title.text;
-        ulong ucode = Convert.ToUInt64(code);
-        var itemInfo = await Steamworks.Ugc.Item.GetAsync(ucode);
 
-        if (!itemInfo.HasValue)
-        {
-            Debug.Log("Item not found");
-            return;
-        }
 
-        var item = itemInfo.Value;
-
-        Debug.Log($"Title: {item.Title}");
-        Debug.Log($"IsInstalled: {item.IsInstalled}");
-        Debug.Log($"IsDownloading: {item.IsDownloading}");
-        Debug.Log($"IsDownloadPending: {item.IsDownloadPending}");
-        Debug.Log($"IsSubscribed: {item.IsSubscribed}");
-        Debug.Log($"NeedsUpdate: {item.NeedsUpdate}");
-        Debug.Log($"Description: {item.Description}");
-
-        if (item.IsInstalled || item.IsDownloading || item.IsDownloadPending)
-        {
-            Debug.Log("Item is already downloaded or downloading");
-            return;
-        }
-
-        var downloadProgress = new Action<float>((progress) =>
-        {
-            Debug.Log($"Download Progress: {progress}");
-
-            if (progress >= 1f)
-            {
-                OnBrowserLevelDownloadComplete?.Invoke(item.Id.ToString() ?? "");
-            }
-        });
-
-        OnBrowserLevelDownload?.Invoke(item);
-
-        bool isSubscribing = await item.Subscribe();
-        bool isDownloading = await item.DownloadAsync(downloadProgress);
-        Debug.Log("Subscribing" + isSubscribing);
-        Debug.Log("Downloading" + isDownloading);
     }
 }
 

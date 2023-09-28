@@ -20,6 +20,7 @@ public class LevelBrowserManager : ManagerComponent
     public void SetLevelLoader(LevelBrowserLoader levelLoader)
     {
         _levelLoader = levelLoader;
+        _levelLoader.SetLevelManager(LevelManager);
     }
 
     public override void DoAwake()
@@ -49,30 +50,34 @@ public class LevelBrowserManager : ManagerComponent
         }
     }
 
-    private void OnLevelDownload(Steamworks.Ugc.Item item)
+    private void OnLevelDownloadStarted(string code)
     {
-        Debug.Log("Download started for level " + item.Id + ".");
+        Debug.Log("Download started for level " + code + ".");
+        LevelManager.Download(code, OnLevelDownloadComplete);
 
         // Update display.
         DestroyAndRefreshLevels();
     }
 
-    private void OnLevelDownloadComplete(string code)
+    private void OnLevelDownloadComplete(LevelStub level)
     {
-        Debug.Log("Download finished for level " + code + ".");
+        Debug.Log("Download finished for level " + level.Code + ".");
+
         // Update display.
         DestroyAndRefreshLevels();
     }
 
     public override void DoOnEnable()
     {
-        LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownload;
-        LevelBrowserLevel.OnBrowserLevelDownloadComplete += OnLevelDownloadComplete;
+        LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadStarted;
+        // LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownload;
+        // LevelBrowserLevel.OnBrowserLevelDownloadComplete += OnLevelDownloadComplete;
     }
 
     public override void DoOnDisable()
     {
-        LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownload;
-        LevelBrowserLevel.OnBrowserLevelDownloadComplete -= OnLevelDownloadComplete;
+        LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadStarted;
+        // LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownload;
+        // LevelBrowserLevel.OnBrowserLevelDownloadComplete -= OnLevelDownloadComplete;
     }
 }

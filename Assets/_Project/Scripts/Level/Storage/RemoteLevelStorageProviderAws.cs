@@ -10,7 +10,7 @@ namespace Level.Storage
     {
 
         private const string _awsLevelUrl = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com";
-        private bool _showDebug = true;
+        private bool _showDebug = false;
 
         public void Initialize()
         {
@@ -21,27 +21,25 @@ namespace Level.Storage
         {
             throw new NotImplementedException();
         }
-
-        public void Download(string code)
+        public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
-            throw new NotImplementedException();
-        }
 
-        public void LoadLevelData(string code)
-        {
             string response = "{  \"id\": \"00001\",  \"name\": \"Level 00001\",  \"creator\": {    \"id\": \"user1\",    \"name\": \"User 1\"  },  \"status\": \"published\",  \"createdAt\": 1686495335,  \"updatedAt\": 1686495335,  \"data\": {}}";
 
 
             RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{code}").Then(res => {
+
+                LevelStub stub = new LevelStub(res.id, res.creator.name, res.status == "published");
+                callback?.Invoke(stub);
 
                 // @todo return level data.
                 this.LogMessage(res.id, JsonUtility.ToJson(res, true));
 
             }).Catch(err =>
             {
+                callback?.Invoke(null);
                 this.LogMessage("Error", err.Message);
             });
-
         }
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
@@ -70,8 +68,6 @@ namespace Level.Storage
                 callback?.Invoke(null);
                 this.LogMessage("Error", err.Message);
             });
-
-
         }
 
         public bool SupportsLeaderboards()

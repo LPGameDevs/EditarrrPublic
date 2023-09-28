@@ -1,5 +1,4 @@
 ﻿using System;
-using Editarrr.Level;
 
 namespace Level.Storage
 {
@@ -11,8 +10,7 @@ namespace Level.Storage
         public void Initialize();
         public void Upload(string code, string data);
         public void UploadScreenshot(string code, byte[] screenshot);
-        public void Download(string code, string data);
-        public void LoadLevelData(string code, RemoteLevelStorage_LevelLoadedCallback callback);
+        public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback);
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
     }
 

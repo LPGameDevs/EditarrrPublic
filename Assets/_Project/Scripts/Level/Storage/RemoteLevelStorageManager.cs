@@ -46,22 +46,12 @@ namespace Level.Storage
             throw new NotImplementedException();
         }
 
-        public void Download(string code, string data)
+        public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
             foreach (var provider in _providers)
             {
-                provider.Download(code);
+                provider.Download(code, callback);
             }
-        }
-
-        public void LoadLevelData(string code, RemoteLevelStorage_LevelLoadedCallback callback)
-        {
-            foreach (var provider in _providers)
-            {
-                provider.LoadLevelData(code);
-            }
-            callback?.Invoke(null);
-            throw new NotImplementedException();
         }
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)

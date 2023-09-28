@@ -160,14 +160,14 @@ namespace Editarrr.Level
             RemoteLevelStorage.Upload(code, data);
         }
 
-        public void Download(string code, string data)
+        public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
             if (!RemoteStorageEnabled)
             {
                 Debug.LogError("Remote operations are not enabled for this LevelManager.");
                 return;
             }
-            RemoteLevelStorage.Download(code, data);
+            RemoteLevelStorage.Download(code, callback);
         }
 
         public void SubmitScore()
