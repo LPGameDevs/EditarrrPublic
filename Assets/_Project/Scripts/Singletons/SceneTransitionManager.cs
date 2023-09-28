@@ -1,3 +1,4 @@
+using Editarrr.Audio;
 using Editarrr.Input;
 using Player;
 using System;
@@ -7,7 +8,7 @@ using UnityEngine.SceneManagement;
 namespace Singletons
 {
     /**
-     * Level Manager Singleton
+     * Scene Manager Singleton
      *
      * Responsible for:
      *  - Loading scenes
@@ -25,8 +26,10 @@ namespace Singletons
 
         [field: SerializeField, Tooltip("Restart input map")] private InputValue RestartInput { get; set; }
         [field: SerializeField, Tooltip("Active scene reloads after this time")] private float TransitionTime { get; set; }
+        [field: SerializeField, Tooltip("Played on restart")] private AudioClip RestartSound { get; set; }
 
-        bool restartInitiated;
+
+        bool _restartInitiated;
 
         private void OnEnable()
         {
@@ -43,16 +46,16 @@ namespace Singletons
             if (RestartInput == null)
                 return;
 
-            if (RestartInput.WasPressed)
+            if (RestartInput.WasPressed && SceneManager.GetActiveScene().name.Equals(TestLevelSceneName))
                 RestartLevel();
         }
 
         public void TransitionedRestart()
         {
-            if (restartInitiated)
+            if (_restartInitiated)
                 return;
 
-            restartInitiated = true;
+            _restartInitiated = true;
             OnLevelRestart?.Invoke();
 
             //TODO: Play sfx/jingles, transitiion animations, etc.
@@ -62,11 +65,18 @@ namespace Singletons
 
         public void GoToScene(string sceneName)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            if (sceneName.Equals(TestLevelSceneName))
+                AudioManager.Instance.FadeVolume(AudioManager.Instance.BgmSourceTwo, TransitionTime, 1f);
+            else
+                AudioManager.Instance.FadeVolume(AudioManager.Instance.BgmSourceTwo, TransitionTime, 0f);
+
+            SceneManager.LoadScene(sceneName);
         }
 
         public void RestartLevel()
         {
+            _restartInitiated = false;
+            AudioManager.Instance.PlayAudioClip(RestartSound);
             GoToScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
 

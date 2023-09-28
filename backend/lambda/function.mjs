@@ -38,93 +38,111 @@ export const handler = async (event, context) => {
 
     try {
         switch (event.requestContext.routeKey) {
+            case "POST /levels":
+                // TODO Actual Implementation
+                requestJSON = JSON.parse(event.body);
+                var levelName = requestJSON.name; 
+                body = {
+                    "message": `Success! Created level: ${levelName}`
+                }
+                // const requestData = JSON.parse(event.body);
+                // let generatedLevelId = uuidv4();
+                // await dynamo.send(
+                //     // TODO Actual implementation, this was just inserting some dummy data for testing
+                //     new PutCommand({
+                //         TableName: tableName,
+                //         Item: {
+                //             pk: "USER#user1",
+                //             sk: "USER#user1",
+                //             userName: "User 1"
+                //         },
+                //     })
+                // );
+                // body = `Created new level ${generatedLevelId}`;
+                break;
             case "GET /levels":
-                body = await dynamo.send(
-                    // TODO Actual Implementation
-                    new ScanCommand({
-                        TableName: tableName
-                    })
-                );
+                // TODO Actual Implementation
+                body = {
+                    "levels": [
+                        {
+                            "id": "level2",
+                            "name": "Level 2",
+                            "creator": {
+                                "id": "user2",
+                                "name": "User 2"
+                            },
+                            "status": "published",
+                            "createdAt": 1695649746,
+                            "updatedAt": 1695649746,
+                        },
+                        {
+                            "id": "level1",
+                            "name": "Level 1",
+                            "creator": {
+                                "id": "user1",
+                                "name": "User 1"
+                            },
+                            "status": "published",
+                            "createdAt": 1686495335,
+                            "updatedAt": 1686495335,
+                        }
+                    ]
+                  }
+                // body = await dynamo.send(
+                //     // TODO Actual Implementation
+                //     new ScanCommand({
+                //         TableName: tableName
+                //     })
+                // );
                 break;
             case "GET /levels/{id}":
-                body = await dynamo.send(
-                    new GetCommand({
-                        TableName: tableName,
-                        Key: {
-                            id: event.pathParameters.id,
-                        },
-                    })
-                );
-                if (!body.Item) throw new Error(`Item ${event.pathParameters.id} not found`);
-                body = body.Item;
-                break;
-            case "POST /levels":
-                const requestData = JSON.parse(event.body);
-                let generatedLevelId = uuidv4();
-                await dynamo.send(
-                    // TODO Actual implementation, this was just inserting some dummy data for testing
-                    new PutCommand({
-                        TableName: tableName,
-                        Item: {
-                            pk: "USER#user1",
-                            sk: "USER#user1",
-                            userName: "User 1"
-                        },
-                    })
-                );
-                body = `Created new level ${generatedLevelId}`;
-                break;
-            case "PUT /levels/{id}":
-                let requestJSON = JSON.parse(event.body);
-                await dynamo.send(
-                    new PutCommand({
-                        TableName: tableName,
-                        Item: {
-                            id: event.pathParameters.id,
-                            lastUpdated: Date.now().toString(),
-                            name: requestJSON.name,
-                            status: requestJSON.status,
-                            creator: requestData.username,
-                            levelData: requestJSON.levelData,
-                        },
-                    })
-                );
-                body = `Updated level ${event.pathParameters.id}`;
-                break;
-            case "DELETE /levels/{id}":
-                // We dont actually want to delete so lets just unpublish.
-
-                // await dynamo.send(
-                //     new DeleteCommand({
+                // TODO Actual Implementation
+                var levelId = event.pathParameters.id;
+                body = {
+                    "id": levelId,
+                    "name": `Level ${levelId}`,
+                    "creator": {
+                      "id": "user1",
+                      "name": "User 1"
+                    },
+                    "status": "published",
+                    "createdAt": 1686495335,
+                    "updatedAt": 1686495335,
+                    "data": {}
+                }
+                // body = await dynamo.send(
+                //     new GetCommand({
                 //         TableName: tableName,
                 //         Key: {
                 //             id: event.pathParameters.id,
                 //         },
                 //     })
                 // );
-
-                let item = await dynamo.send(
-                    new GetCommand({
-                        TableName: tableName,
-                        Key: {
-                            id: event.pathParameters.id,
-                        },
-                    })
-                );
-
-                if (!item.Item) throw new Error(`Item ${event.pathParameters.id} not found`);
-
-                item = item.Item;
-                item.published = false;
-
-                await dynamo.send(
-                    new PutCommand({
-                        TableName: tableName,
-                        Item: item,
-                    })
-                );
-
-                body = `Deleted item ${event.pathParameters.id}`;
+                // if (!body.Item) throw new Error(`Item ${event.pathParameters.id} not found`);
+                // body = body.Item;
+                break;
+            case "PUT /levels/{id}":
+                // TODO Actual Implementation
+                requestJSON = JSON.parse(event.body);
+                var levelName = requestJSON.name; 
+                body = {
+                    "message": `Success! Update level: ${levelName}`
+                }
+                // let requestJSON = JSON.parse(event.body);
+                // await dynamo.send(
+                //     new PutCommand({
+                //         TableName: tableName,
+                //         Item: {
+                //             id: event.pathParameters.id,
+                //             lastUpdated: Date.now().toString(),
+                //             name: requestJSON.name,
+                //             status: requestJSON.status,
+                //             creator: requestData.username,
+                //             levelData: requestJSON.levelData,
+                //         },
+                //     })
+                // );
+                // body = `Updated level ${event.pathParameters.id}`;
                 break;
             default:
                 throw new Error(`Unsupported route: "${event.requestContext.resourceId}"`);
