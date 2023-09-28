@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Editarrr.Misc;
+using Level.Storage;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -55,6 +56,7 @@ namespace Editarrr.Level
 
         public override void Save(string code, string data)
         {
+            code = code.ToLower();
             string path = this.GetCreateLevelPath(code) + "level.json";
 
             Debug.Log($"Local Save: {path}");
@@ -99,6 +101,24 @@ namespace Editarrr.Level
             return code;
         }
 
+        public override bool LevelExists(string code)
+        {
+            string path = this.GetLevelPath(code);
+
+            if (!Directory.Exists(path))
+            {
+                return false;
+            }
+
+            string levelFilePath = path + "level.json";
+            if (!File.Exists(levelFilePath))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public override void LoadLevelData(string code, LevelStorage_LevelLoadedCallback callback)
         {
             string path = this.GetLevelPath(code);
@@ -128,7 +148,7 @@ namespace Editarrr.Level
         {
             DirectoryInfo dir = new DirectoryInfo(LocalRootDirectory);
 
-            List<LevelSave> levels = new List<LevelSave>();
+            List<LevelStub> levelsStubs = new List<LevelStub>();
 
             // Get all directories in dir.
             foreach (DirectoryInfo levelDirectory in dir.GetDirectories())
@@ -141,7 +161,10 @@ namespace Editarrr.Level
                 }
                 string data = File.ReadAllText(levelFilePath);
                 LevelSave levelSave = JsonUtility.FromJson<LevelSave>(data);
-                levels.Add(levelSave);
+
+                LevelStub stub = new LevelStub(levelSave.Code, levelSave.Creator, levelSave.Published);
+
+                levelsStubs.Add(stub);
             }
 
             if (LevelManager.DistributionStorageEnabled)
@@ -150,7 +173,7 @@ namespace Editarrr.Level
                 string path = DistroRootDirectory;
             }
 
-            callback?.Invoke(levels.ToArray());
+            callback?.Invoke(levelsStubs.ToArray());
         }
 
         public override void Delete(string code)

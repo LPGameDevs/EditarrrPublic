@@ -15,6 +15,8 @@ namespace Editarrr.Level
     {
         private const string Documentation = "This manager will build a level and instanciate its prefabs.\r\n";
 
+        #region Properties
+
         [field: SerializeField, Info(Documentation)] private EditorLevelExchange Exchange { get; set; }
 
         [field: SerializeField, Header("Managers")] public LevelManager LevelManager { get; private set; }
@@ -39,6 +41,9 @@ namespace Editarrr.Level
             _gameplayGuiManager = gameplayGuiManager;
         }
 
+
+        #endregion
+
         public override void DoStart()
         {
             string code = Exchange.CodeToLoad;
@@ -53,6 +58,8 @@ namespace Editarrr.Level
             _gameplayGuiManager.SetLevelState(levelState);
             GameEvent.Trigger(GameEventType.Unpause);
         }
+
+        #region Tile Operations
 
         private void PaintTilesFromFile(LevelState level)
         {
@@ -77,10 +84,10 @@ namespace Editarrr.Level
         }
 
         private TileData GetTileDataFromType(TileType tileStateType)
-         {
-             EditorTileData tileData = EditorTileDataPool.Get(tileStateType);
-             return tileData.Tile;
-         }
+        {
+            EditorTileData tileData = EditorTileDataPool.Get(tileStateType);
+            return tileData.Tile;
+        }
 
         private void InstantiateTile(TileData tileData, Vector3Int position)
         {
@@ -103,9 +110,12 @@ namespace Editarrr.Level
             SetTile(position, tileData.TileMapTileBase);
         }
 
-         private void SetTile(Vector3Int position, TileBase tile)
-         {
-             _walls.SetTile(position, tile);
-         }
+        private void SetTile(Vector3Int position, TileBase tile)
+        {
+            _walls.SetTile(position, tile);
+        }
+
+        #endregion
+
     }
 }

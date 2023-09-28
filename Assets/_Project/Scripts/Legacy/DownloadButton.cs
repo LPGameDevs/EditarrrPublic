@@ -8,10 +8,7 @@ namespace Legacy
         void Start()
         {
             // Hide this button when we cannot download levels.
-            if (!LevelManager.RemoteStorageEnabled)
-            {
-                gameObject.SetActive(false);
-            }
+            gameObject.SetActive(false);
         }
     }
 }

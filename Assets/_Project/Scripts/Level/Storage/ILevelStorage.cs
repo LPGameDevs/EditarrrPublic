@@ -1,4 +1,6 @@
-﻿namespace Editarrr.Level
+﻿using Editarrr.Level;
+
+namespace Level.Storage
 {
     public interface ILevelStorage
     {
@@ -14,6 +16,6 @@
     }
 
     public delegate void LevelStorage_LevelLoadedCallback(LevelSave levelSave);
-    public delegate void LevelStorage_AllLevelsLoadedCallback(LevelSave[] levelSaves);
+    public delegate void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levelSaves);
 
 }

@@ -112,6 +112,10 @@ namespace CorgiExtension
                 ScreenshotImage.texture = tex;
                 ScreenshotImage.color = Color.white;
             }
+            else if (ScreenshotImage)
+            {
+                ScreenshotImage.color = Color.black;
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
-using System;
 using System.Collections.Generic;
 using CorgiExtension;
 using Editarrr.Level;
+using Level.Storage;
+using Singletons;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 /**
@@ -13,16 +15,6 @@ public class LevelSelectionLoader : MonoBehaviour
     public EditorLevel DraftPrefab;
 
     private List<Transform> _loadedLevels = new List<Transform>();
-
-    /**
-     * Destroy all levels in the selection scene and reload.
-     *
-     * This is easier than trying to track what has changed.
-     */
-    private void DestroyAndRefreshLevels()
-    {
-        throw new NotImplementedException("This method is no longer in use.");
-    }
 
     public void DestroyLevels()
     {
@@ -37,7 +29,7 @@ public class LevelSelectionLoader : MonoBehaviour
     /**
      * Lookup the saved level data from the filename and create a level prefab.
      */
-    public void AddLevelPrefabFromData(LevelState levelData, string screenshotPath)
+    public void AddLevelPrefabFromData(LevelStub levelData, string screenshotPath)
     {
         string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
         EditorLevel level;
@@ -63,5 +55,10 @@ public class LevelSelectionLoader : MonoBehaviour
         }
 
         _loadedLevels.Add(level.transform);
+    }
+
+    public void GoToBrowser()
+    {
+        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.BrowserSceneName);
     }
 }

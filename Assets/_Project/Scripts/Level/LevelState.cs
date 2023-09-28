@@ -80,6 +80,12 @@ namespace Editarrr.Level
             }
         }
 
+        public void SetPublished(bool isPublished = true)
+        {
+            this.Published = isPublished;
+        }
+
+
         public void SetCode(string code)
         {
             this.Code = code;
