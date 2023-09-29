@@ -52,7 +52,7 @@ export const handler = async (event, context) => {
         // Logging to find out what information is in the event so we can determine the appropriate fix. 
         console.log(`Lambda received event: ${JSON.stringify(event)}`);
         
-        switch (event.requestContext.routeKey) {
+        switch (event.requestContext.resourceId) {
             case "POST /levels":
                 requestJSON = JSON.parse(event.body);
                 

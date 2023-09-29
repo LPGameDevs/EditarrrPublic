@@ -54,7 +54,10 @@ The backend API would have the following APIs:
 ```json
 {
   "name": "Name of Level",
-  "creatorId": "UUID",
+  "creator": {
+    "id": "UUID",
+    "name": "User 1"
+  }
   "status": "published|draft",
   "data": {}, // This can be whatever Unity needs
 }
