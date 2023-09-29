@@ -9,12 +9,13 @@ namespace Level.Storage
          * Optional setup tasks for the storage mechanism.
          */
         public void Initialize();
-        public void Upload(LevelSave levelSave);
+        public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback);
         public void UploadScreenshot(string code, byte[] screenshot);
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback);
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
     }
 
+    public delegate void RemoteLevelStorage_LevelUploadedCallback(string code, ulong remoteId, bool isSteam = false);
     public delegate void RemoteLevelStorage_LevelLoadedCallback(LevelSave levelsave);
     public delegate void RemoteLevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs);
 

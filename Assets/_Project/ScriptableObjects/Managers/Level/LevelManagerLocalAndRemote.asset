@@ -16,3 +16,4 @@ MonoBehaviour:
   <LevelStorage>k__BackingField: {fileID: 11400000, guid: a3d923b6a33bcfc4caf0d7ca91cff603, type: 2}
   <RemoteLevelStorage>k__BackingField: {fileID: 11400000, guid: 79a5febd55b008be7b5403003fc17de8, type: 2}
   RemoteStorageEnabled: 1
+  UploadsAllowed: 1

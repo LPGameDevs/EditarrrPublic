@@ -42,6 +42,7 @@ namespace Editarrr.LevelEditor
 
         Dictionary<TileType, List<Int2D>> TileLocations { get; set; }
 
+        private LevelState _levelState { get; set; }
         private EditorTileState[,] Tiles { get; set; }
 
         // From System
@@ -301,10 +302,10 @@ namespace Editarrr.LevelEditor
         private void CreateLevelState()
         {
                 // Open a new/clean Editor
-                this.LevelManager.Create();
+                this._levelState = this.LevelManager.Create();
 
                 // Trigger an event to update the level code in the Exchange.
-                string code = this.LevelManager.LevelState.Code;
+                string code = _levelState.Code;
                 this.Exchange.SetCode(code);
                 this.Exchange.SetAutoload(code.Length > 0);
         }
@@ -315,6 +316,7 @@ namespace Editarrr.LevelEditor
 
             void OnLevelStateLoaded(LevelState levelState)
             {
+                this._levelState = levelState;
                 int scaleX = levelState.ScaleX;
                 int scaleY = levelState.ScaleY;
 
@@ -345,7 +347,9 @@ namespace Editarrr.LevelEditor
         {
             this.ScreenshotCamera.orthographicSize = this.SceneCamera.orthographicSize;
             Texture2D screenshot = CreateScreenshot(this.ScreenshotCamera);
-            this.LevelManager.SaveTiles(this.Tiles, screenshot);
+            this._levelState.SetTiles(this.Tiles);
+            this.LevelManager.SaveState(_levelState);
+            this.LevelManager.SaveScreenshot(_levelState.Code, screenshot);
 
             Texture2D CreateScreenshot(Camera cam)
             {
@@ -360,7 +364,6 @@ namespace Editarrr.LevelEditor
 
                 return screenshotTexture;
             }
-
         }
 
 

@@ -1,3 +1,4 @@
+using Browser;
 using CorgiExtension;
 using Editarrr.Level;
 using Editarrr.LevelEditor;
@@ -45,8 +46,8 @@ public class LevelBrowserManager : ManagerComponent
     {
         foreach (var level in levels)
         {
-            string screenshotPath = LevelManager.GetScreenshotPath(level.Code);
-            _levelLoader.AddLevelPrefabFromData(level, screenshotPath);
+            // string screenshotPath = LevelManager.GetScreenshotPath(level.Code);
+            _levelLoader.AddLevelPrefabFromData(level);
         }
     }
 
@@ -78,9 +79,22 @@ public class LevelBrowserManager : ManagerComponent
         DestroyAndRefreshLevels();
     }
 
+    private void OnSteamLevelDownloadComplete(Steamworks.Ugc.Item item)
+    {
+        // @todo Make sure we also store the steam id with the level
+        // as it didnt exist at time of upload.
+
+        // save level to local storage.
+        LevelManager.CopyLevelFromSteamDirectory(item);
+
+        // Update display.
+        DestroyAndRefreshLevels();
+    }
+
     public override void DoOnEnable()
     {
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
+        RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete += OnSteamLevelDownloadComplete;
         // LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownload;
         // LevelBrowserLevel.OnBrowserLevelDownloadComplete += OnLevelDownloadComplete;
     }
@@ -88,6 +102,7 @@ public class LevelBrowserManager : ManagerComponent
     public override void DoOnDisable()
     {
         LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
+        RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete -= OnSteamLevelDownloadComplete;
         // LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownload;
         // LevelBrowserLevel.OnBrowserLevelDownloadComplete -= OnLevelDownloadComplete;
     }

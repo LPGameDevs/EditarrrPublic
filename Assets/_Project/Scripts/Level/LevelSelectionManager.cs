@@ -56,11 +56,20 @@ public class LevelSelectionManager : ManagerComponent
         DestroyAndRefreshLevels();
     }
 
-    private void OnLevelUploaded(string code)
+    private void OnLevelUploadRequested(string code)
     {
-        LevelManager.Upload(code, true);
+        LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
         DestroyAndRefreshLevels();
     }
+
+    private void OnLevelUploadComplete(LevelSave level)
+    {
+        Debug.Log("Upload finished for level " + level.Code + ".");
+
+        // Update display.
+        DestroyAndRefreshLevels();
+    }
+
 
     private void OnLevelSelected(string code)
     {
@@ -72,13 +81,13 @@ public class LevelSelectionManager : ManagerComponent
     {
         EditorLevel.OnEditorLevelSelected += OnLevelSelected;
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
-        EditorLevel.OnEditorLevelUpload += OnLevelUploaded;
+        EditorLevel.OnEditorLevelUpload += OnLevelUploadRequested;
     }
 
     public override void DoOnDisable()
     {
         EditorLevel.OnEditorLevelSelected -= OnLevelSelected;
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
-        EditorLevel.OnEditorLevelUpload -= OnLevelUploaded;
+        EditorLevel.OnEditorLevelUpload -= OnLevelUploadRequested;
     }
 }

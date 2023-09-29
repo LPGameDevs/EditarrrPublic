@@ -7,16 +7,23 @@ namespace SteamIntegration
     public class SteamManager: UnitySingleton<SteamManager>
     {
         public const uint SteamAppsId = 2609410;
+        private bool _initialized = false;
         // public const uint SteamAppsId = 1769870;
 
         public void Init()
         {
             try
             {
+                if (_initialized)
+                {
+                    Debug.Log( "Steam is already initialised" );
+                    return;
+                }
+
+
                 SteamClient.Init( SteamAppsId );
                 Debug.Log( "Steam initialised" );
-
-                Debug.Log(Steamworks.SteamApps.AvailableLanguages);
+                _initialized = true;
             }
             catch ( Exception e )
             {

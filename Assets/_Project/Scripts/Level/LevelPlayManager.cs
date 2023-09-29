@@ -21,6 +21,8 @@ namespace Editarrr.Level
 
         [field: SerializeField, Header("Managers")] public LevelManager LevelManager { get; private set; }
 
+        [field: SerializeField, Header("Settings")] public EditorLevelSettings Settings { get; private set; }
+
         [field: SerializeField, Header("Pools")] private EditorTileDataPool EditorTileDataPool { get; set; }
 
         private Tilemap _walls, _damage;

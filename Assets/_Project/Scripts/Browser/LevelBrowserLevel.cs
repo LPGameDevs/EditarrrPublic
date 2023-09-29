@@ -1,77 +1,24 @@
 using System;
 using CorgiExtension;
-using Level.Storage;
 using UnityEngine;
 
-public class LevelBrowserLevel : EditorLevel
+namespace Browser
 {
-    public static event Action<string> OnBrowserLevelDownload;
-
-    public Transform DownloadButton;
-
-    public void OnUploadButtonPressed()
+    public class LevelBrowserLevel : EditorLevel
     {
-        Debug.Log("up pressed");
-        UploadItem();
-    }
+        public static event Action<string> OnBrowserLevelDownload;
 
-    public void OnDownloadButtonPressed()
-    {
-        string code = Title.text;
-        OnBrowserLevelDownload?.Invoke(code);
-    }
+        public Transform DownloadButton;
 
-
-    private async void UploadItem()
-    {
-        // Get filepath for file.
-
-        var progress = new UploadProgress();
-        var result = await Steamworks.Ugc.Editor.NewCommunityFile
-            .WithTitle("My New FIle")
-            .WithDescription("This is a description")
-            .WithPublicVisibility()
-            .WithContent("/home/yanniboi/.config/unity3d/GameDevFieldGuide/Editarrr2023/levels/00002/")
-            .WithPreviewFile(
-                "/home/yanniboi/.config/unity3d/GameDevFieldGuide/Editarrr2023/levels/00002/screenshot.png")
-            .WithTag("awesome")
-            .WithTag("small")
-            .WithTag("level")
-            .SubmitAsync(progress);
-
-        while (progress.Value < 1)
+        public void OnDownloadButtonPressed()
         {
-            Debug.Log($"Progress: {progress.Value}");
+            string code = Title.text;
+            OnBrowserLevelDownload?.Invoke(code);
         }
 
-        Debug.Log($"Result: {result.Result}");
-    }
-
-    private async void DownloadItem()
-    {
-
-
-    }
-
-    public void SetDownloaded()
-    {
-        DownloadButton.gameObject.SetActive(false);
-    }
-}
-
-public class UploadProgress : IProgress<float>
-{
-    public float Value { get; private set; }
-
-    public void Report(float value)
-    {
-        Value = value;
-
-        Debug.Log($"Download Progress: {value}");
-
-        if (value >= 1f)
+        public void SetDownloaded()
         {
-            //something.
+            DownloadButton.gameObject.SetActive(false);
         }
     }
 }

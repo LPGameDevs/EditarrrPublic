@@ -25,21 +25,30 @@ namespace Level.Storage
         public void Initialize()
         {
             _providers.Clear();
+
+            IRemoteLevelStorageProvider provider;
             if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
             {
-                _providers.Add(new RemoteLevelStorageProviderSteam());
+                provider = new RemoteLevelStorageProviderSteam();
             }
-            if (Providers.Contains(RemoteLevelStorageProviderType.Aws))
+            else if (Providers.Contains(RemoteLevelStorageProviderType.Aws))
             {
-                _providers.Add(new RemoteLevelStorageProviderAws());
+                provider = new RemoteLevelStorageProviderAws();
             }
+            else
+            {
+                return;
+            }
+
+            provider.Initialize();
+            _providers.Add(provider);
         }
 
-        public void Upload(LevelSave levelSave)
+        public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
             foreach (var provider in _providers)
             {
-                provider.Upload(levelSave);
+                provider.Upload(levelSave, callback);
             }
         }
 
@@ -72,6 +81,7 @@ namespace Level.Storage
                 {
                     continue;
                 }
+
                 provider.SubmitScore();
             }
         }

@@ -30,7 +30,7 @@ namespace Editarrr.Level
             }
         }
 
-        private string GetLevelPath(string code)
+        public override string GetLevelPath(string code)
         {
             return this.LocalRootDirectory + $"{code}/";
         }
@@ -52,6 +52,19 @@ namespace Editarrr.Level
         {
             string path = this.GetCreateLevelPath(code) + "screenshot.png";
             return path;
+        }
+
+        public override void CopyLevelFromDirectory(string code, string sourceDirectory)
+        {
+            string destinationDirectory = this.GetCreateLevelPath(code);
+
+            // copy all files from source to destination
+            foreach (string file in Directory.GetFiles(sourceDirectory, "*.*", SearchOption.AllDirectories))
+            {
+                string fileName = Path.GetFileName(file);
+                string dest = Path.Combine(destinationDirectory, fileName);
+                File.Copy(file, dest, true);
+            }
         }
 
         public override void Save(string code, string data)
