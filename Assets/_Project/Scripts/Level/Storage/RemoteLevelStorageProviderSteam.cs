@@ -94,10 +94,9 @@ namespace Level.Storage
             var progress = new UploadProgress();
             var result =  await data.SubmitAsync(progress);
 
-            // @todo Build a LevelSave from the result.
             PublishedFileId id = result.FileId;
 
-            callback.Invoke(levelSave.Code, id);
+            callback.Invoke(levelSave.Code, id, true);
             Debug.Log($"Result: {result.Result}");
         }
 

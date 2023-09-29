@@ -81,6 +81,9 @@ public class LevelBrowserManager : ManagerComponent
 
     private void OnSteamLevelDownloadComplete(Steamworks.Ugc.Item item)
     {
+        // @todo Make sure we also store the steam id with the level
+        // as it didnt exist at time of upload.
+
         // save level to local storage.
         LevelManager.CopyLevelFromSteamDirectory(item);
 

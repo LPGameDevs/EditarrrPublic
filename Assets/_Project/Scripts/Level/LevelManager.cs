@@ -166,9 +166,8 @@ namespace Editarrr.Level
                 this.RemoteLevelStorage.Upload(levelSave, UploadCompleted);
             }
 
-            void UploadCompleted(string code, ulong remoteId)
+            void UploadCompleted(string code, ulong remoteId, bool isSteam = false)
             {
-                bool isSteam = false;
                 if (isSteam)
                 {
                     this.SetSteamUploadId(code, remoteId);

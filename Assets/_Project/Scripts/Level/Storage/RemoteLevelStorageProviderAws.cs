@@ -197,6 +197,7 @@ namespace Level.Storage
     public class AwsUploadResponse
     {
         public string message;
-        public ulong remoteId;
+        // @todo update the web interface.
+        public ulong remoteId = 99999;
     }
 }
