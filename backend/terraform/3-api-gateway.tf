@@ -74,15 +74,7 @@ resource "aws_apigatewayv2_route" "post_level" {
 resource "aws_apigatewayv2_route" "put_level" {
   api_id = aws_apigatewayv2_api.main.id
 
-  route_key = "PUT /levels/{id}"
-  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
-}
-
-# Create an api route for deleting an level by id.
-resource "aws_apigatewayv2_route" "delete_level_by_id" {
-  api_id = aws_apigatewayv2_api.main.id
-
-  route_key = "DELETE /levels/{id}"
+  route_key = "PATCH /levels/{id}"
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 
