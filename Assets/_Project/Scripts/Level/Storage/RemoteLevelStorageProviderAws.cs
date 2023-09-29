@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Editarrr.Level;
-using Newtonsoft.Json;
 using Proyecto26;
-using Steamworks.Data;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Level.Storage
 {
@@ -26,7 +25,7 @@ namespace Level.Storage
                 return;
             }
 
-            RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{levelSave.Code}").Then(res =>
+            RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{levelSave.RemoteId}").Then(res =>
             {
                // Existing level found.
                this.Update(levelSave, callback);
@@ -67,7 +66,7 @@ namespace Level.Storage
 
             RestClient.Post<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels", JsonUtility.ToJson(request)).Then(res =>
             {
-                callback?.Invoke(levelSave.Code, res.remoteId);
+                callback?.Invoke(levelSave.Code, res.id);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
@@ -102,7 +101,7 @@ namespace Level.Storage
 
             RestClient.Patch<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels/{request.id}", JsonUtility.ToJson(request)).Then(res =>
             {
-                callback?.Invoke(levelSave.Code, res.remoteId);
+                callback?.Invoke(levelSave.Code, res.id.ToString());
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
@@ -121,8 +120,7 @@ namespace Level.Storage
                 // @todo make sure we store the remote level id in the save.
                 LevelSave save = new LevelSave(res.creator.name, res.name);
 
-                Guid guid = Guid.Parse(res.id);
-                save.SetRemoteId(guid);
+                save.SetRemoteId(res.id);
 
                 var tiles = JsonUtility.FromJson<AwsTileData>(res.data.tiles);
                 TileState[,] tileStates = new TileState[res.data.scaleX, res.data.scaleY];
@@ -245,6 +243,6 @@ namespace Level.Storage
     {
         public string message;
         // @todo update the web interface.
-        public ulong remoteId = 99999;
+        public string id;
     }
 }

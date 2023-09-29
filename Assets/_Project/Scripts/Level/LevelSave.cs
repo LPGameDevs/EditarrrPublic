@@ -22,7 +22,7 @@ namespace Editarrr.Level
         [field: SerializeField] public int ScaleX { get; private set; }
         [field: SerializeField] public int ScaleY { get; private set; }
         [field: SerializeField] public string LocalDirectory { get; private set; }
-        [field: SerializeField] public Guid RemoteId { get; private set; }
+        [field: SerializeField] public string RemoteId { get; private set; } = "";
         [field: SerializeField] public ulong SteamId { get; private set; }
 
         public LevelSave(string creator, string code)
@@ -78,7 +78,7 @@ namespace Editarrr.Level
             this.LocalDirectory = localDirectory;
         }
 
-        public void SetRemoteId(Guid remoteId)
+        public void SetRemoteId(string remoteId)
         {
             this.RemoteId = remoteId;
         }

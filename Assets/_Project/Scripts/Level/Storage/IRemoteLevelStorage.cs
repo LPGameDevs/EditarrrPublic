@@ -15,7 +15,7 @@ namespace Level.Storage
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
     }
 
-    public delegate void RemoteLevelStorage_LevelUploadedCallback(string code, ulong remoteId, bool isSteam = false);
+    public delegate void RemoteLevelStorage_LevelUploadedCallback(string code, string remoteId, bool isSteam = false);
     public delegate void RemoteLevelStorage_LevelLoadedCallback(LevelSave levelsave);
     public delegate void RemoteLevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs);
 

@@ -96,7 +96,7 @@ namespace Level.Storage
 
             PublishedFileId id = result.FileId;
 
-            callback.Invoke(levelSave.Code, id, true);
+            callback.Invoke(levelSave.Code, id.ToString(), true);
             Debug.Log($"Result: {result.Result}");
         }
 

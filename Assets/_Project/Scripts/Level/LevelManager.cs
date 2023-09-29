@@ -167,11 +167,12 @@ namespace Editarrr.Level
                 this.RemoteLevelStorage.Upload(levelSave, UploadCompleted);
             }
 
-            void UploadCompleted(string code, ulong remoteId, bool isSteam = false)
+            void UploadCompleted(string code, string remoteId, bool isSteam = false)
             {
                 if (isSteam)
                 {
-                    this.SetSteamUploadId(code, remoteId);
+                    ulong steamId = ulong.Parse(remoteId);
+                    this.SetSteamUploadId(code, steamId);
                 }
                 else
                 {
@@ -182,14 +183,13 @@ namespace Editarrr.Level
             }
         }
 
-        private void SetRemoteUploadId(string code, ulong remoteId)
+        private void SetRemoteUploadId(string code, string remoteId)
         {
             LevelStorage.LoadLevelData(code, DoSetRemoteUploadId);
 
             void DoSetRemoteUploadId(LevelSave levelSave)
             {
-                Guid guid = Guid.Parse(remoteId.ToString());
-                levelSave.SetRemoteId(guid);
+                levelSave.SetRemoteId(remoteId);
                 string data = JsonUtility.ToJson(levelSave);
                 this.LevelStorage.Save(levelSave.Code, data);
             }
