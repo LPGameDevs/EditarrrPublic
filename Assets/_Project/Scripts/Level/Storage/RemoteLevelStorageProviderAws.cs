@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Editarrr.Level;
 using Proyecto26;
+using Steamworks.Data;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ namespace Level.Storage
 
         public void Initialize()
         {
-            throw new NotImplementedException();
+            // No initialization needed.
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
@@ -52,7 +53,7 @@ namespace Level.Storage
 
             RestClient.Post<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels", JsonUtility.ToJson(request)).Then(res =>
             {
-                callback?.Invoke(levelSave);
+                callback?.Invoke(levelSave.Code, res.remoteId);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err => { this.LogMessage("Error", err.Message); });
         }
@@ -77,7 +78,7 @@ namespace Level.Storage
 
             RestClient.Put<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels/{request.id}", JsonUtility.ToJson(request)).Then(res =>
             {
-                callback?.Invoke(levelSave);
+                callback?.Invoke(levelSave.Code, res.remoteId);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err => { this.LogMessage("Error", err.Message); });
         }
@@ -90,12 +91,8 @@ namespace Level.Storage
 
             RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{code}").Then(res =>
             {
-                LevelState state = new LevelState(res.data.scaleX, res.data.scaleY);
-                state.SetCode(res.id);
-                state.SetCreator(res.creator.name);
-                state.SetPublished(res.status == "published");
-
-                LevelSave save = state.CreateSave();
+                // @todo make sure we store the remote level id in the save.
+                LevelSave save = new LevelSave(res.creator.name, res.id);
                 callback?.Invoke(save);
 
                 // @todo return level data.
@@ -200,5 +197,6 @@ namespace Level.Storage
     public class AwsUploadResponse
     {
         public string message;
+        public ulong remoteId;
     }
 }

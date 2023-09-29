@@ -3,7 +3,6 @@ using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Level.Storage;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -16,10 +15,7 @@ namespace Editarrr.Level
         private const string Documentation = "The level manager is a wrapper around level storage and creation.\r\n" +
                                              "It chooses a storage manager and delegates create / load / save calls.";
 
-        [field: SerializeField, Info(Documentation)]
-        public LevelState LevelState { get; private set; }
-
-        [field: SerializeField, Header("Settings")]
+        [field: SerializeField, Info(Documentation), Header("Settings")]
         private EditorLevelSettings Settings { get; set; }
 
         [field: SerializeField, Header("Storage")]
@@ -49,17 +45,28 @@ namespace Editarrr.Level
 
         #region CRUD Operations
 
-        public void Create()
+        public LevelState Create()
         {
-            this.LevelState = new LevelState(this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY);
+            LevelState levelState = new LevelState(this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY);
 
             string code = this.LevelStorage.GetUniqueCode();
 
-            this.LevelState.SetCode(code);
+            levelState.SetCode(code);
 
             string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
 
-            this.LevelState.SetCreator(userName);
+            levelState.SetCreator(userName);
+
+            // We are creating a save file and stub so it can be loaded again later.
+            LevelSave levelSave = levelState.CreateSave();
+            this.Save(levelSave, false);
+
+            return levelState;
+        }
+
+        private string GetLocalLevelPath(string code)
+        {
+            return this.LevelStorage.GetLevelPath(code);
         }
 
         public void Load(string code, LevelManager_LevelLoadedCallback loadedCallback)
@@ -78,9 +85,9 @@ namespace Editarrr.Level
                     return;
                 }
 
-                this.LevelState = new LevelState(levelSave);
+                LevelState levelState = new LevelState(levelSave);
 
-                this.LevelLoadedCallback?.Invoke(this.LevelState);
+                this.LevelLoadedCallback?.Invoke(levelState);
                 this.LevelLoadedCallback = null;
             }
         }
@@ -123,50 +130,79 @@ namespace Editarrr.Level
             this.LevelStorage.Delete(code);
         }
 
-        public void SaveTiles(EditorTileState[,] editorTileData, Texture2D screenshot)
+        /**
+         * This save function loads and updates an existing levelSave.
+         *
+         * This doesnt work for creation new levelSaves.
+         */
+        public void SaveState(LevelState levelState)
         {
-            // Update state with changes.
-            this.LevelState.SetTiles(editorTileData);
+            this.LevelStorage.LoadLevelData(levelState.Code, SaveLevelAfterLoad);
 
-            this.Save(this.LevelState, screenshot);
-        }
-
-        private void Save(LevelState levelState)
-        {
-            DoSave(levelState);
-        }
-
-        private void Save(LevelState levelState, Texture2D screenshot)
-        {
-            DoSave(levelState);
-
-            // Store screenshot to filesystem.
-            SaveScreenshot(levelState.Code, screenshot);
-
-            void SaveScreenshot(string code, Texture2D screenshot)
+            void SaveLevelAfterLoad(LevelSave levelSave)
             {
-                byte[] byteArray = screenshot.EncodeToPNG();
-                this.LevelStorage.SaveScreenshot(code, byteArray);
+                // @todo what else can have changed in the state?
+                levelSave.SetTiles(levelState.Tiles);
+                this.Save(levelSave, true);
             }
         }
 
-        private void DoSave(LevelState levelState)
+        public void SaveScreenshot(string code, Texture2D screenshot)
+        {
+                byte[] byteArray = screenshot.EncodeToPNG();
+                this.LevelStorage.SaveScreenshot(code, byteArray);
+        }
+
+        private void Save(LevelSave levelSave, bool uploadToRemote = false)
         {
             // Store state to filesystem.
-            LevelSave levelSave = levelState.CreateSave();
             string data = JsonUtility.ToJson(levelSave);
             this.LevelStorage.Save(levelSave.Code, data);
 
-            // @todo Store the state to remote storage.
-            if (UploadsAllowed)
+            if (uploadToRemote && this.UploadsAllowed)
             {
+                string path = this.GetLocalLevelPath(levelSave.Code);
+                levelSave.SetLocalDirectory(path);
                 this.RemoteLevelStorage.Upload(levelSave, UploadCompleted);
             }
 
-            void UploadCompleted(LevelSave levelSave)
+            void UploadCompleted(string code, ulong remoteId)
             {
-                this.LevelUploadedCallback?.Invoke(levelSave);
+                bool isSteam = false;
+                if (isSteam)
+                {
+                    this.SetSteamUploadId(code, remoteId);
+                }
+                else
+                {
+                    this.SetRemoteUploadId(code, remoteId);
+                }
+                this.LevelUploadedCallback?.Invoke(null);
                 this.LevelUploadedCallback = null;
+            }
+        }
+
+        private void SetRemoteUploadId(string code, ulong remoteId)
+        {
+            LevelStorage.LoadLevelData(code, DoSetRemoteUploadId);
+
+            void DoSetRemoteUploadId(LevelSave levelSave)
+            {
+                levelSave.SetRemoteId(remoteId);
+                string data = JsonUtility.ToJson(levelSave);
+                this.LevelStorage.Save(levelSave.Code, data);
+            }
+        }
+
+        private void SetSteamUploadId(string code, ulong steamId)
+        {
+            LevelStorage.LoadLevelData(code, DoSetSteamUploadId);
+
+            void DoSetSteamUploadId(LevelSave levelSave)
+            {
+                levelSave.SetSteamId(steamId);
+                string data = JsonUtility.ToJson(levelSave);
+                this.LevelStorage.Save(levelSave.Code, data);
             }
         }
 
@@ -174,7 +210,7 @@ namespace Editarrr.Level
 
         #region Remote Operations
 
-        public void Upload(string code, LevelManager_LevelUploadedCallback callback)
+        public void PublishAndUpload(string code, LevelManager_LevelUploadedCallback callback)
         {
             if (!UploadsAllowed)
             {
@@ -184,20 +220,12 @@ namespace Editarrr.Level
 
             this.LevelUploadedCallback = callback;
             LevelStorage.LoadLevelData(code, DoPublishAndUpload);
-        }
 
-        public void DoPublishAndUpload(LevelSave levelSave)
-        {
-            LevelState state = new LevelState(levelSave);
-            state.SetPublished();
-
-            this.Save(state);
-        }
-
-        public void DoUpload(LevelSave levelSave)
-        {
-            LevelState state = new LevelState(levelSave);
-            this.Save(state);
+            void DoPublishAndUpload(LevelSave levelSave)
+            {
+                levelSave.SetPublished(true);
+                this.Save(levelSave, true);
+            }
         }
 
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
@@ -212,8 +240,14 @@ namespace Editarrr.Level
 
         public void SaveDownloadedLevel(LevelSave levelSave)
         {
-            LevelState levelState = new LevelState(levelSave);
-            this.Save(levelState);
+            this.Save(levelSave, false);
+        }
+
+        public void CopyLevelFromSteamDirectory(Steamworks.Ugc.Item item)
+        {
+            string code = item.Title;
+            string sourceDirectory = item.Directory;
+            this.LevelStorage.CopyLevelFromDirectory(code, sourceDirectory);
         }
 
         public void SubmitScore()
@@ -235,6 +269,10 @@ namespace Editarrr.Level
 
         public bool LevelExists(string levelCode)
         {
+            if (levelCode.Length == 0)
+            {
+                return false;
+            }
             return this.LevelStorage.LevelExists(levelCode);
         }
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Browser;
 using Editarrr.Level;
 using Level.Storage;
 using Singletons;
@@ -32,7 +33,7 @@ public class LevelBrowserLoader : MonoBehaviour
         _loadedLevels = new List<Transform>();
     }
 
-    public void AddLevelPrefabFromData(LevelStub levelData, string screenshotPath)
+    public void AddLevelPrefabFromData(LevelStub levelData)
     {
         string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
         LevelBrowserLevel level;
@@ -42,7 +43,7 @@ public class LevelBrowserLoader : MonoBehaviour
         // Set visual information on the level from data.
         level.SetTitle(levelData.Code);
         level.SetCreator(levelData.Creator);
-        level.SetScreenshot(screenshotPath);
+        // level.SetScreenshot(screenshotPath);
 
         if (this._levelManager.LevelExists(levelData.Code))
         {

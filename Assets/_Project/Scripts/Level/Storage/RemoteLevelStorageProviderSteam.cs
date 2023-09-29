@@ -1,30 +1,112 @@
 using System;
 using System.Collections.Generic;
 using Editarrr.Level;
+using SteamIntegration;
+using Steamworks.Data;
 using UnityEngine;
 
 namespace Level.Storage
 {
-    public class RemoteLevelStorageProviderSteam: IRemoteLevelStorageProvider
+    public class RemoteLevelStorageProviderSteam : IRemoteLevelStorageProvider
     {
+        public static event Action<Steamworks.Ugc.Item> OnSteamLevelDownloadComplete;
+
+        private RemoteLevelStorage_LevelUploadedCallback _uploadCompleteCallback;
+        private LevelSave _uploadCompleteLevelSave;
+
         public void Initialize()
         {
-            throw new System.NotImplementedException();
+            SteamManager.Instance.Init();
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
-            throw new System.NotImplementedException();
+            if (levelSave == null)
+            {
+                return;
+            }
+
+            // We only want to upload levels that are published.
+            if (!levelSave.Published)
+            {
+                return;
+            }
+
+            _uploadCompleteCallback = callback;
+            _uploadCompleteLevelSave = levelSave;
+
+            if (levelSave.SteamId == 0)
+            {
+                DoInsert();
+            }
+            else
+            {
+                // This shouldn't really happen, but is supported for now.
+                DoUpdate();
+            }
+        }
+
+        private async void DoInsert()
+        {
+            LevelSave levelSave = _uploadCompleteLevelSave;
+
+            var data = Steamworks.Ugc.Editor.NewCommunityFile
+                .WithTitle(levelSave.Code)
+                .WithDescription($"A level created by {levelSave.Creator}")
+                .WithContent(levelSave.LocalDirectory)
+                .WithPreviewFile($"{levelSave.LocalDirectory}/screenshot.png")
+                .WithTag("level");
+
+            if (levelSave.Published)
+            {
+                data.WithPublicVisibility();
+            }
+
+            DoUpload(data);
+        }
+        private async void DoUpdate()
+        {
+            LevelSave levelSave = _uploadCompleteLevelSave;
+
+            ulong ucode = Convert.ToUInt64(levelSave.SteamId);
+            var data = new Steamworks.Ugc.Editor(ucode)
+                .WithTitle(levelSave.Code)
+                .WithDescription($"A level created by {levelSave.Creator}")
+                .WithContent(levelSave.LocalDirectory)
+                .WithPreviewFile($"{levelSave.LocalDirectory}/screenshot.png")
+                .WithTag("level");
+
+            if (levelSave.Published)
+            {
+                data.WithPublicVisibility();
+            }
+
+            DoUpload(data);
+        }
+
+        private async void DoUpload(Steamworks.Ugc.Editor data)
+        {
+            LevelSave levelSave = _uploadCompleteLevelSave;
+            _uploadCompleteLevelSave = null;
+            RemoteLevelStorage_LevelUploadedCallback callback = _uploadCompleteCallback;
+            _uploadCompleteCallback = null;
+
+            var progress = new UploadProgress();
+            var result =  await data.SubmitAsync(progress);
+
+            // @todo Build a LevelSave from the result.
+            PublishedFileId id = result.FileId;
+
+            callback.Invoke(levelSave.Code, id);
+            Debug.Log($"Result: {result.Result}");
         }
 
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
-            throw new System.NotImplementedException();
-
-            DownloadAsync(code);
+            DownloadAsync(code, callback);
         }
 
-        private async void DownloadAsync(string code)
+        private async void DownloadAsync(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
             ulong ucode = Convert.ToUInt64(code);
             var itemInfo = await Steamworks.Ugc.Item.GetAsync(ucode);
@@ -47,8 +129,8 @@ namespace Level.Storage
 
             if (item.IsInstalled || item.IsDownloading || item.IsDownloadPending)
             {
-                Debug.Log("Item is already downloaded or downloading");
-                return;
+                // Debug.Log("Item is already downloaded or downloading");
+                // return;
             }
 
             var downloadProgress = new Action<float>((progress) =>
@@ -57,7 +139,7 @@ namespace Level.Storage
 
                 if (progress >= 1f)
                 {
-                    // OnBrowserLevelDownloadComplete?.Invoke(item.Id.ToString() ?? "");
+                    OnSteamLevelDownloadComplete?.Invoke(item);
                 }
             });
 
@@ -77,23 +159,23 @@ namespace Level.Storage
 
         private async void LoadAllLevelDataAsync(RemoteLevelStorage_AllLevelsLoadedCallback callback)
         {
-            var q = Steamworks.Ugc.Query.Items
+            var q = Steamworks.Ugc.Query.All
                 .WithTag("level")
-                .AllowCachedResponse(1)
                 .MatchAnyTag();
 
-            var result = await q.GetPageAsync( 1 );
+            var result = await q.GetPageAsync(1);
 
-            Debug.Log( $"ResultCount: {result?.ResultCount}" );
-            Debug.Log( $"TotalCount: {result?.TotalCount}" );
+            Debug.Log($"ResultCount: {result?.ResultCount}");
+            Debug.Log($"TotalCount: {result?.TotalCount}");
 
             var levels = new List<LevelStub>();
 
-            foreach ( Steamworks.Ugc.Item entry in result.Value.Entries )
+            foreach (Steamworks.Ugc.Item entry in result.Value.Entries)
             {
-                var save = new LevelStub(entry.Id.ToString(), entry.Owner.Name.ToString(), true);
+                string code = entry.Title.Length > 0 ? entry.Title : entry.Id.ToString();
+                var save = new LevelStub(code, entry.Owner.Name, true);
                 levels.Add(save);
-                Debug.Log( $"{entry.Title}" );
+                Debug.Log($"{entry.Title}");
             }
 
             callback?.Invoke(levels.ToArray());
@@ -107,6 +189,19 @@ namespace Level.Storage
         public void SubmitScore()
         {
             throw new System.NotImplementedException();
+        }
+    }
+
+    public class UploadProgress : IProgress<float>
+    {
+        float lastvalue = 0;
+
+        public void Report( float value )
+        {
+            if ( lastvalue >= value ) return;
+
+            lastvalue = value;
+            Debug.Log($"Upload progress: {value}");
         }
     }
 }

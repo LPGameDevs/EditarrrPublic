@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Editarrr.LevelEditor;
 using UnityEngine;
 using Player;
 using Systems;
@@ -20,28 +21,28 @@ namespace Editarrr.Level
 
         private void Awake()
         {
-            LevelState currentLevelState = FindObjectOfType<LevelPlaySystem>().Manager.LevelManager.LevelState;
+            EditorLevelSettings currentSettings = FindObjectOfType<LevelPlaySystem>().Manager.Settings;
 
-            if (currentLevelState == null)
+            if (currentSettings == null)
             {
                 Debug.Log("Current level state not found, play area limiter not initiated");
                 _areaCollider.enabled = false;
                 return;
             }
 
-            _areaColliderBase.size = new Vector2(currentLevelState.ScaleX, currentLevelState.ScaleY + additionalPlayAreaOffset);
-            _areaCollider.offset = new Vector2(currentLevelState.ScaleX * 0.5f, (currentLevelState.ScaleY * 0.5f) - 1f);
+            _areaColliderBase.size = new Vector2(currentSettings.EditorLevelScaleX, currentSettings.EditorLevelScaleY + additionalPlayAreaOffset);
+            _areaCollider.offset = new Vector2(currentSettings.EditorLevelScaleX * 0.5f, (currentSettings.EditorLevelScaleY * 0.5f) - 1f);
 
-            _fallDeathTrigger.size = new Vector2(currentLevelState.ScaleX, _fallDeathTrigger.size.y);
+            _fallDeathTrigger.size = new Vector2(currentSettings.EditorLevelScaleX, _fallDeathTrigger.size.y);
             _fallDeathTrigger.offset = new Vector2(_fallDeathTrigger.size.x * 0.5f, -_areaColliderBase.offset.y + additionalFallDeathTriggerOffset);
 
             //Cinemachine's camera confiner requires a polygon collider, which needs to be set up point by point. CreatePrimitive doesn't work here.
-            //_cameraConfinementCollider.CreatePrimitive(4, new Vector2(currentLevelState.ScaleX, currentLevelState.ScaleY));
+            //_cameraConfinementCollider.CreatePrimitive(4, new Vector2(currentSettings.EditorLevelScaleX, currentSettings.EditorLevelScaleY));
             Vector2[] points = new Vector2[4];
             points[0] = new Vector2(0f, 0f);
-            points[1] = new Vector2(0f, currentLevelState.ScaleY);
-            points[2] = new Vector2(currentLevelState.ScaleX, currentLevelState.ScaleY);
-            points[3] = new Vector2(currentLevelState.ScaleX, 0f);
+            points[1] = new Vector2(0f, currentSettings.EditorLevelScaleY);
+            points[2] = new Vector2(currentSettings.EditorLevelScaleX, currentSettings.EditorLevelScaleY);
+            points[3] = new Vector2(currentSettings.EditorLevelScaleX, 0f);
 
             _cameraConfinementCollider.pathCount = 1;
             _cameraConfinementCollider.offset = Vector2.zero;

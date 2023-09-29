@@ -58,7 +58,7 @@ public class LevelSelectionManager : ManagerComponent
 
     private void OnLevelUploadRequested(string code)
     {
-        LevelManager.Upload(code, OnLevelUploadComplete);
+        LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
         DestroyAndRefreshLevels();
     }
 
