@@ -46,16 +46,16 @@ export const handler = async (event, context) => {
     };
 
     try {
-        
+
         // TODO For some reason, deploys are only working 'event.requestContext.resourceId',
         // but local development only works with 'event.requestContext.routeKey'.
-        // Logging to find out what information is in the event so we can determine the appropriate fix. 
+        // Logging to find out what information is in the event so we can determine the appropriate fix.
         console.log(`Lambda received event: ${JSON.stringify(event)}`);
-        
+
         switch (event.requestContext.resourceId) {
             case "POST /levels":
                 requestJSON = JSON.parse(event.body);
-                
+
                 var levelName = requestJSON.name;
                 if (!levelName) throw new BadRequestException(`'name' must be provided in the request.`);
                 var levelCreator = requestJSON.creator;
@@ -69,9 +69,9 @@ export const handler = async (event, context) => {
                 var levelStatus = requestJSON.status;
                 if (!levelStatus) throw new BadRequestException(`'status' must be provided in the request.`);
                 // TODO Further validation of status (introduce an enum?)
-                var levelData = requestJSON.data; 
+                var levelData = requestJSON.data;
                 if (!levelData) throw new BadRequestException(`'data' must be provided in the request.`);
-                
+
                 var generatedLevelId = uuidv4();
                 var currentTimestamp = Date.now();
 
@@ -91,7 +91,7 @@ export const handler = async (event, context) => {
                         },
                     })
                 );
-                
+
                 responseBody = {
                     "message": `Success! Created level: ${levelName}`
                 }
@@ -114,12 +114,12 @@ export const handler = async (event, context) => {
                         }
                     })
                 );
-                
+
                 // TODO Validation of response
 
                 var dbLevels = queryResponse.Items;
 
-                var responseLevels = []; 
+                var responseLevels = [];
                 for (let i = 0; i < dbLevels.length; i++) {
                     var dbLevel = dbLevels[i];
 
@@ -136,6 +136,7 @@ export const handler = async (event, context) => {
                         },
                         "status": dbLevel.levelStatus,
                         "updatedAt": dbLevel.levelUpdatedAt,
+                        "createdAt": dbLevel.levelCreatedAt,
                     });
                 }
 
@@ -156,16 +157,16 @@ export const handler = async (event, context) => {
                         }
                     })
                 );
-                
+
                 if (!queryResponse.Item) throw new Error(`Level ${event.pathParameters.id} not found`);
-                
+
                 var dbLevel = queryResponse.Item;
-                
+
                 // TODO Validation of queried response
 
                 // TODO Refactor into a separate function
                 var id = extractLevelId(dbLevel.pk);
-                
+
                 responseBody = {
                     "id": id,
                     "name": dbLevel.levelName,
@@ -185,7 +186,7 @@ export const handler = async (event, context) => {
                 var updatedLevelName = requestJSON.name;
                 var updatedStatus = requestJSON.status;
                 var updatedData = requestJSON.data;
-                
+
                 // TODO Validation of request
 
                 var queryResponse = await dynamo.send(
@@ -197,13 +198,13 @@ export const handler = async (event, context) => {
                         }
                     })
                 );
-                
+
                 if (!queryResponse.Item) throw new Error(`Level ${event.pathParameters.id} not found`);
-                
+
                 var dbLevel = queryResponse.Item;
-                
+
                 // TODO Validation
-                
+
                 if (updatedLevelName) {
                     dbLevel.levelName = updatedLevelName;
                 }
@@ -230,8 +231,8 @@ export const handler = async (event, context) => {
                         },
                     })
                 );
-                
-                var currentLevelName = dbLevel.levelName; 
+
+                var currentLevelName = dbLevel.levelName;
                 responseBody = {
                     "message": `Success! Update level: ${currentLevelName}`
                 }
@@ -246,7 +247,7 @@ export const handler = async (event, context) => {
         } else {
             statusCode = 500;
         }
-        responseBody = err.message;   
+        responseBody = err.message;
     } finally {
         responseBody = JSON.stringify(responseBody);
     }
@@ -260,9 +261,9 @@ export const handler = async (event, context) => {
 
 function extractLevelId(ddbLevelKeyStr) {
     const splitDDBLevelKeyStr = ddbLevelKeyStr.match(/#([0-9a-f-]+)/i);
-    
+
     if (!splitDDBLevelKeyStr) {
-        throw new Error(`problem parsing database ID`) 
+        throw new Error(`problem parsing database ID`)
     }
 
     return splitDDBLevelKeyStr[1];
