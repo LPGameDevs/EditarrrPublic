@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afdc38346ee89b213b5fd5cd19fe0c81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitializationTime: 0
   <RestartInput>k__BackingField: {fileID: 11400000, guid: 31d6a9f945e14824c9375269fc201fa2, type: 2}
   <TransitionTime>k__BackingField: 1
   <RestartSound>k__BackingField: {fileID: 8300000, guid: eb7dd08226fcdf541b2477d8cd85a94a, type: 3}
+  <TransitionSound>k__BackingField: {fileID: 8300000, guid: 2022dcb1a6b4a7f49ba4f9de4ef3f48e, type: 3}

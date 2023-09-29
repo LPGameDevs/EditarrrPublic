@@ -31,7 +31,7 @@ namespace Gameplay.GUI
 
         void Update()
         {
-            if (_isFinished || !_hasStarted)
+            if (_isFinished || !_hasStarted || Time.timeScale == 0)
             {
                 return;
             }

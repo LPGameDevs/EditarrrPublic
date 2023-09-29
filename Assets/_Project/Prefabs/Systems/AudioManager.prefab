@@ -1378,7 +1378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f44b9cc86b1cc94c91b4422ebb1d1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitializationTime: 0
   sfxPool: {fileID: 11400000, guid: 79d0e33891326fa499e0fb21b6eaead7, type: 2}
   bgmSourceOne: {fileID: 5511227745704003999}
   bgmSourceTwo: {fileID: 6936383649639073564}
@@ -1404,7 +1403,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1892664210172140323
 RectTransform:
   m_ObjectHideFlags: 0
