@@ -22,7 +22,7 @@ namespace Editarrr.Level
         [field: SerializeField] public int ScaleX { get; private set; }
         [field: SerializeField] public int ScaleY { get; private set; }
         [field: SerializeField] public string LocalDirectory { get; private set; }
-        [field: SerializeField] public ulong RemoteId { get; private set; }
+        [field: SerializeField] public Guid RemoteId { get; private set; }
         [field: SerializeField] public ulong SteamId { get; private set; }
 
         public LevelSave(string creator, string code)
@@ -78,7 +78,7 @@ namespace Editarrr.Level
             this.LocalDirectory = localDirectory;
         }
 
-        public void SetRemoteId(ulong remoteId)
+        public void SetRemoteId(Guid remoteId)
         {
             this.RemoteId = remoteId;
         }
@@ -100,6 +100,13 @@ namespace Editarrr.Level
                 for (int x = 0; x < this.ScaleX; x++)
                 {
                     TileState tile = tileState[x, y];
+
+                    // Initialise empty tile if not done already.
+                    if (tile == null)
+                    {
+                        tile = new TileState(TileType.Empty, Rotation.North);
+                        tileState[x, y] = tile;
+                    }
 
                     if (tile.Type != TileType.Empty)
                     {

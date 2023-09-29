@@ -172,7 +172,7 @@ namespace Level.Storage
             foreach (Steamworks.Ugc.Item entry in result.Value.Entries)
             {
                 string code = entry.Title.Length > 0 ? entry.Title : entry.Id.ToString();
-                var save = new LevelStub(code, entry.Owner.Name, true);
+                var save = new LevelStub(code, entry.Owner.Name, entry.Id.ToString(), true);
                 levels.Add(save);
                 Debug.Log($"{entry.Title}");
             }

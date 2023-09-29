@@ -64,7 +64,11 @@ public class LevelSelectionManager : ManagerComponent
 
     private void OnLevelUploadComplete(LevelSave level)
     {
-        Debug.Log("Upload finished for level " + level.Code + ".");
+        // @todo fix this by not invoking null for aws.
+        if (level != null)
+        {
+            Debug.Log("Upload finished for level " + level.Code + ".");
+        }
 
         // Update display.
         DestroyAndRefreshLevels();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
@@ -187,7 +188,8 @@ namespace Editarrr.Level
 
             void DoSetRemoteUploadId(LevelSave levelSave)
             {
-                levelSave.SetRemoteId(remoteId);
+                Guid guid = Guid.Parse(remoteId.ToString());
+                levelSave.SetRemoteId(guid);
                 string data = JsonUtility.ToJson(levelSave);
                 this.LevelStorage.Save(levelSave.Code, data);
             }

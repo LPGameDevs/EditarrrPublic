@@ -33,7 +33,7 @@ public class LevelBrowserLoader : MonoBehaviour
         _loadedLevels = new List<Transform>();
     }
 
-    public void AddLevelPrefabFromData(LevelStub levelData)
+    public void AddLevelPrefabFromData(LevelStub levelStub)
     {
         string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
         LevelBrowserLevel level;
@@ -41,17 +41,18 @@ public class LevelBrowserLoader : MonoBehaviour
         level = Instantiate(_levelPrefab, transform);
 
         // Set visual information on the level from data.
-        level.SetTitle(levelData.Code);
-        level.SetCreator(levelData.Creator);
+        level.SetTitle(levelStub.Code);
+        level.SetCreator(levelStub.Creator);
+        level.SetRemoteId(levelStub.RemoteId);
         // level.SetScreenshot(screenshotPath);
 
-        if (this._levelManager.LevelExists(levelData.Code))
+        if (this._levelManager.LevelExists(levelStub.Code))
         {
             level.SetDownloaded();
         }
 
         // Dont allow someone to edit a level if they didnt create it.
-        if (levelData.Creator.ToLower() != userName.ToLower())
+        if (levelStub.Creator.ToLower() != userName.ToLower())
         {
             level.HideEditorTools();
         }

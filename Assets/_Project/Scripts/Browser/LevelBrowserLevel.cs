@@ -12,8 +12,13 @@ namespace Browser
 
         public void OnDownloadButtonPressed()
         {
-            string code = Title.text;
-            OnBrowserLevelDownload?.Invoke(code);
+            string remote = RemoteId.text;
+
+            if (remote.Length == 0)
+            {
+                remote = Title.text;
+            }
+            OnBrowserLevelDownload?.Invoke(remote);
         }
 
         public void SetDownloaded()

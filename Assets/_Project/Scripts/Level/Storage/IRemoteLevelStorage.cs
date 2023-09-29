@@ -24,12 +24,14 @@ namespace Level.Storage
     {
         public string Code { get; private set; }
         public string Creator { get; private set; }
+        public string RemoteId { get; private set; }
         public bool Published { get; private set; }
 
-        public LevelStub(string code, string creator, bool published = false)
+        public LevelStub(string code, string creator, string remoteId = "", bool published = false)
         {
             this.Code = code;
             this.Creator = creator;
+            this.RemoteId = remoteId;
             this.Published = published;
         }
     }
