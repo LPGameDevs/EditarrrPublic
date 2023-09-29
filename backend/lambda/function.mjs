@@ -93,7 +93,8 @@ export const handler = async (event, context) => {
                 );
 
                 responseBody = {
-                    "message": `Success! Created level: ${levelName}`
+                    "message": `Success! Created level: ${levelName}`,
+                    "id": generatedLevelId
                 }
                 break;
             case "GET /levels":
