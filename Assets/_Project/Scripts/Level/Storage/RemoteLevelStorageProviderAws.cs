@@ -4,7 +4,6 @@ using Editarrr.Level;
 using Proyecto26;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Level.Storage
 {
@@ -38,9 +37,7 @@ namespace Level.Storage
 
         private void Insert(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
-            // @todo Store this locally per client.
-            Guid creator_id = Guid.NewGuid();
-
+            string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
 
             AwsTileData tileData = new AwsTileData()
             {
@@ -53,7 +50,7 @@ namespace Level.Storage
                 creator = new AwsCreator()
                 {
                     name = levelSave.Creator,
-                    id = creator_id.ToString()
+                    id = userId
                 },
                 status = levelSave.Published ? "PUBLISHED" : "DRAFT",
                 data = new AwsData()
@@ -75,7 +72,7 @@ namespace Level.Storage
         }
         private void Update(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
-            Guid creator_id = Guid.NewGuid();
+            string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
 
             AwsTileData tileData = new AwsTileData()
             {
@@ -88,7 +85,7 @@ namespace Level.Storage
                 creator = new AwsCreator()
                 {
                     name = levelSave.Creator,
-                    id = creator_id.ToString()
+                    id = userId
                 },
                 status = levelSave.Published ? "PUBLISHED" : "DRAFT",
                 data = new AwsData()

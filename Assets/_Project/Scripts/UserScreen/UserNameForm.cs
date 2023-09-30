@@ -1,3 +1,4 @@
+using System;
 using Singletons;
 using SteamIntegration;
 using TMPro;
@@ -8,6 +9,7 @@ using UnityEngine;
  */
 public class UserNameForm : MonoBehaviour
 {
+    public const string UserIdStorageKey = "UserId";
     public const string UserNameStorageKey = "UserName";
     public const string DefaultUserName = "anon";
 
@@ -26,6 +28,13 @@ public class UserNameForm : MonoBehaviour
         if (userName.Length > 0 && userName != DefaultUserName)
         {
             UserNameInput.text = userName;
+        }
+
+        string userId = PlayerPrefs.GetString(UserIdStorageKey);
+        if (userId.Length == 0)
+        {
+            userId = new Guid().ToString();
+            PlayerPrefs.SetString(UserIdStorageKey, userId);
         }
     }
 
