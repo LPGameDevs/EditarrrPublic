@@ -4,7 +4,6 @@ public class UnityPersistentSingleton<T> : MonoBehaviour	where T : Component
 
 {
     protected static T _instance;
-    public float InitializationTime;
 
     public static T Instance
     {
@@ -34,17 +33,22 @@ public class UnityPersistentSingleton<T> : MonoBehaviour	where T : Component
         {
             //If I am the first instance, make me the Singleton
             _instance = this as T;
-            DontDestroyOnLoad(transform.gameObject);
-            //_enabled = true;
+            DontDestroyOnLoad(GetRootGameObject(gameObject));
         }
         else
         {
             //If a Singleton already exists and you find
             //another reference in scene, destroy it!
             if (this != _instance)
-            {
                 Destroy(this.gameObject);
-            }
         }
+    }
+
+    private GameObject GetRootGameObject(GameObject gameObject)
+    {
+        if (!gameObject.transform.parent)
+            return gameObject;
+        else
+            return (GetRootGameObject(gameObject.transform.parent.gameObject));
     }
 }

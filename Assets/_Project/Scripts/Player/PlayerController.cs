@@ -17,7 +17,7 @@ namespace Player
     {
         // events
         public static event Action OnPlayerJumped;
-        public static event Action OnPlayerLanded;
+        public static event Action<float> OnPlayerLanded;
         public static event Action<bool> OnPlayerMoved;
 
         private HealthSystem _health;
@@ -40,7 +40,7 @@ namespace Player
         void Awake()
         {
             _health = GetComponent<HealthSystem>();
-            _animator = GetComponent<Animator>();
+            _animator = GetComponentInChildren<Animator>();
             _forceReceiver = GetComponent<PlayerForceReceiver>();
         }
 
@@ -164,6 +164,7 @@ namespace Player
         private Direction2D<bool> _collisions = new Direction2D<bool>(false);
 
         private float _timeLeftGrounded;
+        private float _timeInAir;
 
         // We use these raycast checks for pre-collision information
         private void RunCollisionChecks()
@@ -173,11 +174,13 @@ namespace Player
 
             // Ground
             var groundedCheck = RunDetection(_rays.down);
+            if (!groundedCheck) _timeInAir += Time.deltaTime;
             if (_collisions.down && !groundedCheck) _timeLeftGrounded = Time.time; // Only trigger when first leaving
             else if (!_collisions.down && groundedCheck)
             {
                 _coyoteUsable = true; // Only trigger when first touching
-                OnPlayerLanded?.Invoke();
+                OnPlayerLanded?.Invoke(_timeInAir);
+                _timeInAir = 0f;
             }
 
             _collisions.down = groundedCheck;

@@ -8,14 +8,29 @@ namespace Player
     [RequireComponent(typeof(AudioSource))]
     public class PlayerFeedback : MonoBehaviour
     {
-        [SerializeField] private MMFeedbacks _move, _jump, _land, _damage, _death;
-        [SerializeField] private AudioSource _generalAudioSource, _moveAudioSource;
+        [SerializeField] MMFeedbacks _move, _jump, _land, _damage, _death;
+        [Space(15)]
+        [SerializeField] AudioSource _generalAudioSource;
+        [SerializeField] AudioSource _moveAudioSource;
+        [Space(15)]
+        [SerializeField] AudioClip spawnSFX;
+        [Space(15)]
+        [SerializeField] float _landingCamShakeExponent, _landingCamShakeMin, _landingCamShakeMax;
+        [Space(15)]
+        [SerializeField] float _damageCamShakeMultiplier, _damageCamShakeMin, _damageCamShakeMax;
 
-        float _moveSfxDuration, _moveSfxTimer;
-        MMFeedbackSound soundFeedback;
+
+        MMFeedbackSound _soundFeedback;
+        MMFeedbackCameraShake _landingCameraShake;
+        MMFeedbackCameraShake _damageCameraShake;
         MMSfxEvent.Delegate SoundDelegate => PlaySound;
 
-        public void OnMove(bool movingOnGround)
+        private void OnSpawn()
+        {
+            PlaySound(spawnSFX, 1f);
+        }
+
+        private void OnMove(bool movingOnGround)
         {
             //if (isMoving)
             //    _move.PlayFeedbacks();
@@ -28,13 +43,21 @@ namespace Player
                 _moveAudioSource.Stop();
         }
 
-        public void OnJump()
+        private void OnJump()
         {
             _jump.PlayFeedbacks();
         }
 
-        private void OnLand()
+        private void OnLand(float timeInAir)
         {
+            float newAmplitude = 0f;
+            if (timeInAir >= 0.8f)
+            {
+                newAmplitude = Mathf.Pow(timeInAir, _landingCamShakeExponent);
+                newAmplitude = Mathf.Clamp(newAmplitude, _landingCamShakeMin, _landingCamShakeMax);
+            }
+
+            AdjustCameraShake(_landingCameraShake, newAmplitude);
             _land.PlayFeedbacks();
         }
 
@@ -47,16 +70,37 @@ namespace Player
 
         private void OnDamage(object sender, OnValueChangedArgs<float> e)
         {
-            MMFeedbackCameraShake cameraShake;
-            cameraShake = (MMFeedbackCameraShake)_damage.Feedbacks.Find(x => x.GetType() == typeof(MMFeedbackCameraShake));
-            cameraShake.CameraShakeProperties.Amplitude = e.previousValue - e.value;
+            float newAmplitude = (e.previousValue - e.value) * _damageCamShakeMultiplier;
+            newAmplitude = Mathf.Clamp(newAmplitude, _damageCamShakeMin, _damageCamShakeMax);
 
+            AdjustCameraShake(_damageCameraShake, newAmplitude);
             _damage.PlayFeedbacks();
         }
 
         private void OnDeath(object sender, EventArgs e)
         {
             _death.PlayFeedbacks();
+        }
+
+        private void PlaySound(AudioClip clipToPlay, float volume)
+        {
+            _generalAudioSource.PlayOneShot(clipToPlay, volume);
+        }
+
+        private void PlaySound(AudioClip clipToPlay, AudioMixerGroup audioGroup, float volume, float pitch)
+        {
+            _generalAudioSource.outputAudioMixerGroup = audioGroup;
+            _generalAudioSource.pitch = pitch;
+            _generalAudioSource.PlayOneShot(clipToPlay, volume);
+        }
+
+        private void AdjustCameraShake(MMFeedbackCameraShake shakeFeedback, float amplitudeValue) => shakeFeedback.CameraShakeProperties.Amplitude = amplitudeValue;
+
+        private void Awake()
+        {
+            _landingCameraShake = (MMFeedbackCameraShake)_land.Feedbacks.Find(x => x.GetType() == typeof(MMFeedbackCameraShake));
+            _damageCameraShake = (MMFeedbackCameraShake)_damage.Feedbacks.Find(x => x.GetType() == typeof(MMFeedbackCameraShake));
+            OnSpawn();
         }
 
         private void OnEnable()
@@ -67,6 +111,7 @@ namespace Player
             HealthSystem.OnHitPointsChanged += OnDamage;
             HealthSystem.OnInvincibleStarted += OnInvincible;
             HealthSystem.OnDeath += OnDeath;
+            MMSfxEvent.Register(PlaySound);
         }
 
         private void OnDisable()
@@ -77,13 +122,9 @@ namespace Player
             HealthSystem.OnHitPointsChanged -= OnDamage;
             HealthSystem.OnInvincibleStarted -= OnInvincible;
             HealthSystem.OnDeath -= OnDeath;
+            MMSfxEvent.Unregister(PlaySound);
         }
 
-        private void PlaySound(AudioClip clipToPlay, AudioMixerGroup audioGroup, float volume, float pitch)
-        {
-            _generalAudioSource.outputAudioMixerGroup = audioGroup;
-            _generalAudioSource.pitch = pitch;
-            _generalAudioSource.PlayOneShot(clipToPlay, volume);
-        }
+
     }
 }

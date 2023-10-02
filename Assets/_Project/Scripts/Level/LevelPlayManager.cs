@@ -63,7 +63,7 @@ namespace Editarrr.Level
         {
             PaintTilesFromFile(levelState);
             _gameplayGuiManager.SetLevelState(levelState);
-            GameEvent.Trigger(GameEventType.Unpause);
+            //GameEvent.Trigger(GameEventType.Unpause);
         }
 
         #region Tile Operations

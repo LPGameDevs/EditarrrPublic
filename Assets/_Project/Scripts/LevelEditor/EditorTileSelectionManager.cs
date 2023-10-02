@@ -31,6 +31,9 @@ namespace Editarrr.LevelEditor
         public int ActiveElementIndex { get; private set; }
         public Rotation Rotation { get; private set; }
         public bool IsUIHover { get; private set; }
+        public static TileSelect OnTileSelect { get; set; }
+        public delegate void TileSelect();
+
 
         public override void DoAwake()
         {
@@ -62,6 +65,7 @@ namespace Editarrr.LevelEditor
                 index = (index - 1).Loop(10);
 
                 this.SetActiveElementIndex(index);
+                OnTileSelect?.Invoke();
             }
         }
 

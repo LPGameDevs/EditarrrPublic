@@ -14,7 +14,10 @@ namespace Editarrr.LevelEditor
     public class EditorLevelManager : ManagerComponent
     {
         public static TileSet OnTileSet { get; set; }
-        public static TileSet OnTileUnset { get; set; }
+        public delegate void TileSet(EditorTileData data, TileType tileType, int inLevel);
+
+        public static TileUnset OnTileUnset { get; set; }
+        public delegate void TileUnset(EditorTileData data, TileType tileType, int inLevel);
 
         private const string Documentation =
             "This component manages input, placement and storage of the level editor.\r\n" +
@@ -71,8 +74,6 @@ namespace Editarrr.LevelEditor
         public override void DoAwake()
         {
             LevelManager.DoAwake();
-
-            this.ClearEvents();
 
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
 
@@ -186,7 +187,12 @@ namespace Editarrr.LevelEditor
                 return;
             }
 
+            EditorTileState current = this.Tiles[x, y];
             TileType tileType = tileData.Tile.Type;
+
+            if (current?.TileData.Tile == tileData.Tile)
+                return;
+
             bool updateLocations = !tileData.IsInfinite;
 
             int count = 0;
@@ -194,7 +200,18 @@ namespace Editarrr.LevelEditor
             if (updateLocations)
             {
                 if (this.TileLocations.ContainsKey(tileType))
+                {
+                    List<Int2D> locations;
+                    if(TileLocations.TryGetValue(tileType, out locations))
+                    {
+                        foreach(Int2D location in locations)
+                            if(location.X == x && location.Y == y)
+                                return;
+                    }
+
                     count = this.TileLocations[tileType].Count;
+                }
+
 
                 if (count <= 0)
                 {
@@ -212,7 +229,7 @@ namespace Editarrr.LevelEditor
                 }
             }
 
-            this.Unset(x, y);
+            //this.Unset(x, y);
 
             if (tileData.Tile.CanRotate)
             {
@@ -368,14 +385,5 @@ namespace Editarrr.LevelEditor
 
 
         #endregion
-
-        private void ClearEvents()
-        {
-            EditorLevelManager.OnTileSet = null;
-            EditorLevelManager.OnTileUnset = null;
-        }
-
-        public delegate void TileSet(EditorTileData data, TileType tileType, int inLevel);
-        public delegate void TileUnset(EditorTileData data, TileType tileType, int inLevel);
     }
 }
