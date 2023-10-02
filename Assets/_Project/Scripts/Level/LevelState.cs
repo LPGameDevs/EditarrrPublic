@@ -1,6 +1,7 @@
 ﻿using Editarrr.LevelEditor;
 using Editarrr.Misc;
 using System;
+using UnityEngine;
 
 namespace Editarrr.Level
 {
@@ -90,6 +91,10 @@ namespace Editarrr.Level
             this.Creator = creator;
         }
 
+        /**
+         * This method should only be called to create a brand new save,
+         * never to update and existing save file.
+         */
         public LevelSave CreateSave()
         {
             return new LevelSave(this);

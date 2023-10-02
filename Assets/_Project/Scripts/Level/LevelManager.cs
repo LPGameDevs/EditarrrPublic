@@ -2,6 +2,7 @@
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Level.Storage;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -9,57 +10,119 @@ namespace Editarrr.Level
     [CreateAssetMenu(fileName = "Level Manager", menuName = "Managers/Level/new Level Manager")]
     public class LevelManager : ManagerComponent
     {
+        #region Properties
+
         private const string Documentation = "The level manager is a wrapper around level storage and creation.\r\n" +
                                              "It chooses a storage manager and delegates create / load / save calls.";
 
-        [field: SerializeField, Info(Documentation)] public LevelState LevelState { get; private set; }
+        [field: SerializeField, Info(Documentation), Header("Settings")]
+        private EditorLevelSettings Settings { get; set; }
 
-        [field: SerializeField, Header("Settings")] private EditorLevelSettings Settings { get; set; }
+        [field: SerializeField, Header("Storage")]
+        public LevelStorageManager LevelStorage { get; private set; }
 
-        [field: SerializeField, Header("Storage")] public LevelStorageManager LevelStorage { get; private set; }
-        [field: SerializeField] public LevelStorageManager RemoteLevelStorage { get; private set; }
+        [field: SerializeField] public RemoteLevelStorageManager RemoteLevelStorage { get; private set; }
 
         LevelManager_LevelLoadedCallback LevelLoadedCallback { get; set; }
+        LevelManager_LevelUploadedCallback LevelUploadedCallback { get; set; }
         LevelManager_AllLevelsLoadedCallback LevelsLoadedCallback { get; set; }
 
-        public static bool RemoteStorageEnabled = false;
+        [SerializeField] private bool RemoteStorageEnabled = false;
+        [SerializeField] private bool UploadsAllowed = false;
         public static bool DistributionStorageEnabled = false;
+
+        #endregion
 
         public override void DoAwake()
         {
             LevelStorage.Initialize();
 
-            if (RemoteStorageEnabled)
+            if (RemoteStorageEnabled || UploadsAllowed)
             {
                 RemoteLevelStorage.Initialize();
             }
         }
 
-        public void Create()
+        #region CRUD Operations
+
+        public LevelState Create()
         {
-            this.LevelState = new LevelState(this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY);
+            LevelState levelState = new LevelState(this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY);
 
             string code = this.LevelStorage.GetUniqueCode();
 
-            this.LevelState.SetCode(code);
+            levelState.SetCode(code);
 
             string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
 
-            this.LevelState.SetCreator(userName);
+            levelState.SetCreator(userName);
+
+            // We are creating a save file and stub so it can be loaded again later.
+            LevelSave levelSave = levelState.CreateSave();
+            this.Save(levelSave, false);
+
+            return levelState;
+        }
+
+        private string GetLocalLevelPath(string code)
+        {
+            return this.LevelStorage.GetLevelPath(code);
         }
 
         public void Load(string code, LevelManager_LevelLoadedCallback loadedCallback)
         {
             this.LevelLoadedCallback = loadedCallback;
 
-            this.LevelStorage.LoadLevelData(code, this.LevelStorage_LevelLoadedCallback);
+            this.LevelStorage.LoadLevelData(code, LevelStorage_LevelLoadedCallback);
+
+            // @note I dont normally like nested callbacks but this cleans up the class a bit.
+            void LevelStorage_LevelLoadedCallback(LevelSave levelSave)
+            {
+                if (levelSave == null)
+                {
+#warning // TODO, Failed to load... >> Load default level, (Display Message???)
+                    this.Create();
+                    return;
+                }
+
+                LevelState levelState = new LevelState(levelSave);
+
+                this.LevelLoadedCallback?.Invoke(levelState);
+                this.LevelLoadedCallback = null;
+            }
         }
 
         public void LoadAll(LevelManager_AllLevelsLoadedCallback loadedCallback)
         {
             this.LevelsLoadedCallback = loadedCallback;
 
-            this.LevelStorage.LoadAllLevelData(this.LevelStorage_AllLevelsLoadedCallback);
+            if (RemoteStorageEnabled)
+            {
+                this.RemoteLevelStorage.LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback);
+            }
+            else
+            {
+                this.LevelStorage.LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback);
+            }
+
+            void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs)
+            {
+                if (levelStubs == null)
+                {
+                    return;
+                }
+
+                List<LevelStub> levels = new List<LevelStub>();
+
+                foreach (var levelStub in levelStubs)
+                {
+                    levels.Add(levelStub);
+                }
+
+                this.LevelsLoadedCallback?.Invoke(levels.ToArray());
+                this.LevelsLoadedCallback = null;
+            }
+
         }
 
         public void Delete(string code)
@@ -67,59 +130,154 @@ namespace Editarrr.Level
             this.LevelStorage.Delete(code);
         }
 
-        public void Save(EditorTileState[,] editorTileData, Texture2D screenshot)
+        /**
+         * This save function loads and updates an existing levelSave.
+         *
+         * This doesnt work for creation new levelSaves.
+         */
+        public void SaveState(LevelState levelState)
         {
-            this.LevelState.SetTiles(editorTileData);
+            this.LevelStorage.LoadLevelData(levelState.Code, SaveLevelAfterLoad);
 
-            LevelSave levelSave = this.LevelState.CreateSave();
-            string data = JsonUtility.ToJson(levelSave);
-
-            this.LevelStorage.Save(levelSave.Code, data);
-            this.SaveScreenshot(levelSave, screenshot);
-        }
-
-        private void SaveScreenshot(LevelSave levelSave, Texture2D screenshot)
-        {
-            byte[] byteArray = screenshot.EncodeToPNG();
-            this.LevelStorage.SaveScreenshot(levelSave.Code, byteArray);
-        }
-
-
-        private void LevelStorage_LevelLoadedCallback(LevelSave levelSave)
-        {
-            if (levelSave == null)
+            void SaveLevelAfterLoad(LevelSave levelSave)
             {
-#warning // TODO, Failed to load... >> Load default level, (Display Message???)
-                this.Create();
+                // @todo what else can have changed in the state?
+                levelSave.SetTiles(levelState.Tiles);
+                this.Save(levelSave, true);
+            }
+        }
+
+        public void SaveScreenshot(string code, Texture2D screenshot)
+        {
+                byte[] byteArray = screenshot.EncodeToPNG();
+                this.LevelStorage.SaveScreenshot(code, byteArray);
+        }
+
+        private void Save(LevelSave levelSave, bool uploadToRemote = false)
+        {
+            // Store state to filesystem.
+            string data = JsonUtility.ToJson(levelSave);
+            this.LevelStorage.Save(levelSave.Code, data);
+
+            if (uploadToRemote && this.UploadsAllowed)
+            {
+                string path = this.GetLocalLevelPath(levelSave.Code);
+                levelSave.SetLocalDirectory(path);
+                this.RemoteLevelStorage.Upload(levelSave, UploadCompleted);
+            }
+
+            void UploadCompleted(string code, ulong remoteId, bool isSteam = false)
+            {
+                if (isSteam)
+                {
+                    this.SetSteamUploadId(code, remoteId);
+                }
+                else
+                {
+                    this.SetRemoteUploadId(code, remoteId);
+                }
+                this.LevelUploadedCallback?.Invoke(null);
+                this.LevelUploadedCallback = null;
+            }
+        }
+
+        private void SetRemoteUploadId(string code, ulong remoteId)
+        {
+            LevelStorage.LoadLevelData(code, DoSetRemoteUploadId);
+
+            void DoSetRemoteUploadId(LevelSave levelSave)
+            {
+                levelSave.SetRemoteId(remoteId);
+                string data = JsonUtility.ToJson(levelSave);
+                this.LevelStorage.Save(levelSave.Code, data);
+            }
+        }
+
+        private void SetSteamUploadId(string code, ulong steamId)
+        {
+            LevelStorage.LoadLevelData(code, DoSetSteamUploadId);
+
+            void DoSetSteamUploadId(LevelSave levelSave)
+            {
+                levelSave.SetSteamId(steamId);
+                string data = JsonUtility.ToJson(levelSave);
+                this.LevelStorage.Save(levelSave.Code, data);
+            }
+        }
+
+        #endregion
+
+        #region Remote Operations
+
+        public void PublishAndUpload(string code, LevelManager_LevelUploadedCallback callback)
+        {
+            if (!UploadsAllowed)
+            {
+                Debug.LogError("Remote operations are not enabled for this LevelManager.");
                 return;
             }
 
-            this.LevelState = new LevelState(levelSave);
+            this.LevelUploadedCallback = callback;
+            LevelStorage.LoadLevelData(code, DoPublishAndUpload);
 
-            this.LevelLoadedCallback?.Invoke(this.LevelState);
-            this.LevelLoadedCallback = null;
-        }
-
-        private void LevelStorage_AllLevelsLoadedCallback(LevelSave[] levelSaves)
-        {
-
-            List<LevelState> levels = new List<LevelState>();
-
-            foreach (var levelSave in levelSaves)
+            void DoPublishAndUpload(LevelSave levelSave)
             {
-                levels.Add(new LevelState(levelSave));
+                levelSave.SetPublished(true);
+                this.Save(levelSave, true);
             }
-
-            this.LevelsLoadedCallback?.Invoke(levels.ToArray());
-            this.LevelsLoadedCallback = null;
         }
+
+        public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
+        {
+            if (!RemoteStorageEnabled)
+            {
+                Debug.LogError("Remote operations are not enabled for this LevelManager.");
+                return;
+            }
+            RemoteLevelStorage.Download(code, callback);
+        }
+
+        public void SaveDownloadedLevel(LevelSave levelSave)
+        {
+            this.Save(levelSave, false);
+        }
+
+        public void CopyLevelFromSteamDirectory(Steamworks.Ugc.Item item)
+        {
+            string code = item.Title;
+            string sourceDirectory = item.Directory;
+            this.LevelStorage.CopyLevelFromDirectory(code, sourceDirectory);
+        }
+
+        public void SubmitScore()
+        {
+            if (!RemoteStorageEnabled)
+            {
+                Debug.LogError("Remote operations are not enabled for this LevelManager.");
+                return;
+            }
+            RemoteLevelStorage.SubmitScore();
+        }
+
+        #endregion
 
         public string GetScreenshotPath(string levelCode)
         {
             return this.LevelStorage.GetScreenshotPath(levelCode);
         }
+
+        public bool LevelExists(string levelCode)
+        {
+            if (levelCode.Length == 0)
+            {
+                return false;
+            }
+            return this.LevelStorage.LevelExists(levelCode);
+        }
     }
 
     public delegate void LevelManager_LevelLoadedCallback(LevelState levelState);
-    public delegate void LevelManager_AllLevelsLoadedCallback(LevelState[] levelStates);
+    public delegate void LevelManager_LevelUploadedCallback(LevelSave levelSave);
+
+    public delegate void LevelManager_AllLevelsLoadedCallback(LevelStub[] levelStates);
 }

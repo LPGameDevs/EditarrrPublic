@@ -10459,7 +10459,7 @@ MonoBehaviour:
   DebugActive: 0
   Sfx: {fileID: 8300000, guid: 7a3749ccdde7de24ca51fa42c584fcc0, type: 3}
   RandomSfx: []
-  PlayMethod: 0
+  PlayMethod: 1
   MinVolume: 1
   MaxVolume: 1
   MinPitch: 1

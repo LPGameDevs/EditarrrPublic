@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: LevelSelectionManager
   m_EditorClassIdentifier: 
   <Exchange>k__BackingField: {fileID: 11400000, guid: 61161e379b9c05e408ea006dcbf1b702, type: 2}
-  <LevelManager>k__BackingField: {fileID: 11400000, guid: 6ec5814ececa3bb43a9c6ede42a65df3, type: 2}
+  <LevelManager>k__BackingField: {fileID: 11400000, guid: 923e49b6b853bbaa8b80dd91c3a7109c, type: 2}

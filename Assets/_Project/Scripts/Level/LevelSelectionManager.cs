@@ -3,6 +3,7 @@ using Editarrr.Level;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Level.Storage;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelSelectionManager", menuName = "Managers/Level/new Level Selection Manager")]
@@ -23,6 +24,10 @@ public class LevelSelectionManager : ManagerComponent
         _levelLoader = levelLoader;
     }
 
+    public override void DoAwake()
+    {
+        LevelManager.DoAwake();
+    }
 
     public override void DoStart()
     {
@@ -36,7 +41,7 @@ public class LevelSelectionManager : ManagerComponent
         LevelManager.LoadAll(this.LevelStorage_AllLevelsLoadedCallback);
     }
 
-    private void LevelStorage_AllLevelsLoadedCallback(LevelState[] levels)
+    private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels)
     {
         foreach (var level in levels)
         {
@@ -51,6 +56,21 @@ public class LevelSelectionManager : ManagerComponent
         DestroyAndRefreshLevels();
     }
 
+    private void OnLevelUploadRequested(string code)
+    {
+        LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
+        DestroyAndRefreshLevels();
+    }
+
+    private void OnLevelUploadComplete(LevelSave level)
+    {
+        Debug.Log("Upload finished for level " + level.Code + ".");
+
+        // Update display.
+        DestroyAndRefreshLevels();
+    }
+
+
     private void OnLevelSelected(string code)
     {
         Exchange.SetCode(code);
@@ -61,11 +81,13 @@ public class LevelSelectionManager : ManagerComponent
     {
         EditorLevel.OnEditorLevelSelected += OnLevelSelected;
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
+        EditorLevel.OnEditorLevelUpload += OnLevelUploadRequested;
     }
 
     public override void DoOnDisable()
     {
         EditorLevel.OnEditorLevelSelected -= OnLevelSelected;
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
+        EditorLevel.OnEditorLevelUpload -= OnLevelUploadRequested;
     }
 }

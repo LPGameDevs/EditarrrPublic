@@ -1,13 +1,15 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
     DynamoDBDocumentClient,
-    ScanCommand,
     QueryCommand,
     PutCommand,
     GetCommand,
-    DeleteCommand,
 } from "@aws-sdk/lib-dynamodb";
 import crypto from "crypto";
+/* TODO:
+    * Refactor - Move all the code for each API into its own file
+    * Unit Tests
+*/
 
 let options = {};
 if(process.env.AWS_SAM_LOCAL) {
@@ -28,117 +30,242 @@ function uuidv4() {
     );
 }
 
+class BadRequestException extends Error {
+    constructor(message) {
+        super(`error - Bad Request: ${message}`);
+        this.name = this.constructor.name;
+    }
+}
+
 export const handler = async (event, context) => {
-    let body;
     let requestJSON;
+    let responseBody;
     let statusCode = 200;
     const headers = {
         "Content-Type": "application/json",
     };
 
     try {
-        switch (event.requestContext.routeKey) {
-            case "GET /levels":
-                body = await dynamo.send(
-                    // TODO Actual Implementation
-                    new ScanCommand({
-                        TableName: tableName
+
+        // TODO For some reason, deploys are only working 'event.requestContext.resourceId',
+        // but local development only works with 'event.requestContext.routeKey'.
+        // Logging to find out what information is in the event so we can determine the appropriate fix.
+        console.log(`Lambda received event: ${JSON.stringify(event)}`);
+
+        switch (event.requestContext.resourceId) {
+            case "POST /levels":
+                requestJSON = JSON.parse(event.body);
+
+                var levelName = requestJSON.name;
+                if (!levelName) throw new BadRequestException(`'name' must be provided in the request.`);
+                var levelCreator = requestJSON.creator;
+                if (!levelCreator) throw new BadRequestException(`'creator' must be provided in the request.`);
+                var levelCreatorId = levelCreator.id;
+                if (!levelCreatorId) throw new BadRequestException(`'creator.id' must be provided in the request.`);
+                // TODO Validation of Creator (check that the ID exists)
+                var levelCreatorName = levelCreator.name;
+                if (!levelCreatorName) throw new BadRequestException(`'creator.name' must be provided in the request.`);
+                // TODO Or should the creator name be based on stored User data?
+                var levelStatus = requestJSON.status;
+                if (!levelStatus) throw new BadRequestException(`'status' must be provided in the request.`);
+                // TODO Further validation of status (introduce an enum?)
+                var levelData = requestJSON.data;
+                if (!levelData) throw new BadRequestException(`'data' must be provided in the request.`);
+
+                var generatedLevelId = uuidv4();
+                var currentTimestamp = Date.now();
+
+                await dynamo.send(
+                    new PutCommand({
+                        TableName: tableName,
+                        Item: {
+                            pk: `LEVEL#${generatedLevelId}`,
+                            sk: `LEVEL#${generatedLevelId}`,
+                            levelName: levelName,
+                            levelCreatorId: levelCreatorId,
+                            levelCreatorName: levelCreatorName,
+                            levelStatus: levelStatus,
+                            levelCreatedAt: currentTimestamp,
+                            levelUpdatedAt: currentTimestamp,
+                            levelData: levelData
+                        },
                     })
                 );
+
+                responseBody = {
+                    "message": `Success! Created level: ${levelName}`,
+                    "id": generatedLevelId
+                }
+                break;
+            case "GET /levels":
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var queryResponse = await dynamo.send(
+                    new QueryCommand({
+                        TableName: tableName,
+                        IndexName: "levelStatus-levelUpdatedAt-index",
+                        Select: "ALL_PROJECTED_ATTRIBUTES",
+                        Limit: 10,
+                        ScanIndexForward: false,
+                        KeyConditionExpression: "levelStatus = :status",
+                        ExpressionAttributeValues: {
+                            ":status": "PUBLISHED"
+                        }
+                    })
+                );
+
+                // TODO Validation of response
+
+                var dbLevels = queryResponse.Items;
+
+                var responseLevels = [];
+                for (let i = 0; i < dbLevels.length; i++) {
+                    var dbLevel = dbLevels[i];
+
+                    // TODO Validation
+
+                    var id = extractLevelId(dbLevel.pk);
+
+                    responseLevels.push({
+                        "id": id,
+                        "name": dbLevel.levelName,
+                        "creator": {
+                            "id": dbLevel.levelCreatorId,
+                            "name": dbLevel.levelCreatorName
+                        },
+                        "status": dbLevel.levelStatus,
+                        "updatedAt": dbLevel.levelUpdatedAt,
+                        "createdAt": dbLevel.levelCreatedAt,
+                    });
+                }
+
+                responseBody = {
+                    "levels": responseLevels
+                }
+
                 break;
             case "GET /levels/{id}":
-                body = await dynamo.send(
+                // TODO Validation of request
+
+                var queryResponse = await dynamo.send(
                     new GetCommand({
                         TableName: tableName,
                         Key: {
-                            id: event.pathParameters.id,
-                        },
+                            "pk": `LEVEL#${event.pathParameters.id}`,
+                            "sk": `LEVEL#${event.pathParameters.id}`
+                        }
                     })
                 );
-                if (!body.Item) throw new Error(`Item ${event.pathParameters.id} not found`);
-                body = body.Item;
-                break;
-            case "POST /levels":
-                const requestData = JSON.parse(event.body);
-                let generatedLevelId = uuidv4();
-                await dynamo.send(
-                    // TODO Actual implementation, this was just inserting some dummy data for testing
-                    new PutCommand({
-                        TableName: tableName,
-                        Item: {
-                            pk: "USER#user1",
-                            sk: "USER#user1",
-                            userName: "User 1"
-                        },
-                    })
-                );
-                body = `Created new level ${generatedLevelId}`;
-                break;
-            case "PUT /levels/{id}":
-                let requestJSON = JSON.parse(event.body);
-                await dynamo.send(
-                    new PutCommand({
-                        TableName: tableName,
-                        Item: {
-                            id: event.pathParameters.id,
-                            lastUpdated: Date.now().toString(),
-                            name: requestJSON.name,
-                            status: requestJSON.status,
-                            creator: requestData.username,
-                            levelData: requestJSON.levelData,
-                        },
-                    })
-                );
-                body = `Updated level ${event.pathParameters.id}`;
-                break;
-            case "DELETE /levels/{id}":
-                // We dont actually want to delete so lets just unpublish.
 
-                // await dynamo.send(
-                //     new DeleteCommand({
-                //         TableName: tableName,
-                //         Key: {
-                //             id: event.pathParameters.id,
-                //         },
-                //     })
-                // );
+                if (!queryResponse.Item) throw new Error(`Level ${event.pathParameters.id} not found`);
 
-                let item = await dynamo.send(
+                var dbLevel = queryResponse.Item;
+
+                // TODO Validation of queried response
+
+                // TODO Refactor into a separate function
+                var id = extractLevelId(dbLevel.pk);
+
+                responseBody = {
+                    "id": id,
+                    "name": dbLevel.levelName,
+                    "creator": {
+                        "id": dbLevel.levelCreatorId,
+                        "name": dbLevel.levelCreatorName
+                    },
+                    "status": dbLevel.levelStatus,
+                    "createdAt": dbLevel.levelCreatedAt,
+                    "updatedAt": dbLevel.levelUpdatedAt,
+                    "data": dbLevel.levelData
+                }
+
+                break;
+            case "PATCH /levels/{id}":
+                requestJSON = JSON.parse(event.body);
+                var updatedLevelName = requestJSON.name;
+                var updatedStatus = requestJSON.status;
+                var updatedData = requestJSON.data;
+
+                // TODO Validation of request
+
+                var queryResponse = await dynamo.send(
                     new GetCommand({
                         TableName: tableName,
                         Key: {
-                            id: event.pathParameters.id,
-                        },
+                            pk: `LEVEL#${event.pathParameters.id}`,
+                            sk: `LEVEL#${event.pathParameters.id}`
+                        }
                     })
                 );
 
-                if (!item.Item) throw new Error(`Item ${event.pathParameters.id} not found`);
+                if (!queryResponse.Item) throw new Error(`Level ${event.pathParameters.id} not found`);
 
-                item = item.Item;
-                item.published = false;
+                var dbLevel = queryResponse.Item;
+
+                // TODO Validation
+
+                if (updatedLevelName) {
+                    dbLevel.levelName = updatedLevelName;
+                }
+                if (updatedStatus) {
+                    dbLevel.levelStatus = updatedStatus;
+                }
+                if (updatedData) {
+                    dbLevel.levelData = updatedData;
+                }
+                dbLevel.levelUpdatedAt = Date.now();
 
                 await dynamo.send(
                     new PutCommand({
                         TableName: tableName,
-                        Item: item,
+                        Item: {
+                            pk: dbLevel.pk,
+                            sk: dbLevel.sk,
+                            levelName: dbLevel.levelName,
+                            levelCreatorId: dbLevel.levelCreatorId,
+                            levelStatus: dbLevel.levelStatus,
+                            levelCreatedAt: dbLevel.levelCreatedAt,
+                            levelUpdatedAt: dbLevel.levelUpdatedAt,
+                            levelData: dbLevel.levelData
+                        },
                     })
                 );
 
-                body = `Deleted item ${event.pathParameters.id}`;
+                var currentLevelName = dbLevel.levelName;
+                responseBody = {
+                    "message": `Success! Update level: ${currentLevelName}`
+                }
                 break;
             default:
                 throw new Error(`Unsupported route: "${event.requestContext.resourceId}"`);
         }
     } catch (err) {
-        statusCode = 400;
-        body = err.message;
+        if (err instanceof BadRequestException) {
+            statusCode = 400;
+        // TODO 404 errors
+        } else {
+            statusCode = 500;
+        }
+        responseBody = err.message;
     } finally {
-        body = JSON.stringify(body);
+        responseBody = JSON.stringify(responseBody);
     }
 
     return {
         statusCode,
-        body,
+        body: responseBody,
         headers,
     };
 };
+
+function extractLevelId(ddbLevelKeyStr) {
+    const splitDDBLevelKeyStr = ddbLevelKeyStr.match(/#([0-9a-f-]+)/i);
+
+    if (!splitDDBLevelKeyStr) {
+        throw new Error(`problem parsing database ID`)
+    }
+
+    return splitDDBLevelKeyStr[1];
+}

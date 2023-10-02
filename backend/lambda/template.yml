@@ -43,13 +43,6 @@ Resources:
           Type: HttpApi
           Properties:
             Path: /levels/{id}
-            Method: PUT
-            Auth:
-              Authorizer: NONE
-        DeleteLevel:
-          Type: HttpApi
-          Properties:
-            Path: /levels/{id}
-            Method: DELETE
+            Method: PATCH
             Auth:
               Authorizer: NONE

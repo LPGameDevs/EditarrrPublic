@@ -1,0 +1,366 @@
+[33mcommit a055ad7a1209a8712cb2ff752044044a874dd131[m[33m ([m[1;36mHEAD -> [m[1;32mplayer_controller[m[33m)[m
+Author: TomieKill88 <lordvaldomero1988@gmail.com>
+Date:   Thu Jun 22 21:09:36 2023 +0200
+
+    first animations
+
+[33mcommit 74fa12a4a3a8c76046f3cc3d29a1759e1b7679f4[m
+Author: TomieKill88 <lordvaldomero1988@gmail.com>
+Date:   Sun May 14 17:13:15 2023 +0200
+
+    - Added new folder Animations
+    - Added new temp player controller to test animations
+
+[33mcommit 2f4fe023638ee8f9eaced7cebc9845dbd8615987[m
+Merge: f1c3655 10a8f52
+Author: TomieKill88 <lordvaldomero1988@gmail.com>
+Date:   Fri Apr 7 12:21:45 2023 +0200
+
+    Merge remote-tracking branch 'origin/player_controller' into player_controller
+
+[33mcommit f1c3655dc38d53602181001c844fdc6905398b7c[m[33m ([m[1;32mmaster[m[33m)[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Thu Apr 6 15:56:28 2023 +0100
+
+    By yanniboi: Updated Unity to version 2021.3.22f1. (#26)
+    
+    * By yanniboi: Updated Unity to version 2021.3.22f1.
+    
+    * Fix terrain tile references
+
+[33mcommit b60093aa00af7f8557bd830b676050c954fa1027[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Tue Apr 4 14:27:05 2023 +0100
+
+    By yanniboi: #10 Added input mapping to player controller.
+
+[33mcommit 75fcccd82dc9451afd3f525dd4ab2525adedfc8c[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Tue Apr 4 13:47:33 2023 +0100
+
+    By yanniboi: Remove redundant code.
+
+[33mcommit c358901d2b3e8611fb78a7df1c7fbd7cc283f5bb[m
+Author: Bolrik <62060123+Bolrik@users.noreply.github.com>
+Date:   Tue Apr 4 14:46:12 2023 +0200
+
+    Added InputManager and refactor existing input to new input system. (#22)
+    
+    * Added InputManager
+    
+    Changed:
+    ~ Added Project reference for the Unity InputSystem
+    
+    Added:
+    + Various classes to implement the GameInputSystem
+    + InputSystem, InputButton, InputValue, InputLink,
+    + Test/Example Scene for GameInputSystem
+    + Asset SOs for Input
+    + Extension Methods for later use (int, float) might be helpfull
+    
+    * Bugfixes
+    
+    Changes:
+    ~ Changed other Scenes to use new Input System
+    ~ Changed Project Settings to use (BOTH) Input Systems
+    
+    Added:
+    + More Key Bindings for UI, Camera, etc
+    
+    * InputSystem Reorganized
+    
+    Changed:
+    ~ Grouped Key Assets in Folders
+    
+    Added:
+    + Key Mappings for new Feature
+    
+    * More Keys for later use
+    
+    * Update EditorCreate.unity
+    
+    Adjust Scroll Speed
+    
+    * By yanniboi: Remove redundant  code.
+    
+    * By yanniboi: Fix accidental breaking change.
+    
+    * By yanniboi: Fix scroll direction and speed.
+    
+    * By yanniboi: Remove vsconfig.
+    
+    ---------
+    
+    Co-authored-by: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+
+[33mcommit 30270bb52fbad5ec111811fea96639328835660a[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Mon Apr 3 21:49:11 2023 +0100
+
+    Added youtube video link to CONTRIBUTING.md
+
+[33mcommit a9cf20e2824ff17b7e989589cd8f1324a76ce441[m[33m ([m[1;33mtag: v0.0.2[m[33m, [m[1;33mtag: 0.0.2[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Sun Apr 2 21:00:38 2023 +0100
+
+    #10 - Created a starting point for working on the Player Controller by adding a Player prefab.
+
+[33mcommit 10a8f5208542dd9d4f630f7404bc505030e2c8ac[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Sun Apr 2 20:47:01 2023 +0100
+
+    By yanniboi: Added new experimental scene for working on Player prefab and updated tile spawning to spawn that prefab in game.
+
+[33mcommit 419fbb31110bab2218929c0d845c4278c6384de8[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Sun Apr 2 19:35:58 2023 +0100
+
+    By yanniboi: Slight level loading refactor.
+
+[33mcommit 7f78efea2aede56b16601196e36406f32ab11116[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Sat Apr 1 20:10:57 2023 +0100
+
+    Update CONTRIBUTING.md
+
+[33mcommit 9f447a47daf45ae8c51da61f17597206a1dd845d[m
+Author: zt1103 <108151769+zt1103@users.noreply.github.com>
+Date:   Fri Mar 31 11:58:56 2023 -0400
+
+    By zt1103: Updated Readme to include scripts description (#20)
+    
+    Co-authored-by: Zach Tunison <ztunison@geomartin.onmicrosoft.com>
+
+[33mcommit b335bd26f9564cb1ee0737056f0752052da045ff[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Fri Mar 31 16:03:41 2023 +0100
+
+    Update README.md
+
+[33mcommit 37beb1a6ec885d3b01d049e9f659e7f30bdab1af[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Fri Mar 31 16:01:18 2023 +0100
+
+    Update uml.yml
+
+[33mcommit 8ffa0c7ebb5332fadcdc24910dec568cc1b9c24e[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Fri Mar 31 15:59:55 2023 +0100
+
+    Create LICENSE
+
+[33mcommit d0ca07fed5e4f1d78af68099859bdaeb5f717632[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Fri Mar 31 10:41:59 2023 +0100
+
+    Create CONTRIBUTING.md
+
+[33mcommit 60bb421bc21d15a94e33d0881e3a00e37b7bfae7[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Fri Mar 17 20:04:05 2023 +0000
+
+    Update uml.yml
+
+[33mcommit 74fec5668b84712fd2f87ee5643cdb83643ad912[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Fri Mar 17 19:07:53 2023 +0000
+
+    By yanniboi: Exclude storage classes from UML.
+
+[33mcommit f2cd74e6314ddc8ff90f1deb695ff34701620e13[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Fri Mar 17 16:48:58 2023 +0000
+
+    Ignore storage classes in uml
+
+[33mcommit 9731ef5ed9d387f26df0dcdb4136feb21c27e512[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Fri Mar 17 15:50:13 2023 +0000
+
+    more ci
+
+[33mcommit 595f32bb41b9f7baf17ed1a4d2b39e780e04396f[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Fri Mar 17 15:47:55 2023 +0000
+
+    Experimenting with UML diagrams.
+
+[33mcommit ba45bc8d787164d287f0e7fd01f59e7b678517c3[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Tue Mar 14 08:52:01 2023 +0000
+
+    By yanniboi: Added distributed level and unified button sizes.
+
+[33mcommit 40fe5ac65e29121cefc4cd5ff2f029e29f2953f8[m[33m ([m[1;33mtag: v0.0.1[m[33m, [m[1;33mtag: 0.0.1[m[33m)[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Mar 13 19:10:39 2023 +0000
+
+    By yanniboi: Fix screenshot feature.
+
+[33mcommit 2e51dc2a8ac8ec2f3fa49b80ec2f01f829f5115a[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Mar 13 16:53:46 2023 +0000
+
+    By yanniboi: Some level navigation cleanup.
+
+[33mcommit af3f990f076a41735776b1982138c84b06612cab[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Wed Mar 8 11:28:31 2023 +0000
+
+    Only build game on tags
+
+[33mcommit 984b8bf3f1fee55a189fd23278cdee4345955bf3[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 19:52:35 2023 +0000
+
+    By yanniboi: Fix bug which tries to delete level that doesnt exist.
+
+[33mcommit 6613e1be3b4c598677bbd7cb0460ca28391ccf67[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Mon Feb 27 19:45:56 2023 +0000
+
+    Update README.md
+
+[33mcommit facd0347abfff6b66d8245f810be618ccfdbabb6[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Mon Feb 27 19:38:23 2023 +0000
+
+    Autoremove web artifacts when no longer needed.
+
+[33mcommit b56b389778a2e22136d8dccddb98cef4a4d8c760[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 19:33:47 2023 +0000
+
+    By yanniboi: Added decompression fallback.
+
+[33mcommit 9c1f8d81d392bbf9cebb7e90f6af199e387b1bf8[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 18:53:19 2023 +0000
+
+    By yanniboi: Removed missing scene from build settings.
+
+[33mcommit 455b131e217172d31bc10e404c63a651db17cd0a[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 18:22:58 2023 +0000
+
+    By yanniboi: CI files.
+
+[33mcommit af07dbd65faabef21ec6e4e54873329489f90e80[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Mon Feb 27 17:52:14 2023 +0000
+
+    Create act.yml
+
+[33mcommit cf508375f4092acb847376802be651339616e42e[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Mon Feb 27 17:49:00 2023 +0000
+
+    Create main.yml
+
+[33mcommit bf0b568a21a58727cb59a7005079e3361b539c35[m[33m ([m[1;33mtag: 0.0.0[m[33m)[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 15:53:57 2023 +0000
+
+    By yanniboi: Cleaned up selectable level prefabs.
+
+[33mcommit 7ce4dbba6d988d6ede9448f0d17a7b5413f39e71[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 15:51:26 2023 +0000
+
+    By yanniboi: Moved art assets into the Library folder.
+
+[33mcommit e8cfea9ae98013c94206fe2918ba86c92d0ac161[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 15:50:07 2023 +0000
+
+    By yanniboi: Moved unused code into the Legacy namespace.
+
+[33mcommit 0cf16edf7a16c48edf566e0e3bf9167b142fe4b6[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 15:25:07 2023 +0000
+
+    Removed unnecessary scripts
+
+[33mcommit 1268d87625f49e61ef015b2a216a075de5c47553[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 15:12:04 2023 +0000
+
+    Kill bugs and simplify level stuff
+
+[33mcommit 1e944291a1fa6f5ce992a0cb168873481709e1c4[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Mon Feb 27 11:55:47 2023 +0000
+
+    Added readme files for better documentation
+
+[33mcommit 15fc58df269d88a4ea3729588ce3ce78a1b5d12b[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Mon Feb 27 10:17:38 2023 +0000
+
+    Update README.md
+
+[33mcommit 30d3bbfb88da71feca30ca7f50db8ce052f8986a[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Tue Dec 6 13:06:11 2022 +0000
+
+    Fixed errors in level prefabs
+
+[33mcommit af73ab797f4f2c8de2c9c97aca30038cd1af8945[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Tue Dec 6 12:56:31 2022 +0000
+
+    Added editor create scene and some scene transitions.
+
+[33mcommit 90ecd8195e69a94b56bfe64bf287a2491de05c16[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Tue Dec 6 11:16:57 2022 +0000
+
+    Update README.md
+
+[33mcommit 83d304be0f08e7835662eeeedad6674bdac973c6[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Tue Dec 6 11:13:50 2022 +0000
+
+    Update README.md
+
+[33mcommit d655d9af030de2cd5a14da4c536643e53e2f3d2f[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Tue Dec 6 08:58:26 2022 +0000
+
+    Added level selection scene.
+
+[33mcommit bc1ce372081207cdf5735841310d1eb7f228b0af[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Tue Dec 6 08:47:22 2022 +0000
+
+    Added user screen scene.
+
+[33mcommit 977d50ed5c8b32c6fab83589f64a1b5faade072f[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Tue Dec 6 08:36:03 2022 +0000
+
+    Resolved package dependencies for 2020.3.
+
+[33mcommit 8668ae53fa01fc7c07d63b8cf8fae81aab3d497d[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Wed Nov 23 14:44:24 2022 +0000
+
+    Updated project settings.
+
+[33mcommit 834f8bc98b5bd6cd08e33ef405156683eb6d1130[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Wed Nov 23 14:42:25 2022 +0000
+
+    Script refactor.
+
+[33mcommit 831425315c7d77a5ec0a8cf2069d2034e368250c[m
+Author: Yan Loetzer <yan@yanniboi.com>
+Date:   Wed Nov 23 13:54:40 2022 +0000
+
+    Create README.md
+
+[33mcommit 2122641c08d7d0354370625fcd7b1a829ad42a54[m
+Author: yanniboi <yanniboi@1837556.no-reply.drupal.org>
+Date:   Wed Nov 23 13:39:54 2022 +0000
+
+    Initial commit.

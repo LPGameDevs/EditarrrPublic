@@ -21,6 +21,7 @@ namespace Singletons
         public static string LevelSelectionSceneName = "EditorSelection";
         public static string TestLevelSceneName = "EditorTest";
         public static string CreateLevelSceneName = "EditorCreate";
+        public static string BrowserSceneName = "LevelBrowser";
 
         public static Action<string> OnSceneChange;
 
@@ -28,6 +29,8 @@ namespace Singletons
         [field: SerializeField, Tooltip("Active scene reloads after this time")] private float TransitionTime { get; set; }
         [field: SerializeField, Tooltip("Played on restart")] private AudioClip RestartSound { get; set; }
         [field: SerializeField, Tooltip("Played when changing to a different scene")] private AudioClip TransitionSound { get; set; }
+
+        bool _restartInitiated;
 
         bool _restartInitiated;
 

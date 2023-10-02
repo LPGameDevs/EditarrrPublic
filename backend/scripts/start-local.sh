@@ -67,8 +67,8 @@ else
                         \"NonKeyAttributes\":[\"pk\",\"levelName\",\"levelStatus\"]
                     },
                     \"ProvisionedThroughput\": {
-                        \"ReadCapacityUnits\": 0,
-                        \"WriteCapacityUnits\": 0
+                        \"ReadCapacityUnits\": 1,
+                        \"WriteCapacityUnits\": 1
                     }
                 },
                 {
@@ -80,8 +80,8 @@ else
                         \"NonKeyAttributes\":[\"pk\",\"levelName\",\"levelCreatorId\"]
                     },
                     \"ProvisionedThroughput\": {
-                        \"ReadCapacityUnits\": 0,
-                        \"WriteCapacityUnits\": 0
+                        \"ReadCapacityUnits\": 1,
+                        \"WriteCapacityUnits\": 1
                     }
                 }
             ]" \

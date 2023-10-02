@@ -37,8 +37,6 @@ namespace Editarrr.LevelEditor
         [field: SerializeField, Header("Managers")] private EditorTileSelectionManager EditorTileSelection { get; set; }
         [field: SerializeField] private LevelManager LevelManager { get; set; }
 
-
-
         #region Input
         [field: SerializeField, Header("Input")] private InputValue MousePosition { get; set; }
         [field: SerializeField] private InputValue MouseLeftButton { get; set; }
@@ -47,8 +45,8 @@ namespace Editarrr.LevelEditor
 
         Dictionary<TileType, List<Int2D>> TileLocations { get; set; }
 
+        private LevelState _levelState { get; set; }
         private EditorTileState[,] Tiles { get; set; }
-
 
         // From System
         private Camera SceneCamera { get; set; }
@@ -56,9 +54,6 @@ namespace Editarrr.LevelEditor
         private Tilemap Tilemap { get; set; }
 
         private EditorHoverTile EditorHoverTile { get; set; }
-
-
-
 
         public void SetSceneCamera(Camera camera)
         {
@@ -78,6 +73,8 @@ namespace Editarrr.LevelEditor
 
         public override void DoAwake()
         {
+            LevelManager.DoAwake();
+
             this.ClearEvents();
 
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
@@ -96,18 +93,16 @@ namespace Editarrr.LevelEditor
 
         public override void DoStart()
         {
-
-            this.CreateLevelState();
+            if (this.Exchange.LoadOnStart)
+            {
+                this.LoadLevelState();
+            }
+            else
+            {
+                this.CreateLevelState();
+            }
 
         }
-
-
-        private void ClearEvents()
-        {
-            EditorLevelManager.OnTileSet = null;
-            EditorLevelManager.OnTileUnset = null;
-        }
-
 
         public override void DoUpdate()
         {
@@ -151,7 +146,9 @@ namespace Editarrr.LevelEditor
             this.EditorHoverTile.Set(this.EditorTileSelection.ActiveElement, this.EditorTileSelection.Rotation);
         }
 
-        private void EnableHoverTile()
+        #region Tile Operations
+
+         private void EnableHoverTile()
         {
             this.EditorHoverTile.SetActive(true);
         }
@@ -317,72 +314,77 @@ namespace Editarrr.LevelEditor
         }
 
 
-        #region Level State
+        #endregion
+
+        #region Level State Operations
 
         private void CreateLevelState()
         {
-            if (this.Exchange.LoadOnStart)
-            {
-                this.LevelManager.Load(this.Exchange.CodeToLoad, this.LoadLevelState);
-            }
-            else
-            {
                 // Open a new/clean Editor
-                this.LevelManager.Create();
+                this._levelState = this.LevelManager.Create();
 
                 // Trigger an event to update the level code in the Exchange.
-                string code = this.LevelManager.LevelState.Code;
+                string code = _levelState.Code;
                 this.Exchange.SetCode(code);
                 this.Exchange.SetAutoload(code.Length > 0);
-            }
         }
 
-        public void LoadLevelState(LevelState levelState)
+        public void LoadLevelState()
         {
-            int scaleX = levelState.ScaleX;
-            int scaleY = levelState.ScaleY;
+            this.LevelManager.Load(this.Exchange.CodeToLoad, OnLevelStateLoaded);
 
-            for (int y = 0; y < scaleY; y++)
+            void OnLevelStateLoaded(LevelState levelState)
             {
-                for (int x = 0; x < scaleX; x++)
+                this._levelState = levelState;
+                int scaleX = levelState.ScaleX;
+                int scaleY = levelState.ScaleY;
+
+                for (int y = 0; y < scaleY; y++)
                 {
-                    TileState tileState = levelState.Tiles[x, y];
-
-                    EditorTileData editorTileData = null;
-
-                    if (tileState == null)
+                    for (int x = 0; x < scaleX; x++)
                     {
-                        this.Set(x, y, null, Rotation.North);
-                        continue;
+                        TileState tileState = levelState.Tiles[x, y];
+
+                        EditorTileData editorTileData = null;
+
+                        if (tileState == null)
+                        {
+                            this.Set(x, y, null, Rotation.North);
+                            continue;
+                        }
+
+                        editorTileData = this.EditorTileDataPool.Get(tileState.Type);
+
+                        this.Set(x, y, editorTileData, tileState.Rotation);
                     }
-
-                    editorTileData = this.EditorTileDataPool.Get(tileState.Type);
-
-                    this.Set(x, y, editorTileData, tileState.Rotation);
                 }
             }
+
         }
 
-        public void Save()
+        public void SaveLevelState()
         {
             this.ScreenshotCamera.orthographicSize = this.SceneCamera.orthographicSize;
-            Texture2D screenshot = this.CreateScreenshot(this.ScreenshotCamera);
-            this.LevelManager.Save(this.Tiles, screenshot);
+            Texture2D screenshot = CreateScreenshot(this.ScreenshotCamera);
+            this._levelState.SetTiles(this.Tiles);
+            this.LevelManager.SaveState(_levelState);
+            this.LevelManager.SaveScreenshot(_levelState.Code, screenshot);
+
+            Texture2D CreateScreenshot(Camera cam)
+            {
+                RenderTexture screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
+                cam.targetTexture = screenTexture;
+                RenderTexture.active = screenTexture;
+                cam.Render();
+                Texture2D screenshotTexture = new Texture2D(Screen.width, Screen.height);
+                screenshotTexture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+                RenderTexture.active = null;
+
+
+                return screenshotTexture;
+            }
         }
 
-        Texture2D CreateScreenshot(Camera cam)
-        {
-            RenderTexture screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
-            cam.targetTexture = screenTexture;
-            RenderTexture.active = screenTexture;
-            cam.Render();
-            Texture2D screenshotTexture = new Texture2D(Screen.width, Screen.height);
-            screenshotTexture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
-            RenderTexture.active = null;
-
-
-            return screenshotTexture;
-        }
 
         #endregion
     }
