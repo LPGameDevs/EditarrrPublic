@@ -31,6 +31,7 @@ namespace Gameplay.GUI
 
         void Update()
         {
+            Debug.Log(Time.timeScale);
             if (_isFinished || !_hasStarted || Time.timeScale == 0)
             {
                 return;
