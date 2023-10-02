@@ -104,10 +104,10 @@ namespace Gameplay.GUI
 
         private void SetOverlayAlpha(float alpha)
         {
-            // Set overlay transpacency to 0
             Color color = _overlay.color;
             color.a = alpha;
             _overlay.color = color;
+            _overlay.enabled = alpha > 0f;
         }
 
         private void PauseGame()

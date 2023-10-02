@@ -75,8 +75,6 @@ namespace Editarrr.LevelEditor
         {
             LevelManager.DoAwake();
 
-            this.ClearEvents();
-
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
 
             SpriteRenderer editorGrid = Instantiate(this.PrefabPool.EditorGrid);

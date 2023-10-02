@@ -32,8 +32,6 @@ namespace Singletons
 
         bool _restartInitiated;
 
-        bool _restartInitiated;
-
         private void OnEnable()
         {
             HealthSystem.OnDeath += OnDeath;

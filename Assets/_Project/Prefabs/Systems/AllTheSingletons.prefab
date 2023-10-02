@@ -228,6 +228,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4318917341212615922}
     m_Modifications:
+    - target: {fileID: 5511227745704003999, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4adfcc4f080b8674680618fd7bddccf2, type: 3}
     - target: {fileID: 5511227745930802508, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -276,6 +280,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6936383649639073564, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 667c9103a0cb9b6488fa65a1cc6d6950, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
 --- !u!4 &3188010500125400050 stripped
