@@ -242,12 +242,14 @@ namespace Editarrr.Level
             this.Save(levelSave, false);
         }
 
+#if !UNITY_WEBGL
         public void CopyLevelFromSteamDirectory(Steamworks.Ugc.Item item)
         {
             string code = item.Title;
             string sourceDirectory = item.Directory;
             this.LevelStorage.CopyLevelFromDirectory(code, sourceDirectory);
         }
+#endif
 
         public void SubmitScore()
         {

@@ -1,5 +1,4 @@
 using System;
-using Steamworks;
 using UnityEngine;
 
 namespace SteamIntegration
@@ -20,8 +19,10 @@ namespace SteamIntegration
                     return;
                 }
 
+#if !UNITY_WEBGL
+                Steamworks.SteamClient.Init( SteamAppsId );
+#endif
 
-                SteamClient.Init( SteamAppsId );
                 Debug.Log( "Steam initialised" );
                 _initialized = true;
             }
@@ -38,7 +39,9 @@ namespace SteamIntegration
             // Code to execute when the game is closed or the editor stops playing
             Debug.Log("Game is quitting or editor play mode stopped.");
             // Your code here
+#if !UNITY_WEBGL
             Steamworks.SteamClient.Shutdown();
+#endif
         }
 
     }

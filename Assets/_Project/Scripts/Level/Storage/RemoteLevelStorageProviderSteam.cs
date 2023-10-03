@@ -1,8 +1,8 @@
+#if !UNITY_WEBGL
 using System;
 using System.Collections.Generic;
 using Editarrr.Level;
 using SteamIntegration;
-using Steamworks.Data;
 using UnityEngine;
 
 namespace Level.Storage
@@ -94,7 +94,7 @@ namespace Level.Storage
             var progress = new UploadProgress();
             var result =  await data.SubmitAsync(progress);
 
-            PublishedFileId id = result.FileId;
+            ulong id = result.FileId;
 
             callback.Invoke(levelSave.Code, id, true);
             Debug.Log($"Result: {result.Result}");
@@ -204,3 +204,4 @@ namespace Level.Storage
         }
     }
 }
+#endif
