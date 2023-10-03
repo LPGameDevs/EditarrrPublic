@@ -152,8 +152,6 @@ jobs:
       - run: ls -la
       - run: ls -la build
       - run: ls -la /home/runner/work/EditarrrPublic/EditarrrPublic/build
-      - run: ls -la /github/workspace
-      - run: ls -la /github/workspace/build
       - uses: game-ci/steam-deploy@v3
         with:
           username: ${{ secrets.STEAM_BUILD_USERNAME }}
