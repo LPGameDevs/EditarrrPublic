@@ -27,14 +27,17 @@ namespace Level.Storage
             _providers.Clear();
 
             IRemoteLevelStorageProvider provider;
-            if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
-            {
-                provider = new RemoteLevelStorageProviderSteam();
-            }
-            else if (Providers.Contains(RemoteLevelStorageProviderType.Aws))
+            if (Providers.Contains(RemoteLevelStorageProviderType.Aws))
             {
                 provider = new RemoteLevelStorageProviderAws();
             }
+            // @todo Change this so multiple providers can be used at once.
+#if !UNITY_WEBGL
+            else if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
+            {
+                provider = new RemoteLevelStorageProviderSteam();
+            }
+#endif
             else
             {
                 return;
