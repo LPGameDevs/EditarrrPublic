@@ -2,8 +2,8 @@ name: GameCI Template 🎮
 
 on:
   push:
-#    tags:
-#      - v* # This should build for github only
+    tags:
+      - v* # This should build for github only
 #      - i* # This should build for itch.io only
 #      - s* # This should build for steam only
 #      - a* # This should build for all platforms
@@ -17,7 +17,6 @@ env:
 jobs:
   buildWebGL:
     name: Build for WebGL 🖥️
-    if: false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -148,10 +147,6 @@ jobs:
         with:
           name: build-StandaloneOSX
           path: build/StandaloneOSX
-      - run: pwd
-      - run: ls -la
-      - run: ls -la build
-      - run: ls -la /home/runner/work/EditarrrPublic/EditarrrPublic/build
       - uses: game-ci/steam-deploy@v3
         with:
           username: ${{ secrets.STEAM_BUILD_USERNAME }}
@@ -165,7 +160,3 @@ jobs:
           depot2Path: StandaloneLinux64
           depot3Path: StandaloneOSX
           releaseBranch: alpha
-      - run: pwd
-      - run: ls -la
-      - run: ls -la build
-      - run: ls -la /home/runner/work/EditarrrPublic/EditarrrPublic/build
