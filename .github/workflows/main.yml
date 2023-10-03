@@ -75,7 +75,7 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
       - uses: actions/upload-artifact@v3
         with:
-          name: Build-${{ matrix.targetPlatform }}
+          name: build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
           retention-days: 1
 
@@ -135,13 +135,13 @@ jobs:
       - name: Download StandaloneWindows64 Artifact
         uses: actions/download-artifact@v3
         with:
-          name: Build-StandaloneWindows64
-          path: build/StandaloneWindows64
+          name: build-StandaloneWindows64
+          path: build
       - name: Download StandaloneLinux64 Artifact
         uses: actions/download-artifact@v3
         with:
-          name: Build-StandaloneLinux64
-          path: build/StandaloneLinux64
+          name: build-StandaloneLinux64
+          path: build
       - uses: game-ci/steam-deploy@v3
         with:
           username: ${{ secrets.STEAM_BUILD_USERNAME }}
