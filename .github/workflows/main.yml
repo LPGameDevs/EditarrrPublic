@@ -137,17 +137,17 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-StandaloneWindows64
-          path: build/${{ matrix.channel }}
+          path: build/StandaloneWindows64
       - name: Download StandaloneLinux64 Artifact
         uses: actions/download-artifact@v3
         with:
           name: build-StandaloneLinux64
-          path: build/${{ matrix.channel }}
+          path: build/StandaloneLinux64
       - name: Download StandaloneOSX Artifact
         uses: actions/download-artifact@v3
         with:
           name: build-StandaloneOSX
-          path: build/${{ matrix.channel }}
+          path: build/StandaloneOSX
       - run: pwd
       - run: ls -la
       - run: ls -la build
