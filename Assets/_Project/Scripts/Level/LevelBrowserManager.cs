@@ -79,6 +79,7 @@ public class LevelBrowserManager : ManagerComponent
         DestroyAndRefreshLevels();
     }
 
+#if !UNITY_WEBGL
     private void OnSteamLevelDownloadComplete(Steamworks.Ugc.Item item)
     {
         // @todo Make sure we also store the steam id with the level
@@ -90,11 +91,14 @@ public class LevelBrowserManager : ManagerComponent
         // Update display.
         DestroyAndRefreshLevels();
     }
+#endif
 
     public override void DoOnEnable()
     {
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
+#if !UNITY_WEBGL
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete += OnSteamLevelDownloadComplete;
+#endif
         // LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownload;
         // LevelBrowserLevel.OnBrowserLevelDownloadComplete += OnLevelDownloadComplete;
     }
@@ -102,7 +106,9 @@ public class LevelBrowserManager : ManagerComponent
     public override void DoOnDisable()
     {
         LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
+#if !UNITY_WEBGL
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete -= OnSteamLevelDownloadComplete;
+#endif
         // LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownload;
         // LevelBrowserLevel.OnBrowserLevelDownloadComplete -= OnLevelDownloadComplete;
     }
