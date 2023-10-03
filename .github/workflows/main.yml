@@ -3,10 +3,10 @@ name: GameCI Template 🎮
 on:
   push:
 #    tags:
-#      - v* // This should build for github only
-#      - i* // This should build for itch.io only
-#      - s* // This should build for steam only
-#      - a* // This should build for all platforms
+#      - v* # This should build for github only
+#      - i* # This should build for itch.io only
+#      - s* # This should build for steam only
+#      - a* # This should build for all platforms
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -99,7 +99,7 @@ jobs:
 
   deployItch:
     needs: [buildWebGL, buildForAllSupportedPlatforms]
-    if: false // Not yet configured
+    if: false # Not yet configured
     name: Deploy to Itch.io 🚀
     runs-on: ubuntu-latest
     strategy:
@@ -126,7 +126,7 @@ jobs:
 
   deployToSteam:
     needs: [buildForAllSupportedPlatforms]
-    if: false // Not yet configured
+    if: false # Not yet configured
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
