@@ -2,11 +2,16 @@ name: GameCI Template 🎮
 
 on:
   push:
-    tags:
-      - v*
+#    tags:
+#      - v* // This should build for github only
+#      - i* // This should build for itch.io only
+#      - s* // This should build for steam only
+#      - a* // This should build for all platforms
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  ITCH_USERNAME: yanniboi
+  ITCH_GAME_ID: editarrr-2
 
 jobs:
   buildWebGL:
@@ -16,23 +21,10 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-      - name: Restore LFS cache
-        uses: actions/cache@v2
-        id: lfs-cache
+        uses: actions/checkout@v3
         with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
+          fetch-depth: 0
+          lfs: true
 
       - name: Restore Library cache
         uses: actions/cache@v2
@@ -53,6 +45,39 @@ jobs:
           path: build/WebGL
           retention-days: 1
 
+  buildForAllSupportedPlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneLinux64
+          - StandaloneWindows64
+          - StandaloneOSX
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key:
+            Library-build-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-build-${{ matrix.targetPlatform }}-
+            Library-build-
+            Library-
+      - uses: game-ci/unity-builder@v3
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+          retention-days: 1
+
   deployPages:
     needs: buildWebGL
     name: Deploy to Github Pages 🚀
@@ -71,3 +96,60 @@ jobs:
         with:
           branch: gh-pages
           folder: build/WebGL
+
+  deployItch:
+    needs: [buildWebGL, buildForAllSupportedPlatforms]
+    if: false // Not yet configured
+    name: Deploy to Itch.io 🚀
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        channel:
+          - StandaloneOSX
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - WebGL
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-${{ matrix.channel }}
+          path: build
+      - uses: KikimoraGames/itch-publish@v0.0.3
+        with:
+          butlerApiKey: ${{secrets.BUTLER_API_KEY}}
+          gameData: ./build/${{ matrix.channel }}
+          itchUsername: ${{env.ITCH_USERNAME}}
+          itchGameId: ${{ env.ITCH_GAME_ID }}
+          buildChannel: ${{ matrix.channel }}
+          buildNumber: ${{ needs.version.outputs.version_hash }}
+
+  deployToSteam:
+    needs: [buildForAllSupportedPlatforms]
+    if: false // Not yet configured
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Download StandaloneWindows64 Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Build-StandaloneWindows64
+          path: build/StandaloneWindows64
+      - name: Download StandaloneLinux64 Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Build-StandaloneLinux64
+          path: build/StandaloneLinux64
+      - uses: game-ci/steam-deploy@v3
+        with:
+          username: ${{ secrets.STEAM_USERNAME }}
+          configVdf: ${{ secrets.STEAM_CONFIG_VDF}}
+          appId: ${{ secrets.STEAM_APP_ID }}
+          buildDescription: v${{ needs.buildForWindowsAndLinux.outputs.buildVersion }}
+          rootPath: build
+          depot1Path: StandaloneWindows64
+          depot2Path: StandaloneLinux64
+          releaseBranch: alpha
