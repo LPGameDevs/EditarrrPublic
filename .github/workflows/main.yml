@@ -12,6 +12,7 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   ITCH_USERNAME: yanniboi
   ITCH_GAME_ID: editarrr-2
+  STEAM_APP_ID: 2609410
 
 jobs:
   buildWebGL:
@@ -99,7 +100,6 @@ jobs:
 
   deployItch:
     needs: [buildWebGL, buildForAllSupportedPlatforms]
-    if: false # Not yet configured
     name: Deploy to Itch.io 🚀
     runs-on: ubuntu-latest
     strategy:
@@ -126,7 +126,6 @@ jobs:
 
   deployToSteam:
     needs: [buildForAllSupportedPlatforms]
-    if: false # Not yet configured
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -145,10 +144,11 @@ jobs:
           path: build/StandaloneLinux64
       - uses: game-ci/steam-deploy@v3
         with:
-          username: ${{ secrets.STEAM_USERNAME }}
+          username: ${{ secrets.STEAM_BUILD_USERNAME }}
           configVdf: ${{ secrets.STEAM_CONFIG_VDF}}
-          appId: ${{ secrets.STEAM_APP_ID }}
-          buildDescription: v${{ needs.buildForWindowsAndLinux.outputs.buildVersion }}
+          appId: ${{ env.STEAM_APP_ID }}
+          buildDescription: automatic build deployment
+#          buildDescription: v${{ needs.buildForWindowsAndLinux.outputs.buildVersion }}
           rootPath: build
           depot1Path: StandaloneWindows64
           depot2Path: StandaloneLinux64
