@@ -26,6 +26,11 @@ namespace MoreMountains.Feedbacks
         /// the z scale animation definition
         public AnimationCurve AnimateScaleZ = new AnimationCurve(new Keyframe(0, 1), new Keyframe(0.3f, 1.05f), new Keyframe(1, 1));
 
+        /// should the target transform be moved to balance the scaling?
+        public bool CounteractScaleY;
+        /// the scale we always return to 
+        const float DefaultScaleX = 1f, DefaultScaleY = 1f;
+
         /// <summary>
         /// On Play, triggers the scale animation
         /// </summary>
@@ -65,14 +70,24 @@ namespace MoreMountains.Feedbacks
             {
                 float percent = Mathf.Clamp01(journey / duration);
 
-                vector.x = curveX.Evaluate(percent);
+                vector.x = curveX.Evaluate(percent) * Mathf.Sign(targetTransform.localScale.x);
                 vector.y = curveY.Evaluate(percent);
                 vector.z = curveZ.Evaluate(percent);
                 targetTransform.localScale = multiplier * vector;
 
+                if (CounteractScaleY)
+                {
+                    float postionalOffsetY = -1f * ((1f - vector.y) / 2f);
+                    targetTransform.localPosition = new Vector3(targetTransform.localPosition.x, postionalOffsetY);
+                }
+
                 journey += Time.deltaTime;
                 yield return null;
             }
+
+            targetTransform.localScale = new Vector2(DefaultScaleX * Mathf.Sign(targetTransform.localScale.x), DefaultScaleY);
+            targetTransform.localPosition = Vector2.zero;
+
             yield return null;
         }
     }

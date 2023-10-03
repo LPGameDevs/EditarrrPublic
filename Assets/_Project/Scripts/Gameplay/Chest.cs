@@ -7,6 +7,7 @@ namespace Gameplay
     {
         public static event Action OnChestOpened;
 
+        [SerializeField] AudioClip winSound;
         private bool _isOpen;
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -21,6 +22,7 @@ namespace Gameplay
             // are required.
             // @todo Check this by (for example) letting an Enemy run into the Chest.
             _isOpen = true;
+            Editarrr.Audio.AudioManager.Instance.PlayAudioClip(winSound);
             OnChestOpened?.Invoke();
         }
     }

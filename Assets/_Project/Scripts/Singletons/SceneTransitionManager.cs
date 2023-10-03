@@ -23,12 +23,12 @@ namespace Singletons
         public static string CreateLevelSceneName = "EditorCreate";
         public static string BrowserSceneName = "LevelBrowser";
 
-        public static Action OnLevelRestart;
+        public static Action<string> OnSceneChange;
 
         [field: SerializeField, Tooltip("Restart input map")] private InputValue RestartInput { get; set; }
         [field: SerializeField, Tooltip("Active scene reloads after this time")] private float TransitionTime { get; set; }
         [field: SerializeField, Tooltip("Played on restart")] private AudioClip RestartSound { get; set; }
-
+        [field: SerializeField, Tooltip("Played when changing to a different scene")] private AudioClip TransitionSound { get; set; }
 
         bool _restartInitiated;
 
@@ -57,7 +57,6 @@ namespace Singletons
                 return;
 
             _restartInitiated = true;
-            OnLevelRestart?.Invoke();
 
             //TODO: Play sfx/jingles, transitiion animations, etc.
             //TODO: Stop time?
@@ -71,7 +70,9 @@ namespace Singletons
             else
                 AudioManager.Instance.FadeVolume(AudioManager.Instance.BgmSourceTwo, TransitionTime, 0f);
 
+            AudioManager.Instance.PlayAudioClip(TransitionSound);
             SceneManager.LoadScene(sceneName);
+            OnSceneChange?.Invoke(sceneName);
         }
 
         public void RestartLevel()
