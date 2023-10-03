@@ -148,6 +148,12 @@ jobs:
         with:
           name: build-StandaloneOSX
           path: build
+      - run: pwd
+      - run: ls -la
+      - run: ls -la build
+      - run: ls -la /home/runner/work/EditarrrPublic/EditarrrPublic/build
+      - run: ls -la /github/workspace
+      - run: ls -la /github/workspace/build
       - uses: game-ci/steam-deploy@v3
         with:
           username: ${{ secrets.STEAM_BUILD_USERNAME }}
@@ -156,7 +162,13 @@ jobs:
           buildDescription: automatic build deployment
 #          buildDescription: v${{ needs.buildForWindowsAndLinux.outputs.buildVersion }}
           rootPath: build
-          depot2Path: StandaloneWindows64
-          depot3Path: StandaloneLinux64
-          depot4Path: StandaloneOSX
+          firstDepotIdOverride: 2609412 # We are skipping depot 1 as it is shared between all platforms
+          depot1Path: StandaloneWindows64
+          depot2Path: StandaloneLinux64
+          depot3Path: StandaloneOSX
           releaseBranch: alpha
+      - run: pwd
+      - run: ls -la
+      - run: ls -la build
+      - run: ls -la /home/runner/work/EditarrrPublic/EditarrrPublic/build
+      - run: ls -la /github/workspace/build
