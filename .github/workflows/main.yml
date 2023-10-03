@@ -115,7 +115,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: build-${{ matrix.channel }}
-          path: build
+          path: build/${{ matrix.channel }}
       - uses: KikimoraGames/itch-publish@v0.0.3
         with:
           butlerApiKey: ${{secrets.BUTLER_API_KEY}}
@@ -137,17 +137,17 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-StandaloneWindows64
-          path: build
+          path: build/${{ matrix.channel }}
       - name: Download StandaloneLinux64 Artifact
         uses: actions/download-artifact@v3
         with:
           name: build-StandaloneLinux64
-          path: build
+          path: build/${{ matrix.channel }}
       - name: Download StandaloneOSX Artifact
         uses: actions/download-artifact@v3
         with:
           name: build-StandaloneOSX
-          path: build
+          path: build/${{ matrix.channel }}
       - run: pwd
       - run: ls -la
       - run: ls -la build
@@ -169,4 +169,3 @@ jobs:
       - run: ls -la
       - run: ls -la build
       - run: ls -la /home/runner/work/EditarrrPublic/EditarrrPublic/build
-      - run: ls -la /github/workspace/build
