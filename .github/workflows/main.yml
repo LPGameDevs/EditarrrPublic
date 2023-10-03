@@ -17,6 +17,7 @@ env:
 jobs:
   buildWebGL:
     name: Build for WebGL 🖥️
+    if: false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -40,7 +41,7 @@ jobs:
         with:
           targetPlatform: WebGL
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-WebGL
           path: build/WebGL
@@ -87,7 +88,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-WebGL
           path: build
@@ -111,7 +112,7 @@ jobs:
           - StandaloneLinux64
           - WebGL
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-${{ matrix.channel }}
           path: build
@@ -142,6 +143,11 @@ jobs:
         with:
           name: build-StandaloneLinux64
           path: build
+      - name: Download StandaloneOSX Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-StandaloneOSX
+          path: build
       - uses: game-ci/steam-deploy@v3
         with:
           username: ${{ secrets.STEAM_BUILD_USERNAME }}
@@ -150,6 +156,7 @@ jobs:
           buildDescription: automatic build deployment
 #          buildDescription: v${{ needs.buildForWindowsAndLinux.outputs.buildVersion }}
           rootPath: build
-          depot1Path: StandaloneWindows64
-          depot2Path: StandaloneLinux64
+          depot2Path: StandaloneWindows64
+          depot3Path: StandaloneLinux64
+          depot4Path: StandaloneOSX
           releaseBranch: alpha
