@@ -175,7 +175,7 @@ namespace Editarrr.Level
                 string data = File.ReadAllText(levelFilePath);
                 LevelSave levelSave = JsonUtility.FromJson<LevelSave>(data);
 
-                LevelStub stub = new LevelStub(levelSave.Code, levelSave.Creator, levelSave.RemoteId ?? "", levelSave.Published);
+                LevelStub stub = new LevelStub(levelSave.Code, levelSave.Creator, levelSave.CreatorName, levelSave.RemoteId ?? "", levelSave.Published);
 
                 levelsStubs.Add(stub);
             }

@@ -34,9 +34,9 @@ namespace Gameplay.GUI
                 return;
             }
 
-            if (_levelData.Creator.Length > 0)
+            if (_levelData.CreatorName.Length > 0)
             {
-                _user = _levelData.Creator;
+                _user = _levelData.CreatorName;
                 LevelCode.text += " by " + _user;
             }
 

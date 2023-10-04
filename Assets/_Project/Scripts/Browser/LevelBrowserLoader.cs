@@ -15,7 +15,7 @@ public class LevelBrowserLoader : MonoBehaviour
 
     private void Awake()
     {
-        SteamManager.Instance.Init();
+        // SteamManager.Instance.Init();
     }
 
     public void SetLevelManager(LevelManager levelManager)
@@ -35,14 +35,14 @@ public class LevelBrowserLoader : MonoBehaviour
 
     public void AddLevelPrefabFromData(LevelStub levelStub)
     {
-        string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+        string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
         LevelBrowserLevel level;
 
         level = Instantiate(_levelPrefab, transform);
 
         // Set visual information on the level from data.
         level.SetTitle(levelStub.Code);
-        level.SetCreator(levelStub.Creator);
+        level.SetCreator(levelStub.CreatorName);
         level.SetRemoteId(levelStub.RemoteId);
         // level.SetScreenshot(screenshotPath);
 
@@ -52,7 +52,7 @@ public class LevelBrowserLoader : MonoBehaviour
         }
 
         // Dont allow someone to edit a level if they didnt create it.
-        if (levelStub.Creator.ToLower() != userName.ToLower())
+        if (levelStub.Creator.ToLower() != userId.ToLower())
         {
             level.HideEditorTools();
         }

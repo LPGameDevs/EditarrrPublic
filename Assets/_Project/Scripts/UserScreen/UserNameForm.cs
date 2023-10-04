@@ -30,12 +30,9 @@ public class UserNameForm : MonoBehaviour
             UserNameInput.text = userName;
         }
 
-        string userId = PlayerPrefs.GetString(UserIdStorageKey);
-        if (userId.Length == 0)
-        {
-            userId = new Guid().ToString();
-            PlayerPrefs.SetString(UserIdStorageKey, userId);
-        }
+        // Initialise a new user id if we dont have one.
+        string userId = PlayerPrefs.GetString(UserIdStorageKey, Guid.NewGuid().ToString());
+        PlayerPrefs.SetString(UserIdStorageKey, userId);
     }
 
     public void SubmitForm()

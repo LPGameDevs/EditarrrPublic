@@ -54,9 +54,10 @@ namespace Editarrr.Level
 
             levelState.SetCode(code);
 
+            string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
             string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
 
-            levelState.SetCreator(userName);
+            levelState.SetCreator(userId, userName);
 
             // We are creating a save file and stub so it can be loaded again later.
             LevelSave levelSave = levelState.CreateSave();
@@ -156,6 +157,9 @@ namespace Editarrr.Level
 
         private void Save(LevelSave levelSave, bool uploadToRemote = false)
         {
+            // Increment version string.
+            levelSave.SetVersion(levelSave.Version + 1);
+
             // Store state to filesystem.
             string data = JsonUtility.ToJson(levelSave);
             this.LevelStorage.Save(levelSave.Code, data);
