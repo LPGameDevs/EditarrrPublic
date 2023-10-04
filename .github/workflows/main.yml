@@ -3,7 +3,8 @@ name: GameCI Template 🎮
 on:
   push:
     tags:
-      - * # Push events to all tags
+      - '*' # Push events to all tags
+  workflow_dispatch:
 
 
 env:
