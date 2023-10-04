@@ -9,6 +9,7 @@ namespace Editarrr.Level
     public class LevelState
     {
         public string Creator { get; private set; } = "";
+        public string CreatorName { get; private set; } = "";
         public bool Published { get; private set; }
 
         public string Code { get; private set; }
@@ -30,6 +31,7 @@ namespace Editarrr.Level
         public LevelState(LevelSave levelSave)
         {
             this.Creator = levelSave.Creator;
+            this.CreatorName = levelSave.CreatorName;
             this.Published = levelSave.Published;
             this.Code = levelSave.Code;
 
@@ -86,9 +88,10 @@ namespace Editarrr.Level
             this.Code = code;
         }
 
-        public void SetCreator(string creator)
+        public void SetCreator(string creator, string creatorName)
         {
             this.Creator = creator;
+            this.CreatorName = creatorName;
         }
 
         /**

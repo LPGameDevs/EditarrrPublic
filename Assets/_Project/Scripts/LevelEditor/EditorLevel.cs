@@ -16,6 +16,7 @@ namespace CorgiExtension
 
         public Text Title;
         public Text Creator;
+        public Text RemoteId;
         public RawImage ScreenshotImage;
         public Transform EditButton;
         public Transform UploadButton;
@@ -99,6 +100,15 @@ namespace CorgiExtension
         public void SetCreator(string creator)
         {
             Creator.text = creator.ToUpper();
+        }
+
+        public void SetRemoteId(string remoteId)
+        {
+            if (RemoteId == null)
+            {
+                return;
+            }
+            RemoteId.text = remoteId;
         }
 
         public void SetScreenshot(string path)

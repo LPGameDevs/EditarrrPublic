@@ -19,79 +19,89 @@ namespace Level.Storage
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
+            string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
 
-            RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{levelSave.Code}").Then(res =>
+            AwsTileData tileData = new AwsTileData()
             {
+                tiles = levelSave.Tiles
+            };
+            AwsLevel request = new AwsLevel
+            {
+                id = levelSave.RemoteId,
+                name = levelSave.Code,
+                creator = new AwsCreator()
+                {
+                    name = levelSave.CreatorName,
+                    id = userId
+                },
+                status = levelSave.Published ? "PUBLISHED" : "DRAFT",
+                data = new AwsData()
+                {
+                    scaleX = levelSave.ScaleX,
+                    scaleY = levelSave.ScaleY,
+                    tiles = JsonUtility.ToJson(tileData),
+                    version = levelSave.Version
+                }
+            };
+
+            RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{levelSave.RemoteId}").Then(res =>
+            {
+                Debug.Log("UPLOAD - Existing level found.");
+
                // Existing level found.
-               this.Update(levelSave, callback);
+               this.Update(request, callback);
             }).Catch(err =>
             {
+                Debug.Log("UPLOAD - No level found");
                 // No level found.
-                this.Insert(levelSave, callback);
+                this.Insert(request, callback);
             });
         }
 
-        private void Insert(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
+        private void Insert(AwsLevel request, RemoteLevelStorage_LevelUploadedCallback callback)
         {
-            AwsLevel request = new AwsLevel
-            {
-                id = levelSave.Code,
-                name = levelSave.Code,
-                creator = new AwsCreator()
-                {
-                    name = levelSave.Creator
-                },
-                status = levelSave.Published ? "published" : "draft",
-                data = new AwsData()
-                {
-                    scaleX = levelSave.ScaleX,
-                    scaleY = levelSave.ScaleY,
-                    tiles = levelSave.Tiles
-                }
-            };
-
             RestClient.Post<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels", JsonUtility.ToJson(request)).Then(res =>
             {
-                callback?.Invoke(levelSave.Code, res.remoteId);
+                callback?.Invoke(request.name, res.id);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
-            }).Catch(err => { this.LogMessage("Error", err.Message); });
+            }).Catch(err =>
+            {
+                this.LogMessage("Error", err.Message);
+            });
         }
-        private void Update(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback) {
 
-            AwsLevel request = new AwsLevel
+        private void Update(AwsLevel request, RemoteLevelStorage_LevelUploadedCallback callback)
+        {
+            RestClient.Patch<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels/{request.id}", JsonUtility.ToJson(request)).Then(res =>
             {
-                id = levelSave.Code,
-                name = levelSave.Code,
-                creator = new AwsCreator()
-                {
-                    name = levelSave.Creator
-                },
-                status = levelSave.Published ? "published" : "draft",
-                data = new AwsData()
-                {
-                    scaleX = levelSave.ScaleX,
-                    scaleY = levelSave.ScaleY,
-                    tiles = levelSave.Tiles
-                }
-            };
-
-            RestClient.Put<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels/{request.id}", JsonUtility.ToJson(request)).Then(res =>
-            {
-                callback?.Invoke(levelSave.Code, res.remoteId);
+                callback?.Invoke(request.name, res.id.ToString());
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
-            }).Catch(err => { this.LogMessage("Error", err.Message); });
+            }).Catch(err =>
+            {
+                this.LogMessage("Error", err.Message);
+            });
         }
 
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
-            string response =
-                "{  \"id\": \"00001\",  \"name\": \"Level 00001\",  \"creator\": {    \"id\": \"user1\",    \"name\": \"User 1\"  },  \"status\": \"published\",  \"createdAt\": 1686495335,  \"updatedAt\": 1686495335,  \"data\": {}}";
-
-
             RestClient.Get<AwsLevel>($"{_awsLevelUrl}/dev/levels/{code}").Then(res =>
             {
                 // @todo make sure we store the remote level id in the save.
-                LevelSave save = new LevelSave(res.creator.name, res.id);
+                LevelSave save = new LevelSave(res.creator.id, res.creator.name, res.name);
+
+                save.SetRemoteId(res.id);
+
+                var tiles = JsonUtility.FromJson<AwsTileData>(res.data.tiles);
+                TileState[,] tileStates = new TileState[res.data.scaleX, res.data.scaleY];
+
+                foreach (TileSave tileSave in tiles.tiles)
+                {
+                    tileStates[tileSave.X, tileSave.Y] = new TileState(tileSave);
+                }
+
+                save.SetTiles(tileStates);
+                save.SetVersion(res.data.version);
+                save.SetPublished(res.status == "PUBLISHED");
                 callback?.Invoke(save);
 
                 // @todo return level data.
@@ -105,21 +115,13 @@ namespace Level.Storage
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
         {
-            // Make API request to get all levels. URL/levels
-            // Parse JSON response into LevelSave[]
-            // Call callback with LevelSave[]
-
-            string response =
-                "{\"levels\":[{\"id\":\"level2\",\"name\":\"Level 2\",\"creator\":{\"id\":\"user2\",\"name\":\"User 2\"},\"status\":\"published\",\"createdAt\":1695649746,\"updatedAt\":1695649746},{\"id\":\"level1\",\"name\":\"Level 1\",\"creator\":{\"id\":\"user1\",\"name\":\"User 1\"},\"status\":\"published\",\"createdAt\":1686495335,\"updatedAt\":1686495335}]}";
-
-
-            // Get request to /node/level
+            // Get request to /levels
             RestClient.Get<AwsLevels>($"{_awsLevelUrl}/dev/levels").Then(res =>
             {
                 List<LevelStub> levelStubs = new List<LevelStub>();
                 foreach (AwsLevel level in res.levels)
                 {
-                    LevelStub levelStub = new LevelStub(level.id, level.creator.name, level.status == "published");
+                    LevelStub levelStub = new LevelStub(level.name, level.creator.id, level.creator.name, level.id, level.status == "PUBLISHED");
                     levelStubs.Add(levelStub);
                 }
 
@@ -189,6 +191,13 @@ namespace Level.Storage
     {
         public int scaleX;
         public int scaleY;
+        public string tiles;
+        public int version;
+    }
+
+    [Serializable]
+    public class AwsTileData
+    {
         public TileSave[] tiles;
     }
 
@@ -197,6 +206,7 @@ namespace Level.Storage
     {
         public string message;
         // @todo update the web interface.
-        public ulong remoteId = 99999;
+        public string id;
+        public string data;
     }
 }

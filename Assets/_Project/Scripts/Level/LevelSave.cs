@@ -13,6 +13,7 @@ namespace Editarrr.Level
     public class LevelSave
     {
         [field: SerializeField] public string Creator { get; private set; }
+        [field: SerializeField] public string CreatorName { get; private set; }
         [field: SerializeField] public bool Published { get; private set; }
         [field: SerializeField] public string Code { get; private set; }
 
@@ -21,12 +22,14 @@ namespace Editarrr.Level
         [field: SerializeField] public int ScaleX { get; private set; }
         [field: SerializeField] public int ScaleY { get; private set; }
         [field: SerializeField] public string LocalDirectory { get; private set; }
-        [field: SerializeField] public ulong RemoteId { get; private set; }
+        [field: SerializeField] public string RemoteId { get; private set; } = "";
         [field: SerializeField] public ulong SteamId { get; private set; }
+        [field: SerializeField] public int Version { get; private set; } = 0;
 
-        public LevelSave(string creator, string code)
+        public LevelSave(string creator, string creatorName,  string code)
         {
             this.Creator = creator;
+            this.CreatorName = creatorName;
             this.Published = false;
             this.Code = code;
         }
@@ -37,6 +40,7 @@ namespace Editarrr.Level
         public LevelSave(LevelState levelState)
         {
             this.Creator = levelState.Creator;
+            this.CreatorName = levelState.CreatorName;
             this.Published = levelState.Published;
             this.Code = levelState.Code;
 
@@ -77,7 +81,7 @@ namespace Editarrr.Level
             this.LocalDirectory = localDirectory;
         }
 
-        public void SetRemoteId(ulong remoteId)
+        public void SetRemoteId(string remoteId)
         {
             this.RemoteId = remoteId;
         }
@@ -100,6 +104,13 @@ namespace Editarrr.Level
                 {
                     TileState tile = tileState[x, y];
 
+                    // Initialise empty tile if not done already.
+                    if (tile == null)
+                    {
+                        tile = new TileState(TileType.Empty, Rotation.North);
+                        tileState[x, y] = tile;
+                    }
+
                     if (tile.Type != TileType.Empty)
                     {
                         tiles.Add(tile.CreateSave(x, y));
@@ -117,6 +128,11 @@ namespace Editarrr.Level
         public void SetPublished(bool levelStatePublished)
         {
             this.Published = levelStatePublished;
+        }
+
+        public void SetVersion(int version)
+        {
+            this.Version = version;
         }
     }
 

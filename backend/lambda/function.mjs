@@ -225,6 +225,7 @@ export const handler = async (event, context) => {
                             sk: dbLevel.sk,
                             levelName: dbLevel.levelName,
                             levelCreatorId: dbLevel.levelCreatorId,
+                            levelCreatorName: dbLevel.levelCreatorName,
                             levelStatus: dbLevel.levelStatus,
                             levelCreatedAt: dbLevel.levelCreatedAt,
                             levelUpdatedAt: dbLevel.levelUpdatedAt,

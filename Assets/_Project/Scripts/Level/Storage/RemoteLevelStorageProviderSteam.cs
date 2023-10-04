@@ -16,7 +16,8 @@ namespace Level.Storage
 
         public void Initialize()
         {
-            SteamManager.Instance.Init();
+            // This is for dev only. Should be called in the user name scene.
+            // SteamManager.Instance.Init();
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
@@ -52,7 +53,7 @@ namespace Level.Storage
 
             var data = Steamworks.Ugc.Editor.NewCommunityFile
                 .WithTitle(levelSave.Code)
-                .WithDescription($"A level created by {levelSave.Creator}")
+                .WithDescription($"A level created by {levelSave.CreatorName}")
                 .WithContent(levelSave.LocalDirectory)
                 .WithPreviewFile($"{levelSave.LocalDirectory}/screenshot.png")
                 .WithTag("level");
@@ -71,7 +72,7 @@ namespace Level.Storage
             ulong ucode = Convert.ToUInt64(levelSave.SteamId);
             var data = new Steamworks.Ugc.Editor(ucode)
                 .WithTitle(levelSave.Code)
-                .WithDescription($"A level created by {levelSave.Creator}")
+                .WithDescription($"A level created by {levelSave.CreatorName}")
                 .WithContent(levelSave.LocalDirectory)
                 .WithPreviewFile($"{levelSave.LocalDirectory}/screenshot.png")
                 .WithTag("level");
@@ -96,7 +97,7 @@ namespace Level.Storage
 
             ulong id = result.FileId;
 
-            callback.Invoke(levelSave.Code, id, true);
+            callback.Invoke(levelSave.Code, id.ToString(), true);
             Debug.Log($"Result: {result.Result}");
         }
 
@@ -172,7 +173,9 @@ namespace Level.Storage
             foreach (Steamworks.Ugc.Item entry in result.Value.Entries)
             {
                 string code = entry.Title.Length > 0 ? entry.Title : entry.Id.ToString();
-                var save = new LevelStub(code, entry.Owner.Name, true);
+                // @todo figure out creator id.
+                string creatorId = "";
+                var save = new LevelStub(code, entry.Owner.Name, creatorId, entry.Id.ToString(), true);
                 levels.Add(save);
                 Debug.Log($"{entry.Title}");
             }

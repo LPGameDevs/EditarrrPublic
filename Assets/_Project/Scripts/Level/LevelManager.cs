@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
@@ -53,9 +54,10 @@ namespace Editarrr.Level
 
             levelState.SetCode(code);
 
+            string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
             string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
 
-            levelState.SetCreator(userName);
+            levelState.SetCreator(userId, userName);
 
             // We are creating a save file and stub so it can be loaded again later.
             LevelSave levelSave = levelState.CreateSave();
@@ -155,6 +157,9 @@ namespace Editarrr.Level
 
         private void Save(LevelSave levelSave, bool uploadToRemote = false)
         {
+            // Increment version string.
+            levelSave.SetVersion(levelSave.Version + 1);
+
             // Store state to filesystem.
             string data = JsonUtility.ToJson(levelSave);
             this.LevelStorage.Save(levelSave.Code, data);
@@ -166,11 +171,12 @@ namespace Editarrr.Level
                 this.RemoteLevelStorage.Upload(levelSave, UploadCompleted);
             }
 
-            void UploadCompleted(string code, ulong remoteId, bool isSteam = false)
+            void UploadCompleted(string code, string remoteId, bool isSteam = false)
             {
                 if (isSteam)
                 {
-                    this.SetSteamUploadId(code, remoteId);
+                    ulong steamId = ulong.Parse(remoteId);
+                    this.SetSteamUploadId(code, steamId);
                 }
                 else
                 {
@@ -181,7 +187,7 @@ namespace Editarrr.Level
             }
         }
 
-        private void SetRemoteUploadId(string code, ulong remoteId)
+        private void SetRemoteUploadId(string code, string remoteId)
         {
             LevelStorage.LoadLevelData(code, DoSetRemoteUploadId);
 
