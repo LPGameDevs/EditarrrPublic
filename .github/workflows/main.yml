@@ -156,7 +156,7 @@ jobs:
           username: ${{ secrets.STEAM_BUILD_USERNAME }}
           configVdf: ${{ secrets.STEAM_CONFIG_VDF}}
           appId: ${{ env.STEAM_APP_ID }}
-          buildDescription: v${{ needs.buildForWindowsAndLinux.outputs.buildVersion }}
+          buildDescription: v${{ needs.buildForAllSupportedPlatforms.outputs.buildVersion }}
           rootPath: build
           firstDepotIdOverride: 2609412 # We are skipping depot 1 as it is shared between all platforms
           depot1Path: StandaloneWindows64

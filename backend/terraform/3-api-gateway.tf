@@ -78,6 +78,14 @@ resource "aws_apigatewayv2_route" "put_level" {
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 
+# Create an api route for updating a level.
+resource "aws_apigatewayv2_route" "put_screenshot" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "POST /screenshot/{filename}"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
 resource "aws_lambda_permission" "api_gateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"

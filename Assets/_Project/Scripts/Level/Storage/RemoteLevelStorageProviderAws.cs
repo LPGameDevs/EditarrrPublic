@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
 using Editarrr.Level;
 using Proyecto26;
 using UnityEditor;
@@ -10,6 +12,7 @@ namespace Level.Storage
     public class RemoteLevelStorageProviderAws : IRemoteLevelStorageProvider
     {
         private const string _awsLevelUrl = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com";
+        private const string _awsScreenshotUrl = "https://editarrr-screenshots.s3.eu-north-1.amazonaws.com";
         private bool _showDebug = false;
 
         public void Initialize()
@@ -48,8 +51,8 @@ namespace Level.Storage
             {
                 Debug.Log("UPLOAD - Existing level found.");
 
-               // Existing level found.
-               this.Update(request, callback);
+                // Existing level found.
+                this.Update(request, callback);
             }).Catch(err =>
             {
                 Debug.Log("UPLOAD - No level found");
@@ -64,22 +67,21 @@ namespace Level.Storage
             {
                 callback?.Invoke(request.name, res.id);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
-            }).Catch(err =>
-            {
-                this.LogMessage("Error", err.Message);
-            });
+
+                UploadScreenshot(request.name);
+            }).Catch(err => { this.LogMessage("Error", err.Message); });
         }
 
         private void Update(AwsLevel request, RemoteLevelStorage_LevelUploadedCallback callback)
         {
-            RestClient.Patch<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels/{request.id}", JsonUtility.ToJson(request)).Then(res =>
-            {
-                callback?.Invoke(request.name, res.id.ToString());
-                this.LogMessage("Levels", JsonUtility.ToJson(res, true));
-            }).Catch(err =>
-            {
-                this.LogMessage("Error", err.Message);
-            });
+            RestClient.Patch<AwsUploadResponse>($"{_awsLevelUrl}/dev/levels/{request.id}", JsonUtility.ToJson(request))
+                .Then(res =>
+                {
+                    callback?.Invoke(request.name, res.id.ToString());
+                    this.LogMessage("Levels", JsonUtility.ToJson(res, true));
+
+                    UploadScreenshot(request.name);
+                }).Catch(err => { this.LogMessage("Error", err.Message); });
         }
 
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
@@ -104,6 +106,8 @@ namespace Level.Storage
                 save.SetPublished(res.status == "PUBLISHED");
                 callback?.Invoke(save);
 
+                this.DownloadScreenshot(res.name);
+
                 // @todo return level data.
                 this.LogMessage(res.id, JsonUtility.ToJson(res, true));
             }).Catch(err =>
@@ -111,6 +115,65 @@ namespace Level.Storage
                 callback?.Invoke(null);
                 this.LogMessage("Error", err.Message);
             });
+        }
+
+        private async void UploadScreenshot(string code)
+        {
+            string uploadUrl = $"{_awsLevelUrl}/dev/screenshot/{code}.png";
+            string imagePath = LocalLevelStorageManager.LocalRootDirectory + code + "/screenshot.png";
+            using (HttpClient httpClient = new HttpClient())
+            {
+                // Load the image data from the file path
+                byte[] imageBytes = File.ReadAllBytes(imagePath);
+
+                // Create a ByteArrayContent from the image data
+                ByteArrayContent imageContent = new ByteArrayContent(imageBytes);
+
+                // Send the POST request
+                HttpResponseMessage response = await httpClient.PostAsync(uploadUrl, imageContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.Log("Image uploaded successfully");
+                }
+                else
+                {
+                    Debug.LogError("Error uploading image. Status code: " + response.StatusCode);
+                }
+            }
+        }
+
+        private async void DownloadScreenshot(string code)
+        {
+            // @todo Move the storage to the LocalLevelStorageManager.
+            string url = $"{_awsScreenshotUrl}/{code}.png";
+            using (HttpClient httpClient = new HttpClient())
+            {
+                // Send an HTTP GET request to download the image
+                HttpResponseMessage response = await httpClient.GetAsync(url);
+                string saveDirectory = LocalLevelStorageManager.LocalRootDirectory + code;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Ensure the save directory exists
+                    Directory.CreateDirectory(saveDirectory);
+
+                    // Get the filename from the URL
+                    string fileName = "screenshot.png";
+
+                    // Combine the save directory and filename to get the full path
+                    string fullPath = Path.Combine(saveDirectory, fileName);
+
+                    // Read the image content and save it to the specified directory
+                    byte[] imageBytes = await response.Content.ReadAsByteArrayAsync();
+                    File.WriteAllBytes(fullPath, imageBytes);
+
+                    Debug.Log("Image downloaded and saved to: " + fullPath);
+                }
+                else
+                {
+                    Debug.LogError("Error downloading image. Status code: " + response.StatusCode);
+                }
+            }
         }
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
@@ -121,7 +184,8 @@ namespace Level.Storage
                 List<LevelStub> levelStubs = new List<LevelStub>();
                 foreach (AwsLevel level in res.levels)
                 {
-                    LevelStub levelStub = new LevelStub(level.name, level.creator.id, level.creator.name, level.id, level.status == "PUBLISHED");
+                    LevelStub levelStub = new LevelStub(level.name, level.creator.id, level.creator.name, level.id,
+                        level.status == "PUBLISHED");
                     levelStubs.Add(levelStub);
                 }
 
@@ -205,6 +269,7 @@ namespace Level.Storage
     public class AwsUploadResponse
     {
         public string message;
+
         // @todo update the web interface.
         public string id;
         public string data;

@@ -1,18 +1,23 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
 import {
     DynamoDBDocumentClient,
     QueryCommand,
     PutCommand,
     GetCommand,
 } from "@aws-sdk/lib-dynamodb";
+import {
+    S3Client,
+    PutObjectCommand
+} from "@aws-sdk/client-s3";
 import crypto from "crypto";
+import { Buffer } from 'buffer';
 /* TODO:
     * Refactor - Move all the code for each API into its own file
     * Unit Tests
 */
 
 let options = {};
-if(process.env.AWS_SAM_LOCAL) {
+if (process.env.AWS_SAM_LOCAL) {
     console.log("Setting IP Address of local DynamoDB Container to: %s", process.env.DDB_IP_ADDR);
     options.endpoint = "http://" + process.env.DDB_IP_ADDR + ":8000";
 }
@@ -25,7 +30,7 @@ const tableName = "editarrr-level-storage";
 
 // From https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid - not sure if this is reliable haha
 function uuidv4() {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
 }
@@ -239,13 +244,39 @@ export const handler = async (event, context) => {
                     "message": `Success! Update level: ${currentLevelName}`
                 }
                 break;
+
+            case "POST /screenshot/{filename}":
+                const s3Client = new S3Client({});
+                const imageBuffer = Buffer.from(event.body, 'base64');
+
+                // Set the parameters
+                const params = {
+                    Bucket: "editarrr-screenshots",
+                    Key: event.pathParameters.filename,
+                    Body: imageBuffer,
+                    ACL: "public-read",
+                };
+
+                const results = await s3Client.send(new PutObjectCommand(params));
+
+                const message = "Successfully created " +
+                    params.Key +
+                    " and uploaded it to " +
+                    params.Bucket +
+                    "/" +
+                    params.Key;
+                responseBody = {
+                    "message": message
+                }
+                break;
+
             default:
                 throw new Error(`Unsupported route: "${event.requestContext.resourceId}"`);
         }
     } catch (err) {
         if (err instanceof BadRequestException) {
             statusCode = 400;
-        // TODO 404 errors
+            // TODO 404 errors
         } else {
             statusCode = 500;
         }
