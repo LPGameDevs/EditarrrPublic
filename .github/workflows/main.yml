@@ -3,10 +3,8 @@ name: GameCI Template 🎮
 on:
   push:
     tags:
-      - v* # This should build for github only
-#      - i* # This should build for itch.io only
-#      - s* # This should build for steam only
-#      - a* # This should build for all platforms
+      - * # Push events to all tags
+
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -56,6 +54,8 @@ jobs:
           - StandaloneLinux64
           - StandaloneWindows64
           - StandaloneOSX
+    outputs:
+      buildVersion: ${{ steps.build.outputs.buildVersion }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -70,9 +70,12 @@ jobs:
             Library-build-${{ matrix.targetPlatform }}-
             Library-build-
             Library-
-      - uses: game-ci/unity-builder@v3
+      - name: Build game for ${{ matrix.targetPlatform }}
+        uses: game-ci/unity-builder@v3
+        id: build
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
+          versioning: Semantic
       - uses: actions/upload-artifact@v3
         with:
           name: build-${{ matrix.targetPlatform }}
@@ -152,8 +155,7 @@ jobs:
           username: ${{ secrets.STEAM_BUILD_USERNAME }}
           configVdf: ${{ secrets.STEAM_CONFIG_VDF}}
           appId: ${{ env.STEAM_APP_ID }}
-          buildDescription: automatic build deployment
-#          buildDescription: v${{ needs.buildForWindowsAndLinux.outputs.buildVersion }}
+          buildDescription: v${{ needs.buildForWindowsAndLinux.outputs.buildVersion }}
           rootPath: build
           firstDepotIdOverride: 2609412 # We are skipping depot 1 as it is shared between all platforms
           depot1Path: StandaloneWindows64
