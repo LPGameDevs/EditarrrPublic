@@ -5,9 +5,26 @@ using UnityEngine;
 public class PlayerForceReceiver : MonoBehaviour
 {
 	public Vector2? ForcedMove { get; private set; }
+	float Timer { get; set; }
+	bool IsActive { get; set; }
+	Vector3 Origin { get; set; }
+
+    [field: SerializeField] private Vector3 ToOrigin { get; set; }
+	Vector3 Force { get; set; }
+	float Strength { get; set; }
+
+	public void ReceiveImpulse(Vector3 origin)
+    {
+		this.ToOrigin = origin - this.transform.position;
+		this.Force = this.ToOrigin * 3;
+		this.Strength = 1;
+    }
 
 	public void ReceiveImpulse(float hitStopDuration, float knockbackDuration, AnimationCurve knockbackCurveX, AnimationCurve knockbackCurveY)
 	{
+		//this.IsActive = true;
+		//this.Timer = -hitStopDuration;
+
 		StartCoroutine(CoroutineImpulse(hitStopDuration, knockbackDuration, knockbackCurveX, knockbackCurveY));
 	}
 
@@ -39,4 +56,17 @@ public class PlayerForceReceiver : MonoBehaviour
 
 		ForcedMove = null;
 	}
+
+    private void Update()
+    {
+		if (this.Strength <= 0)
+		{
+			this.ForcedMove = null;
+			return;
+		}
+
+		this.Strength -= Time.deltaTime;
+
+		this.ForcedMove = this.Force * this.Strength;
+    }
 }
