@@ -75,10 +75,15 @@ public class LevelBrowserLoader : MonoBehaviour
         {
             AddLevelPrefabFromData(level);
         }
-        // Set transform height to fit all levels.
+        // The scroll content needs to be resized to fit all the levels.
         RectTransform currentTransform = GetComponent<RectTransform>();
-        currentTransform.sizeDelta = new Vector2(currentTransform.sizeDelta.x, _loadedLevels.Count * _levelPrefab.GetComponent<RectTransform>().rect.height);
+        var contentHeight = _loadedLevels.Count * (_levelPrefab.GetComponent<RectTransform>().rect.height + 25);
+        currentTransform.sizeDelta = new Vector2(currentTransform.sizeDelta.x, contentHeight);
 
+        // Scroll to the top of the content by subtracting the offset.
+        // 680 is roughly the height of the scroll view.
+        var contentOffset = contentHeight > 680 ? (contentHeight - 680) / 2 : 0;
+        currentTransform.anchoredPosition = new Vector2(currentTransform.anchoredPosition.x, -contentOffset);
     }
 
     public void ReloadScreenshot(string code)
