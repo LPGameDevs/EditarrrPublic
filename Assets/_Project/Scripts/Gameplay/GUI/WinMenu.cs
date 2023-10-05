@@ -8,7 +8,7 @@ namespace Gameplay.GUI
 {
     public class WinMenu : MonoBehaviour
     {
-        public static event Action<string, string> OnScoreSubmit;
+        public static event Action<string, float> OnScoreSubmit;
         public static event Action OnScoreSubmitted;
 
         public TMP_Text LevelCode;
@@ -21,7 +21,8 @@ namespace Gameplay.GUI
 
         private string _code;
         private string _user;
-        private string _time;
+        private float _time;
+        private string _timeText;
         private LevelState _levelData;
 
         private void UpdateContent()
@@ -88,9 +89,10 @@ namespace Gameplay.GUI
             UpdateContent();
         }
 
-        private void SetTimeText(string timeText)
+        private void SetTimeText(float time, string timeText)
         {
-            _time = timeText;
+            _time = time;
+            _timeText = timeText;
             if (TimerText != null)
             {
                 TimerText.text = timeText;
@@ -99,6 +101,7 @@ namespace Gameplay.GUI
 
         public void SubmitScore()
         {
+            SubmitButton.gameObject.SetActive(false);
             OnScoreSubmit?.Invoke(_code, _time);
         }
 

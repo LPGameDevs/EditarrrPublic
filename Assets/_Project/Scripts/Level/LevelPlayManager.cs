@@ -124,5 +124,30 @@ namespace Editarrr.Level
 
         #endregion
 
+
+        private void OnScoreSubmitRequested(string code, float time)
+        {
+            LevelManager.LevelStorage.LoadLevelData(code, ScoreLevelLoaded);
+
+            void ScoreLevelLoaded(LevelSave levelSave)
+            {
+                LevelManager.SubmitScore(time, levelSave, ScoreSubmitted);
+
+                void ScoreSubmitted(string code, string remoteid, bool issteam)
+                {
+                    // @todo do we need this?
+                }
+            }
+        }
+
+        public override void DoOnEnable()
+        {
+            WinMenu.OnScoreSubmit += OnScoreSubmitRequested;
+        }
+
+        public override void DoOnDisable()
+        {
+            WinMenu.OnScoreSubmit -= OnScoreSubmitRequested;
+        }
     }
 }

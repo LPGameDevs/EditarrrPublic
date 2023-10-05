@@ -257,14 +257,24 @@ namespace Editarrr.Level
         }
 #endif
 
-        public void SubmitScore()
+        public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback)
         {
             if (!RemoteStorageEnabled)
             {
                 Debug.LogError("Remote operations are not enabled for this LevelManager.");
                 return;
             }
-            RemoteLevelStorage.SubmitScore();
+            RemoteLevelStorage.SubmitScore(score, levelSave, callback);
+        }
+
+        public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
+        {
+            if (!RemoteStorageEnabled)
+            {
+                // Debug.LogError("Remote operations are not enabled for this LevelManager.");
+                // return;
+            }
+            RemoteLevelStorage.GetScoresForLevel(code, callback);
         }
 
         #endregion

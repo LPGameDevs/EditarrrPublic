@@ -21,6 +21,8 @@ namespace Singletons
         public static string LevelSelectionSceneName = "EditorSelection";
         public static string TestLevelSceneName = "EditorTest";
         public static string CreateLevelSceneName = "EditorCreate";
+        // @todo Create the replay scene.
+        public static string ReplayLevelSceneName = "EditorReplay";
         public static string BrowserSceneName = "LevelBrowser";
 
         public static Action<string> OnSceneChange;

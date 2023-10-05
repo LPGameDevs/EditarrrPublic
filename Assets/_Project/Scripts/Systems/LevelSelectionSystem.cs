@@ -1,3 +1,4 @@
+using Browser;
 using Editarrr.Misc;
 using Editarrr.Systems;
 using UnityEngine;
@@ -10,10 +11,12 @@ namespace Editarrr.LevelEditor
                                              "It will add the relevant manager and connect it with scene dependencies.\r\n";
 
         [field: SerializeField, Info(Documentation)] public LevelSelectionLoader LevelLoader { get; private set; }
+        [field: SerializeField] public LeaderboardForm Leaderboard { get; private set; }
 
         protected override void PreAwake()
         {
             this.Manager.SetLevelLoader(this.LevelLoader);
+            this.Manager.SetLeaderboard(this.Leaderboard);
         }
     }
 }
