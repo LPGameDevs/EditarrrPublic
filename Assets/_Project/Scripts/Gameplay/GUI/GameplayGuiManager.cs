@@ -22,8 +22,6 @@ namespace Gameplay.GUI
         private LevelState _levelState;
         bool _awaitingInput;
 
-        bool _awaitingInput;
-
         private bool _isPaused = false;
         private bool _isWin = false;
 
