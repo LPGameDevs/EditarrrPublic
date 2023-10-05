@@ -2,6 +2,8 @@ name: GameCI Template 🎮
 
 on:
   push:
+    branches:
+      - main
     tags:
       - '*' # Push events to all tags
   workflow_dispatch:
