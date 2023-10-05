@@ -143,7 +143,7 @@ resource "aws_dynamodb_table" "editarrr-score-storage" {
   }
 
 #  attribute {
-#    name = "levelName"
+#    name = "scoreLevelName"
 #    type = "S" # 12345
 #  }
 #  attribute {
@@ -164,11 +164,11 @@ resource "aws_dynamodb_table" "editarrr-score-storage" {
   # }
 
   global_secondary_index {
-    name            = "levelName-score-index"
+    name            = "scoreLevelName-score-index"
     hash_key        = "pk"
     range_key       = "score"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "sk", "pk", "levelName", "scoreCreatorName", "scoreSubmittedAt", "scoreCreatorId"]
+    non_key_attributes = [ "sk", "pk", "scoreLevelName", "scoreCreatorName", "scoreSubmittedAt", "scoreCreatorId"]
     write_capacity  = 0
     read_capacity   = 0
   }

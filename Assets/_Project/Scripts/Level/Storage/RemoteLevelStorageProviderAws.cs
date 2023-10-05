@@ -38,7 +38,7 @@ namespace Level.Storage
                     id = userId
                 },
                 status = levelSave.Published ? "PUBLISHED" : "DRAFT",
-                data = new AwsData()
+                data = new AwsLevelData()
                 {
                     scaleX = levelSave.ScaleX,
                     scaleY = levelSave.ScaleY,
@@ -200,12 +200,49 @@ namespace Level.Storage
 
         public bool SupportsLeaderboards()
         {
-            return false;
+            return true;
         }
 
-        public void SubmitScore()
+        public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback)
         {
-            throw new NotImplementedException();
+            var userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
+            var userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+
+            var request = new AwsScoreRequest
+            {
+                code = levelSave.Code,
+                score = score.ToString(),
+                creator = userId,
+                creatorName = userName
+            };
+
+            RestClient.Post<AwsUploadResponse>($"{AwsLevelUrl}/dev/levels/{levelSave.RemoteId}/scores", JsonUtility.ToJson(request)).Then(res =>
+            {
+                Debug.Log("Score uploaded for level: " + levelSave.Code);
+                callback?.Invoke(levelSave.Code, res.id);
+            }).Catch(err => { this.LogMessage("Error", err.Message); });
+        }
+
+        public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
+        {
+            // Get request to /levels/{id}/scores
+            RestClient.Get<AwsScores>($"{AwsLevelUrl}/dev/levels/{code}/scores").Then(res =>
+            {
+                var scoreStubs = new List<ScoreStub>();
+                foreach (var score in res.scores)
+                {
+                    float scoreValue = float.Parse(score.score);
+                    var levelStub = new ScoreStub(score.code, score.creator.id, score.creator.name, scoreValue);
+                    scoreStubs.Add(levelStub);
+                }
+
+                callback?.Invoke(scoreStubs.ToArray());
+                this.LogMessage("Scores", JsonUtility.ToJson(res, true));
+            }).Catch(err =>
+            {
+                callback?.Invoke(null);
+                this.LogMessage("Error", err.Message);
+            });
         }
 
         private void LogMessage(string title, string message)
@@ -225,6 +262,8 @@ namespace Level.Storage
         }
     }
 
+    #region AWS Level Data Structures
+
     [Serializable]
     public class AwsLevels
     {
@@ -240,7 +279,7 @@ namespace Level.Storage
         public string status;
         public uint createdAt;
         public uint updatedAt;
-        public AwsData data;
+        public AwsLevelData data;
     }
 
     [Serializable]
@@ -251,7 +290,7 @@ namespace Level.Storage
     }
 
     [Serializable]
-    public class AwsData
+    public class AwsLevelData
     {
         public int scaleX;
         public int scaleY;
@@ -274,4 +313,36 @@ namespace Level.Storage
         public string id;
         public string data;
     }
+
+    #endregion
+
+    #region AWS Score Data Structures
+
+    [Serializable]
+    public class AwsScores
+    {
+        public AwsScore[] scores;
+    }
+
+    public class AwsScoreRequest
+    {
+        public string code;
+        public string score;
+        public string creator;
+        public string creatorName;
+    }
+
+    [Serializable]
+    public class AwsScore
+    {
+        public string scoreId;
+        public string levelId;
+        public string score;
+        public string code;
+        public AwsCreator creator;
+        public uint submittedAt;
+    }
+
+    #endregion
+
 }

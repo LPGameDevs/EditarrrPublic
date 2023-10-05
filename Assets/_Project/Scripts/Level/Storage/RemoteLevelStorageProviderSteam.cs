@@ -188,7 +188,12 @@ namespace Level.Storage
             return false;
         }
 
-        public void SubmitScore()
+        public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
         {
             throw new System.NotImplementedException();
         }

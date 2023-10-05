@@ -11,7 +11,7 @@ namespace Gameplay.GUI
      */
     public class Timer : MonoBehaviour
     {
-        public static event Action<string> OnTimeStop;
+        public static event Action<float, string> OnTimeStop;
 
         [SerializeField] private MMFeedbacks _hideFeedbacks;
         [SerializeField] private MMFeedbacks _showFeedbacks;
@@ -78,7 +78,7 @@ namespace Gameplay.GUI
 
             _isFinished = true;
             DisplayTime(_currentTime, true);
-            OnTimeStop?.Invoke(_timeText.text);
+            OnTimeStop?.Invoke(_currentTime, _timeText.text);
         }
 
         private void ShowTimer()

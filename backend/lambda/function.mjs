@@ -316,7 +316,7 @@ export const handler = async (event, context) => {
                 var queryResponse = await dynamo.send(
                     new QueryCommand({
                         TableName: tableNameScore,
-                        IndexName: "levelName-score-index",
+                        IndexName: "scoreLevelName-score-index",
                         Select: "ALL_PROJECTED_ATTRIBUTES",
                         Limit: 10,
                         ScanIndexForward: false,
@@ -344,6 +344,7 @@ export const handler = async (event, context) => {
                         "scoreId": id,
                         "levelId": levelId,
                         "score": dbScore.score,
+                        "code": dbScore.scoreLevelName,
                         "creator": {
                             "id": dbScore.scoreCreatorId,
                             "name": dbScore.scoreCreatorName

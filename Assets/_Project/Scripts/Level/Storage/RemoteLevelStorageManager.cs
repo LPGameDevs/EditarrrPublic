@@ -76,7 +76,7 @@ namespace Level.Storage
             }
         }
 
-        public void SubmitScore()
+        public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback)
         {
             foreach (var provider in _providers)
             {
@@ -85,7 +85,20 @@ namespace Level.Storage
                     continue;
                 }
 
-                provider.SubmitScore();
+                provider.SubmitScore(score, levelSave, callback);
+            }
+        }
+
+        public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
+        {
+            foreach (var provider in _providers)
+            {
+                if (!provider.SupportsLeaderboards())
+                {
+                    continue;
+                }
+
+                provider.GetScoresForLevel(code, callback);
             }
         }
     }

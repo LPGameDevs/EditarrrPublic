@@ -15,6 +15,8 @@ namespace Level.Storage
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
     }
 
+    public delegate void RemoteScoreStorage_ScoreSubmittedCallback(string code, string remoteId, bool isSteam = false);
+    public delegate void RemoteScoreStorage_AllScoresLoadedCallback(ScoreStub[] scoreStubs);
     public delegate void RemoteLevelStorage_LevelUploadedCallback(string code, string remoteId, bool isSteam = false);
     public delegate void RemoteLevelStorage_LevelLoadedCallback(LevelSave levelsave);
     public delegate void RemoteLevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs);
@@ -35,6 +37,23 @@ namespace Level.Storage
             this.CreatorName = creatorName;
             this.RemoteId = remoteId;
             this.Published = published;
+        }
+    }
+
+    [Serializable]
+    public class ScoreStub
+    {
+        public string Code { get; private set; }
+        public string Creator { get; private set; }
+        public string CreatorName { get; private set; }
+        public float Score { get; private set; }
+
+        public ScoreStub(string code, string creator, string creatorName, float score)
+        {
+            this.Code = code;
+            this.Creator = creator;
+            this.CreatorName = creatorName;
+            this.Score = score;
         }
     }
 }
