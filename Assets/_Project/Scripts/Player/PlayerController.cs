@@ -69,15 +69,18 @@ namespace Player
             if (healthArgs.value <= 0)
                 return;
 
-            StartCoroutine(CoroutineStun(healthArgs.disableDuration));
+            if (healthArgs.stunDuration > 0)
+                StartCoroutine(CoroutineStun(healthArgs.stunDuration));
         }
 
         IEnumerator CoroutineStun(float stunDuration)
         {
+            Debug.Log("Start Stun");
             LockInput(true);
 
             yield return new WaitForSeconds(stunDuration);
 
+            Debug.Log("Stop Stun");
             LockInput(false);
         }
 
@@ -276,9 +279,16 @@ namespace Player
                 _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
             }
 
-            //Overwrite movement with external force if one is being applied, pre-collision adjustment
+            // Add external force to movement if one is being applied, pre-collision adjustment
             if (_forceReceiver.ForcedMove.HasValue)
-                _currentHorizontalSpeed = _forceReceiver.ForcedMove.Value.x;
+            {
+                _currentHorizontalSpeed = _currentHorizontalSpeed + _forceReceiver.ForcedMove.Value.x;
+
+                if (_forceReceiver.ForcedMove.Value.x > 0 && _currentHorizontalSpeed > _forceReceiver.ForcedMove.Value.x)
+                    _currentHorizontalSpeed = _forceReceiver.ForcedMove.Value.x;
+                else if (_forceReceiver.ForcedMove.Value.x < 0 && _currentHorizontalSpeed < -_forceReceiver.ForcedMove.Value.x)
+                    _currentHorizontalSpeed = _forceReceiver.ForcedMove.Value.x;
+            }
 
             if (_currentHorizontalSpeed > 0 && _collisions.right || _currentHorizontalSpeed < 0 && _collisions.left)
             {
