@@ -53,7 +53,7 @@ namespace Editarrr.Level
         {
             HealthSystem healthSystem;
             if (collider.TryGetComponent<HealthSystem>(out healthSystem))
-                healthSystem.TakeDamage(healthSystem.MaxHitPoints, 0f);
+                healthSystem.TakeDamage(healthSystem.MaxHitPoints, 0f, 0f);
             else
                 Destroy(collider.gameObject);
         }

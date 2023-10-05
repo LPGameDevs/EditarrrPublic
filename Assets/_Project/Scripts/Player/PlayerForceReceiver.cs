@@ -1,3 +1,4 @@
+using Editarrr.Misc;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,37 +7,36 @@ public class PlayerForceReceiver : MonoBehaviour
 {
 	public Vector2? ForcedMove { get; private set; }
 
-	public void ReceiveImpulse(float hitStopDuration, float knockbackDuration, AnimationCurve knockbackCurveX, AnimationCurve knockbackCurveY)
+    [field: SerializeField] private float Duration { get; set; } = .2f;
+    [field: SerializeField] private float ForceMultiplier { get; set; } = 1f;
+
+	Vector3 Force { get; set; }
+	float ImpulseTime { get; set; }
+
+	public void ReceiveImpulse(float force, Vector3 direction)
 	{
-		StartCoroutine(CoroutineImpulse(hitStopDuration, knockbackDuration, knockbackCurveX, knockbackCurveY));
+		/*(this.transform.position - origin).normalized;*/
+		this.Force = direction * force * this.ForceMultiplier;
+		this.ImpulseTime = 1;
+
+		this.CalculateForceMove();
 	}
 
-	IEnumerator CoroutineImpulse(float hitStopDuration, float knockbackDuration, AnimationCurve knockbackCurveX, AnimationCurve knockbackCurveY)
-	{
-		ForcedMove = Vector2.zero;
+	private void Update()
+    {
+        this.CalculateForceMove();
+    }
 
-		yield return new WaitForSeconds(hitStopDuration);
-
-		float timeLimit = knockbackDuration + Time.time;
-
-		while (Time.time < timeLimit)
+    private void CalculateForceMove()
+    {
+        if (this.ImpulseTime <= 0)
         {
-			float t = 1f - ((timeLimit - Time.time) / knockbackDuration);
-			ForcedMove = new Vector2(knockbackCurveX.Evaluate(t) * -transform.localScale.x, knockbackCurveY.Evaluate(t));
-			yield return new WaitForEndOfFrame();
+            this.ForcedMove = null;
+            return;
         }
 
-		//while (Time.time < timeLimit)
-		//{
-		//	float t = Mathf.Clamp((timeLimit - Time.time), 0, 1);
-		//	Vector2 ab = Vector2.Lerp(bezierPoints[0], bezierPoints[1], t);
-		//	Vector2 bc = Vector2.Lerp(bezierPoints[1], bezierPoints[2], t);
-		//	Vector3 target = Vector2.Lerp(ab, bc, t);
-		//	ForcedMove = target - transform.position;
+        this.ImpulseTime -= Time.deltaTime * (1f / this.Duration);
 
-		//	yield return null;
-		//}
-
-		ForcedMove = null;
-	}
+        this.ForcedMove = this.Force * this.ImpulseTime;
+    }
 }

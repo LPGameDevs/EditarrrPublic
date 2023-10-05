@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1182490265999082851}
   - component: {fileID: 1182490265999082848}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TangibleCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,58 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73db6d5f057532a4fbb2006b90d4e137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 20
-  _hitStopDuration: 0.3
-  _knockbackDuration: 1
-  _stunDuration: 2
-  _knockbackCurveX:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _knockbackCurveY:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -0.016666412
-      value: 0.9268799
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  _damage: 1
+  <KnockbackForce>k__BackingField: 25
+  <DamageCooldown>k__BackingField: 0.5
+  <StunDuration>k__BackingField: 0
+  <ForceOrigin>k__BackingField: {fileID: 8716000030919448201}
 --- !u!50 &1134828341692155681
 Rigidbody2D:
   serializedVersion: 4
@@ -338,6 +291,7 @@ Transform:
   - {fileID: 1182490265870693967}
   - {fileID: 1182490265999082851}
   - {fileID: 6447106618215588271}
+  - {fileID: 8716000030919448201}
   m_Father: {fileID: 1182490266025708480}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -399,3 +353,34 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.1}
   m_EdgeRadius: 0
+--- !u!1 &8698330827733938792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8716000030919448201}
+  m_Layer: 0
+  m_Name: ForceOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8716000030919448201
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8698330827733938792}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1182490266942125045}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
