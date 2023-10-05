@@ -1,6 +1,6 @@
 # We use dynamodb to store the level data of the game.
 
-# Create the dynamodb table.
+# Create the dynamodb table for levels.
 resource "aws_dynamodb_table" "editarrr-level-storage" {
   name                        = "editarrr-level-storage"
   billing_mode                = "PAY_PER_REQUEST"
@@ -99,6 +99,76 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
     non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName"]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+}
+
+# Create the dynamodb table for scores.
+resource "aws_dynamodb_table" "editarrr-score-storage" {
+  name                        = "editarrr-score-storage"
+  billing_mode                = "PAY_PER_REQUEST"
+  table_class                 = "STANDARD"
+  read_capacity               = "0"
+  write_capacity              = "0"
+  stream_enabled              = "false"
+  deletion_protection_enabled = "false"
+
+  point_in_time_recovery {
+    enabled = "false"
+  }
+
+  hash_key  = "pk"
+  range_key = "sk"
+  attribute {
+    name = "pk"
+    type = "S"
+  }
+  attribute {
+    name = "sk"
+    type = "S"
+  }
+
+  # Items
+  # Note: In the DynamoDB configuration, you can only define attributes that are keyed/indexed
+  #       Commenting non-indexed attributes as well for completeness
+
+  # Score Items
+  # pk: LEVEL#<levelId>
+  # sk: SCORE#<score>
+
+  attribute {
+    name = "score"
+    type = "S" # Number of seconds 0015.123
+  }
+
+#  attribute {
+#    name = "levelName"
+#    type = "S" # 12345
+#  }
+#  attribute {
+#    name = "scoreSubmittedAt"
+#    type = "N" # Epoch
+#  }
+#  attribute {
+#    name = "scoreCreatorId"
+#    type = "S" #userId
+#  }
+  # attribute {
+  #   name = "scoreCreatorName"
+  #   type = "S"
+  # }
+  # attribute {
+  #   name = "ghost"
+  #   type = "M" # JSON Blob
+  # }
+
+  global_secondary_index {
+    name            = "levelName-score-index"
+    hash_key        = "pk"
+    range_key       = "score"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "sk", "pk", "levelName", "scoreCreatorName", "scoreSubmittedAt", "scoreCreatorId"]
     write_capacity  = 0
     read_capacity   = 0
   }
