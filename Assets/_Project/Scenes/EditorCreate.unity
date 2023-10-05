@@ -363,6 +363,7 @@ MonoBehaviour:
     <ContainerName>k__BackingField: SaveAndPlay
     <PlayButtonName>k__BackingField: Play
     <SaveButtonName>k__BackingField: Save
+    <CloseButtonName>k__BackingField: Close
 --- !u!114 &1268458651
 MonoBehaviour:
   m_ObjectHideFlags: 0

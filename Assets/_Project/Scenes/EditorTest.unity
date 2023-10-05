@@ -5160,9 +5160,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 468777125210933092}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
-        m_MethodName: GoToLevel
+      - m_Target: {fileID: 468777125453443629}
+        m_TargetAssemblyTypeName: Gameplay.GUI.GameplayGuiManager, Assembly-CSharp
+        m_MethodName: OnQuitButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5210,19 +5210,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468777125210933119}
   m_CullTransparentMesh: 1
---- !u!114 &468777125210933092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468777125210933119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8dcf70b0cfc48d3a539b8eacad1a74e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LevelName: EditorCreate
 --- !u!1 &468777125210933119
 GameObject:
   m_ObjectHideFlags: 0
@@ -5235,9 +5222,8 @@ GameObject:
   - component: {fileID: 468777125210933091}
   - component: {fileID: 468777125210933090}
   - component: {fileID: 468777125210933089}
-  - component: {fileID: 468777125210933092}
   m_Layer: 5
-  m_Name: Button
+  m_Name: QuitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
