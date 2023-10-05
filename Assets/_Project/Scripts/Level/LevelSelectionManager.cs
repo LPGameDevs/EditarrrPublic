@@ -1,8 +1,10 @@
+using Browser;
 using CorgiExtension;
 using Editarrr.Level;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Gameplay.GUI;
 using Level.Storage;
 using UnityEngine;
 
@@ -17,11 +19,18 @@ public class LevelSelectionManager : ManagerComponent
 
     // From system
     private LevelSelectionLoader _levelLoader { get; set; }
+    private LeaderboardForm _leaderboard { get; set; }
 
 
     public void SetLevelLoader(LevelSelectionLoader levelLoader)
     {
         _levelLoader = levelLoader;
+    }
+
+    public void SetLeaderboard(LeaderboardForm leaderboard)
+    {
+        _leaderboard = leaderboard;
+        _leaderboard.gameObject.SetActive(false);
     }
 
     public override void DoAwake()
@@ -64,7 +73,11 @@ public class LevelSelectionManager : ManagerComponent
 
     private void OnLevelUploadComplete(LevelSave level)
     {
-        Debug.Log("Upload finished for level " + level.Code + ".");
+        // @todo fix this by not invoking null for aws.
+        if (level != null)
+        {
+            Debug.Log("Upload finished for level " + level.Code + ".");
+        }
 
         // Update display.
         DestroyAndRefreshLevels();
@@ -77,11 +90,29 @@ public class LevelSelectionManager : ManagerComponent
         Exchange.SetAutoload(code.Length > 0);
     }
 
+    private void OnLeaderboardRequested(string code)
+    {
+        _leaderboard.gameObject.SetActive(true);
+        _leaderboard.SetCode(code);
+
+        LevelManager.LevelStorage.LoadLevelData(code, LeaderboardLevelDataLoaded);
+        void LeaderboardLevelDataLoaded(LevelSave levelSave)
+        {
+            LevelManager.GetScoresForLevel(levelSave.RemoteId, LeaderboardScoresLoaded);
+
+            void LeaderboardScoresLoaded(ScoreStub[] scoreStubs)
+            {
+                _leaderboard.SetScores(scoreStubs);
+            }
+        }
+    }
+
     public override void DoOnEnable()
     {
         EditorLevel.OnEditorLevelSelected += OnLevelSelected;
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload += OnLevelUploadRequested;
+        EditorLevel.OnLeaderboardRequest += OnLeaderboardRequested;
     }
 
     public override void DoOnDisable()
@@ -89,5 +120,6 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelSelected -= OnLevelSelected;
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload -= OnLevelUploadRequested;
+        EditorLevel.OnLeaderboardRequest -= OnLeaderboardRequested;
     }
 }

@@ -10,8 +10,10 @@ namespace Level.Storage
         public void Initialize();
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback);
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback);
+        public void DownloadScreenshot(string code, RemoteLevelStorage_LevelScreenshotDownloadedCallback callback);
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
-        bool SupportsLeaderboards();
-        void SubmitScore();
+        public bool SupportsLeaderboards();
+        public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback);
+        public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback);
     }
 }

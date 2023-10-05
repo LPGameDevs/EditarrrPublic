@@ -8,6 +8,7 @@ on:
 jobs:
   generate-uml:
     name: 'Generate UML'
+    if: false # Disabled job.
     runs-on: ubuntu-latest
     env:
       CODE_PATH: "./Assets/_Project/Scripts/"

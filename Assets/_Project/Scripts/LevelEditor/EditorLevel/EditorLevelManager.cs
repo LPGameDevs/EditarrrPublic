@@ -228,7 +228,7 @@ namespace Editarrr.LevelEditor
                 }
             }
 
-            this.Unset(x, y);
+            //this.Unset(x, y);
 
             if (tileData.Tile.CanRotate)
             {

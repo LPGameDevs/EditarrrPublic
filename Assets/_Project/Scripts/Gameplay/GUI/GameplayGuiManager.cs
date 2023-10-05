@@ -18,6 +18,10 @@ namespace Gameplay.GUI
         [field: SerializeField, Tooltip("Jump input map")] private InputValue JumpInput { get; set; }
         [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
 
+        private string _levelCode;
+        private LevelState _levelState;
+        bool _awaitingInput;
+
         bool _awaitingInput;
 
         private bool _isPaused = false;
@@ -35,11 +39,13 @@ namespace Gameplay.GUI
 
         public void SetLevelCode(string code)
         {
+            _levelCode = code;
             _winMenu.SetCode(code);
         }
 
         public void SetLevelState(LevelState levelState)
         {
+            _levelState = levelState;
             _winMenu.SetLevelData(levelState);
         }
 
@@ -118,6 +124,17 @@ namespace Gameplay.GUI
         private void UnPauseGame()
         {
             GameEvent.Trigger(GameEventType.Unpause);
+        }
+
+        // This is the x in the top left corner.
+        public void OnQuitButtonPressed()
+        {
+            string goToScene = SceneTransitionManager.CreateLevelSceneName;
+            if (_levelState.Published)
+            {
+                goToScene = SceneTransitionManager.LevelSelectionSceneName;
+            }
+            SceneTransitionManager.Instance.GoToScene(goToScene);
         }
 
         private void Update()

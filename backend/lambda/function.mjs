@@ -1,18 +1,23 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
 import {
     DynamoDBDocumentClient,
     QueryCommand,
     PutCommand,
     GetCommand,
 } from "@aws-sdk/lib-dynamodb";
+import {
+    S3Client,
+    PutObjectCommand
+} from "@aws-sdk/client-s3";
 import crypto from "crypto";
+import { Buffer } from 'buffer';
 /* TODO:
     * Refactor - Move all the code for each API into its own file
     * Unit Tests
 */
 
 let options = {};
-if(process.env.AWS_SAM_LOCAL) {
+if (process.env.AWS_SAM_LOCAL) {
     console.log("Setting IP Address of local DynamoDB Container to: %s", process.env.DDB_IP_ADDR);
     options.endpoint = "http://" + process.env.DDB_IP_ADDR + ":8000";
 }
@@ -21,11 +26,12 @@ const client = new DynamoDBClient(options);
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-const tableName = "editarrr-level-storage";
+const tableNameLevel = "editarrr-level-storage";
+const tableNameScore = "editarrr-score-storage";
 
 // From https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid - not sure if this is reliable haha
 function uuidv4() {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
 }
@@ -77,7 +83,7 @@ export const handler = async (event, context) => {
 
                 await dynamo.send(
                     new PutCommand({
-                        TableName: tableName,
+                        TableName: tableNameLevel,
                         Item: {
                             pk: `LEVEL#${generatedLevelId}`,
                             sk: `LEVEL#${generatedLevelId}`,
@@ -104,7 +110,7 @@ export const handler = async (event, context) => {
 
                 var queryResponse = await dynamo.send(
                     new QueryCommand({
-                        TableName: tableName,
+                        TableName: tableNameLevel,
                         IndexName: "levelStatus-levelUpdatedAt-index",
                         Select: "ALL_PROJECTED_ATTRIBUTES",
                         Limit: 10,
@@ -151,7 +157,7 @@ export const handler = async (event, context) => {
 
                 var queryResponse = await dynamo.send(
                     new GetCommand({
-                        TableName: tableName,
+                        TableName: tableNameLevel,
                         Key: {
                             "pk": `LEVEL#${event.pathParameters.id}`,
                             "sk": `LEVEL#${event.pathParameters.id}`
@@ -192,7 +198,7 @@ export const handler = async (event, context) => {
 
                 var queryResponse = await dynamo.send(
                     new GetCommand({
-                        TableName: tableName,
+                        TableName: tableNameLevel,
                         Key: {
                             pk: `LEVEL#${event.pathParameters.id}`,
                             sk: `LEVEL#${event.pathParameters.id}`
@@ -219,12 +225,13 @@ export const handler = async (event, context) => {
 
                 await dynamo.send(
                     new PutCommand({
-                        TableName: tableName,
+                        TableName: tableNameLevel,
                         Item: {
                             pk: dbLevel.pk,
                             sk: dbLevel.sk,
                             levelName: dbLevel.levelName,
                             levelCreatorId: dbLevel.levelCreatorId,
+                            levelCreatorName: dbLevel.levelCreatorName,
                             levelStatus: dbLevel.levelStatus,
                             levelCreatedAt: dbLevel.levelCreatedAt,
                             levelUpdatedAt: dbLevel.levelUpdatedAt,
@@ -238,13 +245,126 @@ export const handler = async (event, context) => {
                     "message": `Success! Update level: ${currentLevelName}`
                 }
                 break;
+
+            case "POST /screenshot/{filename}":
+                const s3Client = new S3Client({});
+                const imageBuffer = Buffer.from(event.body, 'base64');
+
+                // Set the parameters
+                const params = {
+                    Bucket: "editarrr-screenshots",
+                    Key: event.pathParameters.filename,
+                    Body: imageBuffer,
+                    ACL: "public-read",
+                };
+
+                const results = await s3Client.send(new PutObjectCommand(params));
+
+                const message = "Successfully created " +
+                    params.Key +
+                    " and uploaded it to " +
+                    params.Bucket +
+                    "/" +
+                    params.Key;
+                responseBody = {
+                    "message": message
+                }
+                break;
+
+            case "POST /levels/{id}/scores":
+                requestJSON = JSON.parse(event.body);
+
+                // TODO Check that level exists.
+
+                var score = requestJSON.score;
+                if (!score) throw new BadRequestException(`'score' must be provided in the request.`);
+                var scoreLevelName = requestJSON.code;
+                if (!scoreLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
+                var scoreCreatorId = requestJSON.creator;
+                if (!scoreCreatorId) throw new BadRequestException(`'creator' must be provided in the request.`);
+                var scoreCreatorName = requestJSON.creatorName;
+                if (!scoreCreatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
+
+                var generatedScoreId = uuidv4();
+                var currentTimestamp = Date.now();
+
+                await dynamo.send(
+                    new PutCommand({
+                        TableName: tableNameScore,
+                        Item: {
+                            pk: `LEVEL#${event.pathParameters.id}`,
+                            sk: `SCORE#${generatedScoreId}`,
+                            score: score,
+                            scoreLevelName: scoreLevelName,
+                            scoreCreatorId: scoreCreatorId,
+                            scoreCreatorName: scoreCreatorName,
+                            scoreSubmittedAt: currentTimestamp,
+                        },
+                    })
+                );
+
+                responseBody = {
+                    "message": `Success! Created score for: ${scoreLevelName}`,
+                    "id": generatedScoreId
+                }
+                break;
+            case "GET /levels/{id}/scores":
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var queryResponse = await dynamo.send(
+                    new QueryCommand({
+                        TableName: tableNameScore,
+                        IndexName: "scoreLevelName-score-index",
+                        Select: "ALL_PROJECTED_ATTRIBUTES",
+                        Limit: 10,
+                        ScanIndexForward: false,
+                        KeyConditionExpression: "pk = :levelId",
+                        ExpressionAttributeValues: {
+                            ":levelId": "LEVEL#" + event.pathParameters.id
+                        }
+                    })
+                );
+
+                // TODO Validation of response
+
+                var dbScores = queryResponse.Items;
+
+                var responseScores = [];
+                for (let i = 0; i < dbScores.length; i++) {
+                    var dbScore = dbScores[i];
+
+                    // TODO Validation
+
+                    var id = extractLevelId(dbScore.sk);
+                    var levelId = extractLevelId(dbScore.pk);
+
+                    responseScores.push({
+                        "scoreId": id,
+                        "levelId": levelId,
+                        "score": dbScore.score,
+                        "code": dbScore.scoreLevelName,
+                        "creator": {
+                            "id": dbScore.scoreCreatorId,
+                            "name": dbScore.scoreCreatorName
+                        },
+                        "submittedAt": dbScore.scoreSubmittedAt,
+                    });
+                }
+
+                responseBody = {
+                    "scores": responseScores
+                }
+                break;
+
             default:
                 throw new Error(`Unsupported route: "${event.requestContext.resourceId}"`);
         }
     } catch (err) {
         if (err instanceof BadRequestException) {
             statusCode = 400;
-        // TODO 404 errors
+            // TODO 404 errors
         } else {
             statusCode = 500;
         }

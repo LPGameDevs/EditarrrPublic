@@ -5,36 +5,50 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Hazard : MonoBehaviour
 {
-	[SerializeField] int _damage;
-	[SerializeField, Range(0.05f, 0.5f)] float _hitStopDuration;
-	[SerializeField, Range(0.2f, 3f)] float _knockbackDuration;
-	[SerializeField, Range(0f, 5f)] float _stunDuration;
 
-    [Header("Knockback Path")]
-    [field: Info("For bursts of movement, use high initial values (5-10 and up) that curve downward in the desired shape.\n" +
-			     "In many cases, you will want the x and y curves to be similar."), SerializeField] AnimationCurve _knockbackCurveX;
-	[SerializeField] AnimationCurve _knockbackCurveY;
+	[SerializeField] int _damage;
+	/// <summary>
+	/// The Force an entity should be kicked away with. Usually 25 Is good enough for a decent 'kick'.
+	/// </summary>
+	[field: SerializeField] private float KnockbackForce { get; set; }
+	/// <summary>
+	/// Additional Invincibility Time
+	/// </summary>
+	[field: SerializeField] private float DamageCooldown { get; set; }
+	/// <summary>
+	/// The Duration the Player can not directly control the character
+	/// </summary>
+	[field: SerializeField] private float StunDuration { get; set; }
+
+    [field: SerializeField] private Transform ForceOrigin { get; set; }
 
 	private void OnTriggerStay2D(Collider2D other)
-    {
-		KnockBackPlayer(other);
-    }
+	{
+		Vector3 forceDirection = (this.transform.position - this.ForceOrigin.position).normalized;
+
+		this.KnockBackPlayer(other.gameObject, Vector3.zero, forceDirection);
+	}
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-		KnockBackPlayer(collision.collider);
+		Vector3 forceDirection = (this.transform.position - this.ForceOrigin.position).normalized;
+
+		this.KnockBackPlayer(collision.gameObject, Vector3.zero, forceDirection);
 	}
 
-	public void KnockBackPlayer(Collider2D other)
+	public void KnockBackPlayer(GameObject other, Vector3 point, Vector3 normal)
 	{
-		HealthSystem healthSystem;
-		PlayerForceReceiver forceReceiver;
-		if (!other.TryGetComponent<HealthSystem>(out healthSystem) || healthSystem.IsInvincible())
+		if (!other.TryGetComponent<HealthSystem>(out HealthSystem healthSystem) || healthSystem.IsInvincible())
 			return;
-		if (!other.TryGetComponent<PlayerForceReceiver>(out forceReceiver))
+		if (!other.TryGetComponent<PlayerForceReceiver>(out PlayerForceReceiver forceReceiver))
 			return;
 
-		healthSystem.TakeDamage(_damage, _hitStopDuration + _knockbackDuration + _stunDuration);
-		forceReceiver.ReceiveImpulse(_hitStopDuration, _knockbackDuration, _knockbackCurveX, _knockbackCurveY);
-	}
+		healthSystem.TakeDamage(_damage, this.StunDuration, this.DamageCooldown);
+        forceReceiver.ReceiveImpulse(this.KnockbackForce, normal);
+    }
+
+    private void OnDrawGizmos()
+    {
+		Gizmos.DrawSphere(this.transform.position, .1f);
+    }
 }

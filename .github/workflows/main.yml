@@ -2,11 +2,18 @@ name: GameCI Template 🎮
 
 on:
   push:
+    branches:
+      - main
     tags:
-      - v*
+      - '*' # Push events to all tags
+  workflow_dispatch:
+
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  ITCH_USERNAME: yanniboi
+  ITCH_GAME_ID: editarrr-2
+  STEAM_APP_ID: 2609410
 
 jobs:
   buildWebGL:
@@ -16,23 +23,10 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-      - name: Restore LFS cache
-        uses: actions/cache@v2
-        id: lfs-cache
+        uses: actions/checkout@v3
         with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
+          fetch-depth: 0
+          lfs: true
 
       - name: Restore Library cache
         uses: actions/cache@v2
@@ -47,10 +41,48 @@ jobs:
         with:
           targetPlatform: WebGL
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-WebGL
           path: build/WebGL
+          retention-days: 1
+
+  buildForAllSupportedPlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneLinux64
+          - StandaloneWindows64
+          - StandaloneOSX
+    outputs:
+      buildVersion: ${{ steps.build.outputs.buildVersion }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          lfs: true
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key:
+            Library-build-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-build-${{ matrix.targetPlatform }}-
+            Library-build-
+            Library-
+      - name: Build game for ${{ matrix.targetPlatform }}
+        uses: game-ci/unity-builder@v3
+        id: build
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          versioning: Semantic
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
           retention-days: 1
 
   deployPages:
@@ -61,7 +93,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-WebGL
           path: build
@@ -71,3 +103,65 @@ jobs:
         with:
           branch: gh-pages
           folder: build/WebGL
+
+  deployItch:
+    needs: [buildWebGL, buildForAllSupportedPlatforms]
+    name: Deploy to Itch.io 🚀
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        channel:
+          - StandaloneOSX
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - WebGL
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-${{ matrix.channel }}
+          path: build/${{ matrix.channel }}
+      - uses: KikimoraGames/itch-publish@v0.0.3
+        with:
+          butlerApiKey: ${{secrets.BUTLER_API_KEY}}
+          gameData: ./build/${{ matrix.channel }}
+          itchUsername: ${{env.ITCH_USERNAME}}
+          itchGameId: ${{ env.ITCH_GAME_ID }}
+          buildChannel: ${{ matrix.channel }}
+          buildNumber: ${{ needs.version.outputs.version_hash }}
+
+  deployToSteam:
+    needs: [buildForAllSupportedPlatforms]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Download StandaloneWindows64 Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-StandaloneWindows64
+          path: build/StandaloneWindows64
+      - name: Download StandaloneLinux64 Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-StandaloneLinux64
+          path: build/StandaloneLinux64
+      - name: Download StandaloneOSX Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-StandaloneOSX
+          path: build/StandaloneOSX
+      - uses: game-ci/steam-deploy@v3
+        with:
+          username: ${{ secrets.STEAM_BUILD_USERNAME }}
+          configVdf: ${{ secrets.STEAM_CONFIG_VDF}}
+          appId: ${{ env.STEAM_APP_ID }}
+          buildDescription: v${{ needs.buildForAllSupportedPlatforms.outputs.buildVersion }}
+          rootPath: build
+          firstDepotIdOverride: 2609412 # We are skipping depot 1 as it is shared between all platforms
+          depot1Path: StandaloneWindows64
+          depot2Path: StandaloneLinux64
+          depot3Path: StandaloneOSX
+          releaseBranch: alpha

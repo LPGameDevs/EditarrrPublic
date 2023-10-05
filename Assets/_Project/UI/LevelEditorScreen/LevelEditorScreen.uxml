@@ -17,6 +17,9 @@
                     <ui:Button display-tooltip-when-elided="true" name="Save" focusable="false" class="button button-blank button-square-medium">
                         <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Assets/_Project/Visuals/Editor/Save.png?fileID=21300000&amp;guid=a1be2bb4bc4add8468e1614566e393af&amp;type=3#Save&apos;); width: 64px; height: 64px; -unity-background-scale-mode: scale-to-fit;" />
                     </ui:Button>
+                    <ui:Button display-tooltip-when-elided="true" name="Close" focusable="false" class="button button-blank button-square-medium">
+                        <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Packages/com.unity.collab-proxy/Editor/PlasticSCM/Assets/Images/icondeletedremote@2x.png?fileID=21300000&amp;guid=70e3ce8ad01f39248a3ea97a35bcf238&amp;type=3#icondeletedremote@2x&apos;); width: 64px; height: 64px; -unity-background-scale-mode: scale-to-fit;" />
+                    </ui:Button>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="Row" style="flex-grow: 1;" />

@@ -15,11 +15,13 @@ namespace Editarrr.UI.LevelEditor
             [field: SerializeField, Header("Names")] public string ContainerName { get; private set; } = "SaveAndPlay";
             [field: SerializeField] public string PlayButtonName { get; private set; } = "Play";
             [field: SerializeField] public string SaveButtonName { get; private set; } = "Save";
+            [field: SerializeField] public string CloseButtonName { get; private set; } = "Save";
 
 
             private VisualElement ContainerElement { get; set; }
             private Button PlayButtonElement { get; set; }
             private Button SaveButtonElement { get; set; }
+            private Button CloseButtonElement { get; set; }
 
 
             public override void Initialize(UIElement root, VisualElement visualElement)
@@ -34,8 +36,14 @@ namespace Editarrr.UI.LevelEditor
                 this.SaveButtonElement.RegisterCallback<PointerEnterEvent>(LevelEditorScreen.PointerEnter);
                 this.SaveButtonElement.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
 
+                this.CloseButtonElement = this.ContainerElement.Q<Button>(this.CloseButtonName);
+                this.CloseButtonElement.RegisterCallback<PointerEnterEvent>(LevelEditorScreen.PointerEnter);
+                this.CloseButtonElement.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
+
+
                 this.PlayButtonElement.clicked += this.PlayButtonElement_Clicked;
                 this.SaveButtonElement.clicked += this.SaveButtonElement_Clicked;
+                this.CloseButtonElement.clicked += this.CloseButtonElement_Clicked;
             }
 
             private void PlayButtonElement_Clicked()
@@ -47,6 +55,11 @@ namespace Editarrr.UI.LevelEditor
             private void SaveButtonElement_Clicked()
             {
                 this.EditorLevelManager.SaveLevelState();
+                SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
+            }
+
+            private void CloseButtonElement_Clicked()
+            {
                 SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
             }
         }

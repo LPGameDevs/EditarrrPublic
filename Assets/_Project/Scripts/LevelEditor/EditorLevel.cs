@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Editarrr.Level;
 using LevelEditor;
 using Singletons;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace CorgiExtension
 
         public Text Title;
         public Text Creator;
+        public Text RemoteId;
         public RawImage ScreenshotImage;
         public Transform EditButton;
         public Transform UploadButton;
@@ -101,7 +103,16 @@ namespace CorgiExtension
             Creator.text = creator.ToUpper();
         }
 
-        public void SetScreenshot(string path)
+        public void SetRemoteId(string remoteId)
+        {
+            if (RemoteId == null)
+            {
+                return;
+            }
+            RemoteId.text = remoteId;
+        }
+
+        public virtual void SetScreenshot(string path, bool retry = false)
         {
             if (ScreenshotImage && File.Exists(path))
             {

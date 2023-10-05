@@ -12,13 +12,13 @@ namespace Editarrr.Level
         [field: SerializeField,
             Info("The LocalLevelStorageManager class is a C# subclass that manages the storage of levels locally on a device. It has properties that can be serialized for debug purposes, and methods for saving and loading levels in the device's persistent storage. It saves level data as JSON files, creates a directory for each level, and saves level screenshots in PNG format. If a level directory or level JSON file is not found, the class returns null."),
             Header("Path")]
-        private string LocalDirectoryName { get; set; } = "levels";
+        private static string LocalDirectoryName { get; set; } = "levels";
 
 
         [field: SerializeField, Header("Debug")] private bool UseDebugCode { get; set; }
         [field: SerializeField] private string DebugCode { get; set; } = "00001";
 
-        public string LocalRootDirectory => Application.persistentDataPath + $"/{this.LocalDirectoryName}/";
+        public static string LocalRootDirectory => Application.persistentDataPath + $"/{LocalDirectoryName}/";
         public string DistroRootDirectory => Application.streamingAssetsPath + "/levels/";
 
 
@@ -32,7 +32,7 @@ namespace Editarrr.Level
 
         public override string GetLevelPath(string code)
         {
-            return this.LocalRootDirectory + $"{code}/";
+            return LocalRootDirectory + $"{code}/";
         }
 
         private string GetCreateLevelPath(string code)
@@ -175,7 +175,7 @@ namespace Editarrr.Level
                 string data = File.ReadAllText(levelFilePath);
                 LevelSave levelSave = JsonUtility.FromJson<LevelSave>(data);
 
-                LevelStub stub = new LevelStub(levelSave.Code, levelSave.Creator, levelSave.Published);
+                LevelStub stub = new LevelStub(levelSave.Code, levelSave.Creator, levelSave.CreatorName, levelSave.RemoteId ?? "", levelSave.Published);
 
                 levelsStubs.Add(stub);
             }

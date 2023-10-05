@@ -85,7 +85,7 @@ namespace Editarrr.Level
                     Vector3Int position = new Vector3Int(x, y);
 
                     PlaceTile(tile, position);
-                    InstantiateTile(tile, position);
+                    InstantiateTile(tile, position, tileState.Rotation);
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace Editarrr.Level
             return tileData.Tile;
         }
 
-        private void InstantiateTile(TileData tileData, Vector3Int position)
+        private void InstantiateTile(TileData tileData, Vector3Int position, Rotation rotation)
         {
             if (!tileData.GameObject)
             {
@@ -104,7 +104,7 @@ namespace Editarrr.Level
             }
 
             Instantiate(tileData.GameObject, position + new Vector3(0.5f, 0.5f, 0),
-                Quaternion.identity);
+                Quaternion.Euler(0, 0, rotation.ToDegree()));
         }
 
         private void PlaceTile(TileData tileData, Vector3Int position)
@@ -120,9 +120,38 @@ namespace Editarrr.Level
         private void SetTile(Vector3Int position, TileBase tile)
         {
             _walls.SetTile(position, tile);
+
+
+            //if (this.ActiveEditorTileData.Tile.CanRotate)
+            //    rotate = this.EditorTileSelectionManager.Rotation.ToDegree();
         }
 
         #endregion
 
+
+        private void OnScoreSubmitRequested(string code, float time)
+        {
+            LevelManager.LevelStorage.LoadLevelData(code, ScoreLevelLoaded);
+
+            void ScoreLevelLoaded(LevelSave levelSave)
+            {
+                LevelManager.SubmitScore(time, levelSave, ScoreSubmitted);
+
+                void ScoreSubmitted(string code, string remoteid, bool issteam)
+                {
+                    // @todo do we need this?
+                }
+            }
+        }
+
+        public override void DoOnEnable()
+        {
+            WinMenu.OnScoreSubmit += OnScoreSubmitRequested;
+        }
+
+        public override void DoOnDisable()
+        {
+            WinMenu.OnScoreSubmit -= OnScoreSubmitRequested;
+        }
     }
 }

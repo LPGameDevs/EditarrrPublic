@@ -11166,6 +11166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fe251acf7697824d802be76b3e01dcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Duration>k__BackingField: 0.2
+  <ForceMultiplier>k__BackingField: 1
 --- !u!1 &5497546980257842330
 GameObject:
   m_ObjectHideFlags: 0

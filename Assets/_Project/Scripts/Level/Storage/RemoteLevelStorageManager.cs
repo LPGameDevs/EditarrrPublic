@@ -27,14 +27,17 @@ namespace Level.Storage
             _providers.Clear();
 
             IRemoteLevelStorageProvider provider;
-            if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
-            {
-                provider = new RemoteLevelStorageProviderSteam();
-            }
-            else if (Providers.Contains(RemoteLevelStorageProviderType.Aws))
+            if (Providers.Contains(RemoteLevelStorageProviderType.Aws))
             {
                 provider = new RemoteLevelStorageProviderAws();
             }
+            // @todo Change this so multiple providers can be used at once.
+#if !UNITY_WEBGL
+            else if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
+            {
+                provider = new RemoteLevelStorageProviderSteam();
+            }
+#endif
             else
             {
                 return;
@@ -65,6 +68,14 @@ namespace Level.Storage
             }
         }
 
+        public void DownloadScreenshot(string code, RemoteLevelStorage_LevelScreenshotDownloadedCallback callback)
+        {
+            foreach (var provider in _providers)
+            {
+                provider.DownloadScreenshot(code, callback);
+            }
+        }
+
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
         {
             foreach (var provider in _providers)
@@ -73,7 +84,7 @@ namespace Level.Storage
             }
         }
 
-        public void SubmitScore()
+        public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback)
         {
             foreach (var provider in _providers)
             {
@@ -82,7 +93,20 @@ namespace Level.Storage
                     continue;
                 }
 
-                provider.SubmitScore();
+                provider.SubmitScore(score, levelSave, callback);
+            }
+        }
+
+        public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
+        {
+            foreach (var provider in _providers)
+            {
+                if (!provider.SupportsLeaderboards())
+                {
+                    continue;
+                }
+
+                provider.GetScoresForLevel(code, callback);
             }
         }
     }

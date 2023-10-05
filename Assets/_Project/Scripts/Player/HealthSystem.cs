@@ -20,7 +20,7 @@ namespace Player
             _hitPoints = Mathf.Min(_maxHitPoints, _startingHitPoints);
         }
 
-        public class OnHealthChangedArgs : OnValueChangedArgs<float> { public float disableDuration; };
+        public class OnHealthChangedArgs : OnValueChangedArgs<float> { public float stunDuration; };
 
         public static event EventHandler OnDeath;
         public static event EventHandler<OnValueChangedArgs<float>> OnInvincibleStarted;
@@ -39,31 +39,39 @@ namespace Player
             }
         }
 
-        public void TakeDamage(int incomingDamage, float incomingDisableDuration)
+        public void TakeDamage(int damage, float stunDuration, float damageCooldown)
         {
-            if (IsInvincible() || _hitPoints <= 0)
+            if (IsInvincible() || _hitPoints <= 0 || damage <= 0)
             {
                 return;
             }
 
             int prevHitPoints = _hitPoints;
-            _hitPoints -= incomingDamage;
+            _hitPoints -= damage;
             _hitPoints = Mathf.Max(_hitPoints, 0);
 
-            OnHitPointsChanged?.Invoke(this, new OnHealthChangedArgs { previousValue = prevHitPoints, value = _hitPoints, disableDuration = incomingDisableDuration});
+            OnHitPointsChanged?.Invoke(this,
+                new OnHealthChangedArgs
+                {
+                    previousValue = prevHitPoints,
+                    value = _hitPoints,
+                    stunDuration = stunDuration
+                });
 
             if (_hitPoints < 1)
             {
                 Die();
             }
+
             if (_hasDamageCooldown)
             {
-                _damageCooldownTimeRemaining = 2 * incomingDisableDuration + _baseDamageCooldown; //Remains shortly after regaining character control, based on time spent disabled
+                _damageCooldownTimeRemaining = damageCooldown + _baseDamageCooldown; //Remains shortly after regaining character control, based on time spent disabled
                 OnValueChangedArgs<float> invincibleArgs = new OnValueChangedArgs<float>();
                 invincibleArgs.value = _damageCooldownTimeRemaining;
                 OnInvincibleStarted?.Invoke(this, invincibleArgs);
             }
         }
+
 
         public void SetHitPoints(int amount)
         {

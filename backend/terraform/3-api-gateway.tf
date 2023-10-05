@@ -78,6 +78,30 @@ resource "aws_apigatewayv2_route" "put_level" {
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 
+# Create an api route for uploading a screenshot to s3.
+resource "aws_apigatewayv2_route" "put_screenshot" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "POST /screenshot/{filename}"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
+# Create an api route for fetching all scores for a level.
+resource "aws_apigatewayv2_route" "get_scores" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "GET /levels/{id}/scores"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
+# Create an api route for adding a score for a level.
+resource "aws_apigatewayv2_route" "post_score" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "POST /levels/{id}/scores"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
 resource "aws_lambda_permission" "api_gateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
