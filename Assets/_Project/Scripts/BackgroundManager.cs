@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundManager : MonoBehaviour
@@ -6,13 +5,9 @@ public class BackgroundManager : MonoBehaviour
     public Transform StaticBackground;
     public Transform BottomBackground;
     public Transform TopBackground;
-
-    [SerializeField] List<BackgroundElement> elements;
-    [SerializeField] Camera Camera;
-    [SerializeField] float TopMin;
-    [SerializeField] float BottomMax;
-
-    private Vector2 _currentCameraPosition = Vector2.zero, _previousCameraPosition = Vector2.zero;
+    public Camera Camera;
+    public float TopMin;
+    public float BottomMax;
 
     /**
      * This function moves different background layers to match the camera's
@@ -20,23 +15,17 @@ public class BackgroundManager : MonoBehaviour
      */
     private void Update()
     {
-        _previousCameraPosition = _currentCameraPosition;
-        _currentCameraPosition = Camera.transform.position;
-
-        MoveBackgroundElements();
+        Vector3 cameraPosition = Camera.transform.position;
+        Vector3 currentStaticPosition = StaticBackground.position;
+        StaticBackground.position = new Vector3(cameraPosition.x, currentStaticPosition.y, currentStaticPosition.z);
 
         Vector3 currentBottomPosition = BottomBackground.position;
-        float newBottomY = Mathf.Min(_currentCameraPosition.y, BottomMax);
-        BottomBackground.position = new Vector3(currentBottomPosition.x, newBottomY, currentBottomPosition.z);
-    }
+        float newBottomY = Mathf.Min(cameraPosition.y, BottomMax);
+        BottomBackground.position = new Vector3(currentBottomPosition.x, newBottomY, currentStaticPosition.z);
 
-    private void MoveBackgroundElements()
-    {
-        foreach(BackgroundElement element in elements)
-        {
-            Vector2 delta = _currentCameraPosition - _previousCameraPosition;
-            element.transform.position += new Vector3(delta.x * element.ScrollingFactor.x, delta.y * element.ScrollingFactor.y);
-        }
+        Vector3 currentTopPosition = TopBackground.position;
+        float newTopY = Mathf.Max(cameraPosition.y, TopMin);
+        TopBackground.position = new Vector3(currentTopPosition.x, newTopY, currentStaticPosition.z);
+
     }
 }
-

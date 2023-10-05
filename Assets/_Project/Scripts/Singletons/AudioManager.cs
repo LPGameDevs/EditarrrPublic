@@ -71,7 +71,7 @@ namespace Editarrr.Audio
             {
                 float t = 1 - ((timeLimit - Time.time) / fadeLength);
                 source.volume = Mathf.Lerp(startingVolume, targetVolume, t);
-                yield return new WaitForSecondsRealtime(0f);
+                yield return null;
             }
 
             source.volume = targetVolume;

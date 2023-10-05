@@ -13,7 +13,6 @@ public class BindCameraToPlayer : MonoBehaviour
             Transform player = GameObject.FindGameObjectWithTag("Player")?.transform;
             if (player != null)
             {
-                Camera.main.transform.position = player.position;
                 _playerFound = true;
                 // set the parent of this (the camera follow target object) as a child of the player object
                 Transform cameraFollowTarget = transform.parent;

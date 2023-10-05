@@ -183,13 +183,14 @@ namespace Editarrr.LevelEditor
             if (tileData == null)
             {
                 this.Unset(x, y);
+
                 return;
             }
 
             EditorTileState current = this.Tiles[x, y];
             TileType tileType = tileData.Tile.Type;
 
-            if (current?.TileData.Tile.Type == tileData.Tile.Type)
+            if (current?.TileData.Tile == tileData.Tile)
                 return;
 
             bool updateLocations = !tileData.IsInfinite;
@@ -228,7 +229,7 @@ namespace Editarrr.LevelEditor
                 }
             }
 
-            this.Unset(x, y);
+            //this.Unset(x, y);
 
             if (tileData.Tile.CanRotate)
             {
