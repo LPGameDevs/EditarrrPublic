@@ -44,11 +44,7 @@ public class LevelBrowserManager : ManagerComponent
 
     private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels)
     {
-        foreach (var level in levels)
-        {
-            // string screenshotPath = LevelManager.GetScreenshotPath(level.Code);
-            _levelLoader.AddLevelPrefabFromData(level);
-        }
+        _levelLoader.SetLevels(levels);
     }
 
     private void OnLevelDownloadRequested(string code)
@@ -58,6 +54,16 @@ public class LevelBrowserManager : ManagerComponent
 
         // Update display - this is only necessary with long downloads.
         // DestroyAndRefreshLevels();
+    }
+
+    private void OnLevelScreenshotDownloadRequested(string code)
+    {
+        LevelManager.DownloadScreenshot(code, OnLevelScreenshotDownloadComplete);
+
+        void OnLevelScreenshotDownloadComplete()
+        {
+            _levelLoader.ReloadScreenshot(code);
+        }
     }
 
     private void OnLevelDownloadStarted(LevelStub level)
@@ -96,6 +102,7 @@ public class LevelBrowserManager : ManagerComponent
     public override void DoOnEnable()
     {
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
+        LevelBrowserLevel.OnBrowserLevelDownloadScreenshot += OnLevelScreenshotDownloadRequested;
 #if !UNITY_WEBGL
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete += OnSteamLevelDownloadComplete;
 #endif
@@ -106,6 +113,7 @@ public class LevelBrowserManager : ManagerComponent
     public override void DoOnDisable()
     {
         LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
+        LevelBrowserLevel.OnBrowserLevelDownloadScreenshot -= OnLevelScreenshotDownloadRequested;
 #if !UNITY_WEBGL
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete -= OnSteamLevelDownloadComplete;
 #endif

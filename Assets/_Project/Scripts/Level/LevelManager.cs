@@ -243,6 +243,16 @@ namespace Editarrr.Level
             RemoteLevelStorage.Download(code, callback);
         }
 
+        public void DownloadScreenshot(string code, RemoteLevelStorage_LevelScreenshotDownloadedCallback callback)
+        {
+            if (!RemoteStorageEnabled)
+            {
+                Debug.LogError("Remote operations are not enabled for this LevelManager.");
+                return;
+            }
+            RemoteLevelStorage.DownloadScreenshot(code, callback);
+        }
+
         public void SaveDownloadedLevel(LevelSave levelSave)
         {
             this.Save(levelSave, false);

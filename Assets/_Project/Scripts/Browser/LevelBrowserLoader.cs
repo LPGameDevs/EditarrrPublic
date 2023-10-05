@@ -11,7 +11,7 @@ public class LevelBrowserLoader : MonoBehaviour
     private LevelManager _levelManager;
 
     [SerializeField] private LevelBrowserLevel _levelPrefab;
-    private List<Transform> _loadedLevels = new List<Transform>();
+    private List<LevelBrowserLevel> _loadedLevels = new List<LevelBrowserLevel>();
 
     private void Awake()
     {
@@ -30,7 +30,7 @@ public class LevelBrowserLoader : MonoBehaviour
         {
             Destroy(level.gameObject);
         }
-        _loadedLevels = new List<Transform>();
+        _loadedLevels = new List<LevelBrowserLevel>();
     }
 
     public void AddLevelPrefabFromData(LevelStub levelStub)
@@ -44,6 +44,10 @@ public class LevelBrowserLoader : MonoBehaviour
         level.SetTitle(levelStub.Code);
         level.SetCreator(levelStub.CreatorName);
         level.SetRemoteId(levelStub.RemoteId);
+
+        string screenshotPath = _levelManager.GetScreenshotPath(levelStub.Code);
+        level.SetScreenshot(screenshotPath, true);
+
         // level.SetScreenshot(screenshotPath);
 
         if (this._levelManager.LevelExists(levelStub.Code))
@@ -57,11 +61,39 @@ public class LevelBrowserLoader : MonoBehaviour
             level.HideEditorTools();
         }
 
-        _loadedLevels.Add(level.transform);
+        _loadedLevels.Add(level);
     }
 
     public void GoToSelection()
     {
         SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
+    }
+
+    public void SetLevels(LevelStub[] levels)
+    {
+        foreach (var level in levels)
+        {
+            AddLevelPrefabFromData(level);
+        }
+        // Set transform height to fit all levels.
+        RectTransform currentTransform = GetComponent<RectTransform>();
+        currentTransform.sizeDelta = new Vector2(currentTransform.sizeDelta.x, _loadedLevels.Count * _levelPrefab.GetComponent<RectTransform>().rect.height);
+
+    }
+
+    public void ReloadScreenshot(string code)
+    {
+        foreach (var level in _loadedLevels)
+        {
+            if (level.Title.text != code)
+            {
+                continue;
+            }
+
+            string screenshotPath = _levelManager.GetScreenshotPath(code);
+            level.SetScreenshot(screenshotPath);
+            break;
+        }
+
     }
 }

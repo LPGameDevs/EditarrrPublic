@@ -68,6 +68,14 @@ namespace Level.Storage
             }
         }
 
+        public void DownloadScreenshot(string code, RemoteLevelStorage_LevelScreenshotDownloadedCallback callback)
+        {
+            foreach (var provider in _providers)
+            {
+                provider.DownloadScreenshot(code, callback);
+            }
+        }
+
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
         {
             foreach (var provider in _providers)

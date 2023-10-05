@@ -106,6 +106,11 @@ namespace Level.Storage
             DownloadAsync(code, callback);
         }
 
+        public void DownloadScreenshot(string code, RemoteLevelStorage_LevelScreenshotDownloadedCallback callback)
+        {
+            throw new NotImplementedException();
+        }
+
         private async void DownloadAsync(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
             ulong ucode = Convert.ToUInt64(code);

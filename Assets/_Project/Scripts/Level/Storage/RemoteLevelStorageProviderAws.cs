@@ -106,7 +106,7 @@ namespace Level.Storage
                 save.SetPublished(res.status == "PUBLISHED");
                 callback?.Invoke(save);
 
-                this.DownloadScreenshot(res.name);
+                this.DoDownloadScreenshot(res.name);
 
                 // @todo return level data.
                 this.LogMessage(res.id, JsonUtility.ToJson(res, true));
@@ -115,6 +115,11 @@ namespace Level.Storage
                 callback?.Invoke(null);
                 this.LogMessage("Error", err.Message);
             });
+        }
+
+        public void DownloadScreenshot(string code, RemoteLevelStorage_LevelScreenshotDownloadedCallback callback)
+        {
+            this.DoDownloadScreenshot(code, callback);
         }
 
         private async void UploadScreenshot(string code)
@@ -142,7 +147,7 @@ namespace Level.Storage
             }
         }
 
-        private async void DownloadScreenshot(string code)
+        private async void DoDownloadScreenshot(string code, RemoteLevelStorage_LevelScreenshotDownloadedCallback callback = null)
         {
             // @todo Move the storage to the LocalLevelStorageManager.
             var url = $"{AwsScreenshotUrl}/{code}.png";
@@ -168,6 +173,7 @@ namespace Level.Storage
                     await File.WriteAllBytesAsync(fullPath, imageBytes);
 
                     Debug.Log("Image downloaded and saved to: " + fullPath);
+                    callback?.Invoke();
                 }
                 else
                 {

@@ -112,7 +112,7 @@ namespace CorgiExtension
             RemoteId.text = remoteId;
         }
 
-        public void SetScreenshot(string path)
+        public virtual void SetScreenshot(string path, bool retry = false)
         {
             if (ScreenshotImage && File.Exists(path))
             {

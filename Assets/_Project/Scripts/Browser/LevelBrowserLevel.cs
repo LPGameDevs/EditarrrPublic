@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using CorgiExtension;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ namespace Browser
 {
     public class LevelBrowserLevel : EditorLevel
     {
+        public static event Action<string> OnBrowserLevelDownloadScreenshot;
         public static event Action<string> OnBrowserLevelDownload;
 
         public Transform DownloadButton;
@@ -24,6 +26,20 @@ namespace Browser
         public void SetDownloaded()
         {
             DownloadButton.gameObject.SetActive(false);
+        }
+
+        public override void SetScreenshot(string path, bool retry = false)
+        {
+            if (!File.Exists(path))
+            {
+                if (retry)
+                {
+                    OnBrowserLevelDownloadScreenshot?.Invoke(Title.text);
+                }
+                return;
+            }
+
+            base.SetScreenshot(path, retry);
         }
     }
 }
