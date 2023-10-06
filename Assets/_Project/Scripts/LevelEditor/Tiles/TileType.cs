@@ -13,7 +13,8 @@ namespace Editarrr.LevelEditor
         Sharcus = 6,
         Patrick = 7,
         Clawdia = 8,
-        SpikeDeath = 10
+        SpikeDeath = 10,
+        Key = 20
     }
     // DO NOT change the Int values! This will mess with unity assets
 }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0f3e631f2b700344bba75b4c00b7afe, type: 3}
-  m_Name: SpikesDeath
+  m_Name: Key
   m_EditorClassIdentifier: 
-  <GameObject>k__BackingField: {fileID: 1182490266025708483, guid: fa2aa5d09294312a1a40aa47e6e4c5d6, type: 3}
+  <GameObject>k__BackingField: {fileID: 9081930843395699032, guid: c2a413a2c00d31a28b921d2218e063d3, type: 3}
   <TileMapTileBase>k__BackingField: {fileID: 0}
-  <Type>k__BackingField: 10
-  <CanRotate>k__BackingField: 1
+  <Type>k__BackingField: 20
+  <CanRotate>k__BackingField: 0
