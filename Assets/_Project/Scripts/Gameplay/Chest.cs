@@ -20,6 +20,23 @@ namespace Gameplay
             _animator = GetComponent<Animator>();
         }
 
+        private void Start()
+        {
+            // Unlock the treasure chest if there are no keys.
+            FindKeys();
+        }
+
+        private void FindKeys()
+        {
+            var key = GameObject.FindWithTag("Key");
+            if (key)
+            {
+                // If a key was found, leave the chest locked.
+                return;
+            }
+            SetOpen();
+        }
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (_isWon || !_isOpen)
