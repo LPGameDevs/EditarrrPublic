@@ -20,7 +20,6 @@ namespace Gameplay.GUI
 
         private string _levelCode;
         private LevelState _levelState;
-
         bool _awaitingInput;
 
         private bool _isPaused = false;

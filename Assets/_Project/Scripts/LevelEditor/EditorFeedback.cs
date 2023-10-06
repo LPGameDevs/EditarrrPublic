@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 namespace Editarrr.LevelEditor
 {
@@ -18,11 +19,13 @@ namespace Editarrr.LevelEditor
         [SerializeField] AudioClip _tileSelect, _tilePlace, _tileRemove;
         [SerializeField] float _pitchMin, _pitchMax;
 
+        [SerializeField] MMFeedbacks _selectFeedback, _placeFeedback, _removeFeedback;
+
         float _streakTimer = 0f, _bufferTimer = 0f;
         EditorAction _lastAction;
         bool _isStreaking;
 
-        const float streakPitchIncrement = 0.01f, _streakInterval = 1f, _bufferDuration = 0.05f;
+        const float streakPitchIncrement = 0.015f, _streakInterval = 1f, _bufferDuration = 0.04f;
 
         private void Update()
         {
@@ -49,16 +52,19 @@ namespace Editarrr.LevelEditor
         private void OnTileSelected()
         {
             PlayFeedback(_tileSelect, _pitchMin, EditorAction.SelectedTile);
+            _selectFeedback.PlayFeedbacks();
         }
 
         private void OnTilePlaced(EditorTileData data, TileType tileType, int inLevel)
         {
             PlayFeedback(_tilePlace, _audioSource.pitch + streakPitchIncrement, EditorAction.PlacedTile);
+            _placeFeedback.PlayFeedbacks();
         }
 
         private void OnTileRemoved(EditorTileData data, TileType tileType, int inLevel)
         {
             PlayFeedback(_tileRemove, _audioSource.pitch + streakPitchIncrement, EditorAction.RemovedTile);
+            _removeFeedback.PlayFeedbacks();
         }
 
         private void PlayFeedback(AudioClip clip, float newPitch, EditorAction newAction)
