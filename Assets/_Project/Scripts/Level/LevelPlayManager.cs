@@ -3,6 +3,7 @@ using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Gameplay.GUI;
+using LevelEditor;
 using Systems;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -27,10 +28,15 @@ namespace Editarrr.Level
 
         private Tilemap _walls, _damage;
         private GameplayGuiManager _gameplayGuiManager;
+        private GhostRecorder _recorder;
 
         public override void DoAwake()
         {
             LevelManager.DoAwake();
+
+            string code = this.Exchange.CodeToLoad;
+            _gameplayGuiManager.SetLevelCode(code);
+            _recorder.SetLevelCode(code);
         }
 
         public void SetTilemapWalls(Tilemap walls)
@@ -48,13 +54,17 @@ namespace Editarrr.Level
             _gameplayGuiManager = gameplayGuiManager;
         }
 
+        public void SetRecorder(GhostRecorder ghostRecorder)
+        {
+            _recorder = ghostRecorder;
+            _recorder.SetLevelManager(this.LevelManager);
+        }
 
         #endregion
 
         public override void DoStart()
         {
-            string code = Exchange.CodeToLoad;
-            _gameplayGuiManager.SetLevelCode(code);
+            string code = this.Exchange.CodeToLoad;
 
             LevelManager.Load(code, OnLevelLoaded);
         }

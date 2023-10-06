@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Editarrr.Level;
+using Gameplay;
 using UnityEngine;
 
 namespace LevelEditor
@@ -8,25 +10,39 @@ namespace LevelEditor
   public class GhostRecorder : MonoBehaviour
   {
     private string _ghostFile;
-    private GameObject[] _trackables = new GameObject[1];
-    private GameObject[] _ghostables = new GameObject[1];
+    private List<GameObject> _trackables = new List<GameObject>();
+    private List<GameObject> _ghostables = new List<GameObject>();
     private List<Vector3> _recordedTransforms = new List<Vector3>();
     private List<Vector3> _playbackTransforms = new List<Vector3>();
     private int _playbackHeadIndex;
     public bool IsPlayingBack = false;
 
+    private bool _playerFound;
+    private float _playerSeekDelay = 0.5f;
+    private float _playerSeekTimer = 0;
+
+    private LevelManager _levelManager;
+    private string _code;
+
+    public void SetLevelManager(LevelManager levelManager)
+    {
+      _levelManager = levelManager;
+    }
+
+    public void SetLevelCode(string code)
+    {
+      _code = code;
+    }
+
     protected virtual void Start()
     {
-      string code = PlayerPrefs.GetString("EditorCode");
 
       // check directory exists.
       if (!Directory.Exists(Application.persistentDataPath + "/ghosts"))
       {
         Directory.CreateDirectory(Application.persistentDataPath + "/ghosts");
       }
-      _ghostFile = Path.Combine(Application.persistentDataPath, "ghosts", code + ".json");
-      _trackables[0] = GameObject.Find("Player");
-      _ghostables[0] = GameObject.Find("Player");
+      _ghostFile = Path.Combine(Application.persistentDataPath, "ghosts", _code + ".json");
 
       if (IsPlayingBack)
       {
@@ -36,12 +52,23 @@ namespace LevelEditor
 
     protected virtual void Update()
     {
+      if (!_playerFound)
+      {
+        HandlePlayerSeek();
+        return;
+      }
+
+      if (_ghostables.Count == 0)
+      {
+        return;
+      }
+
       // UnityEngine.Camera main = UnityEngine.Camera.main;
       // main.transparencySortAxis = this.transform.up;
       // main.transparencySortMode = TransparencySortMode.CustomAxis;
       if (IsPlayingBack && _playbackTransforms.Count > 0)
       {
-        for (int index = 0; index < _ghostables.Length; ++index)
+        for (int index = 0; index < _ghostables.Count; ++index)
         {
           _ghostables[index].transform.position = _playbackTransforms[_playbackHeadIndex];
         }
@@ -50,20 +77,42 @@ namespace LevelEditor
 
     protected virtual void FixedUpdate()
     {
+      if (!_playerFound)
+      {
+        return;
+      }
+
       if (!IsPlayingBack)
       {
-        for (int index = 0; index < _trackables.Length; ++index)
+        for (int index = 0; index < _trackables.Count; ++index)
           _recordedTransforms.Add(_trackables[index].transform.position);
       }
       if (!IsPlayingBack || _playbackTransforms.Count <= 0)
         return;
-      for (int index = 0; index < _ghostables.Length; ++index)
+      for (int index = 0; index < _ghostables.Count; ++index)
       {
         _ghostables[index].transform.position = _playbackTransforms[_playbackHeadIndex];
       }
       if (_playbackHeadIndex >= _playbackTransforms.Count - 1)
         return;
       ++_playbackHeadIndex;
+    }
+
+    private void HandlePlayerSeek()
+    {
+      _playerSeekTimer += Time.deltaTime;
+      if (_playerSeekTimer < _playerSeekDelay)
+      {
+        return;
+      }
+
+      var player = GameObject.FindWithTag("Player");
+      if (player)
+      {
+        _playerFound = true;
+        _trackables.Add(player);
+        _ghostables.Add(player);
+      }
     }
 
     public void SaveGhostRun()
@@ -76,8 +125,10 @@ namespace LevelEditor
       _playbackHeadIndex = 0;
       _playbackTransforms = _recordedTransforms;
       if (string.IsNullOrEmpty(_ghostFile))
+      {
         return;
-      SaveGhostData(_ghostFile, _playbackTransforms);
+      }
+      SaveGhostData(_playbackTransforms);
     }
 
     public void OnResetGame()
@@ -87,7 +138,7 @@ namespace LevelEditor
       _playbackHeadIndex = 0;
       if (_ghostFile.Length > 0)
       {
-        LoadGhostData(_ghostFile, ref _playbackTransforms);
+        LoadGhostData(ref _playbackTransforms);
         IsPlayingBack = _playbackTransforms.Count > 0;
       }
       else
@@ -104,12 +155,10 @@ namespace LevelEditor
       _playbackHeadIndex = 0;
     }
 
-    private void SaveGhostData(string ghostFile, List<Vector3> data)
+    private void SaveGhostData(List<Vector3> data)
     {
       try
       {
-        Directory.CreateDirectory(Path.GetDirectoryName(ghostFile));
-
         GhostSave saveData = new GhostSave();
 
         for (int i = 0; i < data.Count; i++)
@@ -118,7 +167,7 @@ namespace LevelEditor
         }
 
         string dataString = JsonUtility.ToJson(saveData);
-        File.WriteAllText(ghostFile, dataString);
+        File.WriteAllText(_ghostFile, dataString);
       }
       catch (Exception ex)
       {
@@ -126,17 +175,17 @@ namespace LevelEditor
       }
     }
 
-    private void LoadGhostData(string ghostFile, ref List<Vector3> data)
+    private void LoadGhostData(ref List<Vector3> data)
     {
       try
       {
         data.Clear();
-        if (!File.Exists(ghostFile))
+        if (!File.Exists(_ghostFile))
         {
           return;
         }
 
-        string rawData = File.ReadAllText(ghostFile);
+        string rawData = File.ReadAllText(_ghostFile);
         GhostSave ghostData = JsonUtility.FromJson<GhostSave>(rawData);
 
         if (ghostData.positions.Count < 1)
@@ -157,12 +206,12 @@ namespace LevelEditor
 
     protected void OnEnable()
     {
-      LevelWin.OnLevelWin += SaveGhostRun;
+      Chest.OnChestOpened += SaveGhostRun;
     }
 
     protected void OnDisable()
     {
-      LevelWin.OnLevelWin -= SaveGhostRun;
+      Chest.OnChestOpened -= SaveGhostRun;
     }
 
     private struct TransformData

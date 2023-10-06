@@ -2231,7 +2231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16e3201b57bdf554586ba5f56805fa3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsPlayingBack: 0
+  IsPlayingBack: 1
 --- !u!1 &1100167515
 GameObject:
   m_ObjectHideFlags: 0
