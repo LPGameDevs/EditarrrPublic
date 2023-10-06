@@ -20,6 +20,18 @@
             }
           },
           {
+            "id": "45b77bd8ddaa415a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Systems.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
             "id": "876733ac8c2b5d96",
             "type": "leaf",
             "state": {
@@ -92,8 +104,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "32f52aadda0d81f2",
@@ -109,7 +120,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Excalidraw/Steam Integration 2023-09-20 09.11.11.excalidraw.md",
+                "file": "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -126,7 +137,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Excalidraw/Steam Integration 2023-09-20 09.11.11.excalidraw.md",
+                "file": "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -149,7 +160,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Excalidraw/Steam Integration 2023-09-20 09.11.11.excalidraw.md"
+                "file": "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md"
               }
             }
           },
@@ -181,13 +192,50 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "876733ac8c2b5d96",
+  "floating": {
+    "id": "9e35573624d5e91d",
+    "type": "floating",
+    "children": [
+      {
+        "id": "a429d44b3f43528b",
+        "type": "window",
+        "children": [
+          {
+            "id": "522bc75eafd223aa",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "29fc5fbdde080158",
+                "type": "leaf",
+                "state": {
+                  "type": "excalidraw",
+                  "state": {
+                    "file": "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "vertical",
+        "x": 3318,
+        "y": 463,
+        "width": 1024,
+        "height": 800,
+        "maximize": false,
+        "zoom": 0
+      }
+    ]
+  },
+  "active": "29fc5fbdde080158",
   "lastOpenFiles": [
+    "Systems.md",
+    "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md",
     "Steam Integration.md",
+    "Excalidraw/Steam Integration 2023-09-20 09.11.11.excalidraw.md",
     "Spotted Bugs.md",
     "ReferencedFiles/Pasted Image 20230921112548_265.png",
     "Untitled",
-    "Excalidraw/Steam Integration 2023-09-20 09.11.11.excalidraw.md",
     "ReferencedFiles",
     "Pasted Image 20230921133822_467.png",
     "ReferencedFiles/Pasted Image 20230921113537_299.png",
