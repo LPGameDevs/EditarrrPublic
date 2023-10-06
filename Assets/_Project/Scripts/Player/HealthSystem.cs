@@ -50,18 +50,22 @@ namespace Player
             _hitPoints -= damage;
             _hitPoints = Mathf.Max(_hitPoints, 0);
 
-            OnHitPointsChanged?.Invoke(this,
-                new OnHealthChangedArgs
-                {
-                    previousValue = prevHitPoints,
-                    value = _hitPoints,
-                    stunDuration = stunDuration
-                });
-
             if (_hitPoints < 1)
             {
                 Die();
             }
+            else
+            {
+                OnHitPointsChanged?.Invoke(this,
+                    new OnHealthChangedArgs
+                    {
+                        previousValue = prevHitPoints,
+                        value = _hitPoints,
+                        stunDuration = stunDuration
+                    });
+            }
+
+
 
             if (_hasDamageCooldown)
             {

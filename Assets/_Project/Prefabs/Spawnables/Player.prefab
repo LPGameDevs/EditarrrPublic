@@ -10942,7 +10942,7 @@ MonoBehaviour:
     RepeatForever: 0
     DelayBetweenRepeats: 1
   DebugActive: 0
-  Sfx: {fileID: 8300000, guid: 2ea5ff44c5c389c4e9016e918170b39a, type: 3}
+  Sfx: {fileID: 8300000, guid: bee31b3e33ba1134981e8cd1e6c64358, type: 3}
   RandomSfx: []
   PlayMethod: 0
   MinVolume: 0.8
