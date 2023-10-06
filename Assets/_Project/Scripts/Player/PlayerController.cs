@@ -35,7 +35,6 @@ namespace Player
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active = false;
         private bool _inputLocked = false;
-        private bool _started = false;
 
         void Awake()
         {
@@ -47,7 +46,6 @@ namespace Player
         void Activate()
         {
             _active = true;
-            _started = true;
         }
 
         void Deactivate()
@@ -453,17 +451,10 @@ namespace Player
 
         private void UpdateActiveState(bool activate)
         {
-            if (_started)
-            {
                 if (activate)
                     Activate();
                 else
                     Deactivate();
-            }
-            else
-            {
-                Invoke(nameof(Activate), 0.5f);
-            }
         }
 
         public void OnEvent(GameEvent gameEvent)
