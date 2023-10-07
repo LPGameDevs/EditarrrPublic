@@ -136,6 +136,7 @@ MonoBehaviour:
   <DamageCooldown>k__BackingField: 1
   <StunDuration>k__BackingField: 0
   <ForceOrigin>k__BackingField: {fileID: 1279904994308610896}
+  <useStaticForce>k__BackingField: 0
 --- !u!70 &4371097168700525393
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -149,8 +150,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.059178352}
-  m_Size: {x: 1.12, y: 0.7}
+  m_Offset: {x: 0.0072078644, y: -0.05917836}
+  m_Size: {x: 1.0190927, y: 0.70000166}
   m_Direction: 1
 --- !u!50 &7418034618229315574
 Rigidbody2D:

@@ -101,8 +101,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.059178352}
-  m_Size: {x: 1.12, y: 0.7}
+  m_Offset: {x: 0.0000011552361, y: -0.05917836}
+  m_Size: {x: 0.73854667, y: 0.7000064}
   m_Direction: 1
 --- !u!114 &-5960051704777038337
 MonoBehaviour:
@@ -121,6 +121,7 @@ MonoBehaviour:
   <DamageCooldown>k__BackingField: 1
   <StunDuration>k__BackingField: 0
   <ForceOrigin>k__BackingField: {fileID: 9124124122354251577}
+  <useStaticForce>k__BackingField: 0
 --- !u!50 &176845270366005201
 Rigidbody2D:
   serializedVersion: 4

@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PlayerVFX
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 51ee657e72adaa441ba70b48007d72a0, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: b58e6a00406bf3f4589e822848bc4995, type: 3}
+  - {fileID: 21300000, guid: dbe0a550db417d94eb260b505dbab8c5, type: 3}
+  - {fileID: 21300000, guid: 101a2bd109e8b41498b2a929877832ba, type: 3}
+  - {fileID: 21300000, guid: fc0fa9833c387a7409d54e02aa863900, type: 3}
+  - {fileID: 21300000, guid: fc13c6d49306a4e4080bbd3595eab9e6, type: 3}
+  - {fileID: 21300000, guid: 6f77bda5e7aeaeb43b30b42d54ad10c2, type: 3}
+  - {fileID: 21300000, guid: a19d6fe8204e03e4cace85ed25f638de, type: 3}
+  - {fileID: 21300000, guid: 06e01519a6be55245b60fc0e6c5bd811, type: 3}
+  - {fileID: 21300000, guid: e9e37389dafb0ef438105cdad1d630f4, type: 3}
+  - {fileID: 21300000, guid: 9493e4e9ba5e9f64e9abaef0bec5fdce, type: 3}
+  - {fileID: 21300000, guid: e11b681a430d67d4d883b046bfb253a2, type: 3}
+  - {fileID: 21300000, guid: 1e3fd96a93279fe4884feb275080e54a, type: 3}
+  - {fileID: 21300000, guid: 5e8200eb87807b84db6cf6940124c16d, type: 3}
+  - {fileID: 21300000, guid: 09f378ec6e8b9fa40bf359845bddc7f3, type: 3}
+  - {fileID: 21300000, guid: 8dfa95ad80415a24fa9a8310d9ac4c33, type: 3}
+  - {fileID: 21300000, guid: 1c77e72f4e090c0468ce0ba35a75e864, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Run 01
+  - Run 04
+  - Run 03
+  - Fall 03
+  - Jump 01
+  - Jump 06
+  - Run 02
+  - Jump 05
+  - Jump 03
+  - Fall 01
+  - Jump 04
+  - Fall 04
+  - Fall 02
+  - Jump 02
+  - Fall 05
+  - Run 05
+  m_RenderDataMap: {}
+  m_Tag: PlayerVFX
+  m_IsVariant: 0
