@@ -8,11 +8,38 @@ namespace Gameplay
         public static event Action OnChestOpened;
 
         [SerializeField] AudioClip winSound;
+
+        private Animator _animator;
+
+        private bool _isWon;
         private bool _isOpen;
+        private static readonly int Open = Animator.StringToHash("Open");
+
+        private void Awake()
+        {
+            _animator = GetComponent<Animator>();
+        }
+
+        private void Start()
+        {
+            // Unlock the treasure chest if there are no keys.
+            FindKeys();
+        }
+
+        private void FindKeys()
+        {
+            var key = GameObject.FindWithTag("Key");
+            if (key)
+            {
+                // If a key was found, leave the chest locked.
+                return;
+            }
+            SetOpen();
+        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (_isOpen)
+            if (_isWon || !_isOpen)
             {
                 return;
             }
@@ -21,9 +48,30 @@ namespace Gameplay
             // The Chest should ONLY be allowed to collide with the Player and so no further checks
             // are required.
             // @todo Check this by (for example) letting an Enemy run into the Chest.
-            _isOpen = true;
+            _isWon = true;
             Editarrr.Audio.AudioManager.Instance.PlayAudioClip(winSound);
             OnChestOpened?.Invoke();
+        }
+
+        public void SetOpen()
+        {
+            if (_isOpen)
+            {
+                return;
+            }
+
+            _animator.SetTrigger(Open);
+            _isOpen = true;
+        }
+
+        private void OnEnable()
+        {
+            Key.OnKeyPickup += SetOpen;
+        }
+
+        private void OnDisable()
+        {
+            Key.OnKeyPickup -= SetOpen;
         }
     }
 }

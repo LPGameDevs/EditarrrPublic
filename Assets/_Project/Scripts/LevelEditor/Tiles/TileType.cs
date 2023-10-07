@@ -12,7 +12,10 @@ namespace Editarrr.LevelEditor
         Goal = 5,
         Sharcus = 6,
         Patrick = 7,
-        Clawdia = 8
+        Clawdia = 8,
+        SpikeDeath = 10,
+        Key = 20,
+        BoxBounce = 30,
     }
     // DO NOT change the Int values! This will mess with unity assets
 }
