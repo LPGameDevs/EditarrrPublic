@@ -1,3 +1,4 @@
+using System;
 using Editarrr.Input;
 using Editarrr.Level;
 using Singletons;
@@ -9,6 +10,8 @@ namespace Gameplay.GUI
 {
     public class GameplayGuiManager : MonoBehaviour
     {
+        public static event Action OnGameStarted;
+
         [SerializeField] private WinMenu _winMenu;
         [SerializeField] private Transform _pauseMenu;
         [SerializeField] private Image _overlay;
@@ -61,6 +64,7 @@ namespace Gameplay.GUI
             UnPauseGame();
             SetOverlayAlpha(0f);
             _inputPrompt.SetActive(false);
+            OnGameStarted?.Invoke();
         }
 
         private void ShowWinMenu()

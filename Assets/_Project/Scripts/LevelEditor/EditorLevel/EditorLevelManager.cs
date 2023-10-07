@@ -13,6 +13,7 @@ namespace Editarrr.LevelEditor
     [CreateAssetMenu(fileName = "Editor Level Manager", menuName = "Managers/Editor/new Editor Level Manager")]
     public class EditorLevelManager : ManagerComponent
     {
+        public static event Action<Vector3> OnCameraTileSet;
         public static TileSet OnTileSet { get; set; }
         public delegate void TileSet(EditorTileData data, TileType tileType, int inLevel);
 
@@ -353,10 +354,21 @@ namespace Editarrr.LevelEditor
                         editorTileData = this.EditorTileDataPool.Get(tileState.Type);
 
                         this.Set(x, y, editorTileData, tileState.Rotation);
+
+                        if (tileState.Type == TileType.Camera)
+                        {
+                            this.SetCameraPosition(x, y);
+                        }
                     }
                 }
             }
 
+        }
+
+        private void SetCameraPosition(int x, int y)
+        {
+            Vector3 worldposition = this.Tilemap.CellToWorld(new Vector3Int(x, y, 0));
+            OnCameraTileSet?.Invoke(new Vector3(worldposition.x, worldposition.y, -10));
         }
 
         public void SaveLevelState()

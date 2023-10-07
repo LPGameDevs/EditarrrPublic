@@ -1,3 +1,4 @@
+using System;
 using Editarrr.Input;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
@@ -17,6 +18,8 @@ namespace Editarrr.Level
         private const string Documentation = "This manager will build a level and instanciate its prefabs.\r\n";
 
         #region Properties
+
+        public static event Action<Vector3> OnCameraTileSet;
 
         [field: SerializeField, Info(Documentation)] private EditorLevelExchange Exchange { get; set; }
 
@@ -96,8 +99,18 @@ namespace Editarrr.Level
 
                     PlaceTile(tile, position);
                     InstantiateTile(tile, position, tileState.Rotation);
+
+                    if (tile.Type == TileType.Camera)
+                    {
+                        SetCameraStartingPosition(x, y);
+                    }
                 }
             }
+        }
+
+        private void SetCameraStartingPosition(int x, int y)
+        {
+            OnCameraTileSet?.Invoke(new Vector3(x, y, -10));
         }
 
         private TileData GetTileDataFromType(TileType tileStateType)

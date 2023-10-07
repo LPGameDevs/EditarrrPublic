@@ -1,3 +1,4 @@
+using System;
 using Editarrr.Input;
 using Editarrr.LevelEditor;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class CameraDragger : MonoBehaviour
 
     void Update()
     {
-        _camera.orthographicSize = 
+        _camera.orthographicSize =
             Mathf.Clamp(_camera.orthographicSize - MouseScroll.Read<Vector2>().y * ScrollSpeed * Time.deltaTime * _camera.orthographicSize, ZoomMax, ZoomMin);
 
         Vector3 mousePosition = MousePosition.Read<Vector2>();
@@ -63,5 +64,22 @@ public class CameraDragger : MonoBehaviour
         move.y = Mathf.Clamp(move.y, _minDrag.y + vertExtent, _maxDrag.y - vertExtent);
         move.z = transform.position.z;
         transform.position = move;
+    }
+
+
+    private void SetStartingPosition(Vector3 position)
+    {
+        position.z = -10;
+        transform.position = position;
+    }
+
+    private void OnEnable()
+    {
+        EditorLevelManager.OnCameraTileSet += SetStartingPosition;
+    }
+
+    private void OnDisable()
+    {
+        EditorLevelManager.OnCameraTileSet -= SetStartingPosition;
     }
 }
