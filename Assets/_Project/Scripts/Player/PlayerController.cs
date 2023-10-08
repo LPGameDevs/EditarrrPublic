@@ -17,6 +17,7 @@ namespace Player
     {
         // events
         public static event Action OnPlayerJumped;
+        public static event Action OnPlayerStartedFalling;
         public static event Action<float> OnPlayerLanded;
         public static event Action<bool> OnPlayerMoved;
 
@@ -180,10 +181,10 @@ namespace Player
             else if (!_collisions.down && groundedCheck)
             {
                 _coyoteUsable = true; // Only trigger when first touching
-                OnPlayerLanded?.Invoke(_timeInAir);
+                OnPlayerLanded?.Invoke(_currentVerticalSpeed);
                 _timeInAir = 0f;
             }
-
+            Debug.Log(_currentVerticalSpeed);
             _collisions.down = groundedCheck;
 
             // The rest
@@ -317,10 +318,14 @@ namespace Player
                 var fallSpeed = _endedJumpEarly && _currentVerticalSpeed > 0 ? _fallSpeed * _jumpEndEarlyGravityModifier : _fallSpeed;
 
                 // Fall
+                float bufferedVerticalSpeed = _currentVerticalSpeed;
                 _currentVerticalSpeed -= fallSpeed * Time.deltaTime;
 
                 // Clamp
                 if (_currentVerticalSpeed < _fallClamp) _currentVerticalSpeed = _fallClamp;
+
+                if (_currentVerticalSpeed < 0f && bufferedVerticalSpeed >= 0f)
+                    OnPlayerStartedFalling?.Invoke();
             }
         }
 

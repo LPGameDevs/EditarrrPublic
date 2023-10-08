@@ -8,12 +8,12 @@ namespace Player
     [RequireComponent(typeof(AudioSource))]
     public class PlayerFeedback : MonoBehaviour
     {
-        [SerializeField] MMFeedbacks _move, _jump, _land, _damage, _death;
+        [SerializeField] MMFeedbacks _move, _jump, _softLanding, _hardLanding, _damage, _death;
         [Space(15)]
         [SerializeField] AudioSource _generalAudioSource;
         [SerializeField] AudioSource _moveAudioSource;
         [Space(15)]
-        [SerializeField] AudioClip spawnSFX;
+        [SerializeField] AudioClip _spawnSFX;
         [Space(15)]
         [SerializeField] float _landingCamShakeExponent, _landingCamShakeMin, _landingCamShakeMax;
         [Space(15)]
@@ -25,9 +25,12 @@ namespace Player
         MMFeedbackCameraShake _damageCameraShake;
         MMSfxEvent.Delegate SoundDelegate => PlaySound;
 
+        bool _playerIsFalling;
+        float _fallTime = 0f;
+
         private void OnSpawn()
         {
-            PlaySound(spawnSFX, 1f);
+            PlaySound(_spawnSFX, 1f);
         }
 
         private void OnMove(bool movingOnGround)
@@ -37,10 +40,20 @@ namespace Player
             //else
             //    _move.StopFeedbacks();
 
-            if (!_moveAudioSource.isPlaying && movingOnGround)
-                _moveAudioSource.Play();
-            else if (_moveAudioSource.isPlaying && !movingOnGround)
-                _moveAudioSource.Stop();
+            if(movingOnGround)
+            {
+                if (!_moveAudioSource.isPlaying)
+                    _moveAudioSource.Play();
+
+                _move.PlayFeedbacks();
+            }
+            else
+            {
+                if (_moveAudioSource.isPlaying)
+                    _moveAudioSource.Stop();
+
+                _move.StopFeedbacks();
+            }
         }
 
         private void OnJump()
@@ -48,17 +61,30 @@ namespace Player
             _jump.PlayFeedbacks();
         }
 
-        private void OnLand(float timeInAir)
+        private void OnStartedFalling()
+        {
+            _playerIsFalling = true;
+        }
+
+        private void OnLand(float verticalSpeed)
         {
             float newAmplitude = 0f;
-            if (timeInAir >= 0.8f)
-            {
-                newAmplitude = Mathf.Pow(timeInAir, _landingCamShakeExponent);
-                newAmplitude = Mathf.Clamp(newAmplitude, _landingCamShakeMin, _landingCamShakeMax);
-            }
 
-            AdjustCameraShake(_landingCameraShake, newAmplitude);
-            _land.PlayFeedbacks();
+            if (verticalSpeed <= -30f)
+            {
+                //newAmplitude = Mathf.Pow(_fallTime, _landingCamShakeExponent);
+                //newAmplitude = Mathf.Clamp(newAmplitude, _landingCamShakeMin, _landingCamShakeMax);
+                //AdjustCameraShake(_landingCameraShake, newAmplitude);
+
+                _fallTime = Mathf.Clamp(_fallTime, 0.5f, 2f);
+                _hardLanding.transform.localScale = new Vector2(_fallTime, _fallTime);
+                _hardLanding.PlayFeedbacks(_hardLanding.transform.position, _fallTime);
+            }
+            else
+                _softLanding.PlayFeedbacks();
+
+            _playerIsFalling = false;
+            _fallTime = 0f;
         }
 
         private void OnInvincible(object sender, OnValueChangedArgs<float> e)
@@ -98,15 +124,24 @@ namespace Player
 
         private void Awake()
         {
-            _landingCameraShake = (MMFeedbackCameraShake)_land.Feedbacks.Find(x => x.GetType() == typeof(MMFeedbackCameraShake));
+            _landingCameraShake = (MMFeedbackCameraShake)_hardLanding.Feedbacks.Find(x => x.GetType() == typeof(MMFeedbackCameraShake));
             _damageCameraShake = (MMFeedbackCameraShake)_damage.Feedbacks.Find(x => x.GetType() == typeof(MMFeedbackCameraShake));
             OnSpawn();
+        }
+
+        private void Update()
+        {
+            if(_playerIsFalling)
+            {
+                _fallTime += Time.deltaTime;
+            }
         }
 
         private void OnEnable()
         {
             PlayerController.OnPlayerMoved += OnMove;
             PlayerController.OnPlayerJumped += OnJump;
+            PlayerController.OnPlayerStartedFalling += OnStartedFalling;
             PlayerController.OnPlayerLanded += OnLand;
             HealthSystem.OnHitPointsChanged += OnDamage;
             HealthSystem.OnInvincibleStarted += OnInvincible;
@@ -118,6 +153,7 @@ namespace Player
         {
             PlayerController.OnPlayerMoved -= OnMove;
             PlayerController.OnPlayerJumped -= OnJump;
+            PlayerController.OnPlayerStartedFalling -= OnStartedFalling;
             PlayerController.OnPlayerLanded -= OnLand;
             HealthSystem.OnHitPointsChanged -= OnDamage;
             HealthSystem.OnInvincibleStarted -= OnInvincible;

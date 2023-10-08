@@ -155,6 +155,7 @@ MonoBehaviour:
   <DamageCooldown>k__BackingField: 0.5
   <StunDuration>k__BackingField: 0
   <ForceOrigin>k__BackingField: {fileID: 8716000030919448201}
+  <useStaticForce>k__BackingField: 1
 --- !u!50 &1134828341692155681
 Rigidbody2D:
   serializedVersion: 4

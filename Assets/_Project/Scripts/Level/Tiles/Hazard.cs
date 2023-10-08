@@ -22,16 +22,19 @@ public class Hazard : MonoBehaviour
 
     [field: SerializeField] private Transform ForceOrigin { get; set; }
 
+	[field: SerializeField] private bool useStaticForce { get; set; }
+
 	private void OnTriggerStay2D(Collider2D other)
 	{
-		Vector3 forceDirection = (other.transform.position - this.ForceOrigin.position).normalized;
+		Vector3 forcePoint = useStaticForce ? this.transform.position : other.transform.position;
+		Vector3 forceDirection = (forcePoint - this.ForceOrigin.position).normalized;
 
-		this.KnockBackPlayer(other.gameObject, Vector3.zero, forceDirection);
+		this.KnockBackPlayer(other.gameObject, forceDirection);
 	}
 
     private void OnCollisionStay2D(Collision2D collision) => OnTriggerStay2D(collision.collider);
 
-    public void KnockBackPlayer(GameObject other, Vector3 point, Vector3 normal)
+    public void KnockBackPlayer(GameObject other, Vector3 normal)
 	{
 		if (!other.TryGetComponent<HealthSystem>(out HealthSystem healthSystem) || healthSystem.IsInvincible())
 			return;
@@ -45,5 +48,7 @@ public class Hazard : MonoBehaviour
     private void OnDrawGizmos()
     {
 		Gizmos.DrawSphere(this.transform.position, .1f);
+		Gizmos.color = Color.magenta;
+		Gizmos.DrawLine(ForceOrigin.position, this.transform.position);
     }
 }

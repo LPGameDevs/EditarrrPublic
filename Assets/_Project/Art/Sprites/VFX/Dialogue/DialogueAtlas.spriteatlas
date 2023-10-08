@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DialogueAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: ce26f8a8bb925d34bb3f01a412131b9d, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: ee4d2e05748767d488467fc41c70fd78, type: 3}
+  - {fileID: 21300000, guid: c009415563167944faae33a9afb34ea0, type: 3}
+  - {fileID: 21300000, guid: 5800ee66dc13dba42ba5057d56d1c765, type: 3}
+  - {fileID: 21300000, guid: 984bfc07cbe8800438ee8842c221e18f, type: 3}
+  - {fileID: 21300000, guid: 231fd927dc86e524db5ce937bf293fc8, type: 3}
+  - {fileID: 21300000, guid: f31dc3c8d3088b6499c39bfd1891ebc2, type: 3}
+  - {fileID: 21300000, guid: e6d6fad9975aeef4e82bb351400b14db, type: 3}
+  - {fileID: 21300000, guid: a1544b0a30160e942b83522cf9443e32, type: 3}
+  - {fileID: 21300000, guid: 9a054b2bcc6f89547a81e59a0d763cc5, type: 3}
+  - {fileID: 21300000, guid: 532010eb6689fc040b645bdee6549771, type: 3}
+  - {fileID: 21300000, guid: 813c939e296fb394fab7f9d23f65817d, type: 3}
+  - {fileID: 21300000, guid: 93bef70f7bdc04f44af5983688507c43, type: 3}
+  - {fileID: 21300000, guid: 936b0d0fe217a4544a4b252c1e292239, type: 3}
+  - {fileID: 21300000, guid: a1afd83fb82523d4187690852f772096, type: 3}
+  - {fileID: 21300000, guid: b8e607cf1b0bc9e44a566169173f826d, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Exclamation In 01
+  - Interrogation In 01
+  - Exclamation Out 02
+  - Interrogation Out 02
+  - Dead In 03
+  - Exclamation In 02
+  - Interrogation In 03
+  - Dead Out 02
+  - Dead Out 01
+  - Exclamation Out 01
+  - Exclamation In 03
+  - Interrogation In 02
+  - Interrogation Out 01
+  - Dead In 01
+  - Dead In 02
+  m_RenderDataMap: {}
+  m_Tag: DialogueAtlas
+  m_IsVariant: 0
