@@ -115,7 +115,35 @@ public class EnemyAIController : MonoBehaviour
 
     private void EnemyChaseMove()
     {
-        throw new NotImplementedException();
+        switch (_aiState)
+        {
+            case AIState.pausing:
+                if (IsNearPlayer())
+                {
+                    print("see player, attack");
+                    _aiState = AIState.attacking;
+                }
+                //animator.SetBool("Run", false);
+                break;
+            case AIState.attacking:
+                if (!IsNearPlayer())
+                {
+                    print("Not see player");
+                    _moveSpeed = enemyAIData.normalMoveSpeed;
+                    _aiState = AIState.pausing;
+                    return;
+                }
+                print("see player");
+                _moveSpeed = enemyAIData.sawPlayerMoveSpeed;
+                Move();
+                if (!CanMove())
+                {
+                    print("can't move, go to pause");
+                    _aiState = AIState.pausing;
+                }
+                //animator.SetBool("Run", true);
+                break;
+        }
     }
 
     private void Move()
@@ -130,15 +158,6 @@ public class EnemyAIController : MonoBehaviour
     private bool CanMove()
     {
         //can only move if no obstacle directly in front of enemy AND ground to walk on
-        if (!IsNearObstacle(eyeTransform))
-        {
-            print("Nothing in front of enemy");
-        }
-        if (IsNearObstacle(footTransform))
-        {
-            print("Ground near enemy's foot");
-        }
-
         return !IsNearObstacle(eyeTransform) && IsNearObstacle(footTransform);
     }
 
@@ -146,7 +165,7 @@ public class EnemyAIController : MonoBehaviour
     {
         Vector2 direction = fromLocation.right * _currentDirection;
         RaycastHit2D hit = Physics2D.Raycast(fromLocation.position, direction, _distanceToObstacle, obstacleLayer);
-        return hit.collider != null && enemyCollider != hit.collider;
+        return hit.collider != null && IsNotThisEnemy(hit);
     }
 
     private bool IsTargetInRange(GameObject target, float range)
@@ -163,11 +182,16 @@ public class EnemyAIController : MonoBehaviour
         //0 is the enemy, 1 needs to be the player for the enemy to see him
         foreach (var hit in hits)
         {
-            if (playerLayer == (playerLayer | (1 << hit.transform.gameObject.layer))) { return true; }
-            if (obstacleLayer == (obstacleLayer | (1 << hit.transform.gameObject.layer))) { return false; }
+            if (playerLayer == (playerLayer | (1 << hit.transform.gameObject.layer))) { return true; } //returns true if player
+            if (obstacleLayer == (obstacleLayer | (1 << hit.transform.gameObject.layer)) && IsNotThisEnemy(hit)) { return false; } //returns false if something else is before the player
         }
 
         return false;
+    }
+
+    private bool IsNotThisEnemy(RaycastHit2D hit)
+    {
+        return hit.transform.gameObject != gameObject;
     }
 
     private void FaceTowardsMovement()
