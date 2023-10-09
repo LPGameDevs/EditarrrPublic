@@ -55,11 +55,6 @@ namespace Level.Storage
             }
         }
 
-        public void UploadScreenshot(string code, byte[] screenshot)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
             foreach (var provider in _providers)

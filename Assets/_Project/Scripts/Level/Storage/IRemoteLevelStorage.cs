@@ -10,7 +10,6 @@ namespace Level.Storage
          */
         public void Initialize();
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback);
-        public void UploadScreenshot(string code, byte[] screenshot);
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback);
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
     }
