@@ -33,7 +33,10 @@ namespace Gameplay
 
         public void FinishPickup()
         {
-            gameObject.SetActive(false);
+            if(transform.parent != null)
+                transform.parent.gameObject.SetActive(false);
+            else
+                gameObject.SetActive(false);
         }
     }
 }
