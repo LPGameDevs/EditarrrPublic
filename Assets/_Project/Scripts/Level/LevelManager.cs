@@ -258,7 +258,7 @@ namespace Editarrr.Level
             this.Save(levelSave, false);
         }
 
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
         public void CopyLevelFromSteamDirectory(Steamworks.Ugc.Item item)
         {
             string code = item.Title;

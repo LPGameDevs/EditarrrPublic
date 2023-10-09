@@ -1,4 +1,4 @@
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
 using System;
 using System.Collections.Generic;
 using Editarrr.Level;

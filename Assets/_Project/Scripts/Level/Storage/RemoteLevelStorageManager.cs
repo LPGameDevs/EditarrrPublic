@@ -32,7 +32,7 @@ namespace Level.Storage
                 provider = new RemoteLevelStorageProviderAws();
             }
             // @todo Change this so multiple providers can be used at once.
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
             else if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
             {
                 provider = new RemoteLevelStorageProviderSteam();
