@@ -1,16 +1,17 @@
+using Editarrr.UI;
 using UnityEngine;
 
-namespace Editarrr.UI
+namespace UI
 {
     [CreateAssetMenu(fileName = "NewModalPopup", menuName = "Modals/new Modal Popup")]
     public class ModalPopup : ScriptableObject, IModalPopup
     {
-        [SerializeField] private string TitleText;
-        [SerializeField] private string ContentText;
-        [SerializeField] private string CloseText;
-        [SerializeField] private ModalPopupBlock Prefab;
+        [SerializeField] protected string TitleText;
+        [SerializeField] protected string ContentText;
+        [SerializeField] protected string CloseText;
+        [SerializeField] protected ModalPopupBlock Prefab;
 
-        public void Open(Transform parent = null)
+        public virtual void Open(Transform parent = null)
         {
             if (parent == null)
             {
@@ -20,22 +21,22 @@ namespace Editarrr.UI
             popup.Setup(this);
         }
 
-        public void Close()
+        public virtual void Close()
         {
             // @todo Store dismissal to not show again later.
         }
 
-        public string GetTitleText()
+        public virtual string GetTitleText()
         {
             return TitleText;
         }
 
-        public string GetContentText()
+        public virtual string GetContentText()
         {
             return ContentText;
         }
 
-        public string GetCloseText()
+        public virtual string GetCloseText()
         {
             return CloseText;
         }

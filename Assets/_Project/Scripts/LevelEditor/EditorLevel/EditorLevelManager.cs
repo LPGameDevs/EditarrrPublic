@@ -6,6 +6,7 @@ using Editarrr.Managers;
 using Editarrr.Misc;
 using Editarrr.UI;
 using Editarrr.Utilities;
+using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -75,6 +76,15 @@ namespace Editarrr.LevelEditor
             this.Tilemap = tilemap;
         }
 
+        public void SetCanvas(Canvas modalCanvas)
+        {
+            this.ModalCanvas = modalCanvas;
+        }
+
+        public void SetStartModal(ModalPopup startModal)
+        {
+            this.StartModal = startModal;
+        }
 
         public override void DoAwake()
         {
@@ -391,15 +401,5 @@ namespace Editarrr.LevelEditor
 
 
         #endregion
-
-        public void SetCanvas(Canvas modalCanvas)
-        {
-            this.ModalCanvas = modalCanvas;
-        }
-
-        public void SetStartModal(ModalPopup startModal)
-        {
-            this.StartModal = startModal;
-        }
     }
 }
