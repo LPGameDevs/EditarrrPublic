@@ -388,6 +388,21 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
+  - m_Index: 74
+    m_Metrics:
+      m_Width: 20.921875
+      m_Height: 86.34375
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 75.84375
+      m_HorizontalAdvance: 25.3125
+    m_GlyphRect:
+      m_X: 10
+      m_Y: 348
+      m_Width: 21
+      m_Height: 87
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 77
     m_Metrics:
       m_Width: 47.0625
@@ -399,6 +414,21 @@ MonoBehaviour:
       m_X: 344
       m_Y: 10
       m_Width: 48
+      m_Height: 80
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+  - m_Index: 78
+    m_Metrics:
+      m_Width: 82.140625
+      m_Height: 78.921875
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 72.640625
+      m_HorizontalAdvance: 86.53125
+    m_GlyphRect:
+      m_X: 667
+      m_Y: 10
+      m_Width: 83
       m_Height: 80
     m_Scale: 1
     m_AtlasIndex: 0
@@ -430,6 +460,21 @@ MonoBehaviour:
       m_Y: 50
       m_Width: 58
       m_Height: 79
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+  - m_Index: 83
+    m_Metrics:
+      m_Width: 50.75
+      m_Height: 82.578125
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 72.46875
+      m_HorizontalAdvance: 55.15625
+    m_GlyphRect:
+      m_X: 769
+      m_Y: 10
+      m_Width: 51
+      m_Height: 84
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
@@ -874,8 +919,16 @@ MonoBehaviour:
     m_GlyphIndex: 70
     m_Scale: 1
   - m_ElementType: 1
+    m_Unicode: 105
+    m_GlyphIndex: 74
+    m_Scale: 1
+  - m_ElementType: 1
     m_Unicode: 108
     m_GlyphIndex: 77
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 109
+    m_GlyphIndex: 78
     m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 110
@@ -884,6 +937,10 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 111
     m_GlyphIndex: 80
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 114
+    m_GlyphIndex: 83
     m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 115
@@ -1180,6 +1237,10 @@ MonoBehaviour:
     m_Y: 103
     m_Width: 3
     m_Height: 102
+  - m_X: 224
+    m_Y: 205
+    m_Width: 14
+    m_Height: 818
   - m_X: 67
     m_Y: 239
     m_Width: 1
