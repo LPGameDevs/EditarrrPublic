@@ -9,14 +9,12 @@ using UnityEngine;
 public class UserNameForm : MonoBehaviour
 {
     public TMP_InputField UserNameInput;
-    public TextMeshProUGUI Version;
 
     private void Awake()
     {
         // Initialise steam.
         SteamManager.Instance.Init();
         Debug.Log("Application Version : " + Application.version);
-        Version.text = "v" + Application.version;
     }
 
     private void Start()
@@ -49,6 +47,6 @@ public class UserNameForm : MonoBehaviour
         // We store the username in player prefs. Its not sensitive data so this is fine.
         PreferencesManager.Instance.SetUserName(newUserName);
 
-        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
+        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.StartSceneName);
     }
 }
