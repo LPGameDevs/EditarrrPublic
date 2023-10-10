@@ -1,5 +1,5 @@
 using System;
-using Editarrr.UI;
+using Singletons;
 using UnityEngine;
 
 namespace UI
@@ -13,7 +13,7 @@ namespace UI
 
         public override void Open(Transform parent = null)
         {
-            if (HasTrackedEvent(this.name, ModalPopupAction.Confirm))
+            if (PreferencesManager.Instance.IsModalEventTracked(this.name, ModalPopupAction.Confirm))
             {
                 this.Confirm();
                 return;
@@ -26,14 +26,14 @@ namespace UI
             var popup = Instantiate(Prefab, parent);
             popup.Setup(this);
 
-            this.TrackEvent(this.name, ModalPopupAction.Open);
+            PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Open);
         }
 
         public void Confirm()
         {
             this._onConfirm?.Invoke();
 
-            this.TrackEvent(this.name, ModalPopupAction.Confirm);
+            PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Confirm);
         }
 
         public void SetConfirm(Action uploadLevel)

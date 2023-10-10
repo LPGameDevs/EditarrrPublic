@@ -3,7 +3,6 @@ using Browser;
 using Editarrr.Level;
 using Level.Storage;
 using Singletons;
-using SteamIntegration;
 using UnityEngine;
 
 public class LevelBrowserLoader : MonoBehaviour
@@ -35,7 +34,7 @@ public class LevelBrowserLoader : MonoBehaviour
 
     public void AddLevelPrefabFromData(LevelStub levelStub)
     {
-        string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
+        string userId = PreferencesManager.Instance.GetUserId();
         LevelBrowserLevel level;
 
         level = Instantiate(_levelPrefab, transform);
