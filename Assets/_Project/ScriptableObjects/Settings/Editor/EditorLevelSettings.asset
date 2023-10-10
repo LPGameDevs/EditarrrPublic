@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2968258f37dbca94dbc98048e1abf7fd, type: 3}
   m_Name: EditorLevelSettings
   m_EditorClassIdentifier: 
-  <EditorLevelScaleX>k__BackingField: 100
-  <EditorLevelScaleY>k__BackingField: 50
+  <EditorLevelScaleX>k__BackingField: 30
+  <EditorLevelScaleY>k__BackingField: 30

@@ -19,6 +19,9 @@ namespace Editarrr.LevelEditor
         public static TileUnset OnTileUnset { get; set; }
         public delegate void TileUnset(EditorTileData data, TileType tileType, int inLevel);
 
+        public static EditorLevelScaleChanged OnEditorLevelScaleChanged { get; set; }
+        public delegate void EditorLevelScaleChanged(int x, int y);
+
         private const string Documentation =
             "This component manages input, placement and storage of the level editor.\r\n" +
             "Camera movement, tilemaps, loading, saving and screenshots all happen here.\r\n";
@@ -45,8 +48,17 @@ namespace Editarrr.LevelEditor
 
         Dictionary<TileType, List<Int2D>> TileLocations { get; set; }
 
-        private LevelState _levelState { get; set; }
+        private LevelState LevelState { get; set; }
         private EditorTileState[,] Tiles { get; set; }
+
+        private int ScaleX { get; set; }
+        private int ScaleY { get; set; }
+        // This is used to prevent automatically placing tiles on expanded Area
+        // Might get solved by moving the Camera uppon expanding, but not yet >> QoL!
+        bool IsExpanding { get; set; }
+
+        SpriteRenderer EditorGrid { get; set; }
+
 
         // From System
         private Camera SceneCamera { get; set; }
@@ -77,13 +89,8 @@ namespace Editarrr.LevelEditor
 
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
 
-            SpriteRenderer editorGrid = Instantiate(this.PrefabPool.EditorGrid);
-            editorGrid.transform.position = Vector3.zero;
-            editorGrid.size = new Vector2(this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY);
-
-            this.Tiles = new EditorTileState[this.Settings.EditorLevelScaleX, this.Settings.EditorLevelScaleY];
-
-            this.Tilemap.transform.localPosition = new Vector3(this.Settings.EditorLevelScaleX / -2, this.Settings.EditorLevelScaleY / -2, 0);
+            this.EditorGrid = Instantiate(this.PrefabPool.EditorGrid);
+            this.EditorGrid.transform.position = Vector3.zero;
 
             this.EditorHoverTile = Instantiate(this.PrefabPool.EditorHoverTile);
             this.DisableHoverTile();
@@ -99,6 +106,7 @@ namespace Editarrr.LevelEditor
             {
                 this.CreateLevelState();
             }
+
 
         }
 
@@ -128,18 +136,24 @@ namespace Editarrr.LevelEditor
             }
             else if (this.MouseLeftButton.IsPressed)
             {
-                if (tileData == null)
+                if (tileData == null || this.IsExpanding)
                     return;
 
                 this.Set(x, y, tileData, this.EditorTileSelection.Rotation);
+                this.TryExpandSize(x, y);
             }
             else if (this.MouseRightButton.IsPressed)
             {
                 this.Unset(x, y);
             }
 
+            if (!this.MouseLeftButton.IsPressed)
+                this.IsExpanding = false;
+
             this.EnableHoverTile();
-            this.EditorHoverTile.transform.position = new Vector3(x - this.Settings.EditorLevelScaleX / 2, y - this.Settings.EditorLevelScaleY / 2, 0);
+            this.EditorHoverTile.transform.position = new Vector3(
+                x - this.ScaleX / 2, 
+                y - this.ScaleY / 2, 0);
 
             this.EditorHoverTile.Set(this.EditorTileSelection.ActiveElement, this.EditorTileSelection.Rotation);
         }
@@ -163,8 +177,8 @@ namespace Editarrr.LevelEditor
 
         private void ClampPosition(int x, int y, out int oX, out int oY)
         {
-            oX = x.Clamp(0, this.Settings.EditorLevelScaleX);
-            oY = y.Clamp(0, this.Settings.EditorLevelScaleY);
+            oX = x.Clamp(0, this.ScaleX - 1);
+            oY = y.Clamp(0, this.ScaleY - 1);
         }
 
         private Vector3Int GetCursorTileMapPosition()
@@ -201,10 +215,10 @@ namespace Editarrr.LevelEditor
                 if (this.TileLocations.ContainsKey(tileType))
                 {
                     List<Int2D> locations;
-                    if(TileLocations.TryGetValue(tileType, out locations))
+                    if (TileLocations.TryGetValue(tileType, out locations))
                     {
-                        foreach(Int2D location in locations)
-                            if(location.X == x && location.Y == y)
+                        foreach (Int2D location in locations)
+                            if (location.X == x && location.Y == y)
                                 return;
                     }
 
@@ -230,22 +244,17 @@ namespace Editarrr.LevelEditor
 
             this.Unset(x, y);
 
-            if (tileData.Tile.CanRotate)
-            {
-                this.Tilemap.SetTile(
-                new TileChangeData(
-                    new Vector3Int(x, y, 0),
-                    tileData.EditorGridTile,
-                    Color.white,
-                    Matrix4x4.Rotate(Quaternion.Euler(0, 0, rotation.ToDegree()))), true);
+            this.SetTile(x, y, tileData, rotation);
 
-                this.Tiles[x, y] = new EditorTileState(tileData, rotation);
-            }
-            else
-            {
-                this.Tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
-                this.Tiles[x, y] = new EditorTileState(tileData, Rotation.North);
-            }
+            //if (tileData.Tile.CanRotate)
+            //{
+                
+            //}
+            //else
+            //{
+            //    this.Tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
+            //    this.Tiles[x, y] = new EditorTileState(tileData, Rotation.North);
+            //}
 
             count = 0;
 
@@ -260,6 +269,87 @@ namespace Editarrr.LevelEditor
             }
 
             EditorLevelManager.OnTileSet?.Invoke(tileData, tileType, count);
+        }
+
+        private void SetTile(int x, int y, EditorTileData tileData, Rotation rotation)
+        {
+            if (tileData.Tile.CanRotate)
+            {
+                this.Tiles[x, y] = new EditorTileState(tileData, rotation);
+                this.Tilemap.SetTile(
+                    new TileChangeData(
+                        new Vector3Int(x, y, 0),
+                        tileData.EditorGridTile,
+                        Color.white,
+                        Matrix4x4.Rotate(Quaternion.Euler(0, 0, rotation.ToDegree()))), true);
+            }
+            else
+            {
+                this.Tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
+                this.Tiles[x, y] = new EditorTileState(tileData, Rotation.North);
+            }
+        }
+
+        private void TryExpandSize(int x, int y)
+        {
+            int expandCheck = this.Settings.AutoExpansionThreshold; // Number of units to expand by in each direction
+            int expandBy = this.Settings.AutoExpansionValue; // Number of units to expand by in each direction
+
+            int currentWidth = this.ScaleX;
+            int currentHeight = this.ScaleY;
+
+            bool expandLeft = false;
+            bool expandRight = false;
+            bool expandTop = false;
+            bool expandBottom = false;
+
+            // Check if expansion is needed based on the (x, y) coordinate
+            if (x < expandCheck)
+            {
+                // Maybe later...
+                // expandLeft = true;
+            }
+            else if (x >= currentWidth - expandCheck)
+            {
+                expandRight = true;
+            }
+
+            if (y >= currentHeight - expandCheck)
+            {
+                expandTop = true;
+            }
+            else if (y < expandCheck)
+            {
+                // Maybe later...
+                // expandBottom = true;
+            }
+
+            if (expandLeft || expandRight || expandTop || expandBottom)
+            {
+                this.IsExpanding = true;
+
+                Debug.Log($"Expand Reason: L={expandLeft}; R={expandRight}; T={expandTop}; B={expandBottom};");
+                int newWidth = currentWidth + (expandLeft ? expandBy : 0) + (expandRight ? expandBy : 0);
+                int newHeight = currentHeight + (expandTop ? expandBy : 0) + (expandBottom ? expandBy : 0);
+
+                // Create a new larger array
+                EditorTileState[,] newArray = new EditorTileState[newWidth, newHeight];
+
+                // Copy the elements from the old array to the new one
+                for (int i = 0; i < currentWidth; i++)
+                {
+                    for (int j = 0; j < currentHeight; j++)
+                    {
+                        newArray[i + (expandLeft ? expandBy : 0), j + (expandBottom ? expandBy : 0)] = this.Tiles[i, j];
+                    }
+                }
+
+                Debug.Log("Expand Tiles");
+
+                this.Tiles = newArray;
+
+                this.SetScale(newWidth, newHeight);
+            }
         }
 
         public void Unset(int x, int y)
@@ -317,13 +407,13 @@ namespace Editarrr.LevelEditor
 
         private void CreateLevelState()
         {
-                // Open a new/clean Editor
-                this._levelState = this.LevelManager.Create();
+            // Open a new/clean Editor
+            this.SetLevelState(this.LevelManager.Create());
 
-                // Trigger an event to update the level code in the Exchange.
-                string code = _levelState.Code;
-                this.Exchange.SetCode(code);
-                this.Exchange.SetAutoload(code.Length > 0);
+            // Trigger an event to update the level code in the Exchange.
+            string code = this.LevelState.Code;
+            this.Exchange.SetCode(code);
+            this.Exchange.SetAutoload(code.Length > 0);
         }
 
         public void LoadLevelState()
@@ -332,15 +422,13 @@ namespace Editarrr.LevelEditor
 
             void OnLevelStateLoaded(LevelState levelState)
             {
-                this._levelState = levelState;
-                int scaleX = levelState.ScaleX;
-                int scaleY = levelState.ScaleY;
+                this.SetLevelState(levelState);
 
-                for (int y = 0; y < scaleY; y++)
+                for (int y = 0; y < this.ScaleY; y++)
                 {
-                    for (int x = 0; x < scaleX; x++)
+                    for (int x = 0; x < this.ScaleX; x++)
                     {
-                        TileState tileState = levelState.Tiles[x, y];
+                        TileState tileState = this.LevelState.Tiles[x, y];
 
                         EditorTileData editorTileData = null;
 
@@ -356,16 +444,16 @@ namespace Editarrr.LevelEditor
                     }
                 }
             }
-
         }
 
         public void SaveLevelState()
         {
             this.ScreenshotCamera.orthographicSize = this.SceneCamera.orthographicSize;
             Texture2D screenshot = CreateScreenshot(this.ScreenshotCamera);
-            this._levelState.SetTiles(this.Tiles);
-            this.LevelManager.SaveState(_levelState);
-            this.LevelManager.SaveScreenshot(_levelState.Code, screenshot);
+            this.LevelState.SetScale(this.ScaleX, this.ScaleY);
+            this.LevelState.SetTiles(this.Tiles);
+            this.LevelManager.SaveState(LevelState);
+            this.LevelManager.SaveScreenshot(LevelState.Code, screenshot);
 
             Texture2D CreateScreenshot(Camera cam)
             {
@@ -382,7 +470,29 @@ namespace Editarrr.LevelEditor
             }
         }
 
+        private void SetLevelState(LevelState levelState)
+        {
+            this.LevelState = levelState;
 
+            this.SetScale(this.LevelState.ScaleX, this.LevelState.ScaleY);
+
+            this.Tiles = new EditorTileState[this.ScaleX, this.ScaleY];
+        }
+
+        private void SetScale(int x, int y)
+        {
+            this.ScaleX = x;
+            this.ScaleY = y;
+
+            Debug.Log($"{this.ScaleX}/{this.ScaleY}");
+
+            this.EditorGrid.size = new Vector2(this.ScaleX, this.ScaleY);
+            this.Tilemap.transform.localPosition = new Vector3(
+                this.ScaleX / -2,
+                this.ScaleY / -2, 0);
+
+            OnEditorLevelScaleChanged?.Invoke(this.ScaleX, this.ScaleY);
+        }
         #endregion
     }
 }
