@@ -4,7 +4,9 @@ using Editarrr.Input;
 using Editarrr.Level;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Editarrr.UI;
 using Editarrr.Utilities;
+using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -52,6 +54,10 @@ namespace Editarrr.LevelEditor
         private Camera SceneCamera { get; set; }
         private Camera ScreenshotCamera { get; set; }
         private Tilemap Tilemap { get; set; }
+        private Canvas ModalCanvas { get; set; }
+        private ModalPopup StartModal { get; set; }
+
+
 
         private EditorHoverTile EditorHoverTile { get; set; }
 
@@ -70,6 +76,15 @@ namespace Editarrr.LevelEditor
             this.Tilemap = tilemap;
         }
 
+        public void SetCanvas(Canvas modalCanvas)
+        {
+            this.ModalCanvas = modalCanvas;
+        }
+
+        public void SetStartModal(ModalPopup startModal)
+        {
+            this.StartModal = startModal;
+        }
 
         public override void DoAwake()
         {
@@ -324,6 +339,8 @@ namespace Editarrr.LevelEditor
                 string code = _levelState.Code;
                 this.Exchange.SetCode(code);
                 this.Exchange.SetAutoload(code.Length > 0);
+
+                this.StartModal.Open(this.ModalCanvas.transform);
         }
 
         public void LoadLevelState()
