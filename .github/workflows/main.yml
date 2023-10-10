@@ -3,9 +3,8 @@ name: GameCI Template 🎮
 on:
   push:
     branches:
-      - main
-    tags:
-      - '*' # Push events to all tags
+      - develop # Deploy to github pages only.
+      - main # Deploy to itch and steam.
   workflow_dispatch:
 
 
@@ -50,6 +49,7 @@ jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' # Only build on main branch
     strategy:
       fail-fast: false
       matrix:
