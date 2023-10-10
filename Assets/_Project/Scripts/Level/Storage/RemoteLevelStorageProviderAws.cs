@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Http;
 using Editarrr.Level;
 using Proyecto26;
+using Singletons;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace Level.Storage
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
         {
-            var userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
+            var userId = PreferencesManager.Instance.GetUserId();
 
             var tileData = new AwsTileData()
             {
@@ -211,8 +212,8 @@ namespace Level.Storage
 
         public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback)
         {
-            var userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
-            var userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+            string userId = PreferencesManager.Instance.GetUserId();
+            string userName = PreferencesManager.Instance.GetUserName();
 
             var request = new AwsScoreRequest
             {

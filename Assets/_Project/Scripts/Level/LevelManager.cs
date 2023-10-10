@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Level.Storage;
+using Singletons;
+using Steamworks.Ugc;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -54,8 +55,8 @@ namespace Editarrr.Level
 
             levelState.SetCode(code);
 
-            string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
-            string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+            string userId = PreferencesManager.Instance.GetUserId();
+            string userName = PreferencesManager.Instance.GetUserName();
 
             levelState.SetCreator(userId, userName);
 
@@ -259,7 +260,7 @@ namespace Editarrr.Level
         }
 
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
-        public void CopyLevelFromSteamDirectory(Steamworks.Ugc.Item item)
+        public void CopyLevelFromSteamDirectory(Item item)
         {
             string code = item.Title;
             string sourceDirectory = item.Directory;

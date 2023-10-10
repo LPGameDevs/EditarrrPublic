@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Text;
+using Singletons;
 using UnityEngine;
 using UnityEngine.Networking;
 using Random = UnityEngine.Random;
@@ -31,7 +32,8 @@ namespace LevelEditor
         public void GetData(string code)
         {
             _code = code;
-            _user = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+
+            _user = PreferencesManager.Instance.GetUserName();
             StartCoroutine(nameof(SendRequest), DatabaseRequestType.GetData);
         }
 
@@ -39,7 +41,7 @@ namespace LevelEditor
         {
             _code = code;
             _data = data;
-            _user = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+            _user = PreferencesManager.Instance.GetUserName();
             StartCoroutine(nameof(SendRequest), DatabaseRequestType.InsertData);
         }
 
@@ -47,7 +49,7 @@ namespace LevelEditor
         {
             _code = code;
             _data = data;
-            _user = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+            _user = PreferencesManager.Instance.GetUserName();
             StartCoroutine(nameof(SendRequest), DatabaseRequestType.UpdateData);
         }
 

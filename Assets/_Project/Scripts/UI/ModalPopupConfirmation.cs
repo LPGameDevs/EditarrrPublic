@@ -1,5 +1,5 @@
 using System;
-using Editarrr.UI;
+using Singletons;
 using UnityEngine;
 
 namespace UI
@@ -11,9 +11,29 @@ namespace UI
 
         [SerializeField] protected string ConfirmText;
 
+        public override void Open(Transform parent = null)
+        {
+            if (PreferencesManager.Instance.IsModalEventTracked(this.name, ModalPopupAction.Confirm))
+            {
+                this.Confirm();
+                return;
+            }
+
+            if (parent == null)
+            {
+                parent = FindObjectOfType<Canvas>().transform;
+            }
+            var popup = Instantiate(Prefab, parent);
+            popup.Setup(this);
+
+            PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Open);
+        }
+
         public void Confirm()
         {
             this._onConfirm?.Invoke();
+
+            PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Confirm);
         }
 
         public void SetConfirm(Action uploadLevel)
