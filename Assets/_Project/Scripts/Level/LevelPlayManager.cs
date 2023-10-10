@@ -14,10 +14,13 @@ namespace Editarrr.Level
     [CreateAssetMenu(fileName = "LevelPlayManager", menuName = "Managers/Level/new Level Play Manager")]
     public class LevelPlayManager : ManagerComponent
     {
+        public static LevelLoading OnLevelLoading { get; set; }
+        public delegate void LevelLoading(LevelState levelState);
+
+
         private const string Documentation = "This manager will build a level and instanciate its prefabs.\r\n";
 
         #region Properties
-
         [field: SerializeField, Info(Documentation)] private EditorLevelExchange Exchange { get; set; }
 
         [field: SerializeField, Header("Managers")] public LevelManager LevelManager { get; private set; }
@@ -29,6 +32,9 @@ namespace Editarrr.Level
         private Tilemap _walls, _damage;
         private GameplayGuiManager _gameplayGuiManager;
         private GhostRecorder _recorder;
+
+        public LevelState Level { get; private set; }
+        #endregion
 
         public override void DoAwake()
         {
@@ -60,8 +66,6 @@ namespace Editarrr.Level
             _recorder.SetLevelManager(this.LevelManager);
         }
 
-        #endregion
-
         public override void DoStart()
         {
             string code = this.Exchange.CodeToLoad;
@@ -71,6 +75,9 @@ namespace Editarrr.Level
 
         private void OnLevelLoaded(LevelState levelState)
         {
+            OnLevelLoading?.Invoke(levelState);
+
+            this.Level = levelState;
             PaintTilesFromFile(levelState);
             _gameplayGuiManager.SetLevelState(levelState);
             //GameEvent.Trigger(GameEventType.Unpause);

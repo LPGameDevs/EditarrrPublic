@@ -22,10 +22,7 @@ namespace Editarrr.Level
 
         public LevelState(int scaleX, int scaleY)
         {
-            this.ScaleX = scaleX;
-            this.ScaleY = scaleY;
-
-            this.Tiles = new TileState[this.ScaleX, this.ScaleY];
+            this.SetScale(scaleX, scaleY);
         }
 
         public LevelState(LevelSave levelSave)
@@ -61,6 +58,14 @@ namespace Editarrr.Level
             }
         }
 
+
+        public void SetScale(int x, int y)
+        {
+            this.ScaleX = x;
+            this.ScaleY = y;
+
+            this.Tiles = new TileState[this.ScaleX, this.ScaleY];
+        }
 
         public void SetTiles(EditorTileState[,] editorTiles)
         {

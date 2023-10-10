@@ -168,10 +168,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eecf07c1abb29947a1aefd130f408ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <LevelPlayManager>k__BackingField: {fileID: 11400000, guid: 64616958872fa37b6aaf8065553a3784, type: 2}
   _areaCollider: {fileID: 1320596433349447280}
   _areaColliderBase: {fileID: 715252345538622978}
   _fallDeathTrigger: {fileID: 568254735394339745}
   _cameraConfinementCollider: {fileID: 5481394160589148136}
+  additionalPlayAreaOffset: 2
+  additionalFallDeathTriggerOffset: -1.5
 --- !u!66 &1320596433349447280
 CompositeCollider2D:
   m_ObjectHideFlags: 0
