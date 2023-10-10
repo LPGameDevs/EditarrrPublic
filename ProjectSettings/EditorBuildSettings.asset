@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/UserScreen.unity
     guid: 51e2bcdabb604d2bd9dd5682cd33f0e9
   - enabled: 1
+    path: Assets/_Project/Scenes/StartScreen.unity
+    guid: 22861a6eb95381ea581a28d47fd3ccc8
+  - enabled: 1
     path: Assets/_Project/Scenes/EditorSelection.unity
     guid: 003596a6f6252a61c9704b61638ca762
   - enabled: 1
@@ -20,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/LevelBrowser.unity
     guid: 0c11ec4b40424580b85f9af20b978c63
+  - enabled: 1
+    path: Assets/_Project/Scenes/EditorReplay.unity
+    guid: 1555d23689a4940efa867ad5510ef0c2
   m_configObjects: {}

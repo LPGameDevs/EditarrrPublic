@@ -1,8 +1,11 @@
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Editarrr.Level;
 using SteamIntegration;
+using Steamworks;
+using Steamworks.Data;
 using UnityEngine;
 
 namespace Level.Storage
@@ -18,6 +21,12 @@ namespace Level.Storage
         {
             // This is for dev only. Should be called in the user name scene.
             // SteamManager.Instance.Init();
+            Steamworks.SteamUGC.OnDownloadItemResult += OnDownloadItemResult;
+        }
+
+        private void OnDownloadItemResult(Result obj)
+        {
+            throw new NotImplementedException();
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
@@ -158,6 +167,9 @@ namespace Level.Storage
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
         {
+            // Disabling level browsing for now.
+            return;
+
             // Call async function.
             LoadAllLevelDataAsync(callback);
         }

@@ -184,7 +184,6 @@ namespace Player
                 OnPlayerLanded?.Invoke(_currentVerticalSpeed);
                 _timeInAir = 0f;
             }
-            Debug.Log(_currentVerticalSpeed);
             _collisions.down = groundedCheck;
 
             // The rest

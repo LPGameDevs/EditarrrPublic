@@ -1,6 +1,8 @@
 using Browser;
 using Editarrr.Misc;
 using Editarrr.Systems;
+using Editarrr.UI;
+using UI;
 using UnityEngine;
 
 namespace Editarrr.LevelEditor
@@ -12,11 +14,15 @@ namespace Editarrr.LevelEditor
 
         [field: SerializeField, Info(Documentation)] public LevelSelectionLoader LevelLoader { get; private set; }
         [field: SerializeField] public LeaderboardForm Leaderboard { get; private set; }
+        [field: SerializeField] public ModalPopupConfirmation UploadModal { get; private set; }
+        [field: SerializeField] public ModalPopupConfirmation DeleteModal { get; private set; }
 
         protected override void PreAwake()
         {
             this.Manager.SetLevelLoader(this.LevelLoader);
             this.Manager.SetLeaderboard(this.Leaderboard);
+            this.Manager.SetUploadModal(this.UploadModal);
+            this.Manager.SetDeleteModal(this.DeleteModal);
         }
     }
 }

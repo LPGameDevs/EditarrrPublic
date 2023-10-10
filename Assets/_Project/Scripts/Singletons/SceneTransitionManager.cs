@@ -18,12 +18,13 @@ namespace Singletons
      */
     public class SceneTransitionManager : UnityPersistentSingleton<SceneTransitionManager>
     {
-        public static string LevelSelectionSceneName = "EditorSelection";
-        public static string TestLevelSceneName = "EditorTest";
-        public static string CreateLevelSceneName = "EditorCreate";
+        public static readonly string StartSceneName = "StartScreen";
+        public static readonly string LevelSelectionSceneName = "EditorSelection";
+        public static readonly string TestLevelSceneName = "EditorTest";
+        public static readonly string CreateLevelSceneName = "EditorCreate";
         // @todo Create the replay scene.
-        public static string ReplayLevelSceneName = "EditorReplay";
-        public static string BrowserSceneName = "LevelBrowser";
+        public static readonly string ReplayLevelSceneName = "EditorReplay";
+        public static readonly string BrowserSceneName = "LevelBrowser";
 
         public static Action<string> OnSceneChange;
 

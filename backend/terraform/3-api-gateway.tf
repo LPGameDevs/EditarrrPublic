@@ -2,6 +2,12 @@
 resource "aws_apigatewayv2_api" "main" {
   name          = "main"
   protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_headers = ["*"]
+    allow_methods = ["*"]
+    allow_origins = ["*"]
+  }
 }
 
 # Dev stage for development. Other stages can be created for production, staging, etc.

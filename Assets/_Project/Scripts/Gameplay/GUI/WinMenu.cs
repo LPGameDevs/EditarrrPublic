@@ -19,6 +19,9 @@ namespace Gameplay.GUI
         public Transform BackEditorButton;
         public bool IsReplay = false;
 
+        [SerializeField] Animator _animator;
+        const string VICTORY_TRIGGER_NAME = "Victory";
+
         private string _code;
         private string _user;
         private float _time;
@@ -71,8 +74,8 @@ namespace Gameplay.GUI
 
         public void Show()
         {
-            // @todo SFX
             UpdateContent();
+            _animator.SetTrigger(VICTORY_TRIGGER_NAME);
         }
 
         public void SetCode(string code)
