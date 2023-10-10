@@ -326,27 +326,63 @@ namespace Editarrr.LevelEditor
 
             if (expandLeft || expandRight || expandTop || expandBottom)
             {
+                // Debug.Log($"Expand Reason: L={expandLeft}; R={expandRight}; T={expandTop}; B={expandBottom};");
+
+                int expandByX = (expandRight ? (this.Settings.AutoExpansionScaleX - currentWidth).Min(expandBy) : 0);
+                int expandByY = (expandTop ? (this.Settings.AutoExpansionScaleY - currentHeight).Min(expandBy) : 0);
+
+                int newWidth = currentWidth + expandByX;
+                int newHeight = currentHeight + expandByY;
+
+                while (newWidth * newHeight > this.Settings.AutoExpansionSize)
+                {
+                    if (expandByX > 1)
+                    {
+                        expandByX /= 2;
+                        newWidth = currentWidth + expandByX;
+                    }
+                    if (expandByY > 1)
+                    {
+                        expandByY /= 2;
+                        newHeight = currentHeight + expandByY;
+                    }
+
+                    if (expandByX <= 1 && expandByY <= 1)
+                    {
+                        // Debug.Log("Can not expand: Step size too small!");
+                        return;
+                    }
+                }
+
+                if (expandByX <= 0 && expandByY <= 0)
+                {
+                    // Debug.Log("Can not expand: Scale reached!");
+                    return;
+                }
+
+                //int newWidth = currentWidth + (expandLeft ? expandBy : 0) + (expandRight ? expandBy : 0);
+                //int newHeight = currentHeight + (expandTop ? expandBy : 0) + (expandBottom ? expandBy : 0);
+
+                // Debug.Log($"Expand Change: CW={currentWidth}; NW={newWidth}; CH={currentHeight}; NH={newHeight};");
+
                 this.IsExpanding = true;
 
-                Debug.Log($"Expand Reason: L={expandLeft}; R={expandRight}; T={expandTop}; B={expandBottom};");
-                int newWidth = currentWidth + (expandLeft ? expandBy : 0) + (expandRight ? expandBy : 0);
-                int newHeight = currentHeight + (expandTop ? expandBy : 0) + (expandBottom ? expandBy : 0);
-
                 // Create a new larger array
-                EditorTileState[,] newArray = new EditorTileState[newWidth, newHeight];
+                EditorTileState[,] tileStates = new EditorTileState[newWidth, newHeight];
 
                 // Copy the elements from the old array to the new one
                 for (int i = 0; i < currentWidth; i++)
                 {
                     for (int j = 0; j < currentHeight; j++)
                     {
-                        newArray[i + (expandLeft ? expandBy : 0), j + (expandBottom ? expandBy : 0)] = this.Tiles[i, j];
+                        //tileStates[i + (expandLeft ? expandBy : 0), j + (expandBottom ? expandBy : 0)] = this.Tiles[i, j];
+                        tileStates[i, j] = this.Tiles[i, j];
                     }
                 }
 
                 Debug.Log("Expand Tiles");
 
-                this.Tiles = newArray;
+                this.Tiles = tileStates;
 
                 this.SetScale(newWidth, newHeight);
             }
