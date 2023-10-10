@@ -60,5 +60,15 @@ namespace Singletons
             int hasTracked = PlayerPrefs.GetInt($"ModalPopupTrack-{name}-{action.ToString()}", 0);
             return hasTracked == 1;
         }
+
+        public float GetSlider(string volumeParameter)
+        {
+            return PlayerPrefs.GetFloat($"SliderVolume-{volumeParameter}", 0.7f);
+        }
+
+        public void SetSlider(string volumeParameter, float sliderValue)
+        {
+            PlayerPrefs.SetFloat($"SliderVolume-{volumeParameter}", sliderValue);
+        }
     }
 }
