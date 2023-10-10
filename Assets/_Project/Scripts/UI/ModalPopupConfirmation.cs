@@ -11,9 +11,29 @@ namespace UI
 
         [SerializeField] protected string ConfirmText;
 
+        public override void Open(Transform parent = null)
+        {
+            if (HasTrackedEvent(this.name, ModalPopupAction.Confirm))
+            {
+                this.Confirm();
+                return;
+            }
+
+            if (parent == null)
+            {
+                parent = FindObjectOfType<Canvas>().transform;
+            }
+            var popup = Instantiate(Prefab, parent);
+            popup.Setup(this);
+
+            this.TrackEvent(this.name, ModalPopupAction.Open);
+        }
+
         public void Confirm()
         {
             this._onConfirm?.Invoke();
+
+            this.TrackEvent(this.name, ModalPopupAction.Confirm);
         }
 
         public void SetConfirm(Action uploadLevel)
