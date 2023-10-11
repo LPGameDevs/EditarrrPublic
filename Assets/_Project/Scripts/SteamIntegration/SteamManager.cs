@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using Singletons;
+using Steamworks.Data;
 using UnityEngine;
 
 namespace SteamIntegration
@@ -6,8 +9,24 @@ namespace SteamIntegration
     public class SteamManager: UnitySingleton<SteamManager>
     {
         public const uint SteamAppsId = 2609410;
+        public bool IsInitialized => _initialized;
         private bool _initialized = false;
+
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+        private Dictionary<GameAchievement, Steamworks.Data.Achievement> _achievements = new Dictionary<GameAchievement, Achievement>();
+#endif
+
         // public const uint SteamAppsId = 1769870;
+
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+        protected override void Awake()
+        {
+            base.Awake();
+
+            TrackAchievements();
+        }
+#endif
+
 
         public void Init()
         {
@@ -43,6 +62,42 @@ namespace SteamIntegration
             Steamworks.SteamClient.Shutdown();
 #endif
         }
+
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+
+        private void TrackAchievements()
+        {
+            foreach (Achievement achievement in Steamworks.SteamUserStats.Achievements)
+            {
+                var achievementName = (GameAchievement) Enum.Parse(typeof(GameAchievement), achievement.Name);
+                if (achievementName == GameAchievement.None)
+                {
+                    continue;
+                }
+
+                _achievements.Add(achievementName, achievement);
+
+            }
+        }
+
+        public bool UnlockAchievement(GameAchievement achievement)
+        {
+            if (!_achievements.ContainsKey(achievement))
+            {
+                Debug.LogError($"Achievement {achievement} not found.");
+                return false;
+            }
+
+            Steamworks.Data.Achievement steamAchievement = _achievements[achievement];
+            if (steamAchievement.State)
+            {
+                Debug.Log($"Achievement {achievement} already unlocked.");
+                return false;
+            }
+
+            return steamAchievement.Trigger();
+        }
+#endif
 
     }
 }
