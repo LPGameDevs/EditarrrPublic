@@ -30,21 +30,18 @@ namespace Level.Storage
             if (Providers.Contains(RemoteLevelStorageProviderType.Aws))
             {
                 provider = new RemoteLevelStorageProviderAws();
+                provider.Initialize();
+                _providers.Add(provider);
             }
             // @todo Change this so multiple providers can be used at once.
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
-            else if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
+            if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
             {
                 provider = new RemoteLevelStorageProviderSteam();
+                provider.Initialize();
+                _providers.Add(provider);
             }
 #endif
-            else
-            {
-                return;
-            }
-
-            provider.Initialize();
-            _providers.Add(provider);
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
