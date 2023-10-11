@@ -65,7 +65,8 @@ namespace Editarrr.LevelEditor
         // From System
         private Camera SceneCamera { get; set; }
         private Camera ScreenshotCamera { get; set; }
-        private Tilemap Tilemap { get; set; }
+        private Tilemap Tilemap_Foreground { get; set; }
+        private Tilemap Tilemap_Background { get; set; }
         private Canvas ModalCanvas { get; set; }
         private ModalPopup StartModal { get; set; }
 
@@ -83,9 +84,14 @@ namespace Editarrr.LevelEditor
             this.ScreenshotCamera = camera;
         }
 
-        public void SetTilemap(Tilemap tilemap)
+        public void SetTilemap_Foreground(Tilemap tilemap)
         {
-            this.Tilemap = tilemap;
+            this.Tilemap_Foreground = tilemap;
+        }
+
+        public void SetTilemap_Background(Tilemap tilemap)
+        {
+            this.Tilemap_Background = tilemap;
         }
 
         public void SetCanvas(Canvas modalCanvas)
@@ -137,17 +143,29 @@ namespace Editarrr.LevelEditor
 
             EditorTileData tileData = this.EditorTileSelection.ActiveElement;
 
+            if (tileData != null)
+            {
+                if (tileData.IsBackground)
+                {
+                    this.Tilemap_Foreground.color = Color.white * .5f;
+                }
+                else
+                {
+                    this.Tilemap_Foreground.color = Color.white;
+                }
+            }
+
             if (this.MouseLeftButton.WasPressed)
             {
                 EditorTileState state = this.Get(x, y);
 
-                if (state != null &&
-                    state.TileData == tileData &&
-                    state.Rotation == this.EditorTileSelection.Rotation)
-                {
-                    // Use same Rotation in if ???
-                    // Change Options/Variations/Show Options Modify UI....
-                }
+                //if (state != null &&
+                //    state.Foreground == tileData &&
+                //    state.Rotation == this.EditorTileSelection.Rotation)
+                //{
+                //    // Use same Rotation in if ???
+                //    // Change Options/Variations/Show Options Modify UI....
+                //}
             }
             else if (this.MouseLeftButton.IsPressed)
             {
@@ -159,7 +177,7 @@ namespace Editarrr.LevelEditor
             }
             else if (this.MouseRightButton.IsPressed)
             {
-                this.Unset(x, y);
+                this.Unset(x, y, tileData);
             }
 
             if (!this.MouseLeftButton.IsPressed)
@@ -199,7 +217,7 @@ namespace Editarrr.LevelEditor
         private Vector3Int GetCursorTileMapPosition()
         {
             Vector3 point = this.SceneCamera.ScreenToWorldPoint(MousePosition.Read<Vector2>());
-            Vector3Int tilePosition = this.Tilemap.WorldToCell(point);
+            Vector3Int tilePosition = this.Tilemap_Foreground.WorldToCell(point);
 
             //tilePosition.x += this.Settings.EditorLevelScaleX / 2;
             //tilePosition.y += this.Settings.EditorLevelScaleY / 2;
@@ -211,19 +229,21 @@ namespace Editarrr.LevelEditor
         {
             if (tileData == null)
             {
-                this.Unset(x, y);
+                this.Unset(x, y, tileData);
                 return;
             }
 
             EditorTileState current = this.Tiles[x, y];
-            TileType tileType = tileData.Tile.Type;
 
-            if (current?.TileData.Tile.Type == tileData.Tile.Type)
+            EditorTileData currentTileData = tileData.IsBackground ? current?.Background : current?.Foreground;
+
+            if (currentTileData?.Tile.Type == tileData.Tile.Type)
                 return;
 
             bool updateLocations = !tileData.IsInfinite;
 
             int count = 0;
+            TileType tileType = tileData.Tile.Type;
 
             if (updateLocations)
             {
@@ -257,7 +277,7 @@ namespace Editarrr.LevelEditor
                 }
             }
 
-            this.Unset(x, y);
+            this.Unset(x, y, tileData);
 
             this.SetTile(x, y, tileData, rotation);
 
@@ -286,22 +306,41 @@ namespace Editarrr.LevelEditor
             EditorLevelManager.OnTileSet?.Invoke(tileData, tileType, count);
         }
 
-        private void SetTile(int x, int y, EditorTileData tileData, Rotation rotation)
+        private void SetTile(int x, int y, EditorTileData tileData, Rotation tileRotation)
         {
-            if (tileData.Tile.CanRotate)
+            Tilemap tilemap;
+            EditorTileState currentState = this.Tiles[x, y];
+
+            if (currentState == null)
             {
-                this.Tiles[x, y] = new EditorTileState(tileData, rotation);
-                this.Tilemap.SetTile(
+                this.Tiles[x, y] = currentState = new EditorTileState();
+            }
+
+            if (tileData.IsBackground)
+            {
+                tilemap = this.Tilemap_Background;
+                currentState.SetBackground(tileData);
+                currentState.SetBackgroundRotation(tileRotation);
+            }
+            else
+            {
+                tilemap = this.Tilemap_Foreground;
+                currentState.SetForeground(tileData);
+                currentState.SetForegroundRotation(tileRotation);
+            }
+
+            if (tileRotation != Rotation.North)
+            {
+                tilemap.SetTile(
                     new TileChangeData(
                         new Vector3Int(x, y, 0),
                         tileData.EditorGridTile,
                         Color.white,
-                        Matrix4x4.Rotate(Quaternion.Euler(0, 0, rotation.ToDegree()))), true);
+                        Matrix4x4.Rotate(Quaternion.Euler(0, 0, tileRotation.ToDegree()))), true);
             }
             else
             {
-                this.Tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
-                this.Tiles[x, y] = new EditorTileState(tileData, Rotation.North);
+                tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
             }
         }
 
@@ -403,17 +442,35 @@ namespace Editarrr.LevelEditor
             }
         }
 
-        public void Unset(int x, int y)
+        public void Unset(int x, int y, EditorTileData tileData)
         {
             EditorTileState current = this.Tiles[x, y];
 
             if (current == null)
                 return;
 
-            TileType tileType = current.TileData.Tile.Type;
+            EditorTileData currentTileData = null;
+            Tilemap tilemap = null;
+
+            if (tileData.IsBackground)
+            {
+                currentTileData = current.Background;
+                tilemap = this.Tilemap_Background;
+            }
+            else
+            {
+                currentTileData = current.Foreground;
+                tilemap = this.Tilemap_Foreground;
+            }
+
+            // No tile data at spot, return
+            if (currentTileData == null)
+                return;
+
+            TileType tileType = currentTileData.Tile.Type;
             int count = 0;
 
-            if (!current.TileData.IsInfinite)
+            if (!currentTileData.IsInfinite)
             {
                 if (this.TileLocations.ContainsKey(tileType))
                 {
@@ -424,10 +481,10 @@ namespace Editarrr.LevelEditor
                 }
             }
 
-            this.Tilemap.SetTile(new Vector3Int(x, y, 0), null);
+            tilemap.SetTile(new Vector3Int(x, y, 0), null);
             this.Tiles[x, y] = null;
 
-            EditorLevelManager.OnTileUnset?.Invoke(current.TileData, tileType, count);
+            EditorLevelManager.OnTileUnset?.Invoke(currentTileData, tileType, count);
         }
 
         public EditorTileState Get(int x, int y)
@@ -490,9 +547,13 @@ namespace Editarrr.LevelEditor
                             continue;
                         }
 
-                        editorTileData = this.EditorTileDataPool.Get(tileState.Type);
+                        editorTileData = this.EditorTileDataPool.Get(tileState.Foreground);
+                        this.Set(x, y, editorTileData, tileState.ForegroundRotation);
 
-                        this.Set(x, y, editorTileData, tileState.Rotation);
+                        editorTileData = this.EditorTileDataPool.Get(tileState.Background);
+                        if (editorTileData == null)
+                            continue;
+                        this.Set(x, y, editorTileData, tileState.BackgroundRotation);
                     }
                 }
             }
@@ -502,6 +563,7 @@ namespace Editarrr.LevelEditor
         {
             this.ScreenshotCamera.orthographicSize = this.SceneCamera.orthographicSize;
             Texture2D screenshot = CreateScreenshot(this.ScreenshotCamera);
+
             this.LevelState.SetScale(this.ScaleX, this.ScaleY);
             this.LevelState.SetTiles(this.Tiles);
             this.LevelManager.SaveState(LevelState);
@@ -539,7 +601,11 @@ namespace Editarrr.LevelEditor
             Debug.Log($"{this.ScaleX}/{this.ScaleY}");
 
             this.EditorGrid.size = new Vector2(this.ScaleX, this.ScaleY);
-            this.Tilemap.transform.localPosition = new Vector3(
+            this.Tilemap_Foreground.transform.localPosition = new Vector3(
+                this.ScaleX / -2,
+                this.ScaleY / -2, 0);
+            
+            this.Tilemap_Background.transform.localPosition = new Vector3(
                 this.ScaleX / -2,
                 this.ScaleY / -2, 0);
 

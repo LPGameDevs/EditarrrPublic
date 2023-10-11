@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GroupPool>k__BackingField: {fileID: 11400000, guid: f9fdc8e593c7714489b243f712c1654e, type: 2}
   <DefaultElement>k__BackingField: {fileID: 11400000, guid: 8415205eb348efa43b452cd6a9b1ca58, type: 2}
-  <Rotate>k__BackingField: {fileID: 11400000, guid: 9783b11421ea29b4187d9ea30aadae04, type: 2}
-  <SelectTile>k__BackingField: {fileID: 11400000, guid: 09fe98eb0b96c5843a102793839a1a5b, type: 2}
+  <Input_Rotate>k__BackingField: {fileID: 11400000, guid: 9783b11421ea29b4187d9ea30aadae04, type: 2}
+  <Input_SelectTile>k__BackingField: {fileID: 11400000, guid: 09fe98eb0b96c5843a102793839a1a5b, type: 2}
+  <Input_SwitchTile>k__BackingField: {fileID: 11400000, guid: 6b479f728bac27547a06816953edd747, type: 2}
+  <Input_NextGroup>k__BackingField: {fileID: 11400000, guid: d4bf20c1b8981c94cad46baa325c5c34, type: 2}

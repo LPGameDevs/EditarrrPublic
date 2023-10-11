@@ -7,19 +7,26 @@ namespace Editarrr.Level
 {
     public class TileState
     {
-        public TileType Type { get; private set; }
-        public Rotation Rotation { get; private set; }
+        public TileType Foreground { get; private set; }
+        public Rotation ForegroundRotation { get; private set; }
 
-        public TileState(TileType type, Rotation rotation)
+        public TileType Background { get; private set; }
+        public Rotation BackgroundRotation { get; private set; }
+
+        public TileState(TileType foreground, TileType background, Rotation foregroundRotation, Rotation backgroundRotation)
         {
-            this.Type = type;
-            this.Rotation = rotation;
+            this.Foreground = foreground;
+            this.Background = background;
+            this.ForegroundRotation = foregroundRotation;
+            this.BackgroundRotation = backgroundRotation;
         }
 
         public TileState(TileSave tileSave)
         {
-            this.Type = tileSave.Type;
-            this.Rotation = tileSave.Rotation;
+            this.Foreground = tileSave.Foreground;
+            this.Background = tileSave.Background;
+            this.ForegroundRotation = tileSave.ForegroundRotation;
+            this.BackgroundRotation = tileSave.BackgroundRotation;
         }
 
         public TileSave CreateSave(int x, int y)

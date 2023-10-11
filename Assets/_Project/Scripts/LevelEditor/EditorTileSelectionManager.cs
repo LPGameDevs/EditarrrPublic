@@ -23,8 +23,10 @@ namespace Editarrr.LevelEditor
         public EditorTileData ActiveElement { get; private set; }
 
         #region Input
-        [field: SerializeField, Header("Input")] private InputValue Rotate { get; set; }
-        [field: SerializeField] private InputValue SelectTile { get; set; }
+        [field: SerializeField, Header("Input")] private InputValue Input_Rotate { get; set; }
+        [field: SerializeField] private InputValue Input_SelectTile { get; set; }
+        [field: SerializeField] private InputValue Input_SwitchTile { get; set; }
+        [field: SerializeField] private InputValue Input_NextGroup { get; set; }
         #endregion
 
         public int ActiveGroupIndex { get; private set; }
@@ -43,7 +45,7 @@ namespace Editarrr.LevelEditor
             // @todo This feature allows us to always use the same tile at the start
             // of level editing. If we want to track whatever the most recent tile was
             // just uncomment this line.
-            ActiveElement = DefaultElement;
+            this.ActiveElement = this.DefaultElement;
         }
 
         public override void DoStart()
@@ -55,17 +57,22 @@ namespace Editarrr.LevelEditor
 
         public override void DoUpdate()
         {
-            if (this.Rotate.WasPressed)
+            if (this.Input_Rotate.WasPressed)
                 this.NextRotation();
 
-            if (this.SelectTile.WasPressed)
+            if (this.Input_SelectTile.WasPressed)
             {
-                int index = (int)this.SelectTile.Read<float>();
+                int index = (int)this.Input_SelectTile.Read<float>();
 
                 index = (index - 1).Loop(10);
 
                 this.SetActiveElementIndex(index);
                 OnTileSelect?.Invoke();
+            }
+
+            if (this.Input_NextGroup.WasPressed)
+            {
+                this.NextGroup();
             }
         }
 
