@@ -9,6 +9,7 @@ namespace Gameplay.GUI
     public class WinMenu : MonoBehaviour
     {
         public static event Action<string, float> OnScoreSubmit;
+        public static event Action<string, int> OnRatingSubmit;
         public static event Action OnScoreSubmitted;
 
         public TMP_Text LevelCode;

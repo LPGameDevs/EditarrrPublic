@@ -101,5 +101,21 @@ namespace Level.Storage
                 provider.GetScoresForLevel(code, callback);
             }
         }
+
+        public void SubmitRating(int score, LevelSave levelSave, RemoteRatingStorage_RatingSubmittedCallback callback)
+        {
+            foreach (var provider in _providers)
+            {
+                provider.SubmitRating(score, levelSave, callback);
+            }
+        }
+
+        public void GetRatingsForLevel(string code, RemoteRatingStorage_AllRatingsLoadedCallback callback)
+        {
+            foreach (var provider in _providers)
+            {
+                provider.GetRatingsForLevel(code, callback);
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using Editarrr.Managers;
 using Editarrr.Misc;
 using Gameplay.GUI;
 using LevelEditor;
+using Singletons;
 using Systems;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -154,9 +155,24 @@ namespace Editarrr.Level
             {
                 LevelManager.SubmitScore(time, levelSave, ScoreSubmitted);
 
-                void ScoreSubmitted(string code, string remoteid, bool issteam)
+                void ScoreSubmitted(string code, string remoteId, bool isSteam)
                 {
                     // @todo do we need this?
+                }
+            }
+        }
+
+        private void OnRatingSubmitRequested(string code, int rating)
+        {
+            LevelManager.LevelStorage.LoadLevelData(code, RatingLevelLoaded);
+
+            void RatingLevelLoaded(LevelSave levelSave)
+            {
+                LevelManager.SubmitRating(rating, levelSave, RatingSubmitted);
+
+                void RatingSubmitted(string code, string remoteId, bool isSteam)
+                {
+                    PreferencesManager.Instance.SetLevelRating(code, rating);
                 }
             }
         }
@@ -164,11 +180,13 @@ namespace Editarrr.Level
         public override void DoOnEnable()
         {
             WinMenu.OnScoreSubmit += OnScoreSubmitRequested;
+            WinMenu.OnRatingSubmit += OnRatingSubmitRequested;
         }
 
         public override void DoOnDisable()
         {
             WinMenu.OnScoreSubmit -= OnScoreSubmitRequested;
+            WinMenu.OnRatingSubmit -= OnRatingSubmitRequested;
         }
     }
 }
