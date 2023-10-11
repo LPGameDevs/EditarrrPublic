@@ -158,6 +158,7 @@ namespace Editarrr.Level
                 void ScoreSubmitted(string code, string remoteId, bool isSteam)
                 {
                     // @todo do we need this?
+                    AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelScoreSubmitted);
                 }
             }
         }
@@ -173,6 +174,7 @@ namespace Editarrr.Level
                 void RatingSubmitted(string code, string remoteId, bool isSteam)
                 {
                     PreferencesManager.Instance.SetLevelRating(code, rating);
+                    AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelRated);
                 }
             }
         }

@@ -77,6 +77,12 @@ namespace Gameplay.GUI
         {
             UpdateContent();
             _animator.SetTrigger(VICTORY_TRIGGER_NAME);
+
+            // @todo only show this if its not the players own level.
+            if (false)
+            {
+                AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelCompleted);
+            }
         }
 
         public void SetCode(string code)

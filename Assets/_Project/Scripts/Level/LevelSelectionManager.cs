@@ -1,5 +1,4 @@
 using Browser;
-using CorgiExtension;
 using Editarrr.Level;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
@@ -7,6 +6,8 @@ using Editarrr.Misc;
 using Editarrr.UI;
 using Gameplay.GUI;
 using Level.Storage;
+using LevelEditor;
+using Singletons;
 using UI;
 using UnityEngine;
 
@@ -112,6 +113,8 @@ public class LevelSelectionManager : ManagerComponent
         {
             Debug.Log("Upload finished for level " + level.Code + ".");
         }
+
+        AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelSubmitted);
 
         // Update display.
         DestroyAndRefreshLevels();

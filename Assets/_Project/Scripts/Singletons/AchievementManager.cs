@@ -34,7 +34,7 @@ namespace Singletons
         {
             if (SteamManager.Instance.IsInitialized)
             {
-                SteamManager.Instance.UnlockAchievement(achievement);
+                var success = SteamManager.Instance.UnlockAchievement(achievement);
                 return;
             }
 

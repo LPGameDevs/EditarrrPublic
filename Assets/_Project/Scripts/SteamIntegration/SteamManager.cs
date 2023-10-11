@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SteamIntegration
 {
-    public class SteamManager: UnitySingleton<SteamManager>
+    public class SteamManager: UnityPersistentSingleton<SteamManager>
     {
         public const uint SteamAppsId = 2609410;
         public bool IsInitialized => _initialized;
@@ -19,10 +19,8 @@ namespace SteamIntegration
         // public const uint SteamAppsId = 1769870;
 
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
-        protected override void Awake()
+        protected void Start()
         {
-            base.Awake();
-
             TrackAchievements();
         }
 #endif
@@ -69,7 +67,7 @@ namespace SteamIntegration
         {
             foreach (Achievement achievement in Steamworks.SteamUserStats.Achievements)
             {
-                var achievementName = (GameAchievement) Enum.Parse(typeof(GameAchievement), achievement.Name);
+                var achievementName = (GameAchievement) Enum.Parse(typeof(GameAchievement), achievement.Identifier);
                 if (achievementName == GameAchievement.None)
                 {
                     continue;

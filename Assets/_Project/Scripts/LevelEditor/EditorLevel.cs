@@ -1,12 +1,10 @@
 using System;
 using System.IO;
-using Editarrr.Level;
-using LevelEditor;
 using Singletons;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CorgiExtension
+namespace LevelEditor
 {
     public class EditorLevel : MonoBehaviour
     {
