@@ -61,10 +61,11 @@ namespace SteamIntegration
 #endif
         }
 
-#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
 
         private void TrackAchievements()
         {
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+
             foreach (Achievement achievement in Steamworks.SteamUserStats.Achievements)
             {
                 var achievementName = (GameAchievement) Enum.Parse(typeof(GameAchievement), achievement.Identifier);
@@ -74,12 +75,15 @@ namespace SteamIntegration
                 }
 
                 _achievements.Add(achievementName, achievement);
-
             }
+#endif
         }
 
         public bool UnlockAchievement(GameAchievement achievement)
         {
+            bool success = false;
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+
             if (!_achievements.ContainsKey(achievement))
             {
                 Debug.LogError($"Achievement {achievement} not found.");
@@ -93,9 +97,10 @@ namespace SteamIntegration
                 return false;
             }
 
-            return steamAchievement.Trigger();
-        }
+            success = steamAchievement.Trigger();
 #endif
+            return success;
+        }
 
     }
 }
