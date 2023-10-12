@@ -329,7 +329,7 @@ namespace Editarrr.LevelEditor
                 currentState.SetForegroundRotation(tileRotation);
             }
 
-            if (tileRotation != Rotation.North)
+            if (tileData.Tile.CanRotate && tileRotation != Rotation.North)
             {
                 tilemap.SetTile(
                     new TileChangeData(
@@ -451,16 +451,23 @@ namespace Editarrr.LevelEditor
 
             EditorTileData currentTileData = null;
             Tilemap tilemap = null;
+            bool setNull = false;
 
             if (tileData.IsBackground)
             {
                 currentTileData = current.Background;
                 tilemap = this.Tilemap_Background;
+                setNull = current.Foreground == null;
+
+                current.SetBackground(null);
             }
             else
             {
                 currentTileData = current.Foreground;
                 tilemap = this.Tilemap_Foreground;
+                setNull = current.Background == null;
+
+                current.SetForeground(null);
             }
 
             // No tile data at spot, return
@@ -482,7 +489,11 @@ namespace Editarrr.LevelEditor
             }
 
             tilemap.SetTile(new Vector3Int(x, y, 0), null);
-            this.Tiles[x, y] = null;
+
+            if (setNull)
+            {
+                this.Tiles[x, y] = null;
+            }
 
             EditorLevelManager.OnTileUnset?.Invoke(currentTileData, tileType, count);
         }
