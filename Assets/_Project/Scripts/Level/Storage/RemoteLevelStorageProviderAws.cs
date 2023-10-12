@@ -252,6 +252,48 @@ namespace Level.Storage
             });
         }
 
+        public void SubmitRating(int rating, LevelSave levelSave, RemoteRatingStorage_RatingSubmittedCallback callback)
+        {
+            string userId = PreferencesManager.Instance.GetUserId();
+            string userName = PreferencesManager.Instance.GetUserName();
+
+            var request = new AwsRatingRequest
+            {
+                code = levelSave.Code,
+                rating = rating,
+                creator = userId,
+                creatorName = userName
+            };
+
+            RestClient.Post<AwsUploadResponse>($"{AwsLevelUrl}/dev/levels/{levelSave.RemoteId}/ratings", JsonUtility.ToJson(request)).Then(res =>
+            {
+                Debug.Log("Rating uploaded for level: " + levelSave.Code);
+                callback?.Invoke(levelSave.Code, res.id);
+            }).Catch(err => { this.LogMessage("Error", err.Message); });
+        }
+
+        public void GetRatingsForLevel(string code, RemoteRatingStorage_AllRatingsLoadedCallback callback)
+        {
+            // Get request to /levels/{id}/ratings
+            RestClient.Get<AwsRatings>($"{AwsLevelUrl}/dev/levels/{code}/ratings").Then(res =>
+            {
+                var ratingStubs = new List<RatingStub>();
+                foreach (var rating in res.ratings)
+                {
+                    var levelStub = new RatingStub(rating.code, rating.creator.id, rating.creator.name, rating.rating);
+                    ratingStubs.Add(levelStub);
+                }
+
+                callback?.Invoke(ratingStubs.ToArray());
+                this.LogMessage("Ratings", JsonUtility.ToJson(res, true));
+            }).Catch(err =>
+            {
+                callback?.Invoke(null);
+                this.LogMessage("Error", err.Message);
+            });
+        }
+
+
         private void LogMessage(string title, string message)
         {
 #if UNITY_EDITOR
@@ -352,4 +394,33 @@ namespace Level.Storage
 
     #endregion
 
+
+    #region AWS Rating Data Structures
+
+    [Serializable]
+    public class AwsRatings
+    {
+        public AwsRating[] ratings;
+    }
+
+    public class AwsRatingRequest
+    {
+        public string code;
+        public int rating;
+        public string creator;
+        public string creatorName;
+    }
+
+    [Serializable]
+    public class AwsRating
+    {
+        public string scoreId;
+        public string levelId;
+        public int rating;
+        public string code;
+        public AwsCreator creator;
+        public uint submittedAt;
+    }
+
+    #endregion
 }

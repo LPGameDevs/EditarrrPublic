@@ -108,6 +108,22 @@ resource "aws_apigatewayv2_route" "post_score" {
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 
+# Create an api route for fetching all ratings for a level.
+resource "aws_apigatewayv2_route" "get_ratings" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "GET /levels/{id}/ratings"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
+# Create an api route for adding a rating for a level.
+resource "aws_apigatewayv2_route" "post_rating" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "POST /levels/{id}/ratings"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
 resource "aws_lambda_permission" "api_gateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"

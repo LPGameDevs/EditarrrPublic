@@ -9,6 +9,7 @@ namespace Gameplay.GUI
     public class WinMenu : MonoBehaviour
     {
         public static event Action<string, float> OnScoreSubmit;
+        public static event Action<string, int> OnRatingSubmit;
         public static event Action OnScoreSubmitted;
 
         public TMP_Text LevelCode;
@@ -76,6 +77,12 @@ namespace Gameplay.GUI
         {
             UpdateContent();
             _animator.SetTrigger(VICTORY_TRIGGER_NAME);
+
+            // @todo only show this if its not the players own level.
+            if (false)
+            {
+                AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelCompleted);
+            }
         }
 
         public void SetCode(string code)

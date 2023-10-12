@@ -1,5 +1,4 @@
 using Browser;
-using CorgiExtension;
 using Editarrr.Level;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;

@@ -174,6 +174,63 @@ resource "aws_dynamodb_table" "editarrr-score-storage" {
   }
 }
 
+# Create the dynamodb table for ratings.
+resource "aws_dynamodb_table" "editarrr-rating-storage" {
+  name                        = "editarrr-rating-storage"
+  billing_mode                = "PAY_PER_REQUEST"
+  table_class                 = "STANDARD"
+  read_capacity               = "0"
+  write_capacity              = "0"
+  stream_enabled              = "false"
+  deletion_protection_enabled = "false"
+
+  point_in_time_recovery {
+    enabled = "false"
+  }
+
+  hash_key  = "pk" # LEVEL#<levelId>
+  range_key = "sk" # RATING#<rating>
+  attribute {
+    name = "pk"
+    type = "S"
+  }
+  attribute {
+    name = "sk"
+    type = "S"
+  }
+  attribute {
+    name = "rating"
+    type = "N" # 1, 2 or 3
+  }
+
+  #  attribute {
+  #    name = "ratingLevelName"
+  #    type = "S" # 12345
+  #  }
+  #  attribute {
+  #    name = "ratingSubmittedAt"
+  #    type = "N" # Epoch
+  #  }
+  #  attribute {
+  #    name = "ratingCreatorId"
+  #    type = "S" #userId
+  #  }
+  # attribute {
+  #   name = "ratingCreatorName"
+  #   type = "S" # userName
+  # }
+
+  global_secondary_index {
+    name            = "pk-rating-index"
+    hash_key        = "pk"
+    range_key       = "rating"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "sk", "ratingLevelName", "ratingCreatorName", "ratingSubmittedAt", "ratingCreatorId"]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+}
+
 # IAM policy for the lambda to access the dynamodb table.
 resource "aws_iam_policy" "dynamoDBLambdaPolicy" {
   name = "DynamoDBLambdaPolicyEditarrr"

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
+  m_Name: Background
+  m_EditorClassIdentifier: 
+  <UISprite>k__BackingField: {fileID: 5504718189712137809, guid: a77f06e2c1bb3704baedf139b3e64843, type: 3}
+  <EditorGridTile>k__BackingField: {fileID: 11400000, guid: b8e1e7a2376062d46abc27731b728b59, type: 2}
+  <Tile>k__BackingField: {fileID: 11400000, guid: a37a4f84cec44fc4ebdf4c2b4afd25b4, type: 2}
+  <LevelLimit>k__BackingField: 0
+  <IsBackground>k__BackingField: 1

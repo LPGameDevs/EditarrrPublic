@@ -13,15 +13,20 @@ namespace Editarrr.Level
     {
         [field: SerializeField] public int X { get; private set; }
         [field: SerializeField] public int Y { get; private set; }
-        [field: SerializeField] public TileType Type { get; private set; }
-        [field: SerializeField] public Rotation Rotation { get; private set; }
+        [field: SerializeField] public TileType Foreground { get; private set; }
+        [field: SerializeField] public Rotation ForegroundRotation { get; private set; }
+
+        [field: SerializeField] public TileType Background { get; private set; }
+        [field: SerializeField] public Rotation BackgroundRotation { get; private set; }
 
         public TileSave(int x, int y, TileState tileState)
         {
             this.X = x;
             this.Y = y;
-            this.Type = tileState.Type;
-            this.Rotation = tileState.Rotation;
+            this.Foreground = tileState.Foreground;
+            this.Background = tileState.Background;
+            this.ForegroundRotation = tileState.ForegroundRotation;
+            this.BackgroundRotation = tileState.BackgroundRotation;
         }
     }
 }
