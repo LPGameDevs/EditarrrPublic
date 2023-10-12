@@ -85,4 +85,3 @@ steam_build_output/*
 # Filetypes
 *.sh
 !ci/*.sh
-*.xcf

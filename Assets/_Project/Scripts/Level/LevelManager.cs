@@ -288,6 +288,16 @@ namespace Editarrr.Level
             RemoteLevelStorage.GetScoresForLevel(code, callback);
         }
 
+        public void SubmitRating(int rating, LevelSave levelSave, RemoteRatingStorage_RatingSubmittedCallback callback)
+        {
+            RemoteLevelStorage.SubmitRating(rating, levelSave, callback);
+        }
+
+        public void GetRatingsForLevel(string code, RemoteRatingStorage_AllRatingsLoadedCallback callback)
+        {
+            RemoteLevelStorage.GetRatingsForLevel(code, callback);
+        }
+
         #endregion
 
         public string GetScreenshotPath(string levelCode)

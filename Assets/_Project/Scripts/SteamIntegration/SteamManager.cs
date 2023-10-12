@@ -1,13 +1,30 @@
 using System;
+using System.Collections.Generic;
+using Singletons;
+using Steamworks.Data;
 using UnityEngine;
 
 namespace SteamIntegration
 {
-    public class SteamManager: UnitySingleton<SteamManager>
+    public class SteamManager: UnityPersistentSingleton<SteamManager>
     {
         public const uint SteamAppsId = 2609410;
+        public bool IsInitialized => _initialized;
         private bool _initialized = false;
+
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+        private Dictionary<GameAchievement, Steamworks.Data.Achievement> _achievements = new Dictionary<GameAchievement, Achievement>();
+#endif
+
         // public const uint SteamAppsId = 1769870;
+
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+        protected void Start()
+        {
+            TrackAchievements();
+        }
+#endif
+
 
         public void Init()
         {
@@ -42,6 +59,47 @@ namespace SteamIntegration
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
             Steamworks.SteamClient.Shutdown();
 #endif
+        }
+
+
+        private void TrackAchievements()
+        {
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+
+            foreach (Achievement achievement in Steamworks.SteamUserStats.Achievements)
+            {
+                var achievementName = (GameAchievement) Enum.Parse(typeof(GameAchievement), achievement.Identifier);
+                if (achievementName == GameAchievement.None)
+                {
+                    continue;
+                }
+
+                _achievements.Add(achievementName, achievement);
+            }
+#endif
+        }
+
+        public bool UnlockAchievement(GameAchievement achievement)
+        {
+            bool success = false;
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+
+            if (!_achievements.ContainsKey(achievement))
+            {
+                Debug.LogError($"Achievement {achievement} not found.");
+                return false;
+            }
+
+            Steamworks.Data.Achievement steamAchievement = _achievements[achievement];
+            if (steamAchievement.State)
+            {
+                Debug.Log($"Achievement {achievement} already unlocked.");
+                return false;
+            }
+
+            success = steamAchievement.Trigger();
+#endif
+            return success;
         }
 
     }

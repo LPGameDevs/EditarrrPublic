@@ -3,6 +3,8 @@ using Editarrr.Managers;
 using Editarrr.Misc;
 using Gameplay.GUI;
 using LevelEditor;
+using Singletons;
+using Systems;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TileData = Editarrr.LevelEditor.TileData;
@@ -162,9 +164,26 @@ namespace Editarrr.Level
             {
                 this.LevelManager.SubmitScore(time, levelSave, ScoreSubmitted);
 
-                void ScoreSubmitted(string code, string remoteid, bool issteam)
+                void ScoreSubmitted(string code, string remoteId, bool isSteam)
                 {
                     // @todo do we need this?
+                    AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelScoreSubmitted);
+                }
+            }
+        }
+
+        private void OnRatingSubmitRequested(string code, int rating)
+        {
+            LevelManager.LevelStorage.LoadLevelData(code, RatingLevelLoaded);
+
+            void RatingLevelLoaded(LevelSave levelSave)
+            {
+                LevelManager.SubmitRating(rating, levelSave, RatingSubmitted);
+
+                void RatingSubmitted(string code, string remoteId, bool isSteam)
+                {
+                    PreferencesManager.Instance.SetLevelRating(code, rating);
+                    AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelRated);
                 }
             }
         }
@@ -172,11 +191,13 @@ namespace Editarrr.Level
         public override void DoOnEnable()
         {
             WinMenu.OnScoreSubmit += this.OnScoreSubmitRequested;
+            WinMenu.OnRatingSubmit += this.OnRatingSubmitRequested;
         }
 
         public override void DoOnDisable()
         {
             WinMenu.OnScoreSubmit -= this.OnScoreSubmitRequested;
+            WinMenu.OnRatingSubmit -= this.OnRatingSubmitRequested;
         }
     }
 }

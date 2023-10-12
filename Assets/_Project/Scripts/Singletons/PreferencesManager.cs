@@ -70,5 +70,16 @@ namespace Singletons
         {
             PlayerPrefs.SetFloat($"SliderVolume-{volumeParameter}", sliderValue);
         }
+
+        public void SetLevelRating(string code, int rating)
+        {
+            PlayerPrefs.SetInt($"LevelRating-{code}", 1);
+        }
+
+        public bool HasLevelRating(string code)
+        {
+            int hasLevelRating = PlayerPrefs.GetInt($"LevelRating-{code}", 0);
+            return hasLevelRating == 1;
+        }
     }
 }
