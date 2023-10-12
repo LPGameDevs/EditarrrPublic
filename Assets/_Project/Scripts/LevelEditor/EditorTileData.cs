@@ -22,5 +22,8 @@ namespace Editarrr.LevelEditor
         public bool IsInfinite { get => this.LevelLimit <= 0; }
 
         [field: SerializeField] public bool IsBackground { get; private set; }
+
+
+        [field: SerializeField] public string Description { get; private set; }
     }
 }

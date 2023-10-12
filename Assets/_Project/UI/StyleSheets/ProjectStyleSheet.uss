@@ -37,10 +37,10 @@
 
 .button-blank {
     background-color: rgba(80, 80, 80, 0);
-    border-left-color: rgba(40, 40, 40, 255);
-    border-right-color: rgba(40, 40, 40, 255);
-    border-top-color: rgba(40, 40, 40, 255);
-    border-bottom-color: rgba(32, 32, 32, 255);
+    border-left-color: rgb(40, 40, 40);
+    border-right-color: rgb(40, 40, 40);
+    border-top-color: rgb(40, 40, 40);
+    border-bottom-color: rgb(32, 32, 32);
 }
 
 .button-blank:hover {
@@ -82,4 +82,26 @@
 
 .panel-background-light {
     background-color: rgba(60, 60, 60, 0.5);
+}
+
+.toolTip {
+    position: absolute;
+    left: -4px;
+    right: -200px;
+    background-color: rgba(152, 79, 79, 0.6);
+    border-left-width: 4px;
+    border-right-width: 4px;
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    height: auto;
+    bottom: auto;
+    border-left-color: rgba(40, 40, 40, 255);
+    border-right-color: rgba(40, 40, 40, 255);
+    border-top-color: rgba(40, 40, 40, 255);
+    border-bottom-color: rgba(40, 40, 40, 255);
+    top: 88px;
 }

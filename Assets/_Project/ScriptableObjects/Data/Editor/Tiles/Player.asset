@@ -16,3 +16,5 @@ MonoBehaviour:
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: ce34959abb45887fc82e6c6a77f51fd1, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 4338bc1ea6c17474c927cfbba456bd2a, type: 2}
   <LevelLimit>k__BackingField: 1
+  <IsBackground>k__BackingField: 0
+  <Description>k__BackingField: Player Spawn
