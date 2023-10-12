@@ -1,4 +1,3 @@
-using Editarrr.Input;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
@@ -30,7 +29,9 @@ namespace Editarrr.Level
 
         [field: SerializeField, Header("Pools")] private EditorTileDataPool EditorTileDataPool { get; set; }
 
-        private Tilemap _walls, _damage;
+        [field: SerializeField] private Tilemap Tilemap_Foreground { get; set; }
+        [field: SerializeField] private Tilemap Tilemap_Background { get; set; }
+
         private GameplayGuiManager _gameplayGuiManager;
         private GhostRecorder _recorder;
 
@@ -39,39 +40,39 @@ namespace Editarrr.Level
 
         public override void DoAwake()
         {
-            LevelManager.DoAwake();
+            this.LevelManager.DoAwake();
 
             string code = this.Exchange.CodeToLoad;
-            _gameplayGuiManager.SetLevelCode(code);
-            _recorder.SetLevelCode(code);
+            this._gameplayGuiManager.SetLevelCode(code);
+            this._recorder.SetLevelCode(code);
         }
 
-        public void SetTilemapWalls(Tilemap walls)
+        public void SetForeground(Tilemap tilemap)
         {
-            _walls = walls;
+            this.Tilemap_Foreground = tilemap;
         }
 
-        public void SetTilemapDamage(Tilemap damage)
+        public void SetBackground(Tilemap tilemap)
         {
-            _damage = damage;
+            this.Tilemap_Background = tilemap;
         }
 
         public void SetGuiManager(GameplayGuiManager gameplayGuiManager)
         {
-            _gameplayGuiManager = gameplayGuiManager;
+            this._gameplayGuiManager = gameplayGuiManager;
         }
 
         public void SetRecorder(GhostRecorder ghostRecorder)
         {
-            _recorder = ghostRecorder;
-            _recorder.SetLevelManager(this.LevelManager);
+            this._recorder = ghostRecorder;
+            this._recorder.SetLevelManager(this.LevelManager);
         }
 
         public override void DoStart()
         {
             string code = this.Exchange.CodeToLoad;
 
-            LevelManager.Load(code, OnLevelLoaded);
+            this.LevelManager.Load(code, this.OnLevelLoaded);
         }
 
         private void OnLevelLoaded(LevelState levelState)
@@ -79,8 +80,8 @@ namespace Editarrr.Level
             OnLevelLoading?.Invoke(levelState);
 
             this.Level = levelState;
-            PaintTilesFromFile(levelState);
-            _gameplayGuiManager.SetLevelState(levelState);
+            this.PaintTilesFromFile(levelState);
+            this._gameplayGuiManager.SetLevelState(levelState);
             //GameEvent.Trigger(GameEventType.Unpause);
         }
 
@@ -94,54 +95,62 @@ namespace Editarrr.Level
                 {
                     TileState tileState = level.Tiles[x, y];
 
-                    if (tileState == null || tileState.Type == TileType.Empty)
+                    if (tileState == null || (tileState.Foreground == TileType.Empty && tileState.Background == TileType.Empty))
                     {
                         continue;
                     }
 
-                    TileData tile = GetTileDataFromType(tileState.Type);
                     Vector3Int position = new Vector3Int(x, y);
 
-                    PlaceTile(tile, position);
-                    InstantiateTile(tile, position, tileState.Rotation);
+                    TileData foreground = this.GetTileDataFromType(tileState.Foreground);
+                    TileData background = this.GetTileDataFromType(tileState.Background);
+
+                    Rotation foregroundRotation = tileState.ForegroundRotation;
+                    Rotation backgroundRotation = tileState.BackgroundRotation;
+
+
+                    this.PlaceTile(foreground, background, position);
+                    this.InstantiateTile(foreground, foregroundRotation, background, backgroundRotation, position);
                 }
             }
         }
 
         private TileData GetTileDataFromType(TileType tileStateType)
         {
-            EditorTileData tileData = EditorTileDataPool.Get(tileStateType);
+            EditorTileData tileData = this.EditorTileDataPool.Get(tileStateType);
+
+            if (tileData == null)
+                return null;
+
             return tileData.Tile;
         }
 
-        private void InstantiateTile(TileData tileData, Vector3Int position, Rotation rotation)
+        private void InstantiateTile(TileData foreground, Rotation foregroundRotation, TileData background, Rotation backgroundRotation, Vector3Int position)
         {
-            if (!tileData.GameObject)
-            {
-                return;
-            }
+            if (foreground?.GameObject != null)
+                GameObject.Instantiate(foreground.GameObject, position + new Vector3(0.5f, 0.5f, 0), Quaternion.Euler(0, 0, foregroundRotation.ToDegree()));
 
-            Instantiate(tileData.GameObject, position + new Vector3(0.5f, 0.5f, 0),
-                Quaternion.Euler(0, 0, rotation.ToDegree()));
+            if (background?.GameObject != null)
+                GameObject.Instantiate(background.GameObject, position + new Vector3(0.5f, 0.5f, 0), Quaternion.Euler(0, 0, backgroundRotation.ToDegree()));
         }
 
-        private void PlaceTile(TileData tileData, Vector3Int position)
+        private void PlaceTile(TileData foreground, TileData background, Vector3Int position)
         {
-            if (!tileData.TileMapTileBase)
-            {
-                return;
-            }
+            if (foreground?.TileMapTileBase != null)
+                this.SetForegroundTile(position, foreground.TileMapTileBase);
 
-            SetTile(position, tileData.TileMapTileBase);
+            if (background?.TileMapTileBase != null)
+                this.SetBackgroundTile(position, background.TileMapTileBase);
         }
 
-        private void SetTile(Vector3Int position, TileBase tile)
+        private void SetForegroundTile(Vector3Int position, TileBase tile)
         {
-            _walls.SetTile(position, tile);
+            this.Tilemap_Foreground.SetTile(position, tile);
+        }
 
-
-            //if (this.ActiveEditorTileData.Tile.CanRotate)
-            //    rotate = this.EditorTileSelectionManager.Rotation.ToDegree();
+        private void SetBackgroundTile(Vector3Int position, TileBase tile)
+        {
+            this.Tilemap_Background.SetTile(position, tile);
         }
 
         #endregion
@@ -149,11 +158,11 @@ namespace Editarrr.Level
 
         private void OnScoreSubmitRequested(string code, float time)
         {
-            LevelManager.LevelStorage.LoadLevelData(code, ScoreLevelLoaded);
+            this.LevelManager.LevelStorage.LoadLevelData(code, ScoreLevelLoaded);
 
             void ScoreLevelLoaded(LevelSave levelSave)
             {
-                LevelManager.SubmitScore(time, levelSave, ScoreSubmitted);
+                this.LevelManager.SubmitScore(time, levelSave, ScoreSubmitted);
 
                 void ScoreSubmitted(string code, string remoteId, bool isSteam)
                 {
@@ -181,14 +190,14 @@ namespace Editarrr.Level
 
         public override void DoOnEnable()
         {
-            WinMenu.OnScoreSubmit += OnScoreSubmitRequested;
-            WinMenu.OnRatingSubmit += OnRatingSubmitRequested;
+            WinMenu.OnScoreSubmit += this.OnScoreSubmitRequested;
+            WinMenu.OnRatingSubmit += this.OnRatingSubmitRequested;
         }
 
         public override void DoOnDisable()
         {
-            WinMenu.OnScoreSubmit -= OnScoreSubmitRequested;
-            WinMenu.OnRatingSubmit -= OnRatingSubmitRequested;
+            WinMenu.OnScoreSubmit -= this.OnScoreSubmitRequested;
+            WinMenu.OnRatingSubmit -= this.OnRatingSubmitRequested;
         }
     }
 }

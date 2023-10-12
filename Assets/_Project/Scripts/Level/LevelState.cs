@@ -50,10 +50,12 @@ namespace Editarrr.Level
                     if (this.Tiles[x, y] != null)
                         continue;
 
-                    TileType tileType = TileType.Empty;
-                    Rotation rotation = Rotation.North;
+                    TileType foreground = TileType.Empty;
+                    TileType background = TileType.Empty;
+                    Rotation foregroundRotation = Rotation.North;
+                    Rotation backgroundRotation = Rotation.North;
 
-                    this.Tiles[x, y] = new TileState(tileType, rotation);
+                    this.Tiles[x, y] = new TileState(foreground, background, foregroundRotation, backgroundRotation);
                 }
             }
         }
@@ -74,16 +76,20 @@ namespace Editarrr.Level
                 for (int x = 0; x < this.ScaleX; x++)
                 {
                     EditorTileState editorTileState = editorTiles[x, y];
-                    TileType tileType = TileType.Empty;
-                    Rotation rotation = Rotation.North;
+                    TileType foreground = TileType.Empty;
+                    TileType background = TileType.Empty;
+                    Rotation foregroundRotation = Rotation.North;
+                    Rotation backgroundRotation = Rotation.North;
 
                     if (editorTileState != null)
                     {
-                        tileType = editorTileState.TileData.Tile.Type;
-                        rotation = editorTileState.Rotation;
+                        foreground = editorTileState.Foreground?.Tile.Type ?? TileType.Empty;
+                        background = editorTileState.Background?.Tile.Type ?? TileType.Empty;
+                        foregroundRotation = editorTileState.ForegroundRotation;
+                        backgroundRotation = editorTileState.BackgroundRotation;
                     }
 
-                    this.Tiles[x, y] = new TileState(tileType, rotation);
+                    this.Tiles[x, y] = new TileState(foreground, background, foregroundRotation, backgroundRotation);
                 }
             }
         }
