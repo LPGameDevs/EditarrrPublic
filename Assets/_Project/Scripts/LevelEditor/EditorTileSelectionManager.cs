@@ -108,6 +108,9 @@ namespace Editarrr.LevelEditor
 
             this.ActiveElement = this.ActiveGroup.GroupElements[this.ActiveElementIndex];
 
+            if (this.ActiveElement == null && this.ActiveElementIndex > 0)
+                this.SetActiveElementIndex(0);
+
             EditorTileSelectionManager.ActiveElementChanged?.Invoke(this.ActiveElement);
 
             this.SetRotation(Rotation.North);
@@ -117,6 +120,7 @@ namespace Editarrr.LevelEditor
         public void NextGroup()
         {
             this.SetActiveGroupIndex(this.ActiveGroupIndex + 1);
+            this.SetActiveElementIndex(this.ActiveElementIndex);
         }
 
         public void NextRotation()
