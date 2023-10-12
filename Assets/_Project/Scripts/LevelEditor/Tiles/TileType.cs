@@ -16,6 +16,8 @@ namespace Editarrr.LevelEditor
         SpikeDeath = 10,
         Key = 20,
         BoxBounce = 30,
+        Geyser = 40,
+        CrackedPlank = 50,
         Background = 100,
     }
     // DO NOT change the Int values! This will mess with unity assets
