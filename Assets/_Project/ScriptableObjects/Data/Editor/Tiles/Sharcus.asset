@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: Sharcus
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Sharcus
+  <Description>k__BackingField: Toothy adversary
   <UISprite>k__BackingField: {fileID: 21300000, guid: 87b29e96e212f07128cc7cc8c4b71ad5, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: a78f5aa6fbd59df5386943a50df2be54, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 9160cacdedfc78341b2be0ab1d49483c, type: 2}
   <LevelLimit>k__BackingField: 5
+  <IsBackground>k__BackingField: 0

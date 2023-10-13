@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Captain
+  <Description>k__BackingField: This is where you spawn into the level.
   <UISprite>k__BackingField: {fileID: 21300000, guid: e7b9508647f8a4f4e9d1491ab30994b2, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: ce34959abb45887fc82e6c6a77f51fd1, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 4338bc1ea6c17474c927cfbba456bd2a, type: 2}
   <LevelLimit>k__BackingField: 1
   <IsBackground>k__BackingField: 0
-  <Description>k__BackingField: Player Spawn

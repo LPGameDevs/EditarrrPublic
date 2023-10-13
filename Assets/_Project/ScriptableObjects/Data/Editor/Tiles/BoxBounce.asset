@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: BoxBounce
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Exploding Box
+  <Description>k__BackingField: This box will catapult you into the air
   <UISprite>k__BackingField: {fileID: 21300000, guid: 756d32142af03198fa518e9df2c83c2c, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 88f9441ceab90defcb9d7ee8c032e5be, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 910aeee5595a854b59a764b87caf8bcd, type: 2}
   <LevelLimit>k__BackingField: 0
+  <IsBackground>k__BackingField: 0

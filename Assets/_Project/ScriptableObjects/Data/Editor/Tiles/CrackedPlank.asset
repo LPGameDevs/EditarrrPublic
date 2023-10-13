@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: CrackedPlank
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Cracked Plank
+  <Description>k__BackingField: Dont rest on this too long
   <UISprite>k__BackingField: {fileID: -1076479582, guid: b0ee2950cec1dd149a0b08cbc14b08de, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: d36435a53ef30ec41b49b027d5f837f5, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: cb5da227d1df4f247bd3b625c0f826f2, type: 2}
