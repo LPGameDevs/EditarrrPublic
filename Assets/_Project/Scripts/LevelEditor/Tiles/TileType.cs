@@ -18,6 +18,11 @@ namespace Editarrr.LevelEditor
         BoxBounce = 30,
         Geyser = 40,
         CrackedPlank = 50,
+        MovingPlatform = 60,
+        MovingPlatformDeath = 61,
+        PowerSword = 70,
+        PowerDoubleJump = 71,
+        PowerWallJump = 72,
         Background = 100,
     }
     // DO NOT change the Int values! This will mess with unity assets
