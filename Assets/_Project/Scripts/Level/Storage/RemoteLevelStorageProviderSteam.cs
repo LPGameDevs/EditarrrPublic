@@ -1,11 +1,7 @@
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Editarrr.Level;
-using SteamIntegration;
-using Steamworks;
-using Steamworks.Data;
 using UnityEngine;
 
 namespace Level.Storage
@@ -24,7 +20,7 @@ namespace Level.Storage
             Steamworks.SteamUGC.OnDownloadItemResult += OnDownloadItemResult;
         }
 
-        private void OnDownloadItemResult(Result obj)
+        private void OnDownloadItemResult(Steamworks.Result obj)
         {
             throw new NotImplementedException();
         }
@@ -210,13 +206,13 @@ namespace Level.Storage
         public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback)
         {
             return;
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
         {
             return;
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void SubmitRating(int rating, LevelSave levelSave, RemoteRatingStorage_RatingSubmittedCallback callback)

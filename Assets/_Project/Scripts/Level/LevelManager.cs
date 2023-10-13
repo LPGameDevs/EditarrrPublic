@@ -4,7 +4,6 @@ using Editarrr.Managers;
 using Editarrr.Misc;
 using Level.Storage;
 using Singletons;
-using Steamworks.Ugc;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -260,7 +259,7 @@ namespace Editarrr.Level
         }
 
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
-        public void CopyLevelFromSteamDirectory(Item item)
+        public void CopyLevelFromSteamDirectory(Steamworks.Ugc.Item item)
         {
             string code = item.Title;
             string sourceDirectory = item.Directory;

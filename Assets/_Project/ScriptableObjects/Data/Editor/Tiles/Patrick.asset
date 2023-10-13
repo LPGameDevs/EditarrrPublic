@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: Patrick
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Patrick
+  <Description>k__BackingField: Any resemblance to real life is purely coincidental
   <UISprite>k__BackingField: {fileID: 21300000, guid: 3438c6d2cfebe6798a8fc55e74fd14af, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 73c960e750991c4b5b1eb273bd529c96, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 0b45b95b0ab3561479dbf02482b634f8, type: 2}
   <LevelLimit>k__BackingField: 5
+  <IsBackground>k__BackingField: 0

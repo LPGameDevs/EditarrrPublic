@@ -9,10 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: JumpandPlay Atlas Material
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
-  m_ValidKeywords:
-  - BEVEL_ON
-  - GLOW_ON
-  - UNDERLAY_ON
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -70,7 +67,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0.2
+    - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 7.5
     - _ScaleRatioA: 0.9
@@ -118,11 +115,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: JumpandPlay_Variant
+  m_Name: JumpandPlay_Variant3
   m_EditorClassIdentifier: 
-  hashCode: 97319109
+  hashCode: -1083436714
   material: {fileID: -5468633486567898783}
-  materialHashCode: 481357509
+  materialHashCode: -1697737290
   m_Version: 1.1.0
   m_SourceFontFileGUID: 9cb5fa0482db22642a555c94098baaa2
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 9cb5fa0482db22642a555c94098baaa2, type: 3}
