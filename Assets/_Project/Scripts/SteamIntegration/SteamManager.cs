@@ -1,22 +1,21 @@
 using System;
 using System.Collections.Generic;
 using Singletons;
-using Steamworks.Data;
 using UnityEngine;
 
 namespace SteamIntegration
 {
     public class SteamManager: UnityPersistentSingleton<SteamManager>
     {
+        // public const uint SteamAppsId = 1769870;
         public const uint SteamAppsId = 2609410;
         public bool IsInitialized => _initialized;
         private bool _initialized = false;
 
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
-        private Dictionary<GameAchievement, Steamworks.Data.Achievement> _achievements = new Dictionary<GameAchievement, Achievement>();
+        private Dictionary<GameAchievement, Steamworks.Data.Achievement> _achievements = new Dictionary<GameAchievement, Steamworks.Data.Achievement>();
 #endif
 
-        // public const uint SteamAppsId = 1769870;
 
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
         protected void Start()
@@ -66,7 +65,7 @@ namespace SteamIntegration
         {
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
 
-            foreach (Achievement achievement in Steamworks.SteamUserStats.Achievements)
+            foreach (Steamworks.Data.Achievement achievement in Steamworks.SteamUserStats.Achievements)
             {
                 var achievementName = (GameAchievement) Enum.Parse(typeof(GameAchievement), achievement.Identifier);
                 if (achievementName == GameAchievement.None)
