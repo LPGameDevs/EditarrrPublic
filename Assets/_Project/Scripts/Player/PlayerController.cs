@@ -184,7 +184,7 @@ namespace Player
                 OnPlayerLanded?.Invoke(_currentVerticalSpeed);
                 _timeInAir = 0f;
             }
-            Debug.Log(_currentVerticalSpeed);
+            //Debug.Log(_currentVerticalSpeed);
             _collisions.down = groundedCheck;
 
             // The rest
@@ -456,16 +456,16 @@ namespace Player
 
         private void UpdateActiveState(bool activate)
         {
-                if (activate)
-                    Activate();
-                else
-                    Deactivate();
+            if (activate)
+                Activate();
+            else
+                Deactivate();
         }
 
         public void OnEvent(GameEvent gameEvent)
         {
             // We only care about pause events.
-            if (!new[] {GameEventType.Pause, GameEventType.Unpause}.Contains(gameEvent.Type))
+            if (!new[] { GameEventType.Pause, GameEventType.Unpause }.Contains(gameEvent.Type))
             {
                 return;
             }
