@@ -134,11 +134,13 @@ namespace Gameplay.GUI
 
         public void OnClickBack()
         {
+            TimeManager.Instance.StartTime();
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
         }
 
         public void OnClickBackEditor()
         {
+            TimeManager.Instance.StartTime();
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.CreateLevelSceneName);
         }
 
@@ -153,5 +155,7 @@ namespace Gameplay.GUI
         {
             Timer.OnTimeStop -= SetTimeText;
         }
+
+        public void DeactivateWinMenuAnimator() => _animator.enabled = false;
     }
 }

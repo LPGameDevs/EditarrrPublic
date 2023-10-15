@@ -35,6 +35,10 @@ namespace Editarrr.LevelEditor
 
         private void OnEnable()
         {
+            _selectFeedback.Initialization(); 
+            _placeFeedback.Initialization(); 
+            _removeFeedback.Initialization();
+
             _bufferTimer = Time.time + 0.5f;
 
             EditorTileSelectionManager.OnTileSelect += OnTileSelected;

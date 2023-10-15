@@ -443,8 +443,6 @@ AnimationClip:
       value: {fileID: 337993837, guid: 4bf78ad71d9ea9a4cafb9ce86f0f2ae5, type: 3}
     - time: 1.7833333
       value: {fileID: -1330227924, guid: 4bf78ad71d9ea9a4cafb9ce86f0f2ae5, type: 3}
-    - time: 5
-      value: {fileID: -1330227924, guid: 4bf78ad71d9ea9a4cafb9ce86f0f2ae5, type: 3}
     attribute: m_Sprite
     path: 
     classID: 114
@@ -573,13 +571,12 @@ AnimationClip:
     - {fileID: -1283189535, guid: 4bf78ad71d9ea9a4cafb9ce86f0f2ae5, type: 3}
     - {fileID: 337993837, guid: 4bf78ad71d9ea9a4cafb9ce86f0f2ae5, type: 3}
     - {fileID: -1330227924, guid: 4bf78ad71d9ea9a4cafb9ce86f0f2ae5, type: 3}
-    - {fileID: -1330227924, guid: 4bf78ad71d9ea9a4cafb9ce86f0f2ae5, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 5.016667
+    m_StopTime: 2.3333333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -1401,4 +1398,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 2.3333333
+    functionName: DeactivateWinMenuAnimator
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
