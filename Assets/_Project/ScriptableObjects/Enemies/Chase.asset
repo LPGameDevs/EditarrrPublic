@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e04c55da352492c8876c5c63bd8c87, type: 3}
   m_Name: Chase
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  detectionRange: 10
+  normalMoveSpeed: 5
+  sawPlayerMoveSpeed: 10
+  detectionRange: 30
+  waitToMove: 2
   enemyType: 0

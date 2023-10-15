@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: Clawdia
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Clawdia
+  <Description>k__BackingField: A dangerous crabby foe
   <UISprite>k__BackingField: {fileID: 21300000, guid: 6e690e25b92f892838ba4962ed9b4dfa, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 067a02ef022f718b7882de5e2d0025a3, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: cdc3022af8342373188fe3da826ed5fd, type: 2}
   <LevelLimit>k__BackingField: 5
+  <IsBackground>k__BackingField: 0

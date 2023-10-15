@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 3485918219516444826}
   - component: {fileID: -2006380436427431046}
   - component: {fileID: 3721442503812338518}
+  - component: {fileID: 6284010025752538964}
   m_Layer: 10
   m_Name: Sharcus
   m_TagString: Untagged
@@ -98,6 +99,7 @@ Transform:
   - {fileID: 3110954995715635811}
   - {fileID: 5377648954500446764}
   - {fileID: 8535153669290878021}
+  - {fileID: 5456262238833768129}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -179,8 +181,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73db6d5f057532a4fbb2006b90d4e137, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _damage: 10
   <KnockbackForce>k__BackingField: 40
   <DamageCooldown>k__BackingField: 1
@@ -218,17 +220,75 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d489a58570a66464e8a0fec0dc12a4b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   enemyAIData: {fileID: 11400000, guid: b373a87e4dbcd4674b02aca06070d964, type: 2}
   eyeTransform: {fileID: 5377648954500446764}
   footTransform: {fileID: 8535153669290878021}
+  groundDetector: {fileID: 5456262238833768129}
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 1360
+    m_Bits: 3408
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  fieldOfView: {fileID: 6284010025752538964}
+--- !u!114 &6284010025752538964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066908769515113955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fecfea92aad94f219f1b6ddcea98d77, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  viewRadius: 10
+  viewAngle: 149
+  isTopDown: 0
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 3392
+  visibleTargets: []
+--- !u!1 &7191387649853998569
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5456262238833768129}
+  m_Layer: 10
+  m_Name: GroundDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5456262238833768129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7191387649853998569}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.518, y: -0.336, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2066908769515113949}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8261325422564991587
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +313,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8261325422564991587}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.342, y: -0.422, z: 0}
+  m_LocalPosition: {x: -0, y: -0.4051, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

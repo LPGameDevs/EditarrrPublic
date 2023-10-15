@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
+using Systems;
 using UnityEngine;
 
-public class EnemyAIController : MonoBehaviour
+public class EnemyAIController : PausableCharacter
 {
     private enum AIState
     {
@@ -18,9 +17,15 @@ public class EnemyAIController : MonoBehaviour
 
     [SerializeField] private Transform footTransform;
 
+    [SerializeField] private Transform groundDetector;
+
     [SerializeField] private LayerMask playerLayer;
 
     [SerializeField] private LayerMask obstacleLayer;
+
+    [SerializeField] private LayerMask groundLayer;
+
+    [SerializeField] private FieldOfView fieldOfView;
 
     private AIState _aiState;
 
@@ -30,8 +35,9 @@ public class EnemyAIController : MonoBehaviour
 
     private float _distanceToObstacle = 0.5f;
 
-    private float _moveSpeed;
+    private float _distanceToGround = -0.5f;
 
+    private float _moveSpeed;
     private Collider2D enemyCollider;
 
     private void Start()
@@ -52,6 +58,7 @@ public class EnemyAIController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!_active) return;
         switch (enemyAIData.enemyType)
         {
             case EnemyType.chase:
@@ -68,6 +75,12 @@ public class EnemyAIController : MonoBehaviour
         switch (_aiState)
         {
             case AIState.moving:
+                //Drops enemy onto ground
+                if (!IsGrounded(footTransform))
+                {
+                    ApplyGravity();
+                    return;
+                }
                 //move until get to obstacle OR see player
                 Move();
                 if (!CanMove())
@@ -76,7 +89,7 @@ public class EnemyAIController : MonoBehaviour
                     _aiState = AIState.pausing;
                 }
                 //animator.SetBool("Run", true);
-                if (IsNearPlayer())
+                if (CanSeePlayer())
                 {
                     print("see player, attack");
                     _aiState = AIState.attacking;
@@ -93,7 +106,7 @@ public class EnemyAIController : MonoBehaviour
                 //animator.SetBool("Run", false);
                 break;
             case AIState.attacking:
-                if (!IsNearPlayer())
+                if (!CanSeePlayer())
                 {
                     print("Not see player");
                     _moveSpeed = enemyAIData.normalMoveSpeed;
@@ -118,7 +131,7 @@ public class EnemyAIController : MonoBehaviour
         switch (_aiState)
         {
             case AIState.pausing:
-                if (IsNearPlayer())
+                if (CanSeePlayer())
                 {
                     print("see player, attack");
                     _aiState = AIState.attacking;
@@ -126,7 +139,7 @@ public class EnemyAIController : MonoBehaviour
                 //animator.SetBool("Run", false);
                 break;
             case AIState.attacking:
-                if (!IsNearPlayer())
+                if (!CanSeePlayer())
                 {
                     print("Not see player");
                     _moveSpeed = enemyAIData.normalMoveSpeed;
@@ -158,14 +171,36 @@ public class EnemyAIController : MonoBehaviour
     private bool CanMove()
     {
         //can only move if no obstacle directly in front of enemy AND ground to walk on
-        return !IsNearObstacle(eyeTransform) && IsNearObstacle(footTransform);
+        return !IsNearObstacleInFront() && IsNearGroundInFront();
     }
 
-    private bool IsNearObstacle(Transform fromLocation)
+    private bool IsNearObstacleInFront()
     {
-        Vector2 direction = fromLocation.right * _currentDirection;
-        RaycastHit2D hit = Physics2D.Raycast(fromLocation.position, direction, _distanceToObstacle, obstacleLayer);
+        Vector2 direction = eyeTransform.right * _currentDirection;
+        RaycastHit2D hit = Physics2D.Raycast(eyeTransform.position, direction, _distanceToObstacle, obstacleLayer);
+        Debug.DrawRay(eyeTransform.position, direction, Color.red, 1f);
         return hit.collider != null && IsNotThisEnemy(hit);
+    }
+
+    private bool IsNearGroundInFront()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(groundDetector.position, Vector2.down, 1f, groundLayer);
+        Debug.DrawRay(transform.position, Vector2.down, Color.yellow, 1f);
+        return hit.collider != null && IsNotThisEnemy(hit);
+    }
+
+    private bool IsGrounded(Transform fromLocation)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(fromLocation.position, Vector2.down, _distanceToGround, groundLayer);
+        Debug.DrawRay(fromLocation.position, Vector2.down, Color.blue, 1f);
+        return hit.collider != null && IsNotThisEnemy(hit);
+    }
+
+    private void ApplyGravity()
+    {
+        Vector2 currentPosition = transform.position;
+        Vector2 targetPosition = currentPosition + Vector2.down * enemyAIData.detectionRange;
+        transform.position = Vector2.MoveTowards(currentPosition, targetPosition, _moveSpeed * Time.deltaTime);
     }
 
     private bool IsTargetInRange(GameObject target, float range)
@@ -174,16 +209,11 @@ public class EnemyAIController : MonoBehaviour
         return distanceToTarget <= range;
     }
 
-    private bool IsNearPlayer()
+    private bool CanSeePlayer()
     {
-        Vector2 direction = transform.right * _currentDirection;
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, enemyAIData.detectionRange);
-
-        //0 is the enemy, 1 needs to be the player for the enemy to see him
-        foreach (var hit in hits)
+        if (fieldOfView.visibleTargets.Count > 0)
         {
-            if (playerLayer == (playerLayer | (1 << hit.transform.gameObject.layer))) { return true; } //returns true if player
-            if (obstacleLayer == (obstacleLayer | (1 << hit.transform.gameObject.layer)) && IsNotThisEnemy(hit)) { return false; } //returns false if something else is before the player
+            return true;
         }
 
         return false;

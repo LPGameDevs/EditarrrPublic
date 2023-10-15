@@ -1,4 +1,5 @@
 ﻿using Editarrr.LevelEditor;
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -41,6 +42,8 @@ namespace Editarrr.UI.LevelEditor
                     template.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
                     this.TileDataSlotContainerElement.Add(template);
 
+                    Label toolTip = template.Q<Label>("ToolTip");
+
                     Button button = template.Q<Button>(name);
                     button.userData = i;
                     button.clickable.clickedWithEventInfo += this.TileDataSlotElements_Clicked;
@@ -50,7 +53,10 @@ namespace Editarrr.UI.LevelEditor
                     VisualElement countContainer = template.Q<VisualElement>(this.TileDataSlotCountContainerName);
                     Label countContainerValue = countContainer.Q<Label>(this.TileDataSlotCountContainerLabelName);
 
-                    this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue);
+                    TileButton tileButton = this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue, toolTip);
+
+                    template.RegisterCallback<PointerEnterEvent>(tileButton.ShowToolTip);
+                    template.RegisterCallback<PointerLeaveEvent>(tileButton.HideToolTip);
                 }
 
                 EditorTileSelectionManager.ActiveGroupChanged += this.EditorTileSelectionManager_ActiveGroupChanged;
@@ -147,15 +153,19 @@ namespace Editarrr.UI.LevelEditor
                 public VisualElement Image { get; private set; }
                 public VisualElement CountContainer { get; private set; }
                 public Label Count { get; private set; }
+                public Label ToolTip { get; private set; }
 
                 public EditorTileData EditorTileData { get; private set; }
 
-                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count)
+                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count, Label toolTip)
                 {
                     this.Button = button;
                     this.Image = image;
                     this.CountContainer = countContainer;
                     this.Count = count;
+                    this.ToolTip = toolTip;
+
+                    this.SetToolTip(false);
                 }
 
                 public void SetData(EditorTileData editorTileData)
@@ -164,20 +174,44 @@ namespace Editarrr.UI.LevelEditor
 
                     Sprite sprite = null;
                     bool countContainer = false;
+                    string toolTipContent = "";
 
                     if (editorTileData != null)
                     {
                         sprite = editorTileData.UISprite;
                         countContainer = editorTileData.LevelLimit > 0;
+                        toolTipContent = editorTileData.Description;
                     }
 
                     this.Image.style.backgroundImage = new StyleBackground(sprite);
                     this.CountContainer.style.visibility = new StyleEnum<Visibility>(countContainer ? Visibility.Visible : Visibility.Hidden);
+                    this.ToolTip.text = toolTipContent;
                 }
 
                 public void UpdateCount(int count)
                 {
                     this.Count.text = $"{count}";
+                }
+
+                internal void ShowToolTip(PointerEnterEvent evt)
+                {
+                    this.SetToolTip(true);
+                }
+
+                internal void HideToolTip(PointerLeaveEvent evt)
+                {
+                    this.SetToolTip(false);
+                }
+
+                private void SetToolTip(bool value)
+                {
+                    if (string.IsNullOrEmpty(this.ToolTip.text))
+                    {
+                        this.ToolTip.visible = false;
+                        return;
+                    }
+
+                    this.ToolTip.visible = value;
                 }
             }
         }

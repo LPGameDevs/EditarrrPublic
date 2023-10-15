@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: Background
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Cave
+  <Description>k__BackingField: A dark background for decoration
   <UISprite>k__BackingField: {fileID: 5504718189712137809, guid: a77f06e2c1bb3704baedf139b3e64843, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: b8e1e7a2376062d46abc27731b728b59, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: a37a4f84cec44fc4ebdf4c2b4afd25b4, type: 2}
