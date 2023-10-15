@@ -506,6 +506,15 @@ namespace Editarrr.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextGroup"",
+                    ""type"": ""Button"",
+                    ""id"": ""eb88b637-d3cb-4d40-9471-4fc64427421f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -640,6 +649,17 @@ namespace Editarrr.Input
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c0c5e87-af0a-481b-8e07-e59badfd917d"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -669,6 +689,7 @@ namespace Editarrr.Input
             m_Editor_SwitchTile = m_Editor.FindAction("SwitchTile", throwIfNotFound: true);
             m_Editor_SelectTile = m_Editor.FindAction("SelectTile", throwIfNotFound: true);
             m_Editor_Rotate = m_Editor.FindAction("Rotate", throwIfNotFound: true);
+            m_Editor_NextGroup = m_Editor.FindAction("NextGroup", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -943,6 +964,7 @@ namespace Editarrr.Input
         private readonly InputAction m_Editor_SwitchTile;
         private readonly InputAction m_Editor_SelectTile;
         private readonly InputAction m_Editor_Rotate;
+        private readonly InputAction m_Editor_NextGroup;
         public struct EditorActions
         {
             private @GameInput m_Wrapper;
@@ -950,6 +972,7 @@ namespace Editarrr.Input
             public InputAction @SwitchTile => m_Wrapper.m_Editor_SwitchTile;
             public InputAction @SelectTile => m_Wrapper.m_Editor_SelectTile;
             public InputAction @Rotate => m_Wrapper.m_Editor_Rotate;
+            public InputAction @NextGroup => m_Wrapper.m_Editor_NextGroup;
             public InputActionMap Get() { return m_Wrapper.m_Editor; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -968,6 +991,9 @@ namespace Editarrr.Input
                 @Rotate.started += instance.OnRotate;
                 @Rotate.performed += instance.OnRotate;
                 @Rotate.canceled += instance.OnRotate;
+                @NextGroup.started += instance.OnNextGroup;
+                @NextGroup.performed += instance.OnNextGroup;
+                @NextGroup.canceled += instance.OnNextGroup;
             }
 
             private void UnregisterCallbacks(IEditorActions instance)
@@ -981,6 +1007,9 @@ namespace Editarrr.Input
                 @Rotate.started -= instance.OnRotate;
                 @Rotate.performed -= instance.OnRotate;
                 @Rotate.canceled -= instance.OnRotate;
+                @NextGroup.started -= instance.OnNextGroup;
+                @NextGroup.performed -= instance.OnNextGroup;
+                @NextGroup.canceled -= instance.OnNextGroup;
             }
 
             public void RemoveCallbacks(IEditorActions instance)
@@ -1024,6 +1053,7 @@ namespace Editarrr.Input
             void OnSwitchTile(InputAction.CallbackContext context);
             void OnSelectTile(InputAction.CallbackContext context);
             void OnRotate(InputAction.CallbackContext context);
+            void OnNextGroup(InputAction.CallbackContext context);
         }
     }
 }

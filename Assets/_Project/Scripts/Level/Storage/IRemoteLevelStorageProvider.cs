@@ -15,5 +15,7 @@ namespace Level.Storage
         public bool SupportsLeaderboards();
         public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback);
         public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback);
+        public void SubmitRating(int rating, LevelSave levelSave, RemoteRatingStorage_RatingSubmittedCallback callback);
+        public void GetRatingsForLevel(string code, RemoteRatingStorage_AllRatingsLoadedCallback callback);
     }
 }

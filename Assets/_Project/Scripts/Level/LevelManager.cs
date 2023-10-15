@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Level.Storage;
+using Singletons;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -54,8 +54,8 @@ namespace Editarrr.Level
 
             levelState.SetCode(code);
 
-            string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
-            string userName = PlayerPrefs.GetString(UserNameForm.UserNameStorageKey);
+            string userId = PreferencesManager.Instance.GetUserId();
+            string userName = PreferencesManager.Instance.GetUserName();
 
             levelState.SetCreator(userId, userName);
 
@@ -285,6 +285,16 @@ namespace Editarrr.Level
                 // return;
             }
             RemoteLevelStorage.GetScoresForLevel(code, callback);
+        }
+
+        public void SubmitRating(int rating, LevelSave levelSave, RemoteRatingStorage_RatingSubmittedCallback callback)
+        {
+            RemoteLevelStorage.SubmitRating(rating, levelSave, callback);
+        }
+
+        public void GetRatingsForLevel(string code, RemoteRatingStorage_AllRatingsLoadedCallback callback)
+        {
+            RemoteLevelStorage.GetRatingsForLevel(code, callback);
         }
 
         #endregion

@@ -28,6 +28,7 @@ const dynamo = DynamoDBDocumentClient.from(client);
 
 const tableNameLevel = "editarrr-level-storage";
 const tableNameScore = "editarrr-score-storage";
+const tableNameRating = "editarrr-rating-storage";
 
 // From https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid - not sure if this is reliable haha
 function uuidv4() {
@@ -355,6 +356,93 @@ export const handler = async (event, context) => {
 
                 responseBody = {
                     "scores": responseScores
+                }
+                break;
+
+            case "POST /levels/{id}/ratings":
+                requestJSON = JSON.parse(event.body);
+
+                // TODO Check that level exists.
+
+                var rating = requestJSON.rating;
+                if (!rating) throw new BadRequestException(`'rating' must be provided in the request.`);
+                var ratingLevelName = requestJSON.code;
+                if (!ratingLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
+                var ratingCreatorId = requestJSON.creator;
+                if (!ratingCreatorId) throw new BadRequestException(`'creator' must be provided in the request.`);
+                var ratingCreatorName = requestJSON.creatorName;
+                if (!ratingCreatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
+
+                var generatedRatingId = uuidv4();
+                var currentTimestamp = Date.now();
+
+                await dynamo.send(
+                    new PutCommand({
+                        TableName: tableNameRating,
+                        Item: {
+                            pk: `LEVEL#${event.pathParameters.id}`,
+                            sk: `RATING#${generatedRatingId}`,
+                            rating: rating,
+                            ratingLevelName: ratingLevelName,
+                            ratingCreatorId: ratingCreatorId,
+                            ratingCreatorName: ratingCreatorName,
+                            ratingSubmittedAt: currentTimestamp,
+                        },
+                    })
+                );
+
+                responseBody = {
+                    "message": `Success! Created rating for: ${ratingLevelName}`,
+                    "id": generatedRatingId
+                }
+                break;
+            case "GET /levels/{id}/ratings":
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var queryResponse = await dynamo.send(
+                    new QueryCommand({
+                        TableName: tableNameRating,
+                        IndexName: "pk-rating-index",
+                        Select: "ALL_PROJECTED_ATTRIBUTES",
+                        Limit: 10,
+                        ScanIndexForward: false,
+                        KeyConditionExpression: "pk = :levelId",
+                        ExpressionAttributeValues: {
+                            ":levelId": "LEVEL#" + event.pathParameters.id
+                        }
+                    })
+                );
+
+                // TODO Validation of response
+
+                var dbRatings = queryResponse.Items;
+
+                var responseRatings = [];
+                for (let i = 0; i < dbRatings.length; i++) {
+                    var dbRating = dbRatings[i];
+
+                    // TODO Validation
+
+                    var id = extractLevelId(dbRating.sk);
+                    var levelId = extractLevelId(dbRating.pk);
+
+                    responseRatings.push({
+                        "ratingId": id,
+                        "levelId": levelId,
+                        "rating": dbRating.rating,
+                        "code": dbRating.ratingLevelName,
+                        "creator": {
+                            "id": dbRating.ratingCreatorId,
+                            "name": dbRating.ratingCreatorName
+                        },
+                        "submittedAt": dbRating.ratingSubmittedAt,
+                    });
+                }
+
+                responseBody = {
+                    "ratings": responseRatings
                 }
                 break;
 

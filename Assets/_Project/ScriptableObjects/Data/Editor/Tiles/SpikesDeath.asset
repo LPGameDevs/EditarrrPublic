@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: SpikesDeath
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Spikes of Death
+  <Description>k__BackingField: So sharp they will kill you instantly
   <UISprite>k__BackingField: {fileID: 21300000, guid: a634ee6a797b22a23a758a8391f9f2b2, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: bbd1442755791b896a02309ec97f4c30, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 3992a0d09e0aa1d37af56d7b4d807530, type: 2}
   <LevelLimit>k__BackingField: 0
+  <IsBackground>k__BackingField: 0

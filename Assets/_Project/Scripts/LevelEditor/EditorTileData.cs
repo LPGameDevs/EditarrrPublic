@@ -11,7 +11,9 @@ namespace Editarrr.LevelEditor
                                              "It contains information necessary for level editing, not level playing.\r\n" +
                                              "Any property that is necessary for both editing and playing should be stored on TileData.\r\n";
 
-        [field: SerializeField, Info(Documentation)] public Sprite UISprite { get; private set; }
+        [field: SerializeField, Info(Documentation)] public string Name { get; private set; }
+        [field: SerializeField] public string Description { get; private set; }
+        [field: SerializeField] public Sprite UISprite { get; private set; }
 
         [field: SerializeField] public TileBase EditorGridTile { get; private set; }
 
@@ -20,5 +22,7 @@ namespace Editarrr.LevelEditor
 
         [field: SerializeField] public int LevelLimit { get; private set; }
         public bool IsInfinite { get => this.LevelLimit <= 0; }
+
+        [field: SerializeField] public bool IsBackground { get; private set; }
     }
 }

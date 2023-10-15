@@ -1,4 +1,5 @@
 using Editarrr.Input;
+using Editarrr.Level;
 using Editarrr.LevelEditor;
 using UnityEngine;
 
@@ -18,20 +19,54 @@ public class CameraDragger : MonoBehaviour
     private Vector3 _cameraStart;
     private Camera _camera;
 
+    LevelState ActiveLevelState { get; set; }
+
     #region Input
     [field: SerializeField] private InputValue MousePosition { get; set; }
     [field: SerializeField] private InputValue MouseScroll { get; set; }
     [field: SerializeField] private InputValue MouseMiddleButton { get; set; }
     #endregion
 
+    private void Awake()
+    {
+        EditorLevelManager.OnEditorLevelScaleChanged += this.SetBoundaries;
+    }
+
     private void Start()
     {
         _camera = GetComponent<Camera>();
 
         EditorLevelSettings currentSettings = FindObjectOfType<EditorLevelSystem>().Manager.Settings;
-        _maxDrag = new Vector3(currentSettings.EditorLevelScaleX / 2f, currentSettings.EditorLevelScaleY / 2f, 0);
-        _minDrag = _maxDrag * -1f;
-}
+        //_maxDrag = new Vector3(currentSettings.EditorLevelScaleX / 2f, currentSettings.EditorLevelScaleY / 2f, 0);
+        //_minDrag = _maxDrag * -1f;
+    }
+
+    void SetBoundaries(LevelState levelState)
+    {
+        //if (this.ActiveLevelState != null)
+        //    this.ActiveLevelState.OnScaleChanged -= this.SetBoundaries;
+
+        // this.ActiveLevelState = levelState;
+
+        //if (this.ActiveLevelState != null)
+        //    this.ActiveLevelState.OnScaleChanged += this.SetBoundaries;
+
+        // this.UpdateBoundaries();
+    }
+
+    void UpdateBoundaries()
+    {
+        int x = this.ActiveLevelState.ScaleX;
+        int y = this.ActiveLevelState.ScaleY;
+
+        this.SetBoundaries(x, y);
+    }
+
+    void SetBoundaries(int x, int y)
+    {
+        this._maxDrag = new Vector3(x / 2f + 6, y / 2f + 6, 0);
+        this._minDrag = this._maxDrag * -1f;
+    }
 
     void Update()
     {

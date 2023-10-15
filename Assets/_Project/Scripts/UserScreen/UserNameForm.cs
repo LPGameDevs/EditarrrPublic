@@ -1,4 +1,3 @@
-using System;
 using Singletons;
 using SteamIntegration;
 using TMPro;
@@ -9,39 +8,33 @@ using UnityEngine;
  */
 public class UserNameForm : MonoBehaviour
 {
-    public const string UserIdStorageKey = "UserId";
-    public const string UserNameStorageKey = "UserName";
-    public const string DefaultUserName = "anon";
-
     public TMP_InputField UserNameInput;
-    public TextMeshProUGUI Version;
 
     private void Awake()
     {
         // Initialise steam.
         SteamManager.Instance.Init();
         Debug.Log("Application Version : " + Application.version);
-        Version.text = "v" + Application.version;
     }
 
     private void Start()
     {
         // If we already have saved a username then use that.
-        string userName = PlayerPrefs.GetString(UserNameStorageKey);
-        if (userName.Length > 0 && userName != DefaultUserName)
+        string userName = PreferencesManager.Instance.GetUserName();
+
+        if (userName.Length > 0 && userName != PreferencesManager.DefaultUserName)
         {
             UserNameInput.text = userName;
         }
 
         // Initialise a new user id if we dont have one.
-        string userId = PlayerPrefs.GetString(UserIdStorageKey, Guid.NewGuid().ToString());
-        PlayerPrefs.SetString(UserIdStorageKey, userId);
+        PreferencesManager.Instance.GetUserId();
     }
 
     public void SubmitForm()
     {
-        string oldUserName = PlayerPrefs.GetString(UserNameStorageKey, DefaultUserName);
-        string newUserName = UserNameInput.text ?? DefaultUserName;
+        string oldUserName = PreferencesManager.Instance.GetUserName();
+        string newUserName = UserNameInput.text ?? PreferencesManager.DefaultUserName;
 
         // If the username changes then we need to reset the level data.
         // This is easier than trying to migrate the data.
@@ -52,8 +45,8 @@ public class UserNameForm : MonoBehaviour
         }
 
         // We store the username in player prefs. Its not sensitive data so this is fine.
-        PlayerPrefs.SetString(UserNameStorageKey, newUserName);
+        PreferencesManager.Instance.SetUserName(newUserName);
 
-        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
+        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.StartSceneName);
     }
 }

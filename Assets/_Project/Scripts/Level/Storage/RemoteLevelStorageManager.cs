@@ -30,21 +30,18 @@ namespace Level.Storage
             if (Providers.Contains(RemoteLevelStorageProviderType.Aws))
             {
                 provider = new RemoteLevelStorageProviderAws();
+                provider.Initialize();
+                _providers.Add(provider);
             }
             // @todo Change this so multiple providers can be used at once.
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
-            else if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
+            if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
             {
                 provider = new RemoteLevelStorageProviderSteam();
+                provider.Initialize();
+                _providers.Add(provider);
             }
 #endif
-            else
-            {
-                return;
-            }
-
-            provider.Initialize();
-            _providers.Add(provider);
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
@@ -53,11 +50,6 @@ namespace Level.Storage
             {
                 provider.Upload(levelSave, callback);
             }
-        }
-
-        public void UploadScreenshot(string code, byte[] screenshot)
-        {
-            throw new NotImplementedException();
         }
 
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
@@ -107,6 +99,22 @@ namespace Level.Storage
                 }
 
                 provider.GetScoresForLevel(code, callback);
+            }
+        }
+
+        public void SubmitRating(int score, LevelSave levelSave, RemoteRatingStorage_RatingSubmittedCallback callback)
+        {
+            foreach (var provider in _providers)
+            {
+                provider.SubmitRating(score, levelSave, callback);
+            }
+        }
+
+        public void GetRatingsForLevel(string code, RemoteRatingStorage_AllRatingsLoadedCallback callback)
+        {
+            foreach (var provider in _providers)
+            {
+                provider.GetRatingsForLevel(code, callback);
             }
         }
     }

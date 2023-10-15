@@ -4,13 +4,36 @@ namespace Editarrr.LevelEditor
 {
     public class EditorTileState
     {
-        public EditorTileData TileData { get; private set; }
-        public Rotation Rotation { get; private set; }
+        public EditorTileData Foreground { get; private set; }
+        public EditorTileData Background { get; private set; }
+        public Rotation ForegroundRotation { get; private set; }
+        public Rotation BackgroundRotation { get; private set; }
 
-        public EditorTileState(EditorTileData tileData, Rotation rotation)
+        //public EditorTileState(EditorTileData foreground, EditorTileData background, Rotation rotation)
+        //{
+        //    this.Foreground = foreground;
+        //    this.Background = background;
+        //    this.Rotation = rotation;
+        //}
+
+        public void SetForeground(EditorTileData foreground)
         {
-            this.TileData = tileData;
-            this.Rotation = rotation;
+            this.Foreground = foreground;
+        }
+
+        public void SetBackground(EditorTileData background)
+        {
+            this.Background = background;
+        }
+
+        public void SetForegroundRotation(Rotation rotation)
+        {
+            this.ForegroundRotation = rotation;
+        }
+
+        public void SetBackgroundRotation(Rotation rotation)
+        {
+            this.BackgroundRotation = rotation;
         }
     }
 }

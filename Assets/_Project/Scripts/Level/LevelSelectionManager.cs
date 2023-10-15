@@ -1,11 +1,14 @@
 using Browser;
-using CorgiExtension;
 using Editarrr.Level;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Editarrr.UI;
 using Gameplay.GUI;
 using Level.Storage;
+using LevelEditor;
+using Singletons;
+using UI;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelSelectionManager", menuName = "Managers/Level/new Level Selection Manager")]
@@ -21,6 +24,18 @@ public class LevelSelectionManager : ManagerComponent
     private LevelSelectionLoader _levelLoader { get; set; }
     private LeaderboardForm _leaderboard { get; set; }
 
+    private IModalPopup _uploadModal { get; set; }
+    private IModalPopup _deleteModal { get; set; }
+
+    public void SetUploadModal(IModalPopup uploadModal)
+    {
+        _uploadModal = uploadModal;
+    }
+
+    public void SetDeleteModal(IModalPopup deleteModal)
+    {
+        _deleteModal = deleteModal;
+    }
 
     public void SetLevelLoader(LevelSelectionLoader levelLoader)
     {
@@ -61,14 +76,34 @@ public class LevelSelectionManager : ManagerComponent
 
     private void OnLevelDeleted(string code)
     {
-        LevelManager.Delete(code);
-        DestroyAndRefreshLevels();
+        if (_deleteModal is ModalPopupConfirmation confirmModal)
+        {
+            confirmModal.SetConfirm(DeleteLevel);
+        }
+
+        _deleteModal.Open();
+
+        void DeleteLevel()
+        {
+            LevelManager.Delete(code);
+            DestroyAndRefreshLevels();
+        }
     }
 
     private void OnLevelUploadRequested(string code)
     {
-        LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
-        DestroyAndRefreshLevels();
+        if (_uploadModal is ModalPopupConfirmation confirmModal)
+        {
+            confirmModal.SetConfirm(UploadLevel);
+        }
+
+        _uploadModal.Open();
+
+        void UploadLevel()
+        {
+            LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
+            DestroyAndRefreshLevels();
+        }
     }
 
     private void OnLevelUploadComplete(LevelSave level)
@@ -78,6 +113,8 @@ public class LevelSelectionManager : ManagerComponent
         {
             Debug.Log("Upload finished for level " + level.Code + ".");
         }
+
+        AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelSubmitted);
 
         // Update display.
         DestroyAndRefreshLevels();

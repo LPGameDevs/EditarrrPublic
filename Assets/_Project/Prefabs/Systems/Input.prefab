@@ -76,6 +76,8 @@ MonoBehaviour:
       action: {fileID: 1445583020806540804, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
     - value: {fileID: 11400000, guid: 9783b11421ea29b4187d9ea30aadae04, type: 2}
       action: {fileID: 7738365300880229555, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: d4bf20c1b8981c94cad46baa325c5c34, type: 2}
+      action: {fileID: 6592856376003603870, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
     <IsActive>k__BackingField: 1
   - <Name>k__BackingField: Development
     links:

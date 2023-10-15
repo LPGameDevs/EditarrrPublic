@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using CorgiExtension;
 using Level.Storage;
+using LevelEditor;
 using Singletons;
 using UnityEngine;
 
@@ -29,7 +29,7 @@ public class LevelSelectionLoader : MonoBehaviour
      */
     public void AddLevelPrefabFromData(LevelStub levelData, string screenshotPath)
     {
-        string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
+        string userId = PreferencesManager.Instance.GetUserId();
         EditorLevel level;
 
         if (levelData.Published)

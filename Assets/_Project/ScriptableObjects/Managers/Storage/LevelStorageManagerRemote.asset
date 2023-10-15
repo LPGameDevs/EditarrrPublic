@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b881dfb5e34eb991b3c823d3d7fb28, type: 3}
   m_Name: LevelStorageManagerRemote
   m_EditorClassIdentifier: 
-  <Providers>k__BackingField: 01000000
+  <Providers>k__BackingField: 0100000000000000

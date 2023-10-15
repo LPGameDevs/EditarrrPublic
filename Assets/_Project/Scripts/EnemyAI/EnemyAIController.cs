@@ -36,9 +36,11 @@ public class EnemyAIController : MonoBehaviour
     private float _distanceToGround = -0.5f;
 
     private float _moveSpeed;
+    private Collider2D enemyCollider;
 
     private void Start()
     {
+        enemyCollider = GetComponent<Collider2D>();
         switch (enemyAIData.enemyType)
         {
             case EnemyType.chase:
@@ -204,27 +206,13 @@ public class EnemyAIController : MonoBehaviour
         return distanceToTarget <= range;
     }
 
-    //private bool IsNearPlayer()
-    //{
-    //    Vector2 direction = transform.right * _currentDirection;
-    //    RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, enemyAIData.detectionRange);
-
-    //    //0 is the enemy, 1 needs to be the player for the enemy to see him
-    //    foreach (var hit in hits)
-    //    {
-    //        if (playerLayer == (playerLayer | (1 << hit.transform.gameObject.layer))) { return true; } //returns true if player
-    //        if (obstacleLayer == (obstacleLayer | (1 << hit.transform.gameObject.layer)) && IsNotThisEnemy(hit)) { return false; } //returns false if something else is before the player
-    //    }
-
-    //    return false;
-    //}
-
     private bool CanSeePlayer()
     {
         if (fieldOfView.visibleTargets.Count > 0)
         {
             return true;
         }
+
         return false;
     }
 

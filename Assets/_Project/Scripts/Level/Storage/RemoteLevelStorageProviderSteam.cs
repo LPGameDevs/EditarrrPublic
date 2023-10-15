@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using Editarrr.Level;
-using SteamIntegration;
 using UnityEngine;
 
 namespace Level.Storage
@@ -18,6 +17,12 @@ namespace Level.Storage
         {
             // This is for dev only. Should be called in the user name scene.
             // SteamManager.Instance.Init();
+            Steamworks.SteamUGC.OnDownloadItemResult += OnDownloadItemResult;
+        }
+
+        private void OnDownloadItemResult(Steamworks.Result obj)
+        {
+            throw new NotImplementedException();
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
@@ -103,6 +108,8 @@ namespace Level.Storage
 
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
+            return;
+
             DownloadAsync(code, callback);
         }
 
@@ -158,6 +165,9 @@ namespace Level.Storage
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
         {
+            // Disabling level browsing for now.
+            return;
+
             // Call async function.
             LoadAllLevelDataAsync(callback);
         }
@@ -195,12 +205,26 @@ namespace Level.Storage
 
         public void SubmitScore(float score, LevelSave levelSave, RemoteScoreStorage_ScoreSubmittedCallback callback)
         {
-            throw new System.NotImplementedException();
+            return;
+            throw new NotImplementedException();
         }
 
         public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
         {
-            throw new System.NotImplementedException();
+            return;
+            throw new NotImplementedException();
+        }
+
+        public void SubmitRating(int rating, LevelSave levelSave, RemoteRatingStorage_RatingSubmittedCallback callback)
+        {
+            return;
+            throw new NotImplementedException();
+        }
+
+        public void GetRatingsForLevel(string code, RemoteRatingStorage_AllRatingsLoadedCallback callback)
+        {
+            return;
+            throw new NotImplementedException();
         }
     }
 

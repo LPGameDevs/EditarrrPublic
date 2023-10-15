@@ -9,6 +9,7 @@ namespace Gameplay.GUI
     public class WinMenu : MonoBehaviour
     {
         public static event Action<string, float> OnScoreSubmit;
+        public static event Action<string, int> OnRatingSubmit;
         public static event Action OnScoreSubmitted;
 
         public TMP_Text LevelCode;
@@ -18,6 +19,9 @@ namespace Gameplay.GUI
         public Transform BackButton;
         public Transform BackEditorButton;
         public bool IsReplay = false;
+
+        [SerializeField] Animator _animator;
+        const string VICTORY_TRIGGER_NAME = "Victory";
 
         private string _code;
         private string _user;
@@ -71,8 +75,14 @@ namespace Gameplay.GUI
 
         public void Show()
         {
-            // @todo SFX
             UpdateContent();
+            _animator.SetTrigger(VICTORY_TRIGGER_NAME);
+
+            // @todo only show this if its not the players own level.
+            if (false)
+            {
+                AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelCompleted);
+            }
         }
 
         public void SetCode(string code)

@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Browser;
 using Editarrr.Level;
 using Level.Storage;
 using Singletons;
-using SteamIntegration;
 using UnityEngine;
 
 public class LevelBrowserLoader : MonoBehaviour
@@ -11,6 +11,7 @@ public class LevelBrowserLoader : MonoBehaviour
     private LevelManager _levelManager;
 
     [SerializeField] private LevelBrowserLevel _levelPrefab;
+    [SerializeField] private Transform _loadingSpinner;
     private List<LevelBrowserLevel> _loadedLevels = new List<LevelBrowserLevel>();
 
     private void Awake()
@@ -18,9 +19,24 @@ public class LevelBrowserLoader : MonoBehaviour
         // SteamManager.Instance.Init();
     }
 
+    private void Start()
+    {
+        StartLoading();
+    }
+
     public void SetLevelManager(LevelManager levelManager)
     {
         _levelManager = levelManager;
+    }
+
+    private void StartLoading()
+    {
+        _loadingSpinner.gameObject.SetActive(true);
+    }
+
+    private void StopLoading()
+    {
+        _loadingSpinner.gameObject.SetActive(false);
     }
 
     public void DestroyLevels()
@@ -31,11 +47,12 @@ public class LevelBrowserLoader : MonoBehaviour
             Destroy(level.gameObject);
         }
         _loadedLevels = new List<LevelBrowserLevel>();
+        StartLoading();
     }
 
     public void AddLevelPrefabFromData(LevelStub levelStub)
     {
-        string userId = PlayerPrefs.GetString(UserNameForm.UserIdStorageKey);
+        string userId = PreferencesManager.Instance.GetUserId();
         LevelBrowserLevel level;
 
         level = Instantiate(_levelPrefab, transform);
@@ -71,6 +88,7 @@ public class LevelBrowserLoader : MonoBehaviour
 
     public void SetLevels(LevelStub[] levels)
     {
+        StopLoading();
         foreach (var level in levels)
         {
             AddLevelPrefabFromData(level);

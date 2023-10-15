@@ -7,8 +7,11 @@ namespace Gameplay
     {
         public static event Action OnKeyPickup;
 
-        [SerializeField] AudioClip pickupSound;
+        [SerializeField] AudioClip pickupSound, bootySound;
+        [SerializeField] Animator animator;
         private bool _isCollected;
+
+        const string PICKUP_TRIGGER_NAME = "Pickup";
 
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -23,8 +26,17 @@ namespace Gameplay
             // @todo Check this by (for example) letting an Enemy run into the Chest.
             _isCollected = true;
             Editarrr.Audio.AudioManager.Instance.PlayAudioClip(pickupSound);
-            this.gameObject.SetActive(false);
+            Editarrr.Audio.AudioManager.Instance.PlayAudioClip(bootySound);
+            animator.SetTrigger(PICKUP_TRIGGER_NAME);
             OnKeyPickup?.Invoke();
+        }
+
+        public void FinishPickup()
+        {
+            if(transform.parent != null)
+                transform.parent.gameObject.SetActive(false);
+            else
+                gameObject.SetActive(false);
         }
     }
 }
