@@ -1,6 +1,8 @@
+using System.Linq;
+using Systems;
 using UnityEngine;
 
-public class EnemyAIController : MonoBehaviour
+public class EnemyAIController : PausableCharacter
 {
     private enum AIState
     {
@@ -56,6 +58,7 @@ public class EnemyAIController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!_active) return;
         switch (enemyAIData.enemyType)
         {
             case EnemyType.chase:

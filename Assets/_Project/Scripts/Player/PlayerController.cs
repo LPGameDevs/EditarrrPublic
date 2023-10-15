@@ -13,7 +13,7 @@ namespace Player
     /// Adapted from Tarodev's Ultimate 2D controller, found here: https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller
     /// </summary>
     [RequireComponent(typeof(HealthSystem), typeof(PlayerForceReceiver))]
-    public class PlayerController : MonoBehaviour, IEventListener<GameEvent>
+    public class PlayerController : PausableCharacter
     {
         // events
         public static event Action OnPlayerJumped;
@@ -33,10 +33,6 @@ namespace Player
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
 
-        // This is horrible, but for some reason colliders are not fully established when update starts...
-        private bool _active = false;
-        private bool _inputLocked = false;
-
         void Awake()
         {
             _health = GetComponent<HealthSystem>();
@@ -44,14 +40,9 @@ namespace Player
             _forceReceiver = GetComponent<PlayerForceReceiver>();
         }
 
-        void Activate()
+        public override void Deactivate()
         {
-            _active = true;
-        }
-
-        void Deactivate()
-        {
-            _active = false;
+            base.Deactivate();
             _velocity = Vector3.zero;
             _rawMovement = Vector3.zero;
             _currentHorizontalSpeed = 0f;
@@ -453,32 +444,6 @@ namespace Player
 
         #endregion
 
-        private void UpdateActiveState(bool activate)
-        {
-            if (activate)
-                Activate();
-            else
-                Deactivate();
-        }
-
-        public void OnEvent(GameEvent gameEvent)
-        {
-            // We only care about pause events.
-            if (!new[] { GameEventType.Pause, GameEventType.Unpause }.Contains(gameEvent.Type))
-            {
-                return;
-            }
-
-            if (gameEvent.Type == GameEventType.Pause)
-            {
-                UpdateActiveState(false);
-            }
-            else
-            {
-                UpdateActiveState(true);
-            }
-        }
-
         private void DeathInputLock(object sender, EventArgs e)
         {
             LockInput(true);
@@ -486,14 +451,12 @@ namespace Player
 
         private void OnEnable()
         {
-            this.EventStartListening<GameEvent>();
             HealthSystem.OnDeath += DeathInputLock;
             HealthSystem.OnHitPointsChanged += TakeDamage;
         }
 
         private void OnDisable()
         {
-            this.EventStopListening<GameEvent>();
             HealthSystem.OnDeath -= DeathInputLock;
             HealthSystem.OnHitPointsChanged -= TakeDamage;
         }
