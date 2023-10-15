@@ -6,8 +6,8 @@ using UnityEngine;
 public class PausableCharacter : MonoBehaviour, IEventListener<GameEvent>
 {
     // This is horrible, but for some reason colliders are not fully established when update starts...
-    public bool _active = false;
-    public bool _inputLocked = false;
+    internal bool _active = false;
+    internal bool _inputLocked = false;
 
 
     public void OnEvent(GameEvent gameEvent)
@@ -28,12 +28,12 @@ public class PausableCharacter : MonoBehaviour, IEventListener<GameEvent>
         }
     }
 
-    public virtual void Activate()
+    internal virtual void Activate()
     {
         _active = true;
     }
 
-    public virtual void Deactivate()
+    internal virtual void Deactivate()
     {
         _active = false;
     }
@@ -47,12 +47,12 @@ public class PausableCharacter : MonoBehaviour, IEventListener<GameEvent>
     }
 
 
-    private void OnEnable()
+    internal virtual void OnEnable()
     {
         this.EventStartListening<GameEvent>();
     }
 
-    private void OnDisable()
+    internal virtual void OnDisable()
     {
         this.EventStopListening<GameEvent>();
     }

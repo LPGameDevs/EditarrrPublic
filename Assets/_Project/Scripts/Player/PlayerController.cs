@@ -40,7 +40,8 @@ namespace Player
             _forceReceiver = GetComponent<PlayerForceReceiver>();
         }
 
-        public override void Deactivate()
+
+        internal override void Deactivate()
         {
             base.Deactivate();
             _velocity = Vector3.zero;
@@ -449,14 +450,16 @@ namespace Player
             LockInput(true);
         }
 
-        private void OnEnable()
+        internal override void OnEnable()
         {
+            base.OnEnable();
             HealthSystem.OnDeath += DeathInputLock;
             HealthSystem.OnHitPointsChanged += TakeDamage;
         }
 
-        private void OnDisable()
+        internal override void OnDisable()
         {
+            base.OnDisable();
             HealthSystem.OnDeath -= DeathInputLock;
             HealthSystem.OnHitPointsChanged -= TakeDamage;
         }
