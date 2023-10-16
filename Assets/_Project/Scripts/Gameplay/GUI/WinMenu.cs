@@ -3,6 +3,7 @@ using Editarrr.Level;
 using Singletons;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Gameplay.GUI
 {
@@ -14,10 +15,10 @@ namespace Gameplay.GUI
 
         public TMP_Text LevelCode;
         public TMP_Text TimerText;
-        public Transform ReplayButton;
-        public Transform SubmitButton;
-        public Transform BackButton;
-        public Transform BackEditorButton;
+        public Button BackButton;
+        public Button BackEditorButton;
+        public Button ReplayButton;
+        public Button SubmitButton;
         public bool IsReplay = false;
 
         [SerializeField] Animator _animator;
@@ -31,7 +32,7 @@ namespace Gameplay.GUI
 
         private void UpdateContent()
         {
-            HideAllButtons();
+            DisableAllButtons();
             LevelCode.text = _code.ToUpper();
 
             if (_levelData == null)
@@ -47,30 +48,30 @@ namespace Gameplay.GUI
 
             if (IsReplay)
             {
-                ReplayButton.gameObject.SetActive(true);
-                ReplayButton.GetComponentInChildren<TMP_Text>().text = "AGAIN";
-                SubmitButton.gameObject.SetActive(false);
-                BackButton.gameObject.SetActive(true);
+                BackButton.interactable = true;
+                ReplayButton.interactable = true;
+                SubmitButton.interactable = false;
+                BackButton.interactable = true;
             }
             else if (_levelData.Published)
             {
-                ReplayButton.gameObject.SetActive(true);
-                SubmitButton.gameObject.SetActive(true);
-                BackButton.gameObject.SetActive(true);
+                ReplayButton.interactable = true;
+                SubmitButton.interactable = true;
+                BackButton.interactable = true;
             }
             else
             {
-                ReplayButton.gameObject.SetActive(true);
-                BackEditorButton.gameObject.SetActive(true);
+                ReplayButton.interactable = true;
+                BackEditorButton.interactable = true;
             }
         }
 
-        private void HideAllButtons()
+        private void DisableAllButtons()
         {
-            ReplayButton.gameObject.SetActive(false);
-            SubmitButton.gameObject.SetActive(false);
-            BackButton.gameObject.SetActive(false);
-            BackEditorButton.gameObject.SetActive(false);
+            ReplayButton.interactable = false;
+            SubmitButton.interactable = false;
+            BackButton.interactable = false;
+            BackEditorButton.interactable = false;
         }
 
         public void Show()
@@ -134,13 +135,11 @@ namespace Gameplay.GUI
 
         public void OnClickBack()
         {
-            TimeManager.Instance.StartTime();
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
         }
 
         public void OnClickBackEditor()
-        {
-            TimeManager.Instance.StartTime();
+        { 
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.CreateLevelSceneName);
         }
 

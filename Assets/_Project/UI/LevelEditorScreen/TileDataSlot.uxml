@@ -5,6 +5,6 @@
         <ui:VisualElement name="Count" class="panel panel-border-dark panel-border-medium panel-background-light" style="position: absolute; right: 0; bottom: 0; margin-left: 0; margin-right: -4px; margin-top: 0; margin-bottom: -4px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-top-left-radius: 18px; border-bottom-left-radius: 18px; border-top-right-radius: 18px; border-bottom-right-radius: 18px; width: 38px; height: 38px; align-items: center; justify-content: center; background-image: none;">
             <ui:Label text="40" display-tooltip-when-elided="true" name="Value" class="text-medium" style="color: rgb(238, 238, 238); -unity-font: url(&apos;project://database/Assets/_Project/fonts/JumpandPlay.otf?fileID=12800000&amp;guid=9cb5fa0482db22642a555c94098baaa2&amp;type=3#JumpandPlay&apos;); -unity-font-definition: initial;" />
         </ui:VisualElement>
-        <ui:Label text="Label&#10;2&#10;34" display-tooltip-when-elided="true" name="ToolTip" class="toolTip" style="visibility: visible;" />
+        <ui:Label text="Label&#10;2&#10;34" display-tooltip-when-elided="true" name="ToolTip" class="toolTip" style="visibility: visible; top: 101px; right: -199px; left: -4px;" />
     </ui:Button>
 </ui:UXML>
