@@ -311,6 +311,9 @@ namespace Editarrr.LevelEditor
             Tilemap tilemap;
             EditorTileState currentState = this.Tiles[x, y];
 
+            if (!tileData.Tile.CanRotate)
+                tileRotation = Rotation.North;
+
             if (currentState == null)
             {
                 this.Tiles[x, y] = currentState = new EditorTileState();
