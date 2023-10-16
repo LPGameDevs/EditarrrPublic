@@ -127,8 +127,6 @@ namespace Editarrr.LevelEditor
             {
                 this.CreateLevelState();
             }
-
-
         }
 
         public override void DoUpdate()
@@ -193,7 +191,7 @@ namespace Editarrr.LevelEditor
 
         #region Tile Operations
 
-         private void EnableHoverTile()
+        private void EnableHoverTile()
         {
             this.EditorHoverTile.SetActive(true);
         }

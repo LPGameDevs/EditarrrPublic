@@ -41,6 +41,7 @@ namespace Editarrr.LevelEditor
         {
             this.ClearEvents();
             this.SetActiveGroupIndex(0);
+            this.IsUIHover = false;
 
             // @todo This feature allows us to always use the same tile at the start
             // of level editing. If we want to track whatever the most recent tile was
