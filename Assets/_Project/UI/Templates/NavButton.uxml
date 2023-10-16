@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/StyleSheets/ProjectStyleSheet.uss?fileID=7433441132597879392&amp;guid=cd4aeef013304774294ae2622f37e9df&amp;type=3#ProjectStyleSheet" />
+    <ui:Button display-tooltip-when-elided="true" name="Button" focusable="true" class="button button-square-small" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/UI_Tight.png?fileID=1931395949&amp;guid=53cc67c92fd1bfb4abd11f589fa6fd10&amp;type=3#UI_Tight_10&apos;); margin-left: 16px; margin-right: 16px; margin-top: 16px; margin-bottom: 16px; width: 64px; height: 64px; background-color: rgb(51, 50, 61); align-items: center; justify-content: center; flex-wrap: nowrap;">
+        <ui:VisualElement name="Symbol" focusable="false" class="button-symbol" style="height: auto; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; background-image: url(&apos;project://database/Assets/_Project/Art/UI/UI_Tight.png?fileID=1763614365&amp;guid=53cc67c92fd1bfb4abd11f589fa6fd10&amp;type=3#UI_Tight_109&apos;); position: absolute; -unity-background-scale-mode: scale-to-fit; padding-left: 16px; padding-right: 16px; padding-top: 16px; padding-bottom: 14px;" />
+    </ui:Button>
+</ui:UXML>

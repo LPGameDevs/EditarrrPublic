@@ -71,7 +71,11 @@ namespace Singletons
             if (sceneName.Equals(TestLevelSceneName))
                 AudioManager.Instance.FadeVolume(AudioManager.Instance.BgmSourceTwo, TransitionTime, 1f);
             else
+            {
+                TimeManager.Instance.StartTime();
                 AudioManager.Instance.FadeVolume(AudioManager.Instance.BgmSourceTwo, TransitionTime, 0f);
+            }
+
 
             AudioManager.Instance.PlayAudioClip(TransitionSound);
             SceneManager.LoadScene(sceneName);

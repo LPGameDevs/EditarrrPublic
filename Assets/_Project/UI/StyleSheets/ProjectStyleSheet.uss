@@ -22,6 +22,13 @@
     border-bottom-right-radius: 16px;
     align-items: center;
     justify-content: center;
+    border-left-color: rgb(51, 50, 61);
+    border-right-color: rgb(51, 50, 61);
+    border-top-color: rgb(51, 50, 61);
+    border-bottom-color: rgb(51, 50, 61);
+    transition-property: scale;
+    transition-delay: 0s;
+    transition-duration: 1s;
 }
 
 .button-square-small {
@@ -82,6 +89,73 @@
 
 .panel-background-light {
     background-color: rgba(60, 60, 60, 0.5);
+}
+
+.unity-button {
+}
+
+.button-navigation {
+    cursor: initial;
+    background-image: url('project://database/Assets/_Project/Art/UI/UI_Tight.png?fileID=1931395949&guid=53cc67c92fd1bfb4abd11f589fa6fd10&type=3#UI_Tight_10');
+    border-left-width: 6px;
+    border-right-width: 6px;
+    border-top-width: 0;
+    border-bottom-width: 12px;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    transition-property: scale;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out-elastic;
+    transition-delay: 0s;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 25%;
+    height: 50%;
+    flex-wrap: wrap;
+    background-color: rgba(88, 88, 88, 0);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left-color: rgb(51, 50, 61);
+    border-right-color: rgb(51, 50, 61);
+    border-top-color: rgb(51, 50, 61);
+    border-bottom-color: rgb(51, 50, 61);
+}
+
+.top-row {
+}
+
+.button-navigation:hover {
+    scale: 1.1 1.1;
+}
+
+.button-navigation:active {
+    scale: 0.9 0.9;
+    -unity-background-image-tint-color: rgb(180, 180, 180);
+}
+
+.tile-data-slot {
+}
+
+.tile-data-slot:hover {
+    scale: 1.1 1.1;
+    transition-duration: 0.1s;
+    transition-property: scale;
+    transition-timing-function: ease-in-back;
+}
+
+.tile-data-slot:active {
+    scale: 0.8 0.8;
+    transition-property: scale, -unity-background-image-tint-color;
+    transition-duration: 0.1s, 0.1s;
+    transition-timing-function: ease-in-elastic, ease;
+    -unity-background-image-tint-color: rgba(183, 183, 183, 255);
 }
 
 .toolTip {
