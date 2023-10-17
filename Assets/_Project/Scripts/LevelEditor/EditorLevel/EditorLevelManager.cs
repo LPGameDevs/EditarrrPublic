@@ -46,6 +46,7 @@ namespace Editarrr.LevelEditor
         [field: SerializeField, Header("Input")] private InputValue MousePosition { get; set; }
         [field: SerializeField] private InputValue MouseLeftButton { get; set; }
         [field: SerializeField] private InputValue MouseRightButton { get; set; }
+        [field: SerializeField] private InputValue Input_CloneTile { get; set; }
         #endregion
 
         Dictionary<TileType, List<Int2D>> TileLocations { get; set; }
@@ -140,6 +141,21 @@ namespace Editarrr.LevelEditor
             this.ClampPosition(this.GetCursorTileMapPosition(), out int x, out int y);
 
             EditorTileData tileData = this.EditorTileSelection.ActiveElement;
+
+            if (this.Input_CloneTile.WasPressed)
+            {
+                EditorTileState atCursor = this.Tiles[x, y];
+                if (atCursor != null)
+                {
+                    bool background = atCursor.Foreground == tileData || atCursor.Foreground == null;
+                    background = background && atCursor.Background != null;
+
+                    EditorTileData toClone = background ? atCursor.Background : atCursor.Foreground;
+                    Rotation rotation = background ? atCursor.BackgroundRotation : atCursor.ForegroundRotation;
+
+                    this.EditorTileSelection.SetActiveElement(toClone, rotation);
+                }
+            }
 
             if (tileData != null)
             {

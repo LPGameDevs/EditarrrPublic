@@ -25,7 +25,6 @@ namespace Editarrr.LevelEditor
         #region Input
         [field: SerializeField, Header("Input")] private InputValue Input_Rotate { get; set; }
         [field: SerializeField] private InputValue Input_SelectTile { get; set; }
-        [field: SerializeField] private InputValue Input_SwitchTile { get; set; }
         [field: SerializeField] private InputValue Input_NextGroup { get; set; }
         #endregion
 
@@ -133,6 +132,25 @@ namespace Editarrr.LevelEditor
         {
             this.Rotation = rotation;
             EditorTileSelectionManager.RotationChanged?.Invoke(this.Rotation);
+        }
+
+        public void SetActiveElement(EditorTileData editorTileData, Rotation rotation)
+        {
+            for (int gIdx = 0; gIdx < this.GroupPool.GroupData.Length; gIdx++)
+            {
+                EditorTileGroupData groupData = this.GroupPool.GroupData[gIdx];
+                for (int eIdx = 0; eIdx < groupData.GroupElements.Length; eIdx++)
+                {
+                    EditorTileData tileData = groupData.GroupElements[eIdx];
+                    if (tileData == editorTileData)
+                    {
+                        this.SetActiveGroupIndex(gIdx);
+                        this.SetActiveElementIndex(eIdx);
+                        this.SetRotation(rotation);
+                        return;
+                    }
+                }
+            }
         }
     }
 }
