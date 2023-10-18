@@ -555,7 +555,7 @@ MonoBehaviour:
     <SaveButtonName>k__BackingField: Save
     <CloseButtonName>k__BackingField: Close
   <SelectionConfig>k__BackingField:
-    <ContainerName>k__BackingField: SelectionPreview
+    <ContainerName>k__BackingField: SelectionConfig
     <ValueName>k__BackingField: Value
     <TilePreviewName>k__BackingField: TilePreview
     <BoolValueTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 4fbadbcfd1e9b764b92d0f526c5d481c, type: 3}

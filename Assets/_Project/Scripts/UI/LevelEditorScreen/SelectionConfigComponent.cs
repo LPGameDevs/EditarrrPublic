@@ -42,7 +42,7 @@ namespace Editarrr.UI.LevelEditor
                     Debug.Log(" as bool");
                     TemplateContainer template = this.BoolValueTemplate.Instantiate();
                     var toggle = template.Q<Toggle>(this.ValueName);
-
+                    this.ContainerElement.Add(template);
                     return toggle;
                 }
 
