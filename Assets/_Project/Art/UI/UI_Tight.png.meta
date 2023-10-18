@@ -156,7 +156,7 @@ TextureImporter:
         height: 86
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 8, y: 9, z: 8, w: 10}
+      border: {x: 6, y: 8, z: 6, w: 8}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -450,7 +450,7 @@ TextureImporter:
         height: 30
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 1, y: 1, z: 1, w: 1}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -530,11 +530,11 @@ TextureImporter:
         serializedVersion: 2
         x: 660
         y: 407
-        width: 41
+        width: 42
         height: 42
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 5, y: 7, z: 4, w: 5}
+      border: {x: 5, y: 7, z: 5, w: 5}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -555,7 +555,7 @@ TextureImporter:
         height: 6
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 1, y: 1, z: 1, w: 1}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -576,7 +576,7 @@ TextureImporter:
         height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 14, y: 6, z: 14, w: 9}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -618,7 +618,7 @@ TextureImporter:
         height: 12
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 3, y: 1, z: 3, w: 1}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -660,7 +660,7 @@ TextureImporter:
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 9, y: 10, z: 9, w: 11}
+      border: {x: 9, y: 18, z: 9, w: 12}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -760,12 +760,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 457
-        y: 338
+        y: 333
         width: 44
         height: 50
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 19, y: 22, z: 19, w: 22}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -786,7 +786,7 @@ TextureImporter:
         height: 50
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 1, y: 2, z: 1, w: 1}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -807,7 +807,7 @@ TextureImporter:
         height: 66
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 8, y: 7, z: 8, w: 7}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -849,7 +849,7 @@ TextureImporter:
         height: 66
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 7, y: 7, z: 8, w: 8}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -933,7 +933,7 @@ TextureImporter:
         height: 14
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 19, y: 5, z: 18, w: 6}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -996,7 +996,7 @@ TextureImporter:
         height: 14
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 2, y: 1, z: 2, w: 1}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -4115,6 +4115,153 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: UI_Tight_191
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 389
+        width: 46
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 8, z: 13, w: 6}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70a799291488cbd459e311c8c277fbee
+      internalID: 46345048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Tight_192
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 149
+        width: 65
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4ddbd89dea48c049b68e3993c378557
+      internalID: 1189431277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Tight_193
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 149
+        width: 122
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af23c81d9dfc46045ac345873ff6cc34
+      internalID: -839895503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Tight_194
+      rect:
+        serializedVersion: 2
+        x: 457
+        y: 243
+        width: 44
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 8, y: 7, z: 8, w: 8}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80e979246e4608740a3b2d741717a8e9
+      internalID: 1206832367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Tight_195
+      rect:
+        serializedVersion: 2
+        x: 325
+        y: 101
+        width: 86
+        height: 90
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 9, z: 7, w: 11}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17f12eaea3ea4ad4cadb6a33e11b5396
+      internalID: 1219397269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Tight_196
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 137
+        width: 86
+        height: 90
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 9, z: 7, w: 11}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78e30682306791a4d8305333e0da6e30
+      internalID: -1939557121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Tight_197
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 391
+        width: 36
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 5, z: 13, w: 5}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f2b5c9df830af94a905d7e2425fe6fe
+      internalID: -2034845582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -4230,6 +4377,12 @@ TextureImporter:
       UI_Tight_19: -989373609
       UI_Tight_190: -482503663
       UI_Tight_191: 46345048
+      UI_Tight_192: 1189431277
+      UI_Tight_193: -839895503
+      UI_Tight_194: 1206832367
+      UI_Tight_195: 1219397269
+      UI_Tight_196: -1939557121
+      UI_Tight_197: -2034845582
       UI_Tight_2: -713316306
       UI_Tight_20: 944461596
       UI_Tight_21: -818059564
