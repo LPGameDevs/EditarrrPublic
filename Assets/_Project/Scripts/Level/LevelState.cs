@@ -54,8 +54,9 @@ namespace Editarrr.Level
                     TileType background = TileType.Empty;
                     Rotation foregroundRotation = Rotation.North;
                     Rotation backgroundRotation = Rotation.North;
+                    TileConfig config = null;
 
-                    this.Tiles[x, y] = new TileState(foreground, background, foregroundRotation, backgroundRotation);
+                    this.Tiles[x, y] = new TileState(foreground, background, foregroundRotation, backgroundRotation, config);
                 }
             }
         }
@@ -80,6 +81,7 @@ namespace Editarrr.Level
                     TileType background = TileType.Empty;
                     Rotation foregroundRotation = Rotation.North;
                     Rotation backgroundRotation = Rotation.North;
+                    TileConfig config = null;
 
                     if (editorTileState != null)
                     {
@@ -87,9 +89,10 @@ namespace Editarrr.Level
                         background = editorTileState.Background?.Tile.Type ?? TileType.Empty;
                         foregroundRotation = editorTileState.ForegroundRotation;
                         backgroundRotation = editorTileState.BackgroundRotation;
+                        config = editorTileState.Config;
                     }
 
-                    this.Tiles[x, y] = new TileState(foreground, background, foregroundRotation, backgroundRotation);
+                    this.Tiles[x, y] = new TileState(foreground, background, foregroundRotation, backgroundRotation, config);
                 }
             }
         }

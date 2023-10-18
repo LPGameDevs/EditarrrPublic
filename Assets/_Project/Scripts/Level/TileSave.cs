@@ -19,6 +19,9 @@ namespace Editarrr.Level
         [field: SerializeField] public TileType Background { get; private set; }
         [field: SerializeField] public Rotation BackgroundRotation { get; private set; }
 
+        [field: SerializeField] public int[] Config { get; private set; }
+
+
         public TileSave(int x, int y, TileState tileState)
         {
             this.X = x;
@@ -27,6 +30,10 @@ namespace Editarrr.Level
             this.Background = tileState.Background;
             this.ForegroundRotation = tileState.ForegroundRotation;
             this.BackgroundRotation = tileState.BackgroundRotation;
+
+            this.Config = tileState.Config?.CreateJSONData();
         }
     }
+
+
 }

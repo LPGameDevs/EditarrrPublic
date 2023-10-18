@@ -24,6 +24,10 @@ namespace Editarrr.LevelEditor
         public static EditorLevelScaleChanged OnEditorLevelScaleChanged { get; set; }
         public delegate void EditorLevelScaleChanged(int x, int y);
 
+        public static EditorConfigSelected OnEditorConfigSelected { get; set; }
+        public delegate void EditorConfigSelected(TileConfig tileConfig);
+
+
         private const string Documentation =
             "This component manages input, placement and storage of the level editor.\r\n" +
             "Camera movement, tilemaps, loading, saving and screenshots all happen here.\r\n";
@@ -74,6 +78,7 @@ namespace Editarrr.LevelEditor
 
 
         private EditorHoverTile EditorHoverTile { get; set; }
+
 
         public void SetSceneCamera(Camera camera)
         {
@@ -172,6 +177,15 @@ namespace Editarrr.LevelEditor
             if (this.MouseLeftButton.WasPressed)
             {
                 EditorTileState state = this.Get(x, y);
+
+                if (state != null &&
+                    state.Foreground == tileData &&
+                    state.ForegroundRotation == this.EditorTileSelection.Rotation &&
+                    state.Config != null)
+                {
+                    Debug.Log("Load Config Editor!");
+                    OnEditorConfigSelected?.Invoke(state.Config);
+                }
 
                 //if (state != null &&
                 //    state.Foreground == tileData &&
@@ -344,6 +358,7 @@ namespace Editarrr.LevelEditor
                 tilemap = this.Tilemap_Foreground;
                 currentState.SetForeground(tileData);
                 currentState.SetForegroundRotation(tileRotation);
+                this.SetConfig(currentState, tileData.Config);
             }
 
             if (tileData.Tile.CanRotate && tileRotation != Rotation.North)
@@ -359,6 +374,28 @@ namespace Editarrr.LevelEditor
             {
                 tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
             }
+        }
+
+        private void SetConfig(int x, int y, TileConfig config)
+        {
+            this.ClampPosition(x, y, out int fX, out int fY);
+
+            // Do not auto adjust coordinates... Something might be off!
+            if (fX != x || fY != y)
+                return;
+
+            EditorTileState state = this.Tiles[x, y];
+            this.SetConfig(state, config);
+        }
+
+        private void SetConfig(EditorTileState currentState, EditorTileConfigData editorTileConfigData)
+        {
+            this.SetConfig(currentState, editorTileConfigData?.CreateTileConfig());
+        }
+
+        private void SetConfig(EditorTileState currentState, TileConfig config)
+        {
+            currentState.SetConfig(config);
         }
 
         private void TryExpandSize(int x, int y)
@@ -485,6 +522,8 @@ namespace Editarrr.LevelEditor
                 setNull = current.Background == null;
 
                 current.SetForeground(null);
+                current.SetForegroundRotation(Rotation.North);
+                current.SetConfig(null);
             }
 
             // No tile data at spot, return
@@ -577,6 +616,9 @@ namespace Editarrr.LevelEditor
 
                         editorTileData = this.EditorTileDataPool.Get(tileState.Foreground);
                         this.Set(x, y, editorTileData, tileState.ForegroundRotation);
+
+                        if (tileState.Config != null)
+                            this.SetConfig(x, y, tileState.Config);
 
                         editorTileData = this.EditorTileDataPool.Get(tileState.Background);
                         if (editorTileData == null)

@@ -108,9 +108,10 @@ namespace Editarrr.Level
                     Rotation foregroundRotation = tileState.ForegroundRotation;
                     Rotation backgroundRotation = tileState.BackgroundRotation;
 
+                    TileConfig tileConfig = tileState.Config;
 
                     this.PlaceTile(foreground, background, position);
-                    this.InstantiateTile(foreground, foregroundRotation, background, backgroundRotation, position);
+                    this.InstantiateTile(foreground, foregroundRotation, background, backgroundRotation, position, tileConfig);
                 }
             }
         }
@@ -125,10 +126,16 @@ namespace Editarrr.Level
             return tileData.Tile;
         }
 
-        private void InstantiateTile(TileData foreground, Rotation foregroundRotation, TileData background, Rotation backgroundRotation, Vector3Int position)
+        private void InstantiateTile(TileData foreground, Rotation foregroundRotation, TileData background, Rotation backgroundRotation, Vector3Int position, TileConfig tileConfig)
         {
             if (foreground?.GameObject != null)
-                GameObject.Instantiate(foreground.GameObject, position + new Vector3(0.5f, 0.5f, 0), Quaternion.Euler(0, 0, foregroundRotation.ToDegree()));
+            {
+                var gObj = GameObject.Instantiate(foreground.GameObject, position + new Vector3(0.5f, 0.5f, 0), Quaternion.Euler(0, 0, foregroundRotation.ToDegree()));
+                if (gObj.TryGetComponent<IConfigurable>(out IConfigurable configurable))
+                {
+                    configurable.Configure(tileConfig);
+                }
+            }
 
             if (background?.GameObject != null)
                 GameObject.Instantiate(background.GameObject, position + new Vector3(0.5f, 0.5f, 0), Quaternion.Euler(0, 0, backgroundRotation.ToDegree()));

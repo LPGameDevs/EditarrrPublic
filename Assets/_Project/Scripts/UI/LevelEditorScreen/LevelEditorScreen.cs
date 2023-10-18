@@ -17,6 +17,7 @@ namespace Editarrr.UI.LevelEditor
         [field: SerializeField] public TileGroupSwapperComponent TileGroupSwapper { get; private set; }
         [field: SerializeField] public SelectionPreviewComponent SelectionPreview { get; private set; }
         [field: SerializeField] public SaveAndPlayComponent SaveAndPlay { get; private set; }
+        [field: SerializeField] public SelectionConfigComponent SelectionConfig { get; private set; }
 
         private void Awake()
         {
@@ -30,6 +31,7 @@ namespace Editarrr.UI.LevelEditor
             this.TileGroupSwapper.Initialize(this, this.Document.rootVisualElement);
             this.SelectionPreview.Initialize(this, this.Document.rootVisualElement);
             this.SaveAndPlay.Initialize(this, this.Document.rootVisualElement);
+            this.SelectionConfig.Initialize(this, this.Document.rootVisualElement);
         }
 
 

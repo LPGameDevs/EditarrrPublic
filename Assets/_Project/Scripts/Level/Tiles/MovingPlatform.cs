@@ -1,9 +1,10 @@
-﻿using Player;
+﻿using Editarrr.LevelEditor;
+using Player;
 using UnityEngine;
 
 namespace Editarrr.Level.Tiles
 {
-    public class MovingPlatform : MonoBehaviour
+    public class MovingPlatform : MonoBehaviour, IConfigurable
     {
         [field: SerializeField] private float Speed { get; set; } = 100f;
         [field: SerializeField] private float Distance { get; set; } = 6f;
@@ -18,9 +19,7 @@ namespace Editarrr.Level.Tiles
         private void Start()
         {
             this.Origin = this.transform.position;
-            this.Target = this.transform.position + this.transform.right * this.Distance;
-
-            Debug.Log(this.transform.right);
+            this.Target = this.transform.position + (this.Direction ? this.transform.right : -this.transform.right) * this.Distance;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -56,6 +55,20 @@ namespace Editarrr.Level.Tiles
 
             if ((target - this.transform.position).sqrMagnitude <= float.Epsilon)
                 this.Direction = !this.Direction;
+        }
+
+        public void Configure(TileConfig config)
+        {
+            this.Configure(config as MovingPlatformConfig);
+        }
+
+        private void Configure(MovingPlatformConfig config)
+        {
+            if (config == null)
+                return;
+
+            this.Distance = config.Distance;
+            this.Direction = config.Direction;
         }
     }
 }
