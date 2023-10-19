@@ -120,7 +120,6 @@ namespace Editarrr.LevelEditor
 
             this.EditorHoverTile = Instantiate(this.PrefabPool.EditorHoverTile);
 
-            EditorTileSelectionManager.OnTileSelect += this.EditorTileSelectionManager_OnTileSelect;
             this.DisableHoverTile();
         }
 
@@ -134,6 +133,10 @@ namespace Editarrr.LevelEditor
             {
                 this.CreateLevelState();
             }
+
+
+            EditorTileSelectionManager.OnTileSelect += this.EditorTileSelectionManager_OnTileSelect;
+            EditorTileSelectionManager.ActiveElementChanged += this.EditorTileSelectionManager_ActiveElementChanged;
         }
 
         public override void DoUpdate()
@@ -379,6 +382,8 @@ namespace Editarrr.LevelEditor
             {
                 tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
             }
+
+            this.NotifyConfig(null);
         }
 
         private void SetConfig(int x, int y, TileConfig config)
@@ -583,6 +588,11 @@ namespace Editarrr.LevelEditor
         private void EditorTileSelectionManager_OnTileSelect()
         {
             // var editorTileData = this.EditorTileSelection.ActiveElement;
+            this.NotifyConfig(null);
+        }
+
+        private void EditorTileSelectionManager_ActiveElementChanged(EditorTileData obj)
+        {
             this.NotifyConfig(null);
         }
 
