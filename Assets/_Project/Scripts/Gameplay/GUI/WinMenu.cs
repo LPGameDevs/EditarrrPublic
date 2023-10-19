@@ -112,9 +112,11 @@ namespace Gameplay.GUI
 
         public void SubmitScore()
         {
+            Debug.Log("Submitting score");
+            OnScoreSubmit?.Invoke(_code, _time);
             SubmitButton.onClick.RemoveAllListeners();
             SubmitButton.onClick.AddListener(OpenScoreboard);
-            OnScoreSubmit?.Invoke(_code, _time);
+            OpenScoreboard();
         }
 
         private void FinishSubmitScore()
@@ -167,11 +169,13 @@ namespace Gameplay.GUI
         protected void OnEnable()
         {
             Timer.OnTimeStop += SetTimeText;
+            SubmitButton.onClick.AddListener(OnClickSubmitScore);
         }
 
         protected void OnDisable()
         {
             Timer.OnTimeStop -= SetTimeText;
+            SubmitButton.onClick.RemoveAllListeners();
         }
 
         public void DeactivateWinMenuAnimator() => _animator.enabled = false;

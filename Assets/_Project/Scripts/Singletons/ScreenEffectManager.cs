@@ -9,6 +9,7 @@ public class ScreenEffectManager : UnityPersistentSingleton<ScreenEffectManager>
 
     [SerializeField] Animator _animator;
     [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioClip[] _soundEffects;
 
     public static readonly string EFFECT_FadeToBlack = "FadeToBlack";
     public static readonly string EFFECT_FadeFromBlack = "FadeFromBlack";
@@ -48,4 +49,6 @@ public class ScreenEffectManager : UnityPersistentSingleton<ScreenEffectManager>
     }
 
     public void ResetActiveFlag() => _effectActive = false;
+
+    public void PlaySound(int index) => _audioSource.PlayOneShot(_soundEffects[index]);
 }
