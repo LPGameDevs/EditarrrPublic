@@ -1968,6 +1968,7 @@ MonoBehaviour:
   <Manager>k__BackingField: {fileID: 11400000, guid: 2389b23eccc03881f91a4b74668d48ac, type: 2}
   <LevelLoader>k__BackingField: {fileID: 2119754422}
   <Leaderboard>k__BackingField: {fileID: 1155096287}
+  <ModalCanvas>k__BackingField: {fileID: 721683724}
   <UploadModal>k__BackingField: {fileID: 11400000, guid: 505c45f7e90771f1faad101f287750a9, type: 2}
   <DeleteModal>k__BackingField: {fileID: 11400000, guid: ab55e4b69b9d30f4d971e7dc223ade40, type: 2}
 --- !u!1 &1352974965

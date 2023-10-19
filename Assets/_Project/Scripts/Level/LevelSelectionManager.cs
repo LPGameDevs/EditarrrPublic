@@ -24,9 +24,16 @@ public class LevelSelectionManager : ManagerComponent
     private LevelSelectionLoader _levelLoader { get; set; }
     private LeaderboardForm _leaderboard { get; set; }
 
+    private Canvas ModalCanvas { get; set; }
+
     private IModalPopup _uploadModal { get; set; }
     private IModalPopup _deleteModal { get; set; }
 
+    public void SetCanvas(Canvas modalCanvas)
+    {
+        this.ModalCanvas = modalCanvas;
+    }
+    
     public void SetUploadModal(IModalPopup uploadModal)
     {
         _uploadModal = uploadModal;
@@ -81,7 +88,7 @@ public class LevelSelectionManager : ManagerComponent
             confirmModal.SetConfirm(DeleteLevel);
         }
 
-        _deleteModal.Open();
+        _deleteModal.Open(this.ModalCanvas.transform);
 
         void DeleteLevel()
         {
@@ -97,7 +104,7 @@ public class LevelSelectionManager : ManagerComponent
             confirmModal.SetConfirm(UploadLevel);
         }
 
-        _uploadModal.Open();
+        _uploadModal.Open(this.ModalCanvas.transform);
 
         void UploadLevel()
         {
