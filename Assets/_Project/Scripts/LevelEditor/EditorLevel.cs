@@ -92,13 +92,13 @@ namespace LevelEditor
 
         public void SetTitle(string title)
         {
-            Title.text = title.ToUpper();
+            Title.text = "lvl: " + title.ToUpper();
             _code = title.ToLower();
         }
 
         public void SetCreator(string creator)
         {
-            Creator.text = creator.ToUpper();
+            Creator.text = "by: " + creator.ToUpper();
         }
 
         public void SetRemoteId(string remoteId)

@@ -15,13 +15,13 @@ namespace Gameplay.GUI
 
         public TMP_Text LevelCode;
         public TMP_Text TimerText;
-        public Button BackButton;
-        public Button BackEditorButton;
-        public Button ReplayButton;
-        public Button SubmitButton;
+        public Button HomeButton, BackEditorButton, ReplayButton, SubmitButton;
         public bool IsReplay = false;
 
         [SerializeField] Animator _animator;
+        [SerializeField] GameObject scoreBoard, ratingMenu;
+
+
         const string VICTORY_TRIGGER_NAME = "Victory";
 
         private string _code;
@@ -48,16 +48,16 @@ namespace Gameplay.GUI
 
             if (IsReplay)
             {
-                BackButton.interactable = true;
+                HomeButton.interactable = true;
                 ReplayButton.interactable = true;
                 SubmitButton.interactable = false;
-                BackButton.interactable = true;
+                HomeButton.interactable = true;
             }
             else if (_levelData.Published)
             {
                 ReplayButton.interactable = true;
                 SubmitButton.interactable = true;
-                BackButton.interactable = true;
+                HomeButton.interactable = true;
             }
             else
             {
@@ -70,7 +70,7 @@ namespace Gameplay.GUI
         {
             ReplayButton.interactable = false;
             SubmitButton.interactable = false;
-            BackButton.interactable = false;
+            HomeButton.interactable = false;
             BackEditorButton.interactable = false;
         }
 
@@ -80,7 +80,7 @@ namespace Gameplay.GUI
             _animator.SetTrigger(VICTORY_TRIGGER_NAME);
 
             // @todo only show this if its not the players own level.
-            if (false)
+            if (_user != PreferencesManager.Instance.GetUserName())
             {
                 AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelCompleted);
             }
@@ -112,13 +112,26 @@ namespace Gameplay.GUI
 
         public void SubmitScore()
         {
-            SubmitButton.gameObject.SetActive(false);
+            Debug.Log("Submitting score");
             OnScoreSubmit?.Invoke(_code, _time);
+            SubmitButton.onClick.RemoveAllListeners();
+            SubmitButton.onClick.AddListener(OpenScoreboard);
+            OpenScoreboard();
         }
 
         private void FinishSubmitScore()
         {
             OnScoreSubmitted?.Invoke();
+        }
+
+        public void OpenScoreboard()
+        {
+            scoreBoard.SetActive(true);
+        }
+
+        public void OpenRatingMenu()
+        {
+            ratingMenu.SetActive(true);
         }
 
         #region ButtonTriggers
@@ -128,9 +141,12 @@ namespace Gameplay.GUI
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
         }
 
-        public void OnClickSubmit()
+        public void OnClickSubmitScore()
         {
-            SubmitScore();
+            if(PreferencesManager.Instance.HasLevelRating(_code))
+                SubmitScore();
+            else
+                OpenRatingMenu();
         }
 
         public void OnClickBack()
@@ -143,16 +159,23 @@ namespace Gameplay.GUI
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.CreateLevelSceneName);
         }
 
+        public void SubmitRating(int rating)
+        {
+            OnRatingSubmit?.Invoke(_code, rating);
+            OpenScoreboard();
+        }
         #endregion
 
         protected void OnEnable()
         {
             Timer.OnTimeStop += SetTimeText;
+            SubmitButton.onClick.AddListener(OnClickSubmitScore);
         }
 
         protected void OnDisable()
         {
             Timer.OnTimeStop -= SetTimeText;
+            SubmitButton.onClick.RemoveAllListeners();
         }
 
         public void DeactivateWinMenuAnimator() => _animator.enabled = false;

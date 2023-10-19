@@ -72,7 +72,7 @@ namespace Gameplay.GUI
             _winMenu.Show();
         }
 
-        private void ShowPauseMenu()
+        public void ShowPauseMenu()
         {
             _isPaused = true;
             PauseGame();
@@ -80,7 +80,7 @@ namespace Gameplay.GUI
             _pauseMenu.gameObject.SetActive(true);
         }
 
-        private void HidePauseMenu()
+        public void HidePauseMenu()
         {
             _isPaused = false;
             UnPauseGame();
@@ -125,15 +125,15 @@ namespace Gameplay.GUI
         }
 
         // This is the x in the top left corner.
-        public void OnQuitButtonPressed()
-        {
-            string goToScene = SceneTransitionManager.CreateLevelSceneName;
-            if (_levelState.Published)
-            {
-                goToScene = SceneTransitionManager.LevelSelectionSceneName;
-            }
-            SceneTransitionManager.Instance.GoToScene(goToScene);
-        }
+        //public void OnQuitButtonPressed()
+        //{
+        //    string goToScene = SceneTransitionManager.CreateLevelSceneName;
+        //    if (_levelState.Published)
+        //    {
+        //        goToScene = SceneTransitionManager.LevelSelectionSceneName;
+        //    }
+        //    SceneTransitionManager.Instance.GoToScene(goToScene);
+        //}
 
         private void Update()
         {

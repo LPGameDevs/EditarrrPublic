@@ -86,9 +86,11 @@ namespace Singletons
         {
             _restartInitiated = false;
             AudioManager.Instance.PlayAudioClip(RestartSound);
-            GoToScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+            GoToScene(SceneManager.GetActiveScene().name);
         }
 
         private void OnDeath(object sender, System.EventArgs e) => TransitionedRestart();
+
+
     }
 }
