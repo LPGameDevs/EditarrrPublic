@@ -108,7 +108,7 @@ public class LevelBrowserLoader : MonoBehaviour
     {
         foreach (var level in _loadedLevels)
         {
-            if (level.Title.text != code)
+            if (level.Code != code)
             {
                 continue;
             }
