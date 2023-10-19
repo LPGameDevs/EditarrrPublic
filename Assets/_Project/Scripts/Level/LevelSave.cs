@@ -58,7 +58,7 @@ namespace Editarrr.Level
                     // Initialise empty tile if not done already.
                     if (tile == null)
                     {
-                        tile = new TileState(TileType.Empty, TileType.Empty, Rotation.North, Rotation.North);
+                        tile = new TileState(TileType.Empty, TileType.Empty, Rotation.North, Rotation.North, null);
                         levelState.Tiles[x, y] = tile;
                     }
 
@@ -107,7 +107,7 @@ namespace Editarrr.Level
                     // Initialise empty tile if not done already.
                     if (tile == null)
                     {
-                        tile = new TileState(TileType.Empty, TileType.Empty, Rotation.North, Rotation.North);
+                        tile = new TileState(TileType.Empty, TileType.Empty, Rotation.North, Rotation.North, null);
                         tileState[x, y] = tile;
                     }
 

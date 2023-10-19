@@ -8,6 +8,7 @@ namespace Editarrr.LevelEditor
         public EditorTileData Background { get; private set; }
         public Rotation ForegroundRotation { get; private set; }
         public Rotation BackgroundRotation { get; private set; }
+        public TileConfig Config { get; private set; }
 
         //public EditorTileState(EditorTileData foreground, EditorTileData background, Rotation rotation)
         //{
@@ -34,6 +35,11 @@ namespace Editarrr.LevelEditor
         public void SetBackgroundRotation(Rotation rotation)
         {
             this.BackgroundRotation = rotation;
+        }
+
+        public void SetConfig(TileConfig config)
+        {
+            this.Config = config;
         }
     }
 }

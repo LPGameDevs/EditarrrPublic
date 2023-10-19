@@ -13,7 +13,7 @@ namespace Player
     /// Adapted from Tarodev's Ultimate 2D controller, found here: https://github.com/Matthew-J-Spencer/Ultimate-2D-Controller
     /// </summary>
     [RequireComponent(typeof(HealthSystem), typeof(PlayerForceReceiver))]
-    public class PlayerController : PausableCharacter
+    public partial class PlayerController : PausableCharacter
     {
         // events
         public static event Action OnPlayerJumped;
@@ -31,6 +31,7 @@ namespace Player
         private Vector3 _velocity;
         private Vector3 _rawMovement;
         private Vector3 _lastPosition;
+        private Vector3 _lastValidPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
 
         void Awake()
@@ -371,7 +372,9 @@ namespace Player
 
             //Overwrite movement with external force if one is being applied, pre-collision adjustment
             if (_forceReceiver.ForcedMove.HasValue)
+            {
                 _currentVerticalSpeed = _forceReceiver.ForcedMove.Value.y;
+            }
 
             if (_collisions.up)
             {
@@ -405,33 +408,48 @@ namespace Player
             if (!hit)
             {
                 transform.position += move;
+                this._lastValidPosition = this.transform.position;
                 return;
             }
 
-            // otherwise increment away from current pos; see what closest position we can move to
-            var positionToMoveTo = transform.position;
-            for (int i = 1; i < _freeColliderIterations; i++)
+
+            if (move.x != 0 && move.y != 0)
             {
-                // increment to check all but furthestPoint - we did that already
-                var t = (float)i / _freeColliderIterations;
-                var posToTry = Vector2.Lerp(pos, furthestPoint, t);
-
-                if (Physics2D.OverlapBox(posToTry, _characterBounds.size, 0, _groundLayer))
+                // We are moving
+                // otherwise increment away from current pos; see what closest position we can move to
+                var positionToMoveTo = transform.position;
+                for (int i = 1; i < _freeColliderIterations; i++)
                 {
-                    transform.position = positionToMoveTo;
+                    // increment to check all but furthestPoint - we did that already
+                    var t = (float)i / _freeColliderIterations;
+                    var posToTry = Vector2.Lerp(pos, furthestPoint, t);
 
-                    // We've landed on a corner or hit our head on a ledge. Nudge the player gently
-                    if (i == 1)
+                    if (Physics2D.OverlapBox(posToTry, _characterBounds.size, 0, _groundLayer))
                     {
-                        if (_currentVerticalSpeed < 0) _currentVerticalSpeed = 0;
-                        var dir = transform.position - hit.transform.position;
-                        transform.position += dir.normalized * move.magnitude;
+                        transform.position = positionToMoveTo;
+
+                        // We've landed on a corner or hit our head on a ledge. Nudge the player gently
+                        if (i == 1)
+                        {
+                            if (_currentVerticalSpeed < 0) _currentVerticalSpeed = 0;
+                            var dir = transform.position - hit.transform.position;
+                            transform.position += dir.normalized * move.magnitude;
+                        }
+
+                        return;
                     }
 
-                    return;
+                    positionToMoveTo = posToTry;
                 }
+            }
+            else
+            {
+                // We are not moving, Collision probably due to a moving platform?
+                var delta = _lastValidPosition - this.transform.position;
+                this.transform.position += delta + delta.normalized * .01f;
+                // this.transform.position = this._lastValidPosition;
 
-                positionToMoveTo = posToTry;
+                // if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;
             }
         }
 

@@ -481,7 +481,7 @@ namespace Editarrr.Input
             ""id"": ""88af379a-49fc-4f3b-bfd9-382ca5521dc3"",
             ""actions"": [
                 {
-                    ""name"": ""SwitchTile"",
+                    ""name"": ""CloneTile"",
                     ""type"": ""Button"",
                     ""id"": ""556d4e66-5127-4165-8a83-2a8f56ecc4b9"",
                     ""expectedControlType"": ""Button"",
@@ -525,7 +525,7 @@ namespace Editarrr.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwitchTile"",
+                    ""action"": ""CloneTile"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -686,7 +686,7 @@ namespace Editarrr.Input
             m_Development_Secret = m_Development.FindAction("Secret", throwIfNotFound: true);
             // Editor
             m_Editor = asset.FindActionMap("Editor", throwIfNotFound: true);
-            m_Editor_SwitchTile = m_Editor.FindAction("SwitchTile", throwIfNotFound: true);
+            m_Editor_CloneTile = m_Editor.FindAction("CloneTile", throwIfNotFound: true);
             m_Editor_SelectTile = m_Editor.FindAction("SelectTile", throwIfNotFound: true);
             m_Editor_Rotate = m_Editor.FindAction("Rotate", throwIfNotFound: true);
             m_Editor_NextGroup = m_Editor.FindAction("NextGroup", throwIfNotFound: true);
@@ -961,7 +961,7 @@ namespace Editarrr.Input
         // Editor
         private readonly InputActionMap m_Editor;
         private List<IEditorActions> m_EditorActionsCallbackInterfaces = new List<IEditorActions>();
-        private readonly InputAction m_Editor_SwitchTile;
+        private readonly InputAction m_Editor_CloneTile;
         private readonly InputAction m_Editor_SelectTile;
         private readonly InputAction m_Editor_Rotate;
         private readonly InputAction m_Editor_NextGroup;
@@ -969,7 +969,7 @@ namespace Editarrr.Input
         {
             private @GameInput m_Wrapper;
             public EditorActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-            public InputAction @SwitchTile => m_Wrapper.m_Editor_SwitchTile;
+            public InputAction @CloneTile => m_Wrapper.m_Editor_CloneTile;
             public InputAction @SelectTile => m_Wrapper.m_Editor_SelectTile;
             public InputAction @Rotate => m_Wrapper.m_Editor_Rotate;
             public InputAction @NextGroup => m_Wrapper.m_Editor_NextGroup;
@@ -982,9 +982,9 @@ namespace Editarrr.Input
             {
                 if (instance == null || m_Wrapper.m_EditorActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_EditorActionsCallbackInterfaces.Add(instance);
-                @SwitchTile.started += instance.OnSwitchTile;
-                @SwitchTile.performed += instance.OnSwitchTile;
-                @SwitchTile.canceled += instance.OnSwitchTile;
+                @CloneTile.started += instance.OnCloneTile;
+                @CloneTile.performed += instance.OnCloneTile;
+                @CloneTile.canceled += instance.OnCloneTile;
                 @SelectTile.started += instance.OnSelectTile;
                 @SelectTile.performed += instance.OnSelectTile;
                 @SelectTile.canceled += instance.OnSelectTile;
@@ -998,9 +998,9 @@ namespace Editarrr.Input
 
             private void UnregisterCallbacks(IEditorActions instance)
             {
-                @SwitchTile.started -= instance.OnSwitchTile;
-                @SwitchTile.performed -= instance.OnSwitchTile;
-                @SwitchTile.canceled -= instance.OnSwitchTile;
+                @CloneTile.started -= instance.OnCloneTile;
+                @CloneTile.performed -= instance.OnCloneTile;
+                @CloneTile.canceled -= instance.OnCloneTile;
                 @SelectTile.started -= instance.OnSelectTile;
                 @SelectTile.performed -= instance.OnSelectTile;
                 @SelectTile.canceled -= instance.OnSelectTile;
@@ -1050,7 +1050,7 @@ namespace Editarrr.Input
         }
         public interface IEditorActions
         {
-            void OnSwitchTile(InputAction.CallbackContext context);
+            void OnCloneTile(InputAction.CallbackContext context);
             void OnSelectTile(InputAction.CallbackContext context);
             void OnRotate(InputAction.CallbackContext context);
             void OnNextGroup(InputAction.CallbackContext context);
