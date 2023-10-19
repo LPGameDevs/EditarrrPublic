@@ -32,6 +32,14 @@ namespace Editarrr.UI.LevelEditor
             {
                 this.ContainerElement.Clear();
 
+                if (tileConfig == null)
+                {
+                    this.SetDisplayContainer(false);
+                    return;
+                }
+
+                this.SetDisplayContainer(true);
+
                 tileConfig.CreateGUIElements(this.Create);
             }
 
@@ -87,10 +95,9 @@ namespace Editarrr.UI.LevelEditor
                 return toReturn;
             }
 
-
-            private class BoolValueElement
+            private void SetDisplayContainer(bool value)
             {
-
+                this.ContainerElement.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
             }
         }
     }

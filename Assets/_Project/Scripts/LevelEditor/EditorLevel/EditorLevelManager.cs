@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Editarrr.Input;
+﻿using Editarrr.Input;
 using Editarrr.Level;
 using Editarrr.Managers;
 using Editarrr.Misc;
-using Editarrr.UI;
 using Editarrr.Utilities;
+using System;
+using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -112,7 +111,7 @@ namespace Editarrr.LevelEditor
 
         public override void DoAwake()
         {
-            LevelManager.DoAwake();
+            this.LevelManager.DoAwake();
 
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
 
@@ -120,6 +119,8 @@ namespace Editarrr.LevelEditor
             this.EditorGrid.transform.position = Vector3.zero;
 
             this.EditorHoverTile = Instantiate(this.PrefabPool.EditorHoverTile);
+
+            EditorTileSelectionManager.OnTileSelect += this.EditorTileSelectionManager_OnTileSelect;
             this.DisableHoverTile();
         }
 
@@ -180,11 +181,10 @@ namespace Editarrr.LevelEditor
 
                 if (state != null &&
                     state.Foreground == tileData &&
-                    state.ForegroundRotation == this.EditorTileSelection.Rotation &&
+                    // state.ForegroundRotation == this.EditorTileSelection.Rotation && Might result in some weird and unclear situations...
                     state.Config != null)
                 {
-                    Debug.Log("Load Config Editor!");
-                    OnEditorConfigSelected?.Invoke(state.Config);
+                    this.NotifyConfig(state.Config);
                 }
 
                 //if (state != null &&
@@ -205,6 +205,11 @@ namespace Editarrr.LevelEditor
             }
             else if (this.MouseRightButton.IsPressed)
             {
+                if (this.MouseRightButton.WasPressed)
+                {
+                    this.NotifyConfig(null);
+                }
+
                 this.Unset(x, y, tileData);
             }
 
@@ -244,7 +249,7 @@ namespace Editarrr.LevelEditor
 
         private Vector3Int GetCursorTileMapPosition()
         {
-            Vector3 point = this.SceneCamera.ScreenToWorldPoint(MousePosition.Read<Vector2>());
+            Vector3 point = this.SceneCamera.ScreenToWorldPoint(this.MousePosition.Read<Vector2>());
             Vector3Int tilePosition = this.Tilemap_Foreground.WorldToCell(point);
 
             //tilePosition.x += this.Settings.EditorLevelScaleX / 2;
@@ -278,7 +283,7 @@ namespace Editarrr.LevelEditor
                 if (this.TileLocations.ContainsKey(tileType))
                 {
                     List<Int2D> locations;
-                    if (TileLocations.TryGetValue(tileType, out locations))
+                    if (this.TileLocations.TryGetValue(tileType, out locations))
                     {
                         foreach (Int2D location in locations)
                             if (location.X == x && location.Y == y)
@@ -575,6 +580,16 @@ namespace Editarrr.LevelEditor
             return 0;
         }
 
+        private void EditorTileSelectionManager_OnTileSelect()
+        {
+            // var editorTileData = this.EditorTileSelection.ActiveElement;
+            this.NotifyConfig(null);
+        }
+
+        private void NotifyConfig(TileConfig config)
+        {
+            OnEditorConfigSelected?.Invoke(config);
+        }
 
         #endregion
 
@@ -636,8 +651,8 @@ namespace Editarrr.LevelEditor
 
             this.LevelState.SetScale(this.ScaleX, this.ScaleY);
             this.LevelState.SetTiles(this.Tiles);
-            this.LevelManager.SaveState(LevelState);
-            this.LevelManager.SaveScreenshot(LevelState.Code, screenshot);
+            this.LevelManager.SaveState(this.LevelState);
+            this.LevelManager.SaveScreenshot(this.LevelState.Code, screenshot);
 
             Texture2D CreateScreenshot(Camera cam)
             {
@@ -674,7 +689,7 @@ namespace Editarrr.LevelEditor
             this.Tilemap_Foreground.transform.localPosition = new Vector3(
                 this.ScaleX / -2,
                 this.ScaleY / -2, 0);
-            
+
             this.Tilemap_Background.transform.localPosition = new Vector3(
                 this.ScaleX / -2,
                 this.ScaleY / -2, 0);

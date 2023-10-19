@@ -33,12 +33,7 @@
                     <ui:VisualElement name="TilePreview" style="width: 64px; height: 64px; background-image: url(&apos;project://database/Assets/_Project/Art/Tiles/Terrain%20(32x32).png?fileID=5504718189712137809&amp;guid=6ce8822ae70bdd2fa95b5efe4226647c&amp;type=3#Terrain (32x32)_38&apos;); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; align-items: center; justify-content: center;" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="SelectionConfig" style="align-items: center; background-image: url(&apos;project://database/Assets/_Project/Art/UI/UI_Tight.png?fileID=-713316306&amp;guid=53cc67c92fd1bfb4abd11f589fa6fd10&amp;type=3#UI_Tight_2&apos;); padding-left: 16px; padding-right: 16px; padding-top: 25px; padding-bottom: 25px; flex-direction: column; height: auto; min-height: 152px; width: 240px;">
-                <ui:VisualElement name="ValueElement" class="panel" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/UI_Tight.png?fileID=73412608&amp;guid=53cc67c92fd1bfb4abd11f589fa6fd10&amp;type=3#UI_Tight_40&apos;); flex-direction: row; align-items: center; justify-content: space-between; width: 180px;">
-                    <ui:Label text="Direction" display-tooltip-when-elided="true" />
-                    <ui:TextField text="ABC" style="width: 28px; height: 28px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
-                </ui:VisualElement>
-            </ui:VisualElement>
+            <ui:VisualElement name="SelectionConfig" style="align-items: center; background-image: url(&apos;project://database/Assets/_Project/Art/UI/UI_Tight.png?fileID=-713316306&amp;guid=53cc67c92fd1bfb4abd11f589fa6fd10&amp;type=3#UI_Tight_2&apos;); padding-left: 16px; padding-right: 16px; padding-top: 25px; padding-bottom: 25px; flex-direction: column; height: auto; min-height: 152px; width: 240px; display: none;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
