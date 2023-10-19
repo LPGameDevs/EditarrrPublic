@@ -33,18 +33,27 @@ namespace Editarrr.LevelEditor
             return toReturn;
         }
 
-        public override void CreateGUIElements(Func<object, UnityEngine.UIElements.VisualElement> getElement)
+        // public override void CreateGUIElements(Func<object, UnityEngine.UIElements.VisualElement> getElement)
+        public override void CreateGUIElements(GetElement getElement)
         {
-            var directionElement = getElement(this.Direction);
+            var directionElement = getElement("Direction", this.Direction);
             directionElement.RegisterCallback<UnityEngine.UIElements.ChangeEvent<bool>>(this.SetDirection_Callback);
 
-                //this.PlayButtonElement.RegisterCallback<PointerEnterEvent>(LevelEditorScreen.PointerEnter);
-            var distanceElement = getElement(this.Distance);
+            var distanceElement = getElement("Distance", this.Distance);
+            distanceElement.RegisterCallback<UnityEngine.UIElements.ChangeEvent<string>>(this.SetDistance_Callback);
         }
 
         private void SetDirection_Callback(UnityEngine.UIElements.ChangeEvent<bool> evt)
         {
             this.Direction = evt.newValue;
+        }
+        
+        private void SetDistance_Callback(UnityEngine.UIElements.ChangeEvent<string> evt)
+        {
+            if (!int.TryParse(evt.newValue, out int value))
+                return;
+
+            this.Distance = value;
         }
 
         public override string ToString()

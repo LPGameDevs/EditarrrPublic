@@ -559,6 +559,8 @@ MonoBehaviour:
     <ValueName>k__BackingField: Value
     <TilePreviewName>k__BackingField: TilePreview
     <BoolValueTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 4fbadbcfd1e9b764b92d0f526c5d481c, type: 3}
+    <FloatValueTemplate>k__BackingField: {fileID: 0}
+    <IntValueTemplate>k__BackingField: {fileID: 9197481963319205126, guid: 94afb32111d14c240a46a01414f7cb92, type: 3}
 --- !u!114 &1268458651
 MonoBehaviour:
   m_ObjectHideFlags: 0

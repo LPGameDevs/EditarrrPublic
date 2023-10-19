@@ -372,7 +372,9 @@ namespace Player
 
             //Overwrite movement with external force if one is being applied, pre-collision adjustment
             if (_forceReceiver.ForcedMove.HasValue)
+            {
                 _currentVerticalSpeed = _forceReceiver.ForcedMove.Value.y;
+            }
 
             if (_collisions.up)
             {

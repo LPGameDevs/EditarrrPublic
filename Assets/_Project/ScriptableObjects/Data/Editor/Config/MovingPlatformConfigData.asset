@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: MovingPlatformConfigData
   m_EditorClassIdentifier: 
   <Distance>k__BackingField: 8
-  <StartMoveRight>k__BackingField: 1
+  <Direction>k__BackingField: 1

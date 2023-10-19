@@ -57,6 +57,9 @@ namespace Editarrr.LevelEditor
 
         public override void DoUpdate()
         {
+            if (this.IsUIHover)
+                return;
+
             if (this.Input_Rotate.WasPressed)
                 this.NextRotation();
 
