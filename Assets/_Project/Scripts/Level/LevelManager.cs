@@ -145,7 +145,7 @@ namespace Editarrr.Level
             {
                 // @todo what else can have changed in the state?
                 levelSave.SetTiles(levelState.Tiles);
-                this.Save(levelSave, true);
+                this.Save(levelSave, uploadToRemote);
             }
         }
 

@@ -4,7 +4,7 @@ namespace Editarrr.UI
 {
     public interface IModalPopup
     {
-        public void Open(Transform parent = null);
+        public void Open(Transform parent = null, bool alwaysShow = false);
         public void Close();
 
         public string GetTitleText();

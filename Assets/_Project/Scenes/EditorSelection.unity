@@ -1971,6 +1971,7 @@ MonoBehaviour:
   <ModalCanvas>k__BackingField: {fileID: 721683724}
   <UploadModal>k__BackingField: {fileID: 11400000, guid: 505c45f7e90771f1faad101f287750a9, type: 2}
   <DeleteModal>k__BackingField: {fileID: 11400000, guid: ab55e4b69b9d30f4d971e7dc223ade40, type: 2}
+  <InvalidModal>k__BackingField: {fileID: 11400000, guid: ec2c9e6e90372bdfda4e89d7876bf483, type: 2}
 --- !u!1 &1352974965
 GameObject:
   m_ObjectHideFlags: 0
