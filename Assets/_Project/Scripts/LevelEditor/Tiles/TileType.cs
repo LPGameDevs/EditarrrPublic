@@ -13,6 +13,7 @@ namespace Editarrr.LevelEditor
         Sharcus = 6,
         Patrick = 7,
         Clawdia = 8,
+        FlyingTotem = 9,
         SpikeDeath = 10,
         Key = 20,
         BoxBounce = 30,
