@@ -29,6 +29,7 @@ const dynamo = DynamoDBDocumentClient.from(client);
 const tableNameLevel = "editarrr-level-storage";
 const tableNameScore = "editarrr-score-storage";
 const tableNameRating = "editarrr-rating-storage";
+const tableNameAnalytics = "editarrr-analytics-storage";
 
 // From https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid - not sure if this is reliable haha
 function uuidv4() {
@@ -443,6 +444,135 @@ export const handler = async (event, context) => {
 
                 responseBody = {
                     "ratings": responseRatings
+                }
+                break;
+
+            case "POST /analytics":
+                requestJSON = JSON.parse(event.body);
+
+                var type = requestJSON.type;
+                if (!type) throw new BadRequestException(`'type' must be provided in the request.`);
+                var value = requestJSON.value;
+                if (!value) throw new BadRequestException(`'value' must be provided in the request.`);
+                var creatorName = requestJSON.creatorName;
+                if (!creatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
+
+                var generatedAnalyticsId = uuidv4();
+                var currentTimestamp = Date.now();
+
+                await dynamo.send(
+                    new PutCommand({
+                        TableName: tableNameAnalytics,
+                        Item: {
+                            pk: `USER#${event.pathParameters.id}`,
+                            sk: `ANALYTICS#${generatedAnalyticsId}`,
+                            type: type,
+                            value: value,
+                            creatorName: creatorName,
+                            analyticsSubmittedAt: currentTimestamp,
+                        },
+                    })
+                );
+
+                responseBody = {
+                    "message": `Success! Created analytics for: ${creatorName}`,
+                    "id": generatedAnalyticsId
+                }
+                break;
+            case "GET /user/{id}/analytics":
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var queryResponse = await dynamo.send(
+                    new QueryCommand({
+                        TableName: tableNameAnalytics,
+                        IndexName: "pk-sk-index",
+                        Select: "ALL_PROJECTED_ATTRIBUTES",
+                        Limit: 10,
+                        ScanIndexForward: false,
+                        KeyConditionExpression: "pk = :userId",
+                        ExpressionAttributeValues: {
+                            ":userId": "USER#" + event.pathParameters.id
+                        }
+                    })
+                );
+
+                // TODO Validation of response
+
+                var dbAnalytics = queryResponse.Items;
+
+                var responseAnalytics = [];
+                for (let i = 0; i < dbAnalytics.length; i++) {
+                    var dbAnalytic = dbAnalytics[i];
+
+                    // TODO Validation
+
+                    var id = extractLevelId(dbAnalytic.sk);
+                    var userId = extractLevelId(dbAnalytic.pk);
+
+                    responseAnalytics.push({
+                        "analyticsId": id,
+                        "type": dbAnalytic.type,
+                        "value": dbAnalytic.value,
+                        "creator": {
+                            "id": userId,
+                            "name": dbAnalytic.creatorName
+                        },
+                        "submittedAt": dbAnalytic.analyticsSubmittedAt,
+                    });
+                }
+
+                responseBody = {
+                    "analytics": responseAnalytics
+                }
+                break;
+            case "GET /analytics/{type}":
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var queryResponse = await dynamo.send(
+                    new QueryCommand({
+                        TableName: tableNameAnalytics,
+                        IndexName: "type-sk-index",
+                        Select: "ALL_PROJECTED_ATTRIBUTES",
+                        Limit: 10,
+                        ScanIndexForward: false,
+                        KeyConditionExpression: "type = :type",
+                        ExpressionAttributeValues: {
+                            ":type": event.pathParameters.type
+                        }
+                    })
+                );
+
+                // TODO Validation of response
+
+                var dbAnalytics = queryResponse.Items;
+
+                var responseAnalytics = [];
+                for (let i = 0; i < dbAnalytics.length; i++) {
+                    var dbAnalytic = dbAnalytics[i];
+
+                    // TODO Validation
+
+                    var id = extractLevelId(dbAnalytic.sk);
+                    var userId = extractLevelId(dbAnalytic.pk);
+
+                    responseAnalytics.push({
+                        "analyticsId": id,
+                        "type": dbAnalytic.type,
+                        "value": dbAnalytic.value,
+                        "creator": {
+                            "id": userId,
+                            "name": dbAnalytic.creatorName
+                        },
+                        "submittedAt": dbAnalytic.analyticsSubmittedAt,
+                    });
+                }
+
+                responseBody = {
+                    "analytics": responseAnalytics
                 }
                 break;
 
