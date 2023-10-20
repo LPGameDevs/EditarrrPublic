@@ -99,17 +99,28 @@ public class LevelSelectionManager : ManagerComponent
 
     private void OnLevelUploadRequested(string code)
     {
-        if (_uploadModal is ModalPopupConfirmation confirmModal)
-        {
-            confirmModal.SetConfirm(UploadLevel);
-        }
+        this.LevelManager.Load(code, LevelLoadedForUpload);
 
-        _uploadModal.Open(this.ModalCanvas.transform);
-
-        void UploadLevel()
+        void LevelLoadedForUpload(LevelState levelState)
         {
-            LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
-            DestroyAndRefreshLevels();
+            if (!levelState.IsLevelValid())
+            {
+                // @todo Show invalid modal.
+                return;
+            }
+         
+            if (_uploadModal is ModalPopupConfirmation confirmModal)
+            {
+                confirmModal.SetConfirm(UploadLevel);
+            }
+
+            _uploadModal.Open(this.ModalCanvas.transform);
+
+            void UploadLevel()
+            {
+                LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
+                DestroyAndRefreshLevels();
+            }
         }
     }
 
