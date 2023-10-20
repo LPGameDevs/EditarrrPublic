@@ -19,9 +19,9 @@ namespace UI
         [SerializeField] protected string CloseText;
         [SerializeField] protected ModalPopupBlock Prefab;
 
-        public virtual void Open(Transform parent = null)
+        public virtual void Open(Transform parent = null, bool alwaysShow = false)
         {
-            if (PreferencesManager.Instance.IsModalEventTracked(this.name, ModalPopupAction.Close))
+            if (!alwaysShow && PreferencesManager.Instance.IsModalEventTracked(this.name, ModalPopupAction.Close))
             {
                 this.Close();
                 return;

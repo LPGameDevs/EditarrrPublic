@@ -18,7 +18,7 @@ namespace Browser
 
             if (remote.Length == 0)
             {
-                remote = Title.text;
+                remote = Code;
             }
             OnBrowserLevelDownload?.Invoke(remote);
         }
@@ -34,7 +34,7 @@ namespace Browser
             {
                 if (retry)
                 {
-                    OnBrowserLevelDownloadScreenshot?.Invoke(Title.text);
+                    OnBrowserLevelDownloadScreenshot?.Invoke(Code);
                 }
                 return;
             }

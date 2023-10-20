@@ -46,23 +46,24 @@ namespace Gameplay.GUI
                 LevelCode.text += " by " + _user;
             }
 
+            // Home is always a valid option.
+            HomeButton.interactable = true;
+
             if (IsReplay)
             {
-                HomeButton.interactable = true;
                 ReplayButton.interactable = true;
                 SubmitButton.interactable = false;
-                HomeButton.interactable = true;
             }
             else if (_levelData.Published)
             {
                 ReplayButton.interactable = true;
                 SubmitButton.interactable = true;
-                HomeButton.interactable = true;
             }
             else
             {
                 ReplayButton.interactable = true;
                 BackEditorButton.interactable = true;
+                SubmitButton.interactable = false;
             }
         }
 

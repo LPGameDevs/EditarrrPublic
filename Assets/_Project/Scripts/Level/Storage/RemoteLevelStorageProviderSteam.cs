@@ -115,7 +115,7 @@ namespace Level.Storage
 
         public void DownloadScreenshot(string code, RemoteLevelStorage_LevelScreenshotDownloadedCallback callback)
         {
-            throw new NotImplementedException();
+            return;
         }
 
         private async void DownloadAsync(string code, RemoteLevelStorage_LevelLoadedCallback callback)

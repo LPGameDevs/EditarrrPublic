@@ -1,6 +1,7 @@
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
+using Gameplay;
 using Gameplay.GUI;
 using LevelEditor;
 using Singletons;
@@ -34,6 +35,7 @@ namespace Editarrr.Level
 
         private GameplayGuiManager _gameplayGuiManager;
         private GhostRecorder _recorder;
+        private string _code;
 
         public LevelState Level { get; private set; }
         #endregion
@@ -70,9 +72,9 @@ namespace Editarrr.Level
 
         public override void DoStart()
         {
-            string code = this.Exchange.CodeToLoad;
+            _code = this.Exchange.CodeToLoad;
 
-            this.LevelManager.Load(code, this.OnLevelLoaded);
+            this.LevelManager.Load(_code, this.OnLevelLoaded);
         }
 
         private void OnLevelLoaded(LevelState levelState)
@@ -83,6 +85,22 @@ namespace Editarrr.Level
             this.PaintTilesFromFile(levelState);
             this._gameplayGuiManager.SetLevelState(levelState);
             //GameEvent.Trigger(GameEventType.Unpause);
+        }
+        
+        private void OnLevelCompleted()
+        {
+            this.LevelManager.LevelStorage.LoadLevelData(_code, LevelCompletedLevelLoaded);
+
+            void LevelCompletedLevelLoaded(LevelSave levelSave)
+            {
+                if (levelSave.Completed)
+                {
+                    return;
+                }
+                
+                this.LevelManager.MarkLevelAsComplete(levelSave);
+            }
+
         }
 
         #region Tile Operations
@@ -199,12 +217,14 @@ namespace Editarrr.Level
         {
             WinMenu.OnScoreSubmit += this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit += this.OnRatingSubmitRequested;
+            Chest.OnChestOpened += this.OnLevelCompleted;
         }
 
         public override void DoOnDisable()
         {
             WinMenu.OnScoreSubmit -= this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit -= this.OnRatingSubmitRequested;
+            Chest.OnChestOpened -= this.OnLevelCompleted;
         }
     }
 }

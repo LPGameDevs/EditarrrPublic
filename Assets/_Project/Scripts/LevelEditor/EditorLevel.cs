@@ -9,6 +9,7 @@ namespace LevelEditor
     public class EditorLevel : MonoBehaviour
     {
         public static event Action<string> OnEditorLevelSelected;
+        public static event Action OnEditorLevelPlayRequest;
         public static event Action<string> OnEditorLevelUpload;
         public static event Action<string> OnEditorLevelDelete;
         public static event Action<string> OnLeaderboardRequest;
@@ -20,19 +21,19 @@ namespace LevelEditor
         public Transform EditButton;
         public Transform UploadButton;
         public Transform DeleteButton;
-        private string _code = "";
+        public string Code { get; protected set; } = "";
 
         public void DeleteLevel()
         {
             // @todo Remove this
             // EditorLevelStorage.Instance.DeleteLevel(_code);
 
-            OnEditorLevelDelete?.Invoke(_code);
+            OnEditorLevelDelete?.Invoke(Code);
         }
 
         public void UploadLevel()
         {
-            OnEditorLevelUpload?.Invoke(_code);
+            OnEditorLevelUpload?.Invoke(Code);
         }
 
         public void GoToEditorLevel()
@@ -44,9 +45,9 @@ namespace LevelEditor
         private void CheckCodePreferences()
         {
             string newCode = "";
-            if (_code.Length > 0)
+            if (Code.Length > 0)
             {
-                newCode = _code;
+                newCode = Code;
             }
 
             OnEditorLevelSelected?.Invoke(newCode);
@@ -54,7 +55,7 @@ namespace LevelEditor
 
         public void GetLevelLeaderboard()
         {
-            OnLeaderboardRequest?.Invoke(_code);
+            OnLeaderboardRequest?.Invoke(Code);
         }
 
         public void GoToReplay()
@@ -66,7 +67,7 @@ namespace LevelEditor
         public void GoToLevel()
         {
             CheckCodePreferences();
-            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
+            OnEditorLevelPlayRequest?.Invoke();
         }
 
         public void HideEditorTools()
@@ -90,10 +91,10 @@ namespace LevelEditor
             }
         }
 
-        public void SetTitle(string title)
+        public void SetTitle(string code)
         {
-            Title.text = "lvl: " + title.ToUpper();
-            _code = title.ToLower();
+            Title.text = "lvl: " + code.ToUpper();
+            Code = code.ToLower();
         }
 
         public void SetCreator(string creator)
