@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 945057cb888aefc4ba164f4c25a040fb, type: 3}
   m_Name: EditorLevelManager
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   _documentation: 0
   <Settings>k__BackingField: {fileID: 11400000, guid: 0f937ce089015664eb44321c92f97c15, type: 2}
   <Exchange>k__BackingField: {fileID: 11400000, guid: 61161e379b9c05e408ea006dcbf1b702, type: 2}
@@ -22,3 +22,4 @@ MonoBehaviour:
   <MousePosition>k__BackingField: {fileID: 11400000, guid: 11ba13480451f574e8c6ecdc13111c23, type: 2}
   <MouseLeftButton>k__BackingField: {fileID: 11400000, guid: 8c8b550f53e2051499bea9cd0a9fa1b5, type: 2}
   <MouseRightButton>k__BackingField: {fileID: 11400000, guid: b2e5237c0e58fad4184c46cec872110b, type: 2}
+  <Input_CloneTile>k__BackingField: {fileID: 11400000, guid: 6b479f728bac27547a06816953edd747, type: 2}

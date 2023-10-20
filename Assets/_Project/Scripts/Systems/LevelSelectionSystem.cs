@@ -14,6 +14,7 @@ namespace Editarrr.LevelEditor
 
         [field: SerializeField, Info(Documentation)] public LevelSelectionLoader LevelLoader { get; private set; }
         [field: SerializeField] public LeaderboardForm Leaderboard { get; private set; }
+        [field: SerializeField] public Canvas ModalCanvas { get; private set; }
         [field: SerializeField] public ModalPopupConfirmation UploadModal { get; private set; }
         [field: SerializeField] public ModalPopupConfirmation DeleteModal { get; private set; }
 
@@ -21,6 +22,7 @@ namespace Editarrr.LevelEditor
         {
             this.Manager.SetLevelLoader(this.LevelLoader);
             this.Manager.SetLeaderboard(this.Leaderboard);
+            this.Manager.SetCanvas(this.ModalCanvas);
             this.Manager.SetUploadModal(this.UploadModal);
             this.Manager.SetDeleteModal(this.DeleteModal);
         }

@@ -457,7 +457,7 @@
             "id": "88af379a-49fc-4f3b-bfd9-382ca5521dc3",
             "actions": [
                 {
-                    "name": "SwitchTile",
+                    "name": "CloneTile",
                     "type": "Button",
                     "id": "556d4e66-5127-4165-8a83-2a8f56ecc4b9",
                     "expectedControlType": "Button",
@@ -501,7 +501,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwitchTile",
+                    "action": "CloneTile",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Editarrr.Input;
+﻿using Editarrr.Input;
 using Editarrr.Level;
 using Editarrr.Managers;
 using Editarrr.Misc;
-using Editarrr.UI;
 using Editarrr.Utilities;
+using System;
+using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -23,6 +22,10 @@ namespace Editarrr.LevelEditor
 
         public static EditorLevelScaleChanged OnEditorLevelScaleChanged { get; set; }
         public delegate void EditorLevelScaleChanged(int x, int y);
+
+        public static EditorConfigSelected OnEditorConfigSelected { get; set; }
+        public delegate void EditorConfigSelected(TileConfig tileConfig);
+
 
         private const string Documentation =
             "This component manages input, placement and storage of the level editor.\r\n" +
@@ -46,6 +49,7 @@ namespace Editarrr.LevelEditor
         [field: SerializeField, Header("Input")] private InputValue MousePosition { get; set; }
         [field: SerializeField] private InputValue MouseLeftButton { get; set; }
         [field: SerializeField] private InputValue MouseRightButton { get; set; }
+        [field: SerializeField] private InputValue Input_CloneTile { get; set; }
         #endregion
 
         Dictionary<TileType, List<Int2D>> TileLocations { get; set; }
@@ -73,6 +77,7 @@ namespace Editarrr.LevelEditor
 
 
         private EditorHoverTile EditorHoverTile { get; set; }
+
 
         public void SetSceneCamera(Camera camera)
         {
@@ -106,7 +111,7 @@ namespace Editarrr.LevelEditor
 
         public override void DoAwake()
         {
-            LevelManager.DoAwake();
+            this.LevelManager.DoAwake();
 
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
 
@@ -114,6 +119,8 @@ namespace Editarrr.LevelEditor
             this.EditorGrid.transform.position = Vector3.zero;
 
             this.EditorHoverTile = Instantiate(this.PrefabPool.EditorHoverTile);
+
+            EditorTileSelectionManager.OnTileSelect += this.EditorTileSelectionManager_OnTileSelect;
             this.DisableHoverTile();
         }
 
@@ -127,8 +134,6 @@ namespace Editarrr.LevelEditor
             {
                 this.CreateLevelState();
             }
-
-
         }
 
         public override void DoUpdate()
@@ -142,6 +147,21 @@ namespace Editarrr.LevelEditor
             this.ClampPosition(this.GetCursorTileMapPosition(), out int x, out int y);
 
             EditorTileData tileData = this.EditorTileSelection.ActiveElement;
+
+            if (this.Input_CloneTile.WasPressed)
+            {
+                EditorTileState atCursor = this.Tiles[x, y];
+                if (atCursor != null)
+                {
+                    bool background = atCursor.Foreground == tileData || atCursor.Foreground == null;
+                    background = background && atCursor.Background != null;
+
+                    EditorTileData toClone = background ? atCursor.Background : atCursor.Foreground;
+                    Rotation rotation = background ? atCursor.BackgroundRotation : atCursor.ForegroundRotation;
+
+                    this.EditorTileSelection.SetActiveElement(toClone, rotation);
+                }
+            }
 
             if (tileData != null)
             {
@@ -158,6 +178,14 @@ namespace Editarrr.LevelEditor
             if (this.MouseLeftButton.WasPressed)
             {
                 EditorTileState state = this.Get(x, y);
+
+                if (state != null &&
+                    state.Foreground == tileData &&
+                    // state.ForegroundRotation == this.EditorTileSelection.Rotation && Might result in some weird and unclear situations...
+                    state.Config != null)
+                {
+                    this.NotifyConfig(state.Config);
+                }
 
                 //if (state != null &&
                 //    state.Foreground == tileData &&
@@ -177,6 +205,11 @@ namespace Editarrr.LevelEditor
             }
             else if (this.MouseRightButton.IsPressed)
             {
+                if (this.MouseRightButton.WasPressed)
+                {
+                    this.NotifyConfig(null);
+                }
+
                 this.Unset(x, y, tileData);
             }
 
@@ -193,7 +226,7 @@ namespace Editarrr.LevelEditor
 
         #region Tile Operations
 
-         private void EnableHoverTile()
+        private void EnableHoverTile()
         {
             this.EditorHoverTile.SetActive(true);
         }
@@ -216,7 +249,7 @@ namespace Editarrr.LevelEditor
 
         private Vector3Int GetCursorTileMapPosition()
         {
-            Vector3 point = this.SceneCamera.ScreenToWorldPoint(MousePosition.Read<Vector2>());
+            Vector3 point = this.SceneCamera.ScreenToWorldPoint(this.MousePosition.Read<Vector2>());
             Vector3Int tilePosition = this.Tilemap_Foreground.WorldToCell(point);
 
             //tilePosition.x += this.Settings.EditorLevelScaleX / 2;
@@ -250,7 +283,7 @@ namespace Editarrr.LevelEditor
                 if (this.TileLocations.ContainsKey(tileType))
                 {
                     List<Int2D> locations;
-                    if (TileLocations.TryGetValue(tileType, out locations))
+                    if (this.TileLocations.TryGetValue(tileType, out locations))
                     {
                         foreach (Int2D location in locations)
                             if (location.X == x && location.Y == y)
@@ -311,6 +344,9 @@ namespace Editarrr.LevelEditor
             Tilemap tilemap;
             EditorTileState currentState = this.Tiles[x, y];
 
+            if (!tileData.Tile.CanRotate)
+                tileRotation = Rotation.North;
+
             if (currentState == null)
             {
                 this.Tiles[x, y] = currentState = new EditorTileState();
@@ -327,6 +363,7 @@ namespace Editarrr.LevelEditor
                 tilemap = this.Tilemap_Foreground;
                 currentState.SetForeground(tileData);
                 currentState.SetForegroundRotation(tileRotation);
+                this.SetConfig(currentState, tileData.Config);
             }
 
             if (tileData.Tile.CanRotate && tileRotation != Rotation.North)
@@ -342,6 +379,28 @@ namespace Editarrr.LevelEditor
             {
                 tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
             }
+        }
+
+        private void SetConfig(int x, int y, TileConfig config)
+        {
+            this.ClampPosition(x, y, out int fX, out int fY);
+
+            // Do not auto adjust coordinates... Something might be off!
+            if (fX != x || fY != y)
+                return;
+
+            EditorTileState state = this.Tiles[x, y];
+            this.SetConfig(state, config);
+        }
+
+        private void SetConfig(EditorTileState currentState, EditorTileConfigData editorTileConfigData)
+        {
+            this.SetConfig(currentState, editorTileConfigData?.CreateTileConfig());
+        }
+
+        private void SetConfig(EditorTileState currentState, TileConfig config)
+        {
+            currentState.SetConfig(config);
         }
 
         private void TryExpandSize(int x, int y)
@@ -468,6 +527,8 @@ namespace Editarrr.LevelEditor
                 setNull = current.Background == null;
 
                 current.SetForeground(null);
+                current.SetForegroundRotation(Rotation.North);
+                current.SetConfig(null);
             }
 
             // No tile data at spot, return
@@ -519,6 +580,16 @@ namespace Editarrr.LevelEditor
             return 0;
         }
 
+        private void EditorTileSelectionManager_OnTileSelect()
+        {
+            // var editorTileData = this.EditorTileSelection.ActiveElement;
+            this.NotifyConfig(null);
+        }
+
+        private void NotifyConfig(TileConfig config)
+        {
+            OnEditorConfigSelected?.Invoke(config);
+        }
 
         #endregion
 
@@ -561,6 +632,9 @@ namespace Editarrr.LevelEditor
                         editorTileData = this.EditorTileDataPool.Get(tileState.Foreground);
                         this.Set(x, y, editorTileData, tileState.ForegroundRotation);
 
+                        if (tileState.Config != null)
+                            this.SetConfig(x, y, tileState.Config);
+
                         editorTileData = this.EditorTileDataPool.Get(tileState.Background);
                         if (editorTileData == null)
                             continue;
@@ -577,8 +651,8 @@ namespace Editarrr.LevelEditor
 
             this.LevelState.SetScale(this.ScaleX, this.ScaleY);
             this.LevelState.SetTiles(this.Tiles);
-            this.LevelManager.SaveState(LevelState);
-            this.LevelManager.SaveScreenshot(LevelState.Code, screenshot);
+            this.LevelManager.SaveState(this.LevelState);
+            this.LevelManager.SaveScreenshot(this.LevelState.Code, screenshot);
 
             Texture2D CreateScreenshot(Camera cam)
             {
@@ -615,7 +689,7 @@ namespace Editarrr.LevelEditor
             this.Tilemap_Foreground.transform.localPosition = new Vector3(
                 this.ScaleX / -2,
                 this.ScaleY / -2, 0);
-            
+
             this.Tilemap_Background.transform.localPosition = new Vector3(
                 this.ScaleX / -2,
                 this.ScaleY / -2, 0);

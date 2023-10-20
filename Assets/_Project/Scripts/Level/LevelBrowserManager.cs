@@ -38,12 +38,12 @@ public class LevelBrowserManager : ManagerComponent
     {
         _levelLoader.DestroyLevels();
 
-        LevelManager.LoadAll(this.LevelStorage_AllLevelsLoadedCallback);
-    }
-
-    private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels)
-    {
-        _levelLoader.SetLevels(levels);
+        LevelManager.LoadAll(SetLevelsAfterLoad);
+        
+        void SetLevelsAfterLoad(LevelStub[] levels)
+        {
+            _levelLoader.SetLevels(levels);
+        }
     }
 
     private void OnLevelDownloadRequested(string code)

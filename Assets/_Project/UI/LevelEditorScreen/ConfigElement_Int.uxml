@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="BoolValueElement" class="panel" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/UI_Tight.png?fileID=73412608&amp;guid=53cc67c92fd1bfb4abd11f589fa6fd10&amp;type=3#UI_Tight_40&apos;); flex-direction: row; align-items: center; justify-content: space-between; width: 180px;">
+        <ui:Label text="Direction" display-tooltip-when-elided="true" name="Title" />
+        <ui:TextField picking-mode="Ignore" name="Value" mask-character="1234567890" />
+    </ui:VisualElement>
+</ui:UXML>
