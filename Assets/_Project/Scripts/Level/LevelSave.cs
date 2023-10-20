@@ -142,6 +142,34 @@ namespace Editarrr.Level
             this.Completed = true;
         }
         
+        /**
+         * Check if the level has everything required to be saved or uploaded.
+         */
+        public bool IsLevelValid()
+        {
+            bool hasPlayer = false;
+            bool hasGoal = false;
+
+            foreach (var tile in this.Tiles)
+            {
+                if (tile.Foreground == TileType.Player)
+                {
+                    hasPlayer = true;
+                }
+                else if (tile.Foreground == TileType.Goal)
+                {
+                    hasGoal = true;
+                }
+
+                if (hasPlayer && hasGoal)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
     }
 
 }

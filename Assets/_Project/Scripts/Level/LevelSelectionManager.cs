@@ -27,6 +27,7 @@ public class LevelSelectionManager : ManagerComponent
     private Canvas ModalCanvas { get; set; }
 
     private IModalPopup _invalidModal { get; set; }
+    private IModalPopup _incompleteModal { get; set; }
     private IModalPopup _uploadModal { get; set; }
     private IModalPopup _deleteModal { get; set; }
 
@@ -48,6 +49,11 @@ public class LevelSelectionManager : ManagerComponent
     public void SetInvalidModal(IModalPopup invalidModal)
     {
         _invalidModal = invalidModal;
+    }
+    
+    public void SetIncompleteModal(IModalPopup modal)
+    {
+        _incompleteModal = modal;
     }
 
     public void SetLevelLoader(LevelSelectionLoader levelLoader)
@@ -105,14 +111,20 @@ public class LevelSelectionManager : ManagerComponent
 
     private void OnLevelUploadRequested(string code)
     {
-        this.LevelManager.Load(code, LevelLoadedForUpload);
+        this.LevelManager.LevelStorage.LoadLevelData(code, LevelLoadedForUpload);
 
-        void LevelLoadedForUpload(LevelState levelState)
+        void LevelLoadedForUpload(LevelSave levelSave)
         {
-            if (!levelState.IsLevelValid())
+            if (!levelSave.IsLevelValid())
             {
                 this._invalidModal.Open(this.ModalCanvas.transform, true);
                 return;
+            }
+
+            if (!levelSave.Completed)
+            {
+                this._incompleteModal.Open(this.ModalCanvas.transform, true);
+                return;   
             }
          
             if (_uploadModal is ModalPopupConfirmation confirmModal)
