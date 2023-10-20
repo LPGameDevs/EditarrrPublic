@@ -125,6 +125,10 @@ namespace Level.Storage
 
         private async void UploadScreenshot(string code)
         {
+#if UNITY_WEBGL
+            // Webgl needs a custom solution for uploading image files. 
+            return;
+#endif
             var uploadUrl = $"{AwsLevelUrl}/dev/screenshot/{code}.png";
             var imagePath = LocalLevelStorageManager.LocalRootDirectory + code + "/screenshot.png";
             using (var httpClient = new HttpClient())
