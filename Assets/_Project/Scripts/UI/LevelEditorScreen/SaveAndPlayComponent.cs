@@ -48,13 +48,20 @@ namespace Editarrr.UI.LevelEditor
 
             private void PlayButtonElement_Clicked()
             {
+                if (!this.EditorLevelManager.IsLevelValid())
+                {
+                    return;
+                }
+                
                 this.EditorLevelManager.SaveLevelState();
                 SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
             }
 
             private void SaveButtonElement_Clicked()
             {
-                this.EditorLevelManager.SaveLevelState();
+                bool upload = this.EditorLevelManager.IsLevelValid();
+                
+                this.EditorLevelManager.SaveLevelState(upload);
                 SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
             }
 

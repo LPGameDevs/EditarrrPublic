@@ -644,14 +644,14 @@ namespace Editarrr.LevelEditor
             }
         }
 
-        public void SaveLevelState()
+        public void SaveLevelState(bool uploadToRemote = true)
         {
             this.ScreenshotCamera.orthographicSize = this.SceneCamera.orthographicSize;
             Texture2D screenshot = CreateScreenshot(this.ScreenshotCamera);
 
             this.LevelState.SetScale(this.ScaleX, this.ScaleY);
             this.LevelState.SetTiles(this.Tiles);
-            this.LevelManager.SaveState(this.LevelState);
+            this.LevelManager.SaveState(this.LevelState, uploadToRemote);
             this.LevelManager.SaveScreenshot(this.LevelState.Code, screenshot);
 
             Texture2D CreateScreenshot(Camera cam)
@@ -676,6 +676,11 @@ namespace Editarrr.LevelEditor
             this.SetScale(this.LevelState.ScaleX, this.LevelState.ScaleY);
 
             this.Tiles = new EditorTileState[this.ScaleX, this.ScaleY];
+        }
+
+        public bool IsLevelValid()
+        {
+            return this.LevelState.IsLevelValid();
         }
 
         private void SetScale(int x, int y)

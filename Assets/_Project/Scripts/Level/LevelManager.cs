@@ -137,7 +137,7 @@ namespace Editarrr.Level
          *
          * This doesnt work for creation new levelSaves.
          */
-        public void SaveState(LevelState levelState)
+        public void SaveState(LevelState levelState, bool uploadToRemote = true)
         {
             this.LevelStorage.LoadLevelData(levelState.Code, SaveLevelAfterLoad);
 
