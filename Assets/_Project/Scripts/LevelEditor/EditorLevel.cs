@@ -9,6 +9,7 @@ namespace LevelEditor
     public class EditorLevel : MonoBehaviour
     {
         public static event Action<string> OnEditorLevelSelected;
+        public static event Action OnEditorLevelPlayRequest;
         public static event Action<string> OnEditorLevelUpload;
         public static event Action<string> OnEditorLevelDelete;
         public static event Action<string> OnLeaderboardRequest;
@@ -66,7 +67,7 @@ namespace LevelEditor
         public void GoToLevel()
         {
             CheckCodePreferences();
-            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
+            OnEditorLevelPlayRequest?.Invoke();
         }
 
         public void HideEditorTools()

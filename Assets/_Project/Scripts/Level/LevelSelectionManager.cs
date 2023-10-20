@@ -26,6 +26,8 @@ public class LevelSelectionManager : ManagerComponent
 
     private Canvas ModalCanvas { get; set; }
 
+    private IModalPopup _invalidModal { get; set; }
+    private IModalPopup _incompleteModal { get; set; }
     private IModalPopup _uploadModal { get; set; }
     private IModalPopup _deleteModal { get; set; }
 
@@ -42,6 +44,16 @@ public class LevelSelectionManager : ManagerComponent
     public void SetDeleteModal(IModalPopup deleteModal)
     {
         _deleteModal = deleteModal;
+    }
+
+    public void SetInvalidModal(IModalPopup invalidModal)
+    {
+        _invalidModal = invalidModal;
+    }
+    
+    public void SetIncompleteModal(IModalPopup modal)
+    {
+        _incompleteModal = modal;
     }
 
     public void SetLevelLoader(LevelSelectionLoader levelLoader)
@@ -88,7 +100,7 @@ public class LevelSelectionManager : ManagerComponent
             confirmModal.SetConfirm(DeleteLevel);
         }
 
-        _deleteModal.Open(this.ModalCanvas.transform);
+        _deleteModal.Open(this.ModalCanvas.transform, true);
 
         void DeleteLevel()
         {
@@ -99,17 +111,34 @@ public class LevelSelectionManager : ManagerComponent
 
     private void OnLevelUploadRequested(string code)
     {
-        if (_uploadModal is ModalPopupConfirmation confirmModal)
-        {
-            confirmModal.SetConfirm(UploadLevel);
-        }
+        this.LevelManager.LevelStorage.LoadLevelData(code, LevelLoadedForUpload);
 
-        _uploadModal.Open(this.ModalCanvas.transform);
-
-        void UploadLevel()
+        void LevelLoadedForUpload(LevelSave levelSave)
         {
-            LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
-            DestroyAndRefreshLevels();
+            if (!levelSave.IsLevelValid())
+            {
+                this._invalidModal.Open(this.ModalCanvas.transform, true);
+                return;
+            }
+
+            if (!levelSave.Completed)
+            {
+                this._incompleteModal.Open(this.ModalCanvas.transform, true);
+                return;   
+            }
+         
+            if (_uploadModal is ModalPopupConfirmation confirmModal)
+            {
+                confirmModal.SetConfirm(UploadLevel);
+            }
+
+            this._uploadModal.Open(this.ModalCanvas.transform);
+
+            void UploadLevel()
+            {
+                LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
+                DestroyAndRefreshLevels();
+            }
         }
     }
 
@@ -126,12 +155,33 @@ public class LevelSelectionManager : ManagerComponent
         // Update display.
         DestroyAndRefreshLevels();
     }
-
-
+    
     private void OnLevelSelected(string code)
     {
         Exchange.SetCode(code);
         Exchange.SetAutoload(code.Length > 0);
+    }
+    
+    private void OnLevelPlayRequested()
+    {
+        if (!this.Exchange.LoadOnStart)
+        {
+            return;
+        }
+
+        string code = this.Exchange.CodeToLoad;
+        this.LevelManager.Load(code, LevelLoadedForPlay);
+
+        void LevelLoadedForPlay(LevelState levelState)
+        {
+            if (!levelState.IsLevelValid())
+            {
+                this._invalidModal.Open(this.ModalCanvas.transform, true);
+                return;
+            }
+
+            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
+        }
     }
 
     private void OnLeaderboardRequested(string code)
@@ -154,6 +204,7 @@ public class LevelSelectionManager : ManagerComponent
     public override void DoOnEnable()
     {
         EditorLevel.OnEditorLevelSelected += OnLevelSelected;
+        EditorLevel.OnEditorLevelPlayRequest += OnLevelPlayRequested;
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload += OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest += OnLeaderboardRequested;
@@ -162,6 +213,7 @@ public class LevelSelectionManager : ManagerComponent
     public override void DoOnDisable()
     {
         EditorLevel.OnEditorLevelSelected -= OnLevelSelected;
+        EditorLevel.OnEditorLevelPlayRequest -= OnLevelPlayRequested;
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload -= OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest -= OnLeaderboardRequested;

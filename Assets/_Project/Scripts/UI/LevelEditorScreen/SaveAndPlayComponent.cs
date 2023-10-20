@@ -1,4 +1,5 @@
-﻿using Editarrr.LevelEditor;
+﻿using System;
+using Editarrr.LevelEditor;
 using Singletons;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,6 +11,8 @@ namespace Editarrr.UI.LevelEditor
         [System.Serializable]
         public class SaveAndPlayComponent : UIComponent
         {
+            public static event Action OnInvalidLevelRequest;
+
             [field: SerializeField, Header("Manager")] private EditorLevelManager EditorLevelManager { get; set; }
 
             [field: SerializeField, Header("Names")] public string ContainerName { get; private set; } = "SaveAndPlay";
@@ -48,13 +51,23 @@ namespace Editarrr.UI.LevelEditor
 
             private void PlayButtonElement_Clicked()
             {
+                this.EditorLevelManager.SaveLevelState(false);
+
+                if (!this.EditorLevelManager.IsLevelValid())
+                {
+                    OnInvalidLevelRequest?.Invoke();
+                    return;
+                }
+                
                 this.EditorLevelManager.SaveLevelState();
                 SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
             }
 
             private void SaveButtonElement_Clicked()
             {
-                this.EditorLevelManager.SaveLevelState();
+                bool upload = this.EditorLevelManager.IsLevelValid();
+                
+                this.EditorLevelManager.SaveLevelState(upload);
                 SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
             }
 

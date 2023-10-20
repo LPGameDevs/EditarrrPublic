@@ -11,9 +11,9 @@ namespace UI
 
         [SerializeField] protected string ConfirmText;
 
-        public override void Open(Transform parent = null)
+        public override void Open(Transform parent = null, bool alwaysShow = false)
         {
-            if (PreferencesManager.Instance.IsModalEventTracked(this.name, ModalPopupAction.Confirm))
+            if (!alwaysShow && PreferencesManager.Instance.IsModalEventTracked(this.name, ModalPopupAction.Close))
             {
                 this.Confirm();
                 return;
