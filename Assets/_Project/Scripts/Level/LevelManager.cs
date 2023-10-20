@@ -155,6 +155,15 @@ namespace Editarrr.Level
                 this.LevelStorage.SaveScreenshot(code, byteArray);
         }
 
+        public void MarkLevelAsComplete(LevelSave levelSave)
+        {
+            levelSave.MarkAsCompleted();
+
+            // Store state to filesystem.
+            string data = JsonUtility.ToJson(levelSave);
+            this.LevelStorage.Save(levelSave.Code, data);
+        }
+
         private void Save(LevelSave levelSave, bool uploadToRemote = false)
         {
             // Increment version string.
