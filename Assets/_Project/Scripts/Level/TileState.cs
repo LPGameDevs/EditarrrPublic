@@ -44,12 +44,22 @@ namespace Editarrr.Level
 
         private TileConfig ReadJSONData(int[] data)
         {
+            if (data == null || data.Length == 0)
+                return null;
+
             switch (this.Foreground)
             {
                 case TileType.MovingPlatform:
                     return new MovingPlatformConfig(data);
+                case TileType.Lever:
+                    return new LeverConfig(data);
+                case TileType.LeverBlock:
+                    return new LeverBlockConfig(data);
                 default:
-                    return null;
+                    {
+                        Debug.LogError("Config-Values found but there is no Config Class specified!");
+                        return null;
+                    }
             }
         }
     }

@@ -32,7 +32,7 @@ Transform:
   - {fileID: 8735408346765437042}
   - {fileID: 6921163407437754799}
   - {fileID: 8772646088498682797}
-  - {fileID: 4859235543844648552}
+  - {fileID: 6840969978613669578}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -211,6 +211,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2208904029525526178, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2289342733094404154, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
       propertyPath: m_Name
       value: ScreenEffectManager
@@ -221,9 +225,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
---- !u!4 &4859235543844648552 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 232185566788234752, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
+--- !u!224 &6840969978613669578 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2208904029525526178, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
   m_PrefabInstance: {fileID: 4636345253730539624}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6104866072560549532

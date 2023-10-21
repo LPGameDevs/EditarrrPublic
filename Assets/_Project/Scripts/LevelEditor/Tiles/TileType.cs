@@ -15,6 +15,8 @@ namespace Editarrr.LevelEditor
         Clawdia = 8,
         SpikeDeath = 10,
         Key = 20,
+        Lever = 21,
+        LeverBlock = 22,
         BoxBounce = 30,
         Geyser = 40,
         CrackedPlank = 50,

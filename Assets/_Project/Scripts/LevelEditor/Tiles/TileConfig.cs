@@ -5,7 +5,7 @@ namespace Editarrr.LevelEditor
 {
     /// To create a new TileConfig for a custom tile type:
     /// 1. Start by adding a new class that represents your tile configuration.
-    ///    Make sure it inherits from the base class 'TileConfig'.
+    ///    Make sure it inherits from the base class 'TileConfig' AND inherits the IConfigurable Interface!
     ///    Fill in your configuration class with all the necessary properties and methods.
     /// 
     /// 2. Next, create a 'ConfigData' class that derives from 'EditorTileConfigData<[YourTileConfigHere]>'.
@@ -18,6 +18,8 @@ namespace Editarrr.LevelEditor
     /// 4. Now, navigate to the '_Project/ScriptableObjects/Data/Editor/Tiles' directory.
     ///    Find the tile for which you created the Config.
     ///    Link your Config asset to this specific Tile by referencing it.
+    /// 
+    /// 5. Open TileState.cs and create a new Line for your new Config class inside the ReadJSONData() method
 
     [System.Serializable]
     public abstract class TileConfig

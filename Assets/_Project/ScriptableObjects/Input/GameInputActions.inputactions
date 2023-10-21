@@ -491,6 +491,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenConfig",
+                    "type": "Button",
+                    "id": "619415f1-ef4e-4962-b0a9-876ec1815034",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -634,6 +643,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "NextGroup",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7aa6775-43d7-4884-b678-b245f70a0494",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenConfig",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
