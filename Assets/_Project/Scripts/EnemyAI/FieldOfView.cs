@@ -16,8 +16,8 @@ public class FieldOfView : MonoBehaviour
     [HideInInspector]
     public List<Transform> visibleTargets = new();
 
-    private float _correctionAngle = 0f;
-    private float _directionEnemyIsFacing = 0f;
+    private float _correctionAngle = -90f;
+    private float _directionEnemyIsFacing = 1f;
 
     private Vector3 _directionFacing;
 
@@ -52,8 +52,9 @@ public class FieldOfView : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, viewRadius);
 
         // Draw the view angle
-        float angleUp = (_directionEnemyIsFacing * _correctionAngle) - (viewAngle / 2);
-        float angleDown = (_directionEnemyIsFacing * _correctionAngle) + (viewAngle / 2);
+        var value = _directionEnemyIsFacing != 0 ? _directionEnemyIsFacing : 1;
+        float angleUp = (value * _correctionAngle) - (viewAngle / 2);
+        float angleDown = (value * _correctionAngle) + (viewAngle / 2);
         Vector3 viewAngleA = DirFromAngle3D(angleUp, false);
         Vector3 viewAngleB = DirFromAngle3D(angleDown, true);
 

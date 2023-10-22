@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e04c55da352492c8876c5c63bd8c87, type: 3}
   m_Name: Flying
   m_EditorClassIdentifier: 
-  normalMoveSpeed: 5
+  normalMoveSpeed: 2
   sawPlayerMoveSpeed: 10
   detectionRange: 10
   waitToMove: 2
