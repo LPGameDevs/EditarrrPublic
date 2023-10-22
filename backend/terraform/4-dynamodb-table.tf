@@ -259,11 +259,10 @@ resource "aws_dynamodb_table" "editarrr-analytics-storage" {
     name = "type"
     type = "S" # Enum
   }
-  attribute {
-    name = "value"
-    type = "S" # Various
-  }
-
+  #  attribute {
+  #    name = "value"
+  #    type = "S" # Various
+  #  }
   #  attribute {
   #    name = "analyticsSubmittedAt"
   #    type = "N" # Epoch
@@ -282,7 +281,7 @@ resource "aws_dynamodb_table" "editarrr-analytics-storage" {
     write_capacity  = 0
     read_capacity   = 0
   }
-  
+
     global_secondary_index {
       name            = "type-pk-index"
       hash_key        = "type"

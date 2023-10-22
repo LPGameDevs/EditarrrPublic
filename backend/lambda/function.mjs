@@ -110,6 +110,13 @@ export const handler = async (event, context) => {
 
                 // TODO Inclusion of request params in the query
 
+                var useDrafts = false;
+
+                if (event?.queryStringParameters?.draft !== undefined)
+                {
+                    useDrafts = true;
+                }
+
                 var queryResponse = await dynamo.send(
                     new QueryCommand({
                         TableName: tableNameLevel,
@@ -119,7 +126,7 @@ export const handler = async (event, context) => {
                         ScanIndexForward: false,
                         KeyConditionExpression: "levelStatus = :status",
                         ExpressionAttributeValues: {
-                            ":status": "PUBLISHED"
+                            ":status": useDrafts ? "DRAFT" : "PUBLISHED"
                         }
                     })
                 );
