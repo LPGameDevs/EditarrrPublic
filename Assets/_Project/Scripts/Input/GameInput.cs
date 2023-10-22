@@ -530,7 +530,7 @@ namespace Editarrr.Input
                 {
                     ""name"": """",
                     ""id"": ""8c95f977-4269-4c41-8ef5-577f03758e93"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

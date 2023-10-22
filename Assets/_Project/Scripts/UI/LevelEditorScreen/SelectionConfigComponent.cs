@@ -1,6 +1,4 @@
 ﻿using Editarrr.LevelEditor;
-using Editarrr.Misc;
-using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
