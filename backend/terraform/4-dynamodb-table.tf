@@ -88,7 +88,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelCreatorId"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName"]
+    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName", "version"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -98,7 +98,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version"]
     write_capacity  = 0
     read_capacity   = 0
   }
