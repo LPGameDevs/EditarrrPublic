@@ -35,7 +35,7 @@ public class LevelSelectionManager : ManagerComponent
     {
         this.ModalCanvas = modalCanvas;
     }
-    
+
     public void SetUploadModal(IModalPopup uploadModal)
     {
         _uploadModal = uploadModal;
@@ -50,7 +50,7 @@ public class LevelSelectionManager : ManagerComponent
     {
         _invalidModal = invalidModal;
     }
-    
+
     public void SetIncompleteModal(IModalPopup modal)
     {
         _incompleteModal = modal;
@@ -124,9 +124,9 @@ public class LevelSelectionManager : ManagerComponent
             if (!levelSave.Completed)
             {
                 this._incompleteModal.Open(this.ModalCanvas.transform, true);
-                return;   
+                return;
             }
-         
+
             if (_uploadModal is ModalPopupConfirmation confirmModal)
             {
                 confirmModal.SetConfirm(UploadLevel);
@@ -138,6 +138,7 @@ public class LevelSelectionManager : ManagerComponent
             {
                 LevelManager.PublishAndUpload(code, OnLevelUploadComplete);
                 DestroyAndRefreshLevels();
+                AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelUpload, levelSave.Code);
             }
         }
     }
@@ -155,13 +156,13 @@ public class LevelSelectionManager : ManagerComponent
         // Update display.
         DestroyAndRefreshLevels();
     }
-    
+
     private void OnLevelSelected(string code)
     {
         Exchange.SetCode(code);
         Exchange.SetAutoload(code.Length > 0);
     }
-    
+
     private void OnLevelPlayRequested()
     {
         if (!this.Exchange.LoadOnStart)

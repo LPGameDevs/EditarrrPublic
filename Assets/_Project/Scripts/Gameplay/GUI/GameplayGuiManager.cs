@@ -61,6 +61,8 @@ namespace Gameplay.GUI
             UnPauseGame();
             SetOverlayAlpha(0f);
             _inputPrompt.SetActive(false);
+
+            AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelPlay, this._levelCode);
         }
 
         private void ShowWinMenu()

@@ -86,10 +86,12 @@ namespace Editarrr.Level
             this._gameplayGuiManager.SetLevelState(levelState);
             //GameEvent.Trigger(GameEventType.Unpause);
         }
-        
+
         private void OnLevelCompleted()
         {
             this.LevelManager.LevelStorage.LoadLevelData(_code, LevelCompletedLevelLoaded);
+
+            AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelComplete, _code);
 
             void LevelCompletedLevelLoaded(LevelSave levelSave)
             {
@@ -97,7 +99,7 @@ namespace Editarrr.Level
                 {
                     return;
                 }
-                
+
                 this.LevelManager.MarkLevelAsComplete(levelSave);
             }
 
@@ -193,6 +195,7 @@ namespace Editarrr.Level
                 {
                     // @todo do we need this?
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelScoreSubmitted);
+                    AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelScoreSubmitted, $"{code}-{time}");
                 }
             }
         }
@@ -209,6 +212,7 @@ namespace Editarrr.Level
                 {
                     PreferencesManager.Instance.SetLevelRating(code, rating);
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelRated);
+                    AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelRatingSubmitted, $"{code}-{rating.ToString()}");
                 }
             }
         }

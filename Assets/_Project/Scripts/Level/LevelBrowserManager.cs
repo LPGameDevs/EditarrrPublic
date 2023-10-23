@@ -4,6 +4,7 @@ using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Level.Storage;
+using Singletons;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelBrowserManager", menuName = "Managers/Level/new Level Browser Manager")]
@@ -39,7 +40,7 @@ public class LevelBrowserManager : ManagerComponent
         _levelLoader.DestroyLevels();
 
         LevelManager.LoadAll(SetLevelsAfterLoad);
-        
+
         void SetLevelsAfterLoad(LevelStub[] levels)
         {
             _levelLoader.SetLevels(levels);
@@ -53,6 +54,7 @@ public class LevelBrowserManager : ManagerComponent
 
         // Update display - this is only necessary with long downloads.
         // DestroyAndRefreshLevels();
+        AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelDownload, code);
     }
 
     private void OnLevelScreenshotDownloadRequested(string code)
