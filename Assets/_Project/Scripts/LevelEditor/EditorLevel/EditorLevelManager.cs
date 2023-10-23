@@ -150,7 +150,7 @@ namespace Editarrr.LevelEditor
 
         public override void DoUpdate()
         {
-            if (this.EditorTileSelection.IsUIHover)
+            if (this.EditorTileSelection.IsUIHover || this.EditorTileSelection.IsInputFocus)
             {
                 this.DisableHoverTile();
                 return;

@@ -31,9 +31,12 @@ namespace Editarrr.LevelEditor
         public int ActiveGroupIndex { get; private set; }
         public int ActiveElementIndex { get; private set; }
         public Rotation Rotation { get; private set; }
-        public bool IsUIHover { get; private set; }
         public static TileSelect OnTileSelect { get; set; }
         public delegate void TileSelect();
+
+        // UI Events
+        public bool IsUIHover { get; private set; }
+        public bool IsInputFocus { get; private set; }
 
 
         public override void DoAwake()
@@ -41,6 +44,7 @@ namespace Editarrr.LevelEditor
             this.ClearEvents();
             this.SetActiveGroupIndex(0);
             this.IsUIHover = false;
+            this.IsInputFocus = false;
 
             // @todo This feature allows us to always use the same tile at the start
             // of level editing. If we want to track whatever the most recent tile was
@@ -53,11 +57,17 @@ namespace Editarrr.LevelEditor
             // Register UI Events
             LevelEditorScreen.OnPointerEnter += this.LevelEditorScreen_OnPointerEnter;
             LevelEditorScreen.OnPointerLeave += this.LevelEditorScreen_OnPointerLeave;
+            LevelEditorScreen.OnInputFocus += this.LevelEditorScreen_OnInputFocus;
+        }
+
+        private void LevelEditorScreen_OnInputFocus(bool value)
+        {
+            this.IsInputFocus = value;
         }
 
         public override void DoUpdate()
         {
-            if (this.IsUIHover)
+            if (this.IsUIHover || this.IsInputFocus)
                 return;
 
             if (this.Input_Rotate.WasPressed)

@@ -12,6 +12,7 @@ namespace Editarrr.UI.LevelEditor
     {
         public static Action OnPointerEnter { get; set; }
         public static Action OnPointerLeave { get; set; }
+        public static Action<bool> OnInputFocus { get; set; }
 
         [field: SerializeField, Header("Components")] public TileSelectionComponent TileSelection { get; private set; }
         [field: SerializeField] public TileGroupSwapperComponent TileGroupSwapper { get; private set; }
@@ -23,6 +24,7 @@ namespace Editarrr.UI.LevelEditor
         {
             LevelEditorScreen.OnPointerEnter = null;
             LevelEditorScreen.OnPointerLeave = null;
+            LevelEditorScreen.OnInputFocus = null;
         }
 
         private void Start()
@@ -43,6 +45,16 @@ namespace Editarrr.UI.LevelEditor
         protected static void PointerLeave(PointerLeaveEvent pointerLeaveEvent)
         {
             LevelEditorScreen.OnPointerLeave?.Invoke();
+        }
+
+        protected static void InputFocus(FocusEvent focusEvent)
+        {
+            LevelEditorScreen.OnInputFocus?.Invoke(true);
+        }
+
+        protected static void InputBlur(BlurEvent blurEvent)
+        {
+            LevelEditorScreen.OnInputFocus?.Invoke(false);
         }
     }
 }
