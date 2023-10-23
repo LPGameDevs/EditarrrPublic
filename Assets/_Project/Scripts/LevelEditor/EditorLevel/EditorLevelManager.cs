@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Editarrr.UI.LevelEditor;
 using LevelEditor;
+using Singletons;
 using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -613,6 +614,8 @@ namespace Editarrr.LevelEditor
             this.Exchange.SetCode(code);
             this.Exchange.SetAutoload(code.Length > 0);
             this.StartModal.Open(this.ModalCanvas.transform);
+
+            AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelCreate, $"{code}");
         }
 
         public void LoadLevelState()

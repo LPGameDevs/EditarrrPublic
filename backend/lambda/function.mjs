@@ -462,6 +462,9 @@ export const handler = async (event, context) => {
                 if (!type) throw new BadRequestException(`'type' must be provided in the request.`);
                 var value = requestJSON.value;
                 if (!value) throw new BadRequestException(`'value' must be provided in the request.`);
+                var creatorId = requestJSON.creatorId;
+                if (!creatorId) throw new BadRequestException(`'creatorId' must be provided in the request.`);
+
                 var creatorName = requestJSON.creatorName;
                 if (!creatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
 
@@ -472,7 +475,7 @@ export const handler = async (event, context) => {
                     new PutCommand({
                         TableName: tableNameAnalytics,
                         Item: {
-                            pk: `USER#${event.pathParameters.id}`,
+                            pk: `USER#${creatorId}`,
                             sk: `ANALYTICS#${generatedAnalyticsId}`,
                             type: type,
                             value: value,

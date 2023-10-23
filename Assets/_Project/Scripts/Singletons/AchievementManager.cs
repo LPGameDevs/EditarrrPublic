@@ -28,7 +28,7 @@ namespace Singletons
     /**
      * This class is used to store user preferences.
      */
-    public class AchievementManager : UnitySingleton<AchievementManager>
+    public class AchievementManager : UnitySingleton<AchievementManager>, IUnitySinglton
     {
         public void UnlockAchievement(GameAchievement achievement)
         {
@@ -39,6 +39,11 @@ namespace Singletons
             }
 
             // @todo: Implement this for other platforms.
+        }
+
+        public void Initialize()
+        {
+            // Nothing needed here.
         }
     }
 }
