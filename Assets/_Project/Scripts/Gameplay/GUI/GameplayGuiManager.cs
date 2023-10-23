@@ -1,5 +1,6 @@
 using Editarrr.Input;
 using Editarrr.Level;
+using Level.Storage;
 using Singletons;
 using Systems;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Gameplay.GUI
 
         private string _levelCode;
         private LevelState _levelState;
+        private LevelManager _levelManager;
         bool _awaitingInput;
 
         private bool _isPaused = false;
@@ -45,6 +47,11 @@ namespace Gameplay.GUI
         {
             _levelState = levelState;
             _winMenu.SetLevelData(levelState);
+        }
+
+        public void SetLevelManager(LevelManager levelManager)
+        {
+            _levelManager = levelManager;
         }
 
         private void ShowInputPrompt()
@@ -150,14 +157,25 @@ namespace Gameplay.GUI
             }
         }
 
+        private void GetLeaderboardScores(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
+        {
+            this._levelManager.LevelStorage.LoadLevelData(code, LeaderboardLevelDataLoaded);
+            void LeaderboardLevelDataLoaded(LevelSave levelSave)
+            {
+                this._levelManager.GetScoresForLevel(levelSave.RemoteId, callback);
+            }
+        }
+
         private void OnEnable()
         {
             Chest.OnChestOpened += ShowWinMenu;
+            WinMenu.OnLeaderboardRequested += GetLeaderboardScores;
         }
 
         private void OnDisable()
         {
             Chest.OnChestOpened -= ShowWinMenu;
+            WinMenu.OnLeaderboardRequested -= GetLeaderboardScores;
         }
     }
 }

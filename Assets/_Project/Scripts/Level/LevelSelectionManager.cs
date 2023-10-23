@@ -4,7 +4,6 @@ using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Editarrr.UI;
-using Gameplay.GUI;
 using Level.Storage;
 using LevelEditor;
 using Singletons;
