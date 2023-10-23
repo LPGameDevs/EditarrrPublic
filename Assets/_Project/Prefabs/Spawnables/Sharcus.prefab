@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 971368692059833505}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.228, y: 0.167, z: 0}
+  m_LocalPosition: {x: -0.003, y: 0.167, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -181,8 +181,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73db6d5f057532a4fbb2006b90d4e137, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   _damage: 10
   <KnockbackForce>k__BackingField: 40
   <DamageCooldown>k__BackingField: 1
@@ -220,8 +220,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d489a58570a66464e8a0fec0dc12a4b3, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   enemyAIData: {fileID: 11400000, guid: b373a87e4dbcd4674b02aca06070d964, type: 2}
   eyeTransform: {fileID: 5377648954500446764}
   footTransform: {fileID: 8535153669290878021}
@@ -231,7 +231,10 @@ MonoBehaviour:
     m_Bits: 8
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 3408
+    m_Bits: 2384
+  otherEnemyLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -246,8 +249,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fecfea92aad94f219f1b6ddcea98d77, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   viewRadius: 10
   viewAngle: 149
   isTopDown: 0

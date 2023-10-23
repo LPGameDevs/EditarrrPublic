@@ -23,6 +23,8 @@ public class EnemyAIController : PausableCharacter
 
     [SerializeField] private LayerMask obstacleLayer;
 
+    [SerializeField] private LayerMask otherEnemyLayer;
+
     [SerializeField] private LayerMask groundLayer;
 
     [SerializeField] private FieldOfView fieldOfView;
@@ -31,9 +33,7 @@ public class EnemyAIController : PausableCharacter
 
     private float _pausingTimer = 0f;
 
-    private float _currentDirection = 1f;
-
-    private float _distanceToObstacle = 0.5f;
+    private float _distanceToObstacle = 1f;
 
     private float _distanceToGround = -0.5f;
 
@@ -159,7 +159,7 @@ public class EnemyAIController : PausableCharacter
                     return;
                 }
                 //move until get to obstacle OR see player
-                Move(enemyAIData.normalMoveSpeed, _currentDirection);
+                Move(enemyAIData.normalMoveSpeed, GetCurrentDirection());
                 if (!CanMove())
                 {
                     _aiState = AIState.pausing;
@@ -175,7 +175,7 @@ public class EnemyAIController : PausableCharacter
                 _pausingTimer += Time.deltaTime;
                 if (_pausingTimer >= enemyAIData.waitToMove)
                 {
-                    _currentDirection = -1 * _currentDirection;
+                    TurnAround();
                     _pausingTimer = 0;
                     _aiState = AIState.moving;
                 }
@@ -190,7 +190,7 @@ public class EnemyAIController : PausableCharacter
                     return;
                 }
                 _moveSpeed = enemyAIData.sawPlayerMoveSpeed;
-                Move(enemyAIData.sawPlayerMoveSpeed, _currentDirection);
+                Move(enemyAIData.sawPlayerMoveSpeed, GetCurrentDirection());
                 if (!CanMove())
                 {
                     _aiState = AIState.pausing;
@@ -228,29 +228,35 @@ public class EnemyAIController : PausableCharacter
 
             case AIState.attacking:
                 print("attacking");
-                if (!CanSeePlayer()) //!CanMove() || 
+                if (!CanSeePlayer())
                 {
-                    _moveSpeed = 0;
-                    _aiState = AIState.pausing;
-                    return;
-                }
-                //_moveSpeed = enemyAIData.sawPlayerMoveSpeed;
-                if (GetDirectionTowards(GetPlayerPosition()) > 0)
-                {
-                    _currentDirection = 1;
-                }
-                else
-                {
-                    _currentDirection = -1;
+                    _pausingTimer += Time.deltaTime;
+                    if (_pausingTimer >= enemyAIData.waitToMove)
+                    {
+                        TurnAround();
+                        _pausingTimer = 0;
+                        _moveSpeed = 0;
+                        print("Can't see player, pausing");
+                        _aiState = AIState.pausing;
+                        return;
+                    }
                 }
 
-                Move(enemyAIData.sawPlayerMoveSpeed, _currentDirection);
                 if (!CanMove())
                 {
+                    print("Can't move, pausing");
                     _moveSpeed = 0;
-                    _aiState = AIState.pausing;
-                    return;
+                    _pausingTimer += Time.deltaTime;
+                    if (_pausingTimer >= enemyAIData.waitToMove)
+                    {
+                        TurnAround();
+                        _pausingTimer = 0;
+                        print("Can't move, pausing");
+                        _aiState = AIState.pausing;
+                        return;
+                    }
                 }
+                Move(enemyAIData.sawPlayerMoveSpeed, GetCurrentDirection());
                 //animator.SetBool("Run", true);
                 break;
         }
@@ -265,7 +271,7 @@ public class EnemyAIController : PausableCharacter
 
     private Vector3 GetPlayerPosition()
     {
-        if (fieldOfView.visibleTargets.First() == null) { return transform.position; } //exit if no player is seen
+        if (fieldOfView.visibleTargets.Count == 0) { return transform.position; } //exit if no player is seen
         return fieldOfView.visibleTargets.First().transform.position; //we sent the first target, which will be the player
     }
 
@@ -279,11 +285,11 @@ public class EnemyAIController : PausableCharacter
     private void Move(float finalSpeed, float direction)
     {
         _moveSpeed = Mathf.Lerp(_moveSpeed, finalSpeed, Time.deltaTime);
-        Vector2 forward = transform.right * direction;
+        Vector2 forward = -1 * transform.right * direction; //have to reverse this because the player starts facing the left direction
         Vector2 currentPosition = transform.position;
-        Vector2 targetPosition = currentPosition + forward * _distanceToGround;// enemyAIData.detectionRange;
+        Vector2 targetPosition = currentPosition + forward * _distanceToGround;
         transform.position = Vector2.MoveTowards(currentPosition, targetPosition, _moveSpeed * Time.deltaTime);
-        FaceTowardsMovement(targetPosition);
+        //FaceTowardsMovement(targetPosition);
     }
 
     private bool CanFly()
@@ -295,16 +301,24 @@ public class EnemyAIController : PausableCharacter
     private bool CanMove()
     {
         //can only move if no obstacle directly in front of enemy AND ground to walk on
-        Vector2 direction = eyeTransform.right * _currentDirection;
-        return !IsNearObstacleInFront(direction, _distanceToObstacle) && IsNearGroundInFront();
+        Vector2 direction = eyeTransform.right * GetCurrentDirection();
+        return !IsNearObstacleInFront(direction, _distanceToObstacle) && !IsNearEnemyInFront(direction, _distanceToObstacle) && IsNearGroundInFront();
+    }
+
+    private bool IsNearEnemyInFront(Vector3 direction, float distanceToObstacle)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(eyeTransform.position, direction, distanceToObstacle, otherEnemyLayer);
+        //Debug.DrawRay(eyeTransform.position, direction, Color.red, 0.1f);
+        if (hit.collider != null && IsNotThisEnemy(hit)) print(hit.collider);
+        return hit.collider != null && IsNotThisEnemy(hit);
     }
 
     private bool IsNearObstacleInFront(Vector3 direction, float distanceToObstacle)
     {
         RaycastHit2D hit = Physics2D.Raycast(eyeTransform.position, direction, distanceToObstacle, obstacleLayer);
-        Debug.DrawRay(eyeTransform.position, direction, Color.red, 1f);
-        if (hit.collider != null && IsNotThisEnemy(hit)) print(hit.collider);
-        return hit.collider != null && IsNotThisEnemy(hit);
+        Debug.DrawRay(eyeTransform.position, direction, Color.black, 0.1f);
+        if (hit.collider != null) print(hit.collider);
+        return hit.collider != null;
     }
 
     private bool IsNearGroundInFront()
@@ -363,8 +377,14 @@ public class EnemyAIController : PausableCharacter
 
     private void TurnAround()
     {
-        _currentDirection = -1 * _currentDirection;
         float x = -1 * transform.localScale.x;
         transform.localScale = new Vector3(x, 1f, 1f);
+    }
+
+    private float GetCurrentDirection()
+    {
+        // 1 is right, -1 is left
+        float x = transform.localScale.x;
+        return -1 * x;
     }
 }
