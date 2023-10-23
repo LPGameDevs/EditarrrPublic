@@ -49,11 +49,20 @@ namespace Editarrr.UI.LevelEditor
 
         protected static void InputFocus(FocusEvent focusEvent)
         {
-            LevelEditorScreen.OnInputFocus?.Invoke(true);
+            // This might be the only HACK to properly proagate the
+            // Unfocus Event to our Game Logic as the InputElement regains Focus when confirming with Enter...
+            if (focusEvent.relatedTarget == null)
+            {
+                Debug.Log("Focus");
+                LevelEditorScreen.OnInputFocus?.Invoke(true);
+            }
+            else
+                Debug.Log("Focus ignored");
         }
 
         protected static void InputBlur(BlurEvent blurEvent)
         {
+            Debug.Log("Focus Lost");
             LevelEditorScreen.OnInputFocus?.Invoke(false);
         }
     }
