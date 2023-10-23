@@ -15,7 +15,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
   }
 
   hash_key  = "pk"
-  range_key = "sk"
+  range_key = "sk" // sort key
   attribute {
     name = "pk"
     type = "S"
@@ -88,7 +88,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelCreatorId"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName"]
+    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName", "version"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -98,7 +98,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -166,7 +166,7 @@ resource "aws_dynamodb_table" "editarrr-score-storage" {
   global_secondary_index {
     name            = "scoreLevelName-score-index"
     hash_key        = "pk"
-    range_key       = "score"
+    range_key       = "score"  // sort key
     projection_type = "INCLUDE"
     non_key_attributes = [ "sk", "pk", "scoreLevelName", "scoreCreatorName", "scoreSubmittedAt", "scoreCreatorId"]
     write_capacity  = 0
@@ -223,12 +223,74 @@ resource "aws_dynamodb_table" "editarrr-rating-storage" {
   global_secondary_index {
     name            = "pk-rating-index"
     hash_key        = "pk"
-    range_key       = "rating"
+    range_key       = "rating"  // sort key
     projection_type = "INCLUDE"
     non_key_attributes = [ "sk", "ratingLevelName", "ratingCreatorName", "ratingSubmittedAt", "ratingCreatorId"]
     write_capacity  = 0
     read_capacity   = 0
   }
+}
+
+# Create the dynamodb table for analytics.
+resource "aws_dynamodb_table" "editarrr-analytics-storage" {
+  name                        = "editarrr-analytics-storage"
+  billing_mode                = "PAY_PER_REQUEST"
+  table_class                 = "STANDARD"
+  read_capacity               = "0"
+  write_capacity              = "0"
+  stream_enabled              = "false"
+  deletion_protection_enabled = "false"
+
+  point_in_time_recovery {
+    enabled = "false"
+  }
+
+  hash_key  = "pk" # USER#<userId>
+  range_key = "sk" # ANALYTICS#<analytics>
+  attribute {
+    name = "pk"
+    type = "S"
+  }
+  attribute {
+    name = "sk"
+    type = "S"
+  }
+  attribute {
+    name = "type"
+    type = "S" # Enum
+  }
+  #  attribute {
+  #    name = "value"
+  #    type = "S" # Various
+  #  }
+  #  attribute {
+  #    name = "analyticsSubmittedAt"
+  #    type = "N" # Epoch
+  #  }
+  # attribute {
+  #   name = "creatorName"
+  #   type = "S" # userName
+  # }
+
+  global_secondary_index {
+    name            = "pk-sk-index"
+    hash_key        = "pk"
+    range_key       = "sk"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "type", "value", "userName", "analyticsSubmittedAt" ]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+
+    global_secondary_index {
+      name            = "type-pk-index"
+      hash_key        = "type"
+      range_key       = "pk"
+      projection_type = "INCLUDE"
+      non_key_attributes = [ "sk", "value", "userName", "analyticsSubmittedAt" ]
+      write_capacity  = 0
+      read_capacity   = 0
+    }
 }
 
 # IAM policy for the lambda to access the dynamodb table.

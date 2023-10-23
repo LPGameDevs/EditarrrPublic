@@ -5,7 +5,6 @@ using Gameplay;
 using Gameplay.GUI;
 using LevelEditor;
 using Singletons;
-using Systems;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TileData = Editarrr.LevelEditor.TileData;
@@ -62,6 +61,7 @@ namespace Editarrr.Level
         public void SetGuiManager(GameplayGuiManager gameplayGuiManager)
         {
             this._gameplayGuiManager = gameplayGuiManager;
+            gameplayGuiManager.SetLevelManager(this.LevelManager);
         }
 
         public void SetRecorder(GhostRecorder ghostRecorder)
@@ -86,10 +86,12 @@ namespace Editarrr.Level
             this._gameplayGuiManager.SetLevelState(levelState);
             //GameEvent.Trigger(GameEventType.Unpause);
         }
-        
+
         private void OnLevelCompleted()
         {
             this.LevelManager.LevelStorage.LoadLevelData(_code, LevelCompletedLevelLoaded);
+
+            AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelComplete, _code);
 
             void LevelCompletedLevelLoaded(LevelSave levelSave)
             {
@@ -97,7 +99,7 @@ namespace Editarrr.Level
                 {
                     return;
                 }
-                
+
                 this.LevelManager.MarkLevelAsComplete(levelSave);
             }
 
@@ -148,7 +150,7 @@ namespace Editarrr.Level
         {
             if (foreground?.GameObject != null)
             {
-                var gObj = GameObject.Instantiate(foreground.GameObject, position + new Vector3(0.5f, 0.5f, 0), Quaternion.Euler(0, 0, foregroundRotation.ToDegree()));
+                var gObj = Instantiate(foreground.GameObject, position + new Vector3(0.5f, 0.5f, 0), Quaternion.Euler(0, 0, foregroundRotation.ToDegree()));
                 if (gObj.TryGetComponent<IConfigurable>(out IConfigurable configurable))
                 {
                     configurable.Configure(tileConfig);
@@ -156,7 +158,7 @@ namespace Editarrr.Level
             }
 
             if (background?.GameObject != null)
-                GameObject.Instantiate(background.GameObject, position + new Vector3(0.5f, 0.5f, 0), Quaternion.Euler(0, 0, backgroundRotation.ToDegree()));
+                Instantiate(background.GameObject, position + new Vector3(0.5f, 0.5f, 0), Quaternion.Euler(0, 0, backgroundRotation.ToDegree()));
         }
 
         private void PlaceTile(TileData foreground, TileData background, Vector3Int position)
@@ -193,6 +195,7 @@ namespace Editarrr.Level
                 {
                     // @todo do we need this?
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelScoreSubmitted);
+                    AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelScoreSubmitted, $"{code}-{time}");
                 }
             }
         }
@@ -209,6 +212,7 @@ namespace Editarrr.Level
                 {
                     PreferencesManager.Instance.SetLevelRating(code, rating);
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelRated);
+                    AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelRatingSubmitted, $"{code}-{rating.ToString()}");
                 }
             }
         }

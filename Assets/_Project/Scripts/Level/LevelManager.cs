@@ -180,6 +180,8 @@ namespace Editarrr.Level
                 this.RemoteLevelStorage.Upload(levelSave, UploadCompleted);
             }
 
+            AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelSave, $"{levelSave.Code}-{levelSave.Version}");
+
             void UploadCompleted(string code, string remoteId, bool isSteam = false)
             {
                 if (isSteam)
@@ -191,7 +193,9 @@ namespace Editarrr.Level
                 {
                     this.SetRemoteUploadId(code, remoteId);
                 }
-                this.LevelUploadedCallback?.Invoke(null);
+
+                // @todo do not invoke this with null.
+                // this.LevelUploadedCallback?.Invoke(null);
                 this.LevelUploadedCallback = null;
             }
         }

@@ -1,5 +1,7 @@
 using System;
+using Browser;
 using Editarrr.Level;
+using Level.Storage;
 using Singletons;
 using TMPro;
 using UnityEngine;
@@ -9,9 +11,9 @@ namespace Gameplay.GUI
 {
     public class WinMenu : MonoBehaviour
     {
+        public static event Action<string, RemoteScoreStorage_AllScoresLoadedCallback> OnLeaderboardRequested;
         public static event Action<string, float> OnScoreSubmit;
         public static event Action<string, int> OnRatingSubmit;
-        public static event Action OnScoreSubmitted;
 
         public TMP_Text LevelCode;
         public TMP_Text TimerText;
@@ -120,14 +122,19 @@ namespace Gameplay.GUI
             OpenScoreboard();
         }
 
-        private void FinishSubmitScore()
-        {
-            OnScoreSubmitted?.Invoke();
-        }
-
         public void OpenScoreboard()
         {
             scoreBoard.SetActive(true);
+
+            var leaderboard = scoreBoard.GetComponent<LeaderboardForm>();
+            leaderboard.SetCode(this._code);
+
+            OnLeaderboardRequested?.Invoke(this._code, LeaderboardScoresLoaded);
+
+            void LeaderboardScoresLoaded(ScoreStub[] scoreStubs)
+            {
+                leaderboard.SetScores(scoreStubs);
+            }
         }
 
         public void OpenRatingMenu()
@@ -156,7 +163,7 @@ namespace Gameplay.GUI
         }
 
         public void OnClickBackEditor()
-        { 
+        {
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.CreateLevelSceneName);
         }
 

@@ -7,10 +7,11 @@ namespace Singletons
     /**
      * This class is used to store user preferences.
      */
-    public class PreferencesManager : UnitySingleton<PreferencesManager>
+    public class PreferencesManager : UnitySingleton<PreferencesManager>, IUnitySinglton
     {
         public const string UserIdStorageKey = "UserId";
         public const string UserNameStorageKey = "UserName";
+        public const string SessionStorageKey = "UserSession";
         public const string DefaultUserName = "anon";
 
         public string GetUserId()
@@ -22,6 +23,8 @@ namespace Singletons
             {
                 userId = Guid.NewGuid().ToString();
                 this.SetUserId(userId);
+
+                AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.NewUserRegistered);
             }
 
             return userId;
@@ -48,6 +51,18 @@ namespace Singletons
         public void SetUserName(string userName)
         {
             PlayerPrefs.SetString(UserNameStorageKey, userName);
+        }
+
+        public string GetSessionId()
+        {
+            return PlayerPrefs.GetString(SessionStorageKey, "");
+        }
+
+        public string StartNewSession()
+        {
+            string sessionId = Guid.NewGuid().ToString();
+            PlayerPrefs.SetString(SessionStorageKey, sessionId);
+            return sessionId;
         }
 
         public void SetModalEventTracked(string name, ModalPopupAction action)
@@ -80,6 +95,11 @@ namespace Singletons
         {
             int hasLevelRating = PlayerPrefs.GetInt($"LevelRating-{code}", 0);
             return hasLevelRating == 1;
+        }
+
+        public void Initialize()
+        {
+            // Nothing needed here.
         }
     }
 }
