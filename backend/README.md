@@ -1,6 +1,6 @@
 # Editarrr Backend
 
-Backend storage to persist player-created levels.
+Backend storage to persist player-created levels, images, scores, and analytics.
 
 ## How to Develop
 There is a [GitHub Codespace configuration for this repo](../.devcontainer/devcontainer.json) 
@@ -140,29 +140,11 @@ The backend API would have the following APIs:
 }
 ```
 
-### Upload Preview Image
+### Upload Screenshot
 
-**PUT `/levels/{id}/preview`**
+**POST `/screenshot/{filename}`**
 
-**Headers:**
-```json
-{
-  "Content-Type": "image/png"
-}
-```
-
-### Get Preview Image
-
-**GET `/levels/{id}/preview`**
-
-**Headers:**
-```json
-{
-  "Content-Type": "image/png"
-}
-```
-
-### Add High Score
+### Add High Score For Level
 
 **POST `/levels/{id}/scores`**
 
@@ -170,7 +152,9 @@ The backend API would have the following APIs:
 ```json
 {
   "score": 123,
-  "playerName": "Display Name"
+  "code": "Level Name",
+  "creator": "Player ID",
+  "creatorName": "Player Name"
 }
 ```
 
@@ -188,16 +172,26 @@ The backend API would have the following APIs:
 **Response:**
 ```json
 {
-  "highScores": [ // Default: 10 highest scores, from highest to lowest
+  "scores": [ // Default: 10 highest scores, from highest to lowest
     {
+      "scoreId": "<UUID>",
+      "levelId": "<LEVEL_ID>",
+      // TODO left off here
       "score": 123,
-      "playerName": "Display Name"
+      "code": "<LEVEL_NAME>",
+      "creator": {
+        "id": "<USER_ID>",
+        "name": "<USER_NAME>"
+      },
+      "submittedAt": 1686495335
     }
   ]
 }
 ```
 
 TODO At some point, if the project grows enough, look into RAML or Swagger or something for managing, encoding & documenting these definitions.
+
+
 
 ## Database
 
