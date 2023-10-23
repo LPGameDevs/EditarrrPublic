@@ -329,7 +329,7 @@ export const handler = async (event, context) => {
                         IndexName: "scoreLevelName-score-index",
                         Select: "ALL_PROJECTED_ATTRIBUTES",
                         Limit: 10,
-                        ScanIndexForward: false,
+                        ScanIndexForward: true, // sort in desc order.
                         KeyConditionExpression: "pk = :levelId",
                         ExpressionAttributeValues: {
                             ":levelId": "LEVEL#" + event.pathParameters.id

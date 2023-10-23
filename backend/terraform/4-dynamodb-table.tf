@@ -15,7 +15,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
   }
 
   hash_key  = "pk"
-  range_key = "sk"
+  range_key = "sk" // sort key
   attribute {
     name = "pk"
     type = "S"
@@ -166,7 +166,7 @@ resource "aws_dynamodb_table" "editarrr-score-storage" {
   global_secondary_index {
     name            = "scoreLevelName-score-index"
     hash_key        = "pk"
-    range_key       = "score"
+    range_key       = "score"  // sort key
     projection_type = "INCLUDE"
     non_key_attributes = [ "sk", "pk", "scoreLevelName", "scoreCreatorName", "scoreSubmittedAt", "scoreCreatorId"]
     write_capacity  = 0
@@ -223,7 +223,7 @@ resource "aws_dynamodb_table" "editarrr-rating-storage" {
   global_secondary_index {
     name            = "pk-rating-index"
     hash_key        = "pk"
-    range_key       = "rating"
+    range_key       = "rating"  // sort key
     projection_type = "INCLUDE"
     non_key_attributes = [ "sk", "ratingLevelName", "ratingCreatorName", "ratingSubmittedAt", "ratingCreatorId"]
     write_capacity  = 0
