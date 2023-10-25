@@ -491,13 +491,22 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenConfig",
+                    "type": "Button",
+                    "id": "619415f1-ef4e-4962-b0a9-876ec1815034",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "8c95f977-4269-4c41-8ef5-577f03758e93",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -634,6 +643,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "NextGroup",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7aa6775-43d7-4884-b678-b245f70a0494",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenConfig",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

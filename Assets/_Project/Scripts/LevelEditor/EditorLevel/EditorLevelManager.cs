@@ -53,6 +53,7 @@ namespace Editarrr.LevelEditor
         [field: SerializeField] private InputValue MouseLeftButton { get; set; }
         [field: SerializeField] private InputValue MouseRightButton { get; set; }
         [field: SerializeField] private InputValue Input_CloneTile { get; set; }
+        [field: SerializeField] private InputValue Input_OpenConfig { get; set; }
         #endregion
 
         Dictionary<TileType, List<Int2D>> TileLocations { get; set; }
@@ -129,7 +130,6 @@ namespace Editarrr.LevelEditor
 
             this.EditorHoverTile = Instantiate(this.PrefabPool.EditorHoverTile);
 
-            EditorTileSelectionManager.OnTileSelect += this.EditorTileSelectionManager_OnTileSelect;
             this.DisableHoverTile();
         }
 
@@ -143,11 +143,15 @@ namespace Editarrr.LevelEditor
             {
                 this.CreateLevelState();
             }
+
+
+            EditorTileSelectionManager.OnTileSelect += this.EditorTileSelectionManager_OnTileSelect;
+            EditorTileSelectionManager.ActiveElementChanged += this.EditorTileSelectionManager_ActiveElementChanged;
         }
 
         public override void DoUpdate()
         {
-            if (this.EditorTileSelection.IsUIHover)
+            if (this.EditorTileSelection.IsUIHover || this.EditorTileSelection.IsInputFocus)
             {
                 this.DisableHoverTile();
                 return;
@@ -184,17 +188,26 @@ namespace Editarrr.LevelEditor
                 }
             }
 
-            if (this.MouseLeftButton.WasPressed)
+            if (this.Input_OpenConfig.WasPressed)
             {
                 EditorTileState state = this.Get(x, y);
-
-                if (state != null &&
-                    state.Foreground == tileData &&
-                    // state.ForegroundRotation == this.EditorTileSelection.Rotation && Might result in some weird and unclear situations...
-                    state.Config != null)
+                if (state != null && state.Config != null)
                 {
                     this.NotifyConfig(state.Config);
                 }
+            }
+
+            if (this.MouseLeftButton.WasPressed)
+            {
+                
+
+                //if (state != null &&
+                //    state.Foreground == tileData &&
+                //    // state.ForegroundRotation == this.EditorTileSelection.Rotation && Might result in some weird and unclear situations...
+                //    state.Config != null)
+                //{
+                //    this.NotifyConfig(state.Config);
+                //}
 
                 //if (state != null &&
                 //    state.Foreground == tileData &&
@@ -388,6 +401,8 @@ namespace Editarrr.LevelEditor
             {
                 tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
             }
+
+            this.NotifyConfig(null);
         }
 
         private void SetConfig(int x, int y, TileConfig config)
@@ -592,6 +607,11 @@ namespace Editarrr.LevelEditor
         private void EditorTileSelectionManager_OnTileSelect()
         {
             // var editorTileData = this.EditorTileSelection.ActiveElement;
+            this.NotifyConfig(null);
+        }
+
+        private void EditorTileSelectionManager_ActiveElementChanged(EditorTileData obj)
+        {
             this.NotifyConfig(null);
         }
 

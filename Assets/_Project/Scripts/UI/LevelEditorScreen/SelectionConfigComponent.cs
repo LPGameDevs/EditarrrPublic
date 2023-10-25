@@ -1,5 +1,4 @@
 ﻿using Editarrr.LevelEditor;
-using Editarrr.Misc;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -62,11 +61,13 @@ namespace Editarrr.UI.LevelEditor
                 {
                     Debug.Log(" as int");
                     template = this.IntValueTemplate.Instantiate();
-                    var element = template.Q<TextField>(this.ValueName);
-                    element.value = $"{intValue}";
+                    var inputElement = template.Q<TextField>(this.ValueName);
+                    inputElement.RegisterCallback<FocusEvent>(LevelEditorScreen.InputFocus);
+                    inputElement.RegisterCallback<BlurEvent>(LevelEditorScreen.InputBlur);
+                    inputElement.value = $"{intValue}";
                     this.ContainerElement.Add(template);
 
-                    toReturn = element;
+                    toReturn = inputElement;
                 }
                 else if (t is float floatValue)
                 {

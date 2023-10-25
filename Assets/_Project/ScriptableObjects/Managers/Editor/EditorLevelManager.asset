@@ -23,3 +23,4 @@ MonoBehaviour:
   <MouseLeftButton>k__BackingField: {fileID: 11400000, guid: 8c8b550f53e2051499bea9cd0a9fa1b5, type: 2}
   <MouseRightButton>k__BackingField: {fileID: 11400000, guid: b2e5237c0e58fad4184c46cec872110b, type: 2}
   <Input_CloneTile>k__BackingField: {fileID: 11400000, guid: 6b479f728bac27547a06816953edd747, type: 2}
+  <Input_OpenConfig>k__BackingField: {fileID: 11400000, guid: 9fc2e45b026622b4e8270e4d39d570f6, type: 2}
