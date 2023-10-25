@@ -96,7 +96,7 @@ namespace Editarrr.Level
             }
 
             // Start at 2, 1 is reserved for Debug!
-            int index = 2;
+            int index = Random.Range(2, 99999);
             string code;
 
             do

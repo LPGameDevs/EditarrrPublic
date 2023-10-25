@@ -5,6 +5,9 @@ using Editarrr.Misc;
 using Editarrr.Utilities;
 using System;
 using System.Collections.Generic;
+using Editarrr.UI.LevelEditor;
+using LevelEditor;
+using Singletons;
 using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -73,6 +76,7 @@ namespace Editarrr.LevelEditor
         private Tilemap Tilemap_Background { get; set; }
         private Canvas ModalCanvas { get; set; }
         private ModalPopup StartModal { get; set; }
+        private ModalPopup InvalidModal { get; set; }
 
 
 
@@ -107,6 +111,11 @@ namespace Editarrr.LevelEditor
         public void SetStartModal(ModalPopup startModal)
         {
             this.StartModal = startModal;
+        }
+
+        public void SetInvalidModal(ModalPopup invalidModal)
+        {
+            this.InvalidModal = invalidModal;
         }
 
         public override void DoAwake()
@@ -605,6 +614,8 @@ namespace Editarrr.LevelEditor
             this.Exchange.SetCode(code);
             this.Exchange.SetAutoload(code.Length > 0);
             this.StartModal.Open(this.ModalCanvas.transform);
+
+            AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelCreate, $"{code}");
         }
 
         public void LoadLevelState()
@@ -644,14 +655,14 @@ namespace Editarrr.LevelEditor
             }
         }
 
-        public void SaveLevelState()
+        public void SaveLevelState(bool uploadToRemote = true)
         {
             this.ScreenshotCamera.orthographicSize = this.SceneCamera.orthographicSize;
             Texture2D screenshot = CreateScreenshot(this.ScreenshotCamera);
 
             this.LevelState.SetScale(this.ScaleX, this.ScaleY);
             this.LevelState.SetTiles(this.Tiles);
-            this.LevelManager.SaveState(this.LevelState);
+            this.LevelManager.SaveState(this.LevelState, uploadToRemote);
             this.LevelManager.SaveScreenshot(this.LevelState.Code, screenshot);
 
             Texture2D CreateScreenshot(Camera cam)
@@ -678,6 +689,11 @@ namespace Editarrr.LevelEditor
             this.Tiles = new EditorTileState[this.ScaleX, this.ScaleY];
         }
 
+        public bool IsLevelValid()
+        {
+            return this.LevelState.IsLevelValid();
+        }
+
         private void SetScale(int x, int y)
         {
             this.ScaleX = x;
@@ -697,5 +713,20 @@ namespace Editarrr.LevelEditor
             OnEditorLevelScaleChanged?.Invoke(this.ScaleX, this.ScaleY);
         }
         #endregion
+
+        private void ShowInvalidLevelModal()
+        {
+            this.InvalidModal.Open(this.ModalCanvas.transform, true);
+        }
+
+        public override void DoOnEnable()
+        {
+            LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest += ShowInvalidLevelModal;
+        }
+
+        public override void DoOnDisable()
+        {
+            LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest -= ShowInvalidLevelModal;
+        }
     }
 }

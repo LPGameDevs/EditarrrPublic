@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7eb2a4e5a2c4bdb9e8b1490615173ec, type: 3}
-  m_Name: LevelIncompleteError
+  m_Name: LevelInvalidError
   m_EditorClassIdentifier: 
-  TitleText: Show us your skills
-  ContentText: You have made changes to the level since the last time you finished
-    it. Please complete the level so we know its beatable before uploading.
-  CloseText: I'm on it!
+  TitleText: Missing tiles
+  ContentText: For a level to be complete you have to at least have a player and
+    a treasure chest.
+  CloseText: I'll fix it...
   Prefab: {fileID: 6251556039925704571, guid: 82c3b59bbbf0f3a2385deccf3b21d0f4, type: 3}

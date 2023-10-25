@@ -12,7 +12,7 @@ namespace Level.Storage
 {
     public class RemoteLevelStorageProviderAws : IRemoteLevelStorageProvider
     {
-        private const string AwsLevelUrl = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com";
+        public const string AwsLevelUrl = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com";
         private const string AwsScreenshotUrl = "https://editarrr-screenshots.s3.eu-north-1.amazonaws.com";
         private const bool ShowDebug = false;
 
@@ -39,12 +39,12 @@ namespace Level.Storage
                     id = userId
                 },
                 status = levelSave.Published ? "PUBLISHED" : "DRAFT",
+                version = levelSave.Version,
                 data = new AwsLevelData()
                 {
                     scaleX = levelSave.ScaleX,
                     scaleY = levelSave.ScaleY,
                     tiles = JsonUtility.ToJson(tileData),
-                    version = levelSave.Version
                 }
             };
 
@@ -103,7 +103,7 @@ namespace Level.Storage
                 }
 
                 save.SetTiles(tileStates);
-                save.SetVersion(res.data.version);
+                save.SetVersion(res.version);
                 save.SetPublished(res.status == "PUBLISHED");
                 callback?.Invoke(save);
 
@@ -125,6 +125,10 @@ namespace Level.Storage
 
         private async void UploadScreenshot(string code)
         {
+#if UNITY_WEBGL
+            // Webgl needs a custom solution for uploading image files.
+            return;
+#endif
             var uploadUrl = $"{AwsLevelUrl}/dev/screenshot/{code}.png";
             var imagePath = LocalLevelStorageManager.LocalRootDirectory + code + "/screenshot.png";
             using (var httpClient = new HttpClient())
@@ -328,6 +332,7 @@ namespace Level.Storage
         public string status;
         public uint createdAt;
         public uint updatedAt;
+        public int version;
         public AwsLevelData data;
     }
 
@@ -344,7 +349,6 @@ namespace Level.Storage
         public int scaleX;
         public int scaleY;
         public string tiles;
-        public int version;
     }
 
     [Serializable]

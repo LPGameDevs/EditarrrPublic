@@ -174,6 +174,7 @@ MonoBehaviour:
   <Tilemap_Background>k__BackingField: {fileID: 585236748}
   <ModalCanvas>k__BackingField: {fileID: 1705024224}
   <StartModal>k__BackingField: {fileID: 11400000, guid: db92f3fe960704fbaae89f1abff61873, type: 2}
+  <InvalidModal>k__BackingField: {fileID: 11400000, guid: ec2c9e6e90372bdfda4e89d7876bf483, type: 2}
 --- !u!1 &585236745
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,10 +793,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UnitySingleton<T> : MonoBehaviour	where T : Component
+public class UnitySingleton<T> : MonoBehaviour	where T : Component, IUnitySinglton
 
 {
     protected static T _instance;
@@ -16,6 +16,7 @@ public class UnitySingleton<T> : MonoBehaviour	where T : Component
                 {
                     GameObject obj = new GameObject ();
                     _instance = obj.AddComponent<T> ();
+                    _instance.Initialize();
                 }
             }
             return _instance;
@@ -31,4 +32,9 @@ public class UnitySingleton<T> : MonoBehaviour	where T : Component
 
         _instance = this as T;
     }
+}
+
+public interface IUnitySinglton
+{
+    public void Initialize();
 }
