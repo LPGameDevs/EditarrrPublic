@@ -1647,11 +1647,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6984641994458862838, guid: 9a926ddaea5f63f499d8a45d8a4b9ae7, type: 3}
   m_PrefabInstance: {fileID: 351767637}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &351767639 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6984641994458862833, guid: 9a926ddaea5f63f499d8a45d8a4b9ae7, type: 3}
-  m_PrefabInstance: {fileID: 351767637}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &401376506
 GameObject:
   m_ObjectHideFlags: 0
@@ -6583,8 +6578,8 @@ MonoBehaviour:
   SubmitButton: {fileID: 468777125363728550}
   IsReplay: 0
   _animator: {fileID: 468777124318979836}
-  _leaderBoard: {fileID: 351767639}
-  _ratingMenu: {fileID: 2046078181}
+  _leaderBoard: {fileID: 0}
+  _ratingMenu: {fileID: 0}
 --- !u!95 &468777124318979836
 Animator:
   serializedVersion: 5
