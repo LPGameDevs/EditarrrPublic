@@ -12,6 +12,7 @@ namespace Editarrr.UI.LevelEditor
     {
         public static Action OnPointerEnter { get; set; }
         public static Action OnPointerLeave { get; set; }
+        public static Action<bool> OnInputFocus { get; set; }
 
         [field: SerializeField, Header("Components")] public TileSelectionComponent TileSelection { get; private set; }
         [field: SerializeField] public TileGroupSwapperComponent TileGroupSwapper { get; private set; }
@@ -23,6 +24,7 @@ namespace Editarrr.UI.LevelEditor
         {
             LevelEditorScreen.OnPointerEnter = null;
             LevelEditorScreen.OnPointerLeave = null;
+            LevelEditorScreen.OnInputFocus = null;
         }
 
         private void Start()
@@ -43,6 +45,25 @@ namespace Editarrr.UI.LevelEditor
         protected static void PointerLeave(PointerLeaveEvent pointerLeaveEvent)
         {
             LevelEditorScreen.OnPointerLeave?.Invoke();
+        }
+
+        protected static void InputFocus(FocusEvent focusEvent)
+        {
+            // This might be the only HACK to properly proagate the
+            // Unfocus Event to our Game Logic as the InputElement regains Focus when confirming with Enter...
+            if (focusEvent.relatedTarget == null)
+            {
+                Debug.Log("Focus");
+                LevelEditorScreen.OnInputFocus?.Invoke(true);
+            }
+            else
+                Debug.Log("Focus ignored");
+        }
+
+        protected static void InputBlur(BlurEvent blurEvent)
+        {
+            Debug.Log("Focus Lost");
+            LevelEditorScreen.OnInputFocus?.Invoke(false);
         }
     }
 }
