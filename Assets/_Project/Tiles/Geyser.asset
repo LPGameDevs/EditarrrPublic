@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: Geyser
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: f18b0372523b0d44c98b91875c889801, type: 3}
+  m_Sprite: {fileID: -1115449878, guid: abea7fac4abdbe046aff61dfc0c60904, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
