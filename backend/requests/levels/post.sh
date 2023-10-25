@@ -5,10 +5,10 @@ set -eo pipefail
 
 curl -X "POST" -H "Content-Type: application/json" -d \
     '{
-        "name": "Second Level", 
+        "name": "Murphys Dads Level", 
         "creator": {
-            "id": "user1",
-            "name": "MurphysDad"
+            "id": "murphys-dad-id",
+            "name": "Murphys Dad"
         }, 
         "status": "PUBLISHED", 
         "data": {"foo": "bar"} 
