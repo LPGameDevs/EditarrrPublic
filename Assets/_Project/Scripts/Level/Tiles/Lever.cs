@@ -1,4 +1,5 @@
-﻿using Editarrr.LevelEditor;
+﻿using Editarrr.Audio;
+using Editarrr.LevelEditor;
 using Player;
 using UnityEngine;
 
@@ -10,6 +11,14 @@ namespace Editarrr.Level.Tiles
         public delegate void LeverSignal(int channel);
 
         [field: SerializeField] private int Channel { get; set; }
+        [field: SerializeField] private bool IsActivated { get; set; }
+
+        [SerializeField] Animator _animator;
+        [SerializeField] AudioSource _audioSource;
+        [SerializeField] AudioClip _activateClip, _deactivateClip;
+
+        const string ANIMATOR_ACTIVATE_NAME = "Activate";
+        const string ANIMATOR_DEACTIVATE_NAME = "Deactivate";
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -17,7 +26,18 @@ namespace Editarrr.Level.Tiles
             if (!collision.transform.TryGetComponent<PlayerController>(out PlayerController playerController))
                 return;
 
-            Debug.Log("Player At Lever");
+            if(IsActivated)
+            {
+                _audioSource.PlayOneShot(_deactivateClip);
+                _animator.SetTrigger(ANIMATOR_DEACTIVATE_NAME);
+            }
+            else
+            {
+                _audioSource.PlayOneShot(_activateClip);
+                _animator.SetTrigger(ANIMATOR_ACTIVATE_NAME);
+            }
+
+            IsActivated = !IsActivated;
             Lever.OnLeverSignal?.Invoke(this.Channel);
         }
 
