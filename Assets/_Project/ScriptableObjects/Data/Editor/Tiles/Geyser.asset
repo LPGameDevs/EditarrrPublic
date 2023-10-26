@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Geyser
   <Description>k__BackingField: This fountain of hot water will shoot you far away
-  <UISprite>k__BackingField: {fileID: 21300000, guid: f18b0372523b0d44c98b91875c889801, type: 3}
+  <UISprite>k__BackingField: {fileID: -1115449878, guid: abea7fac4abdbe046aff61dfc0c60904, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 18dd738c664b68949b193346b6e3b223, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 3d7e1bbf53e376743b6fbb111ed70355, type: 2}
+  <Config>k__BackingField: {fileID: 0}
   <LevelLimit>k__BackingField: 0
   <IsBackground>k__BackingField: 0
