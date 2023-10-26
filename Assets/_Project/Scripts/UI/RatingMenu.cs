@@ -1,5 +1,6 @@
 using Editarrr.Audio;
 using Gameplay.GUI;
+using Singletons;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +21,7 @@ public class RatingMenu : MonoBehaviour
     public int CurrentUserRating { get => _currentUserRating; }
   
     private float _baseTextSize;
-    private int _currentUserRating = 0;
+    private int _currentUserRating = 0, _maxRating = 2;
     private const string PARAMETER_NAME_ACTIVE = "active";
     private const string PARAMETER_NAME_PRESSED = "Pressed";
 
@@ -31,12 +32,19 @@ public class RatingMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        _currentUserRating = 0;
         _submitButton.interactable = false;
+    }
+
+    public void OpenMenu(string levelCode)
+    {
+        gameObject.SetActive(true);
+        UpdateRating(PreferencesManager.Instance.GetLevelRating(levelCode));
     }
 
     public void UpdateRating(int rating)
     {
+        rating = Mathf.Clamp(rating, 0, _maxRating);
+
         for(int i=0; i<_ratingButtons.Length; i++)
         {
             if(rating != i)

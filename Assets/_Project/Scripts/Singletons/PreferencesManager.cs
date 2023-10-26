@@ -97,6 +97,11 @@ namespace Singletons
             return hasLevelRating == 1;
         }
 
+        public int GetLevelRating(string code)
+        {
+            return PlayerPrefs.GetInt($"LevelRating-{code}", 0);
+        }
+
         public void Initialize()
         {
             // Nothing needed here.

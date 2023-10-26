@@ -21,7 +21,8 @@ namespace Gameplay.GUI
         public bool IsReplay = false;
 
         [SerializeField] Animator _animator;
-        [SerializeField] GameObject scoreBoard, ratingMenu;
+        [SerializeField] GameObject _leaderBoard;
+        [SerializeField] RatingMenu _ratingMenu;
 
 
         const string VICTORY_TRIGGER_NAME = "Victory";
@@ -124,9 +125,9 @@ namespace Gameplay.GUI
 
         public void OpenScoreboard()
         {
-            scoreBoard.SetActive(true);
+            _leaderBoard.SetActive(true);
 
-            var leaderboard = scoreBoard.GetComponent<LeaderboardForm>();
+            var leaderboard = _leaderBoard.GetComponent<LeaderboardForm>();
             leaderboard.SetCode(this._code);
 
             OnLeaderboardRequested?.Invoke(this._code, LeaderboardScoresLoaded);
@@ -139,7 +140,7 @@ namespace Gameplay.GUI
 
         public void OpenRatingMenu()
         {
-            ratingMenu.SetActive(true);
+            _ratingMenu.OpenMenu(_code);
         }
 
         #region ButtonTriggers
