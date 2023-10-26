@@ -5,7 +5,8 @@ using UnityEngine;
 public enum EnemyType
 {
     chase,
-    sentry
+    sentry,
+    flying
 }
 
 [CreateAssetMenu(fileName = "EnemyAI", menuName = "EnemyAIData")]
