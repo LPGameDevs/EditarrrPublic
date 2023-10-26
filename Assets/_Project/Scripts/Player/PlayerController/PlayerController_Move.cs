@@ -100,7 +100,11 @@ namespace Player
                 if (Physics2D.OverlapBox(posToTry, this._characterBounds.size, 0, this._groundLayer))
                 {
                     // We have a collision, set the previous point!
-                    this.LastValidPosition = this.transform.position = positionToMoveTo - delta;
+
+                    if (i > 1)
+                        positionToMoveTo -= delta;
+
+                    this.LastValidPosition = this.transform.position = positionToMoveTo;
 
                     return;
                 }
