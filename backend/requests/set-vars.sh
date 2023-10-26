@@ -2,7 +2,7 @@
 set -eo pipefail
 
 if [[ $REMOTE == "true" ]]; then
-    APIID="ygfmolwgd9"
+    APIID="tlfb41owe5"
     REGION="eu-north-1"
 
     # If using CloudFormation:
