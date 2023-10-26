@@ -8,6 +8,8 @@ namespace Editarrr.Level.Tiles
     {
         [field: SerializeField] private float Force { get; set; } = 100f;
         [SerializeField] Animator geyserAnimator, fountainEffectAnimator;
+        [SerializeField] AudioSource _audioSource;
+        [SerializeField] AudioClip _fountainEffectClip;
 
         const string ANIMATOR_TRIGGER_NAME = "Erupt";
 
@@ -18,6 +20,7 @@ namespace Editarrr.Level.Tiles
 
             forceReceiver.ReceiveImpulse(this.Force, this.transform.up);
             geyserAnimator.SetTrigger(ANIMATOR_TRIGGER_NAME);
+            _audioSource.PlayOneShot(_fountainEffectClip);
         }
 
         public void StartFountainEffect() => fountainEffectAnimator.SetTrigger(ANIMATOR_TRIGGER_NAME);
