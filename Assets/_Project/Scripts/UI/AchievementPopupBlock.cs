@@ -7,17 +7,18 @@ public class AchievementPopupBlock : MonoBehaviour
 {
     public TMP_Text TitleText;
 
-    private IModalPopup _modal;
+    private PopupAchievement _achievement;
 
-    public void Setup(IModalPopup modal)
+    public void Setup(PopupAchievement achievement)
     {
-        _modal = modal;
-        TitleText.text = modal.GetTitleText();
+        _achievement = achievement;
+        TitleText.text = achievement.GetTitleText();
+
+        Invoke(nameof(Close), 2f);
     }
 
     public void Close()
     {
-        _modal.Close();
         Destroy(gameObject);
     }
 }

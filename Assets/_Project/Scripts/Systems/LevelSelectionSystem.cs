@@ -1,7 +1,6 @@
 using Browser;
 using Editarrr.Misc;
 using Editarrr.Systems;
-using Editarrr.UI;
 using UI;
 using UnityEngine;
 
@@ -19,6 +18,7 @@ namespace Editarrr.LevelEditor
         [field: SerializeField] public ModalPopupConfirmation DeleteModal { get; private set; }
         [field: SerializeField] public ModalPopup InvalidModal { get; private set; }
         [field: SerializeField] public ModalPopup IncompleteModal { get; private set; }
+        [field: SerializeField] public AchievementPopupBlock Achievement { get; private set; }
 
         protected override void PreAwake()
         {
@@ -29,6 +29,7 @@ namespace Editarrr.LevelEditor
             this.Manager.SetDeleteModal(this.DeleteModal);
             this.Manager.SetInvalidModal(this.InvalidModal);
             this.Manager.SetIncompleteModal(this.IncompleteModal);
+            this.Manager.SetAchievementBlock(this.Achievement);
         }
     }
 }
