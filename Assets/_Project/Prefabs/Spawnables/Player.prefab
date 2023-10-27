@@ -25918,6 +25918,7 @@ Transform:
   m_Children:
   - {fileID: 7809616047342332562}
   - {fileID: 8810527014203578335}
+  - {fileID: 3999747590247082535}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -26131,3 +26132,54 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &7310005802326919613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3999747590247082535}
+  - component: {fileID: 3489760320701414544}
+  m_Layer: 3
+  m_Name: HealthDisplay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3999747590247082535
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310005802326919613}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5390691737254147757}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3489760320701414544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310005802326919613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c25ee855a0215d4bb17c166a9affa79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displayPrefab: {fileID: 3690139866749215103, guid: 26a5a66bd5fcafd4aa69fc49f57970aa, type: 3}
+  _sprites:
+  - {fileID: 1358908775, guid: 699819e3f904d9a45bf718cac1effeee, type: 3}
+  - {fileID: 1053148255, guid: 699819e3f904d9a45bf718cac1effeee, type: 3}
+  - {fileID: 1951085917, guid: 699819e3f904d9a45bf718cac1effeee, type: 3}
+  - {fileID: 1729819076, guid: 699819e3f904d9a45bf718cac1effeee, type: 3}
+  - {fileID: -1601653282, guid: 699819e3f904d9a45bf718cac1effeee, type: 3}
