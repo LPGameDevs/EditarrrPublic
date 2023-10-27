@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aeeeb473e34df3b41ba316ec974b710c, type: 3}
   m_Name: EditorTileDataPool
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   <TileData>k__BackingField:
   - {fileID: 11400000, guid: 367ddd2ed294ea142987554efeb1cfa9, type: 2}
   - {fileID: 11400000, guid: 873e5c13c2c81c4499b85efd8f7d19cf, type: 2}
@@ -29,3 +29,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8012ba6e652760bc9a09e7be657eaa00, type: 2}
   - {fileID: 11400000, guid: 199b3e8bb6d14126bb1f13f35b9a2f63, type: 2}
   - {fileID: 11400000, guid: a7d173956249e44ffaddf37385f209dc, type: 2}
+  - {fileID: 11400000, guid: 0783c3168d34cda42941130876862844, type: 2}
+  - {fileID: 11400000, guid: 1b80908e886583b42a244d345527bae2, type: 2}

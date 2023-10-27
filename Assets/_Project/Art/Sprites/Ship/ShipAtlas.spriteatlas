@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ShipAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 6d51b36846e4a314aaa0ee5a300d1948, type: 3}
+    - {fileID: 102900000, guid: a25bac6f7fa4a1441a3746ecbbf7ca01, type: 3}
+    - {fileID: 102900000, guid: 1352899f0b74d784f99e0b3c09462866, type: 3}
+    - {fileID: 102900000, guid: 906ffae67882c5949b894e0f0cc54d43, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 38ed1652dc2b7784ea4c42683a8a6ea7, type: 3}
+  - {fileID: 21300000, guid: d8ffa523d52580245b04efd8205cba03, type: 3}
+  - {fileID: 21300000, guid: 52dafa43e5e5c9d48b0fb19fcac80db2, type: 3}
+  - {fileID: 21300000, guid: f30707836aaf89f4bbab06d95f638f4b, type: 3}
+  - {fileID: 21300000, guid: cef429b31bc6471428facb5059d8201f, type: 3}
+  - {fileID: 21300000, guid: 1bc52d14a72b63f418abe54a10e36551, type: 3}
+  - {fileID: 21300000, guid: 199130545ac68714888eb13ab13582b9, type: 3}
+  - {fileID: 21300000, guid: 889e0684a27ca4f47ac5961b8adf5a8c, type: 3}
+  - {fileID: 21300000, guid: 8dc9af84583b264448dad89622d219b1, type: 3}
+  - {fileID: 21300000, guid: 9e3fea058208df04cb85f6a8dff064b9, type: 3}
+  - {fileID: 21300000, guid: 5aaff435db792d74998fa8baa4f8c258, type: 3}
+  - {fileID: 21300000, guid: 90c1bd45041a4db4c8251eb02a8ca563, type: 3}
+  - {fileID: 21300000, guid: c9ff7bc52865b02439f148b736877d58, type: 3}
+  - {fileID: 21300000, guid: fcb73856c7e71da40b56811458a54802, type: 3}
+  - {fileID: 21300000, guid: a73b83578f822d345a235395c686d15f, type: 3}
+  - {fileID: 21300000, guid: 8c24cac72d0d8544f94f1d3ee2a56f34, type: 3}
+  - {fileID: 21300000, guid: 169f72e75e1fe7848b18034d181792dd, type: 3}
+  - {fileID: 21300000, guid: 5210b7e8a4085114b8110e2cdcace1ee, type: 3}
+  - {fileID: 21300000, guid: 0b817919815a46a4e9a1e5f10a262bda, type: 3}
+  - {fileID: 21300000, guid: cede6af95a871c24e8891a7a12de4c62, type: 3}
+  - {fileID: 21300000, guid: fb422d5a84920f34d8149f2aef99eb75, type: 3}
+  - {fileID: 21300000, guid: 77f2918ab74978a44b8c1bc9975283cc, type: 3}
+  - {fileID: 21300000, guid: 9b6c7a8c22877c24d88dfb2e013c1e51, type: 3}
+  - {fileID: 21300000, guid: d5f29e8c099344c4e8b2e5f1a6180220, type: 3}
+  - {fileID: 21300000, guid: 5e93e5fc1f2fe884099878e5b109d9dd, type: 3}
+  - {fileID: 21300000, guid: e62f8afc40796c842938602b88714783, type: 3}
+  - {fileID: 21300000, guid: 677ad60d7863b2342bd05501ab7d540f, type: 3}
+  - {fileID: 21300000, guid: 2d86a7ade29eeae4a866a483ad9f58d2, type: 3}
+  - {fileID: 21300000, guid: b94055fd6cbaa48479cdf8e9c3fb6f52, type: 3}
+  - {fileID: 21300000, guid: 04fc024ed9bbc4e4e944126489f28cf8, type: 3}
+  - {fileID: 21300000, guid: 9c6f7f6e96cd3cf4892f8f09f83a1a6a, type: 3}
+  - {fileID: 21300000, guid: 763c1c0f5f5355842a1b3b9b00db68f1, type: 3}
+  - {fileID: 21300000, guid: 5f6ad8cffcf762d4f879689372ed3b49, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - 1
+  - 5
+  - 2
+  - 4
+  - 1
+  - 3
+  - 3
+  - 2
+  - 1
+  - 4
+  - 8
+  - 4
+  - 5
+  - 1
+  - 1
+  - 3
+  - 3
+  - 2
+  - 2
+  - 2
+  - 7
+  - 6
+  - 3
+  - 6
+  - 2
+  - 1
+  - 2
+  - 1
+  - 1
+  - 4
+  - 3
+  - 3
+  - 2
+  m_RenderDataMap: {}
+  m_Tag: ShipAtlas
+  m_IsVariant: 0

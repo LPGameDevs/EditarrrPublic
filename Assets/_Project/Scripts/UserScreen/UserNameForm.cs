@@ -47,6 +47,9 @@ public class UserNameForm : MonoBehaviour
         // We store the username in player prefs. Its not sensitive data so this is fine.
         PreferencesManager.Instance.SetUserName(newUserName);
 
-        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.StartSceneName);
+        string session = PreferencesManager.Instance.StartNewSession();
+        AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.UserSessionStarted, session);
+
+        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
     }
 }

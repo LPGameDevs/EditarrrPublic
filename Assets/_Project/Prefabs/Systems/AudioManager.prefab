@@ -311,7 +311,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -5800722175503450944, guid: ab21718944d4b7c4388cecbb60b17c06, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 511892e4c405f8f4690ea31b92b48c9b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1d35d4b4bece7a64d982cb37880d8d68, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1116,7 +1116,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -5800722175503450944, guid: ab21718944d4b7c4388cecbb60b17c06, type: 2}
-  m_audioClip: {fileID: 8300000, guid: fae46c69ea9acb1459f4687d2cd0773f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 4adfcc4f080b8674680618fd7bddccf2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1378,7 +1378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f44b9cc86b1cc94c91b4422ebb1d1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitializationTime: 0
   sfxPool: {fileID: 11400000, guid: 79d0e33891326fa499e0fb21b6eaead7, type: 2}
   bgmSourceOne: {fileID: 5511227745704003999}
   bgmSourceTwo: {fileID: 6936383649639073564}

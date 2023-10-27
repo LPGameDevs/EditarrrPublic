@@ -137,7 +137,7 @@ namespace Editarrr.Level
          *
          * This doesnt work for creation new levelSaves.
          */
-        public void SaveState(LevelState levelState)
+        public void SaveState(LevelState levelState, bool uploadToRemote = true)
         {
             this.LevelStorage.LoadLevelData(levelState.Code, SaveLevelAfterLoad);
 
@@ -145,7 +145,7 @@ namespace Editarrr.Level
             {
                 // @todo what else can have changed in the state?
                 levelSave.SetTiles(levelState.Tiles);
-                this.Save(levelSave, true);
+                this.Save(levelSave, uploadToRemote);
             }
         }
 
@@ -153,6 +153,15 @@ namespace Editarrr.Level
         {
                 byte[] byteArray = screenshot.EncodeToPNG();
                 this.LevelStorage.SaveScreenshot(code, byteArray);
+        }
+
+        public void MarkLevelAsComplete(LevelSave levelSave)
+        {
+            levelSave.MarkAsCompleted();
+
+            // Store state to filesystem.
+            string data = JsonUtility.ToJson(levelSave);
+            this.LevelStorage.Save(levelSave.Code, data);
         }
 
         private void Save(LevelSave levelSave, bool uploadToRemote = false)
@@ -171,6 +180,8 @@ namespace Editarrr.Level
                 this.RemoteLevelStorage.Upload(levelSave, UploadCompleted);
             }
 
+            AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelSave, $"{levelSave.Code}-{levelSave.Version}");
+
             void UploadCompleted(string code, string remoteId, bool isSteam = false)
             {
                 if (isSteam)
@@ -182,7 +193,9 @@ namespace Editarrr.Level
                 {
                     this.SetRemoteUploadId(code, remoteId);
                 }
-                this.LevelUploadedCallback?.Invoke(null);
+
+                // @todo do not invoke this with null.
+                // this.LevelUploadedCallback?.Invoke(null);
                 this.LevelUploadedCallback = null;
             }
         }

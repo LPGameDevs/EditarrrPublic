@@ -19,6 +19,8 @@ namespace Editarrr.LevelEditor
 
         [field: SerializeField] public TileData Tile { get; private set; }
 
+        [field: SerializeField] public EditorTileConfigData Config { get; private set; }
+
 
         [field: SerializeField] public int LevelLimit { get; private set; }
         public bool IsInfinite { get => this.LevelLimit <= 0; }

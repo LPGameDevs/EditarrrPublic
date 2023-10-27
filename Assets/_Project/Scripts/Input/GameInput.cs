@@ -481,7 +481,7 @@ namespace Editarrr.Input
             ""id"": ""88af379a-49fc-4f3b-bfd9-382ca5521dc3"",
             ""actions"": [
                 {
-                    ""name"": ""SwitchTile"",
+                    ""name"": ""CloneTile"",
                     ""type"": ""Button"",
                     ""id"": ""556d4e66-5127-4165-8a83-2a8f56ecc4b9"",
                     ""expectedControlType"": ""Button"",
@@ -515,17 +515,26 @@ namespace Editarrr.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenConfig"",
+                    ""type"": ""Button"",
+                    ""id"": ""619415f1-ef4e-4962-b0a9-876ec1815034"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""8c95f977-4269-4c41-8ef5-577f03758e93"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwitchTile"",
+                    ""action"": ""CloneTile"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -660,6 +669,17 @@ namespace Editarrr.Input
                     ""action"": ""NextGroup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f7aa6775-43d7-4884-b678-b245f70a0494"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenConfig"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -686,10 +706,11 @@ namespace Editarrr.Input
             m_Development_Secret = m_Development.FindAction("Secret", throwIfNotFound: true);
             // Editor
             m_Editor = asset.FindActionMap("Editor", throwIfNotFound: true);
-            m_Editor_SwitchTile = m_Editor.FindAction("SwitchTile", throwIfNotFound: true);
+            m_Editor_CloneTile = m_Editor.FindAction("CloneTile", throwIfNotFound: true);
             m_Editor_SelectTile = m_Editor.FindAction("SelectTile", throwIfNotFound: true);
             m_Editor_Rotate = m_Editor.FindAction("Rotate", throwIfNotFound: true);
             m_Editor_NextGroup = m_Editor.FindAction("NextGroup", throwIfNotFound: true);
+            m_Editor_OpenConfig = m_Editor.FindAction("OpenConfig", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -961,18 +982,20 @@ namespace Editarrr.Input
         // Editor
         private readonly InputActionMap m_Editor;
         private List<IEditorActions> m_EditorActionsCallbackInterfaces = new List<IEditorActions>();
-        private readonly InputAction m_Editor_SwitchTile;
+        private readonly InputAction m_Editor_CloneTile;
         private readonly InputAction m_Editor_SelectTile;
         private readonly InputAction m_Editor_Rotate;
         private readonly InputAction m_Editor_NextGroup;
+        private readonly InputAction m_Editor_OpenConfig;
         public struct EditorActions
         {
             private @GameInput m_Wrapper;
             public EditorActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-            public InputAction @SwitchTile => m_Wrapper.m_Editor_SwitchTile;
+            public InputAction @CloneTile => m_Wrapper.m_Editor_CloneTile;
             public InputAction @SelectTile => m_Wrapper.m_Editor_SelectTile;
             public InputAction @Rotate => m_Wrapper.m_Editor_Rotate;
             public InputAction @NextGroup => m_Wrapper.m_Editor_NextGroup;
+            public InputAction @OpenConfig => m_Wrapper.m_Editor_OpenConfig;
             public InputActionMap Get() { return m_Wrapper.m_Editor; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -982,9 +1005,9 @@ namespace Editarrr.Input
             {
                 if (instance == null || m_Wrapper.m_EditorActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_EditorActionsCallbackInterfaces.Add(instance);
-                @SwitchTile.started += instance.OnSwitchTile;
-                @SwitchTile.performed += instance.OnSwitchTile;
-                @SwitchTile.canceled += instance.OnSwitchTile;
+                @CloneTile.started += instance.OnCloneTile;
+                @CloneTile.performed += instance.OnCloneTile;
+                @CloneTile.canceled += instance.OnCloneTile;
                 @SelectTile.started += instance.OnSelectTile;
                 @SelectTile.performed += instance.OnSelectTile;
                 @SelectTile.canceled += instance.OnSelectTile;
@@ -994,13 +1017,16 @@ namespace Editarrr.Input
                 @NextGroup.started += instance.OnNextGroup;
                 @NextGroup.performed += instance.OnNextGroup;
                 @NextGroup.canceled += instance.OnNextGroup;
+                @OpenConfig.started += instance.OnOpenConfig;
+                @OpenConfig.performed += instance.OnOpenConfig;
+                @OpenConfig.canceled += instance.OnOpenConfig;
             }
 
             private void UnregisterCallbacks(IEditorActions instance)
             {
-                @SwitchTile.started -= instance.OnSwitchTile;
-                @SwitchTile.performed -= instance.OnSwitchTile;
-                @SwitchTile.canceled -= instance.OnSwitchTile;
+                @CloneTile.started -= instance.OnCloneTile;
+                @CloneTile.performed -= instance.OnCloneTile;
+                @CloneTile.canceled -= instance.OnCloneTile;
                 @SelectTile.started -= instance.OnSelectTile;
                 @SelectTile.performed -= instance.OnSelectTile;
                 @SelectTile.canceled -= instance.OnSelectTile;
@@ -1010,6 +1036,9 @@ namespace Editarrr.Input
                 @NextGroup.started -= instance.OnNextGroup;
                 @NextGroup.performed -= instance.OnNextGroup;
                 @NextGroup.canceled -= instance.OnNextGroup;
+                @OpenConfig.started -= instance.OnOpenConfig;
+                @OpenConfig.performed -= instance.OnOpenConfig;
+                @OpenConfig.canceled -= instance.OnOpenConfig;
             }
 
             public void RemoveCallbacks(IEditorActions instance)
@@ -1050,10 +1079,11 @@ namespace Editarrr.Input
         }
         public interface IEditorActions
         {
-            void OnSwitchTile(InputAction.CallbackContext context);
+            void OnCloneTile(InputAction.CallbackContext context);
             void OnSelectTile(InputAction.CallbackContext context);
             void OnRotate(InputAction.CallbackContext context);
             void OnNextGroup(InputAction.CallbackContext context);
+            void OnOpenConfig(InputAction.CallbackContext context);
         }
     }
 }

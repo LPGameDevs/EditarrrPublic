@@ -25,6 +25,7 @@ namespace Editarrr.Level
         [field: SerializeField] public string RemoteId { get; private set; } = "";
         [field: SerializeField] public ulong SteamId { get; private set; }
         [field: SerializeField] public int Version { get; private set; } = 0;
+        [field: SerializeField] public bool Completed { get; private set; } = false;
 
         public LevelSave(string creator, string creatorName,  string code)
         {
@@ -58,7 +59,7 @@ namespace Editarrr.Level
                     // Initialise empty tile if not done already.
                     if (tile == null)
                     {
-                        tile = new TileState(TileType.Empty, TileType.Empty, Rotation.North, Rotation.North);
+                        tile = new TileState(TileType.Empty, TileType.Empty, Rotation.North, Rotation.North, null);
                         levelState.Tiles[x, y] = tile;
                     }
 
@@ -107,7 +108,7 @@ namespace Editarrr.Level
                     // Initialise empty tile if not done already.
                     if (tile == null)
                     {
-                        tile = new TileState(TileType.Empty, TileType.Empty, Rotation.North, Rotation.North);
+                        tile = new TileState(TileType.Empty, TileType.Empty, Rotation.North, Rotation.North, null);
                         tileState[x, y] = tile;
                     }
 
@@ -133,7 +134,42 @@ namespace Editarrr.Level
         public void SetVersion(int version)
         {
             this.Version = version;
+            this.Completed = false;
         }
+
+        public void MarkAsCompleted()
+        {
+            this.Completed = true;
+        }
+        
+        /**
+         * Check if the level has everything required to be saved or uploaded.
+         */
+        public bool IsLevelValid()
+        {
+            bool hasPlayer = false;
+            bool hasGoal = false;
+
+            foreach (var tile in this.Tiles)
+            {
+                if (tile.Foreground == TileType.Player)
+                {
+                    hasPlayer = true;
+                }
+                else if (tile.Foreground == TileType.Goal)
+                {
+                    hasGoal = true;
+                }
+
+                if (hasPlayer && hasGoal)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
     }
 
 }
