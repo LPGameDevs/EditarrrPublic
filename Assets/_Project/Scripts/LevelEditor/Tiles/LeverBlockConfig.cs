@@ -35,7 +35,7 @@
             var channelElement = getElement("Channel", this.Channel);
             channelElement.RegisterCallback<UnityEngine.UIElements.ChangeEvent<string>>(this.SetChannel_Callback);
 
-            var invertedElement = getElement("Inverted", this.Inverted);
+            var invertedElement = getElement("Start as inactive", this.Inverted);
             invertedElement.RegisterCallback<UnityEngine.UIElements.ChangeEvent<bool>>(this.SetInverted_Callback);
 
         }
