@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8e04c55da352492c8876c5c63bd8c87, type: 3}
-  m_Name: Chase
+  m_Name: Flying
   m_EditorClassIdentifier: 
-  normalMoveSpeed: 5
+  normalMoveSpeed: 2
   sawPlayerMoveSpeed: 10
-  detectionRange: 30
-  waitToMove: 0.5
-  enemyType: 0
+  detectionRange: 10
+  waitToMove: 2
+  enemyType: 2
