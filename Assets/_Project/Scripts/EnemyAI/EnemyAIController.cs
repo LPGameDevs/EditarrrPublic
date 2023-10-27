@@ -61,10 +61,16 @@ public class EnemyAIController : PausableCharacter
                 ChangeActiveState(AIState.moving);
                 break;
 
+            case EnemyType.lunging:
+                _moveSpeed = enemyAIData.normalMoveSpeed;
+                ChangeActiveState(AIState.moving);
+                break;
+
             case EnemyType.flying:
                 _moveSpeed = 0;
                 ChangeActiveState(AIState.idle);
                 break;
+
         }
     }
 
@@ -81,6 +87,10 @@ public class EnemyAIController : PausableCharacter
                 EnemySentry();
                 break;
 
+            case EnemyType.lunging:
+                EnemyLunging();
+                break;
+
             case EnemyType.flying:
                 EnemyFlying();
                 break;
@@ -89,7 +99,6 @@ public class EnemyAIController : PausableCharacter
 
     private void EnemyFlying()
     {
-        print(_aiState);
         switch (_aiState)
         {
             case AIState.idle:
@@ -156,6 +165,63 @@ public class EnemyAIController : PausableCharacter
 
     private void EnemySentry()
     {
+        switch (_aiState)
+        {
+            case AIState.moving:
+                //Drops enemy onto ground
+                if (!IsGrounded(footTransform))
+                {
+                    ApplyGravity();
+                    return;
+                }
+                //move until get to obstacle OR see player
+                Move(enemyAIData.normalMoveSpeed, GetCurrentDirection());
+                if (!CanMove())
+                {
+                    ChangeActiveState(AIState.pausing);
+                }
+                if (CanSeePlayer())
+                {
+                    ChangeActiveState(AIState.alerting);
+                }
+                break;
+
+            case AIState.alerting:
+                if (CanSeePlayer())
+                {
+                    ChangeActiveState(AIState.attacking);
+                }
+                break;
+
+            case AIState.pausing:
+                _timer += Time.deltaTime;
+                if (_timer >= enemyAIData.pauseTime)
+                {
+                    TurnAround();
+                    _timer = 0;
+                    ChangeActiveState(AIState.moving);
+                }
+                break;
+
+            case AIState.attacking:
+                if (!CanSeePlayer())
+                {
+                    _moveSpeed = enemyAIData.normalMoveSpeed;
+                    ChangeActiveState(AIState.moving);
+                    return;
+                }
+                _moveSpeed = enemyAIData.sawPlayerMoveSpeed;
+                Move(enemyAIData.sawPlayerMoveSpeed, GetCurrentDirection());
+                if (!CanMove())
+                {
+                    ChangeActiveState(AIState.pausing);
+                }
+                break;
+        }
+    }
+
+    private void EnemyLunging()
+    {
         print(_aiState);
         switch (_aiState)
         {
@@ -186,8 +252,6 @@ public class EnemyAIController : PausableCharacter
                     {
                         ChangeActiveState(AIState.attacking);
                     }
-                    _timer = 0;
-                    _moveSpeed = 0;
                 }
                 break;
 
@@ -220,7 +284,6 @@ public class EnemyAIController : PausableCharacter
 
     private void EnemyChase()
     {
-        print(_aiState);
         switch (_aiState)
         {
             case AIState.pausing:
