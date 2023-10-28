@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7943467828772714852}
   - component: {fileID: 7239101547530182001}
   - component: {fileID: 6683110482710451692}
+  - component: {fileID: 2974987037027339097}
   m_Layer: 10
   m_Name: Patrick
   m_TagString: Untagged
@@ -216,6 +217,22 @@ MonoBehaviour:
   enemyAIController: {fileID: 7943467828772714852}
   exclamation: {fileID: 1810258056723211891}
   actionShowTime: 2
+--- !u!70 &2974987037027339097
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853010803293885619}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0000011552361, y: -0.05917836}
+  m_Size: {x: 0.73854667, y: 0.7000064}
+  m_Direction: 1
 --- !u!1 &4178559123816822978
 GameObject:
   m_ObjectHideFlags: 0
