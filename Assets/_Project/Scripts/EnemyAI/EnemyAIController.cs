@@ -1,15 +1,18 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
 public class EnemyAIController : PausableCharacter
 {
-    private enum AIState
+    public enum AIState
     {
         moving,
         pausing,
         attacking,
         reseting
     }
+
+    public event Action<AIState> OnStateChanged;
 
     [SerializeField] private EnemyAIDataSO enemyAIData;
 
@@ -48,17 +51,17 @@ public class EnemyAIController : PausableCharacter
         {
             case EnemyType.chase:
                 _moveSpeed = enemyAIData.normalMoveSpeed;
-                _aiState = AIState.pausing;
+                ChangeActiveState(AIState.pausing);
                 break;
 
             case EnemyType.sentry:
                 _moveSpeed = enemyAIData.normalMoveSpeed;
-                _aiState = AIState.moving;
+                ChangeActiveState(AIState.moving);
                 break;
 
             case EnemyType.flying:
                 _moveSpeed = 0;
-                _aiState = AIState.pausing;
+                ChangeActiveState(AIState.pausing);
                 break;
         }
     }
@@ -92,7 +95,7 @@ public class EnemyAIController : PausableCharacter
                 {
                     _pausingTimer = 0;
                     _moveSpeed = 0;
-                    _aiState = AIState.attacking;
+                    ChangeActiveState(AIState.attacking);
                     return;
                 }
                 _pausingTimer += Time.deltaTime;
@@ -112,7 +115,7 @@ public class EnemyAIController : PausableCharacter
                     print("Can't fly towards player OR can't see player");
                     _pausingTimer = 0;
                     _moveSpeed = 0;
-                    _aiState = AIState.reseting;
+                    ChangeActiveState(AIState.reseting);
                     return;
                 }
                 print("see player");
@@ -130,7 +133,7 @@ public class EnemyAIController : PausableCharacter
                     {
                         _pausingTimer = 0;
                         _moveSpeed = 0;
-                        _aiState = AIState.attacking;
+                        ChangeActiveState(AIState.attacking);
                         return;
                     }
                     Fly(enemyAIData.normalMoveSpeed, _spawnLocation);
@@ -138,7 +141,7 @@ public class EnemyAIController : PausableCharacter
                     {
                         _pausingTimer = 0;
                         _moveSpeed = 0;
-                        _aiState = AIState.pausing;
+                        ChangeActiveState(AIState.pausing);
                     }
                 }
 
@@ -162,12 +165,12 @@ public class EnemyAIController : PausableCharacter
                 Move(enemyAIData.normalMoveSpeed, GetCurrentDirection());
                 if (!CanMove())
                 {
-                    _aiState = AIState.pausing;
+                    ChangeActiveState(AIState.pausing);
                 }
                 //animator.SetBool("Run", true);
                 if (CanSeePlayer())
                 {
-                    _aiState = AIState.attacking;
+                    ChangeActiveState(AIState.attacking);
                 }
                 break;
 
@@ -177,7 +180,7 @@ public class EnemyAIController : PausableCharacter
                 {
                     TurnAround();
                     _pausingTimer = 0;
-                    _aiState = AIState.moving;
+                    ChangeActiveState(AIState.moving);
                 }
                 //animator.SetBool("Run", false);
                 break;
@@ -186,14 +189,14 @@ public class EnemyAIController : PausableCharacter
                 if (!CanSeePlayer())
                 {
                     _moveSpeed = enemyAIData.normalMoveSpeed;
-                    _aiState = AIState.moving;
+                    ChangeActiveState(AIState.moving);
                     return;
                 }
                 _moveSpeed = enemyAIData.sawPlayerMoveSpeed;
                 Move(enemyAIData.sawPlayerMoveSpeed, GetCurrentDirection());
                 if (!CanMove())
                 {
-                    _aiState = AIState.pausing;
+                    ChangeActiveState(AIState.pausing);
                 }
                 //animator.SetBool("Run", true);
                 break;
@@ -214,7 +217,7 @@ public class EnemyAIController : PausableCharacter
                 }
                 if (CanSeePlayer())
                 {
-                    _aiState = AIState.attacking;
+                    ChangeActiveState(AIState.attacking);
                 }
                 _pausingTimer += Time.deltaTime;
                 if (_pausingTimer >= enemyAIData.waitToMove)
@@ -237,7 +240,7 @@ public class EnemyAIController : PausableCharacter
                         _pausingTimer = 0;
                         _moveSpeed = 0;
                         print("Can't see player, pausing");
-                        _aiState = AIState.pausing;
+                        ChangeActiveState(AIState.pausing);
                         return;
                     }
                 }
@@ -252,7 +255,7 @@ public class EnemyAIController : PausableCharacter
                         TurnAround();
                         _pausingTimer = 0;
                         print("Can't move, pausing");
-                        _aiState = AIState.pausing;
+                        ChangeActiveState(AIState.pausing);
                         return;
                     }
                 }
@@ -386,5 +389,11 @@ public class EnemyAIController : PausableCharacter
         // 1 is right, -1 is left
         float x = transform.localScale.x;
         return -1 * x;
+    }
+
+    private void ChangeActiveState(AIState newState)
+    {
+        _aiState = newState;
+        OnStateChanged?.Invoke(_aiState);
     }
 }

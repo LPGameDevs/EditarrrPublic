@@ -68,7 +68,7 @@ namespace Editarrr.Level.Tiles
                 return;
 
             this.Distance = config.Distance;
-            this.Direction = config.Direction;
+            this.Direction = config.MoveRight;
         }
     }
 }
