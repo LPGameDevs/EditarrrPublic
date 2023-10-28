@@ -24,22 +24,32 @@ namespace Editarrr.Level.Tiles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (!collision.transform.TryGetComponent<PlayerController>(out PlayerController playerController))
+            if (!collision.transform.TryGetComponent<IMoveOnPlatform>(out IMoveOnPlatform moveOnPlatform))
                 return;
 
-            this.Player = playerController;
-            this.EnterTransform = this.Player.transform.parent;
-            this.Player.transform.SetParent(this.transform, true);
+            moveOnPlatform.EnterPlatform(this.transform);
+
+            //if (!collision.transform.TryGetComponent<PlayerController>(out PlayerController playerController))
+            //    return;
+
+            //this.Player = playerController;
+            //this.EnterTransform = this.Player.transform.parent;
+            //this.Player.transform.SetParent(this.transform, true);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (!collision.transform.TryGetComponent<PlayerController>(out PlayerController playerController))
+            if (!collision.transform.TryGetComponent<IMoveOnPlatform>(out IMoveOnPlatform moveOnPlatform))
                 return;
 
-            this.Player.transform.SetParent(this.EnterTransform, true);
-            this.Player = null;
-            this.EnterTransform = null;
+            moveOnPlatform.ExitPlatform(this.transform);
+
+            //if (!collision.transform.TryGetComponent<PlayerController>(out PlayerController playerController))
+            //    return;
+
+            //this.Player.transform.SetParent(this.EnterTransform, true);
+            //this.Player = null;
+            //this.EnterTransform = null;
         }
 
         private void LateUpdate()
@@ -70,5 +80,11 @@ namespace Editarrr.Level.Tiles
             this.Distance = config.Distance;
             this.Direction = config.MoveRight;
         }
+    }
+
+    public interface IMoveOnPlatform
+    {
+        void EnterPlatform(Transform transform);
+        void ExitPlatform(Transform transform);
     }
 }
