@@ -6,11 +6,11 @@ namespace Editarrr.LevelEditor
     public class MovingPlatformConfigData : EditorTileConfigData<MovingPlatformConfig>
     {
         [field: SerializeField] public int Distance { get; private set; }
-        [field: SerializeField] public bool Direction { get; private set; }
+        [field: SerializeField] public bool MoveRight { get; private set; }
 
         public override MovingPlatformConfig CreateConfig()
         {
-            return new MovingPlatformConfig(this.Distance, this.Direction);
+            return new MovingPlatformConfig(this.Distance, this.MoveRight);
         }
     }
 }
