@@ -55,6 +55,8 @@ namespace Editarrr.Level
                     return new LeverConfig(data);
                 case TileType.LeverBlock:
                     return new LeverBlockConfig(data);
+                case TileType.CrackedPlank:
+                    return new CrackedPlankConfig(data);
                 default:
                     {
                         Debug.LogError("Config-Values found but there is no Config Class specified!");
