@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db4ce387c0f618749bf4bc32b257a828, type: 3}
   m_Name: CrackedPlankConfigData
   m_EditorClassIdentifier: 
-  <CanRespawn>k__BackingField: 0
+  <CanRespawn>k__BackingField: 1
