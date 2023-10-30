@@ -5,9 +5,9 @@ set -eo pipefail
 # Only using this because terraform isn't working for me
 
 LAMBDA_NAME=editarrr-lambda-function
-LAMBDA_ZIP_NAME=lambda.zip
+LAMBDA_ZIP_NAME=editarrr-lambda-function.zip
 
-zip ${LAMBDA_ZIP_NAME} lambda/function.mjs
+(cd lambda && zip ../${LAMBDA_ZIP_NAME} function.mjs)
 
 aws lambda update-function-code \
     --function-name ${LAMBDA_NAME} \
