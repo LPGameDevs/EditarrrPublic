@@ -11,6 +11,7 @@ namespace Editarrr.Audio
 
         [Header("SFX")]
         [SerializeField] AudioSfxPool sfxPool;
+        [SerializeField] Transform sfxSourceParent;
 
         [Header("Music")]
         [SerializeField] AudioSource bgmSourceOne, bgmSourceTwo;
@@ -21,12 +22,21 @@ namespace Editarrr.Audio
         [SerializeField] MultiSound[] multiSounds;
         private int currentSource = 0;
 
-         Dictionary<string, AudioClip> audioDict = new Dictionary<string, AudioClip>();
-         Dictionary<string, MultiSound> multiSoundDict = new Dictionary<string, MultiSound>();
+        Dictionary<string, AudioClip> audioDict = new Dictionary<string, AudioClip>();
+        Dictionary<string, MultiSound> multiSoundDict = new Dictionary<string, MultiSound>();
 
-
-        [SerializeField] Transform sfxSourceParent;
-
+        #region Clip names
+        public const string AFFIRMATIVE_CLIP_NAME = "affirmative";
+        public const string NEGATIVE_CLIP_NAME = "negative";
+        public const string BUTTONCLICK_CLIP_NAME = "buttonClick";
+        public const string LEVEL_DESTROYED_CLIP_NAME = "levelDestroyed";
+        public const string LEVEL_UPLOADED_CLIP_NAME = "levelUploaded";
+        public const string ATTENTION_CLIP_NAME = "attention";
+        public const string DENIED_CLIP_NAME = "denied";
+        public const string WARNING_CLIP_NAME = "warning";
+        public const string YOHOHO_CLIP_NAME = "YoHoHo1";
+        public const string BOOTY_CLIP_NAME = "Booty01";
+        #endregion
 
         private void Start()
         {

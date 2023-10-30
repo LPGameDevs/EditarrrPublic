@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Editarrr.Audio;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
@@ -198,6 +199,8 @@ namespace Editarrr.Level
                 // this.LevelUploadedCallback?.Invoke(null);
                 this.LevelUploadedCallback = null;
             }
+
+            AudioManager.Instance.PlayAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME);
         }
 
         private void SetRemoteUploadId(string code, string remoteId)

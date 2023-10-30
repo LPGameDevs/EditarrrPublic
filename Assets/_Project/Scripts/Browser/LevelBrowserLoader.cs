@@ -11,7 +11,7 @@ public class LevelBrowserLoader : MonoBehaviour
     private LevelManager _levelManager;
 
     [SerializeField] private LevelBrowserLevel _levelPrefab;
-    [SerializeField] private Transform _loadingSpinner;
+    [SerializeField] private GameObject _loadingOverlay;
     private List<LevelBrowserLevel> _loadedLevels = new List<LevelBrowserLevel>();
 
     private void Awake()
@@ -31,12 +31,12 @@ public class LevelBrowserLoader : MonoBehaviour
 
     private void StartLoading()
     {
-        _loadingSpinner.gameObject.SetActive(true);
+        _loadingOverlay.SetActive(true);
     }
 
     private void StopLoading()
     {
-        _loadingSpinner.gameObject.SetActive(false);
+        _loadingOverlay.SetActive(false);
     }
 
     public void DestroyLevels()
@@ -81,9 +81,9 @@ public class LevelBrowserLoader : MonoBehaviour
         _loadedLevels.Add(level);
     }
 
-    public void GoToSelection()
+    public void CloseBrowser()
     {
-        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
+        SceneTransitionManager.Instance.RemoveScene(SceneTransitionManager.BrowserSceneName);
     }
 
     public void SetLevels(LevelStub[] levels)

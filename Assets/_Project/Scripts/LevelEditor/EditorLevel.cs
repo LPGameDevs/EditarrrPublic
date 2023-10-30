@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Editarrr.Audio;
 using Singletons;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,6 +35,7 @@ namespace LevelEditor
         public void UploadLevel()
         {
             OnEditorLevelUpload?.Invoke(Code);
+            AudioManager.Instance.PlayAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME);
         }
 
         public void GoToEditorLevel()
@@ -122,10 +124,10 @@ namespace LevelEditor
                 ScreenshotImage.texture = tex;
                 ScreenshotImage.color = Color.white;
             }
-            else if (ScreenshotImage)
-            {
-                ScreenshotImage.color = Color.black;
-            }
+            //else if (ScreenshotImage)
+            //{
+            //    ScreenshotImage.color = Color.black;
+            //}
         }
     }
 }
