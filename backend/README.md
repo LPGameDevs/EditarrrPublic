@@ -16,6 +16,12 @@ To open your own Codepsace, from the repo homepage, simply click `Code > Create 
 
 More on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart)).
 
+### Run Unit Tests
+```sh
+cd backend
+./scripts/run-tests.sh
+```
+
 ### Recommended: Deploy Changes to the Lambda
 NOTE: Be careful because this affects the server actively used by the game.
 
