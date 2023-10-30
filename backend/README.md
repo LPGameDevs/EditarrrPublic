@@ -75,10 +75,8 @@ The backend API would have the following APIs:
 **GET `/levels`**
 
 **Query Params:**
-* `status` (Required) filters to levels of the provided status
-* `limit` (Optional) page limit, default: 10
-* `skip` (Optional) page skip, default: 0
-* `creator-id` (Optional) filters to levels for a creator
+* `cursor` (Optional) Provide the cursor value of a prior request to get the next page
+* `draft` (Optional) Queries for `DRAFT` levels rather than `PUBLISHED` levels.
 
 **Response:**
 ```json
@@ -95,9 +93,20 @@ The backend API would have the following APIs:
       "createdAt": 1686495335,
       "updatedAt": 1686495335,
     }
-  ]
+  ],
+  "cursor": "UUID" // For pagination - simply pass this as the 'cursor' param to another request to get the next page
 }
 ```
+
+Pagination is cursor-based (rather than offset) 
+because that's what DynamDB supports out-of-the-box 
+(https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.Pagination.html).
+
+The UI this would most naturally support would involve hitting the limit, 
+then showing a "Load More" button (or something like that),
+then fetching the next page of results.
+
+For flexibility, I've also added a "page limit" query param so the client can fetch more than 10 levels in a single page.
 
 ### Get Level
 
