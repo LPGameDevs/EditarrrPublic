@@ -32,6 +32,8 @@ const tableNameScore = "editarrr-score-storage";
 const tableNameRating = "editarrr-rating-storage";
 const tableNameAnalytics = "editarrr-analytics-storage";
 
+const defaultPageLimit = 10;
+
 // From https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid - not sure if this is reliable haha
 function uuidv4() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -109,28 +111,56 @@ export const handler = async (event, context) => {
             case "GET /levels":
                 // TODO Validation of request
 
-                // TODO Inclusion of request params in the query
+                var pageLimit = defaultPageLimit;
+                if (event?.queryStringParameters?.limit !== undefined) {
+                    var limit = parseInt(event.queryStringParameters.limit);
+                    if (isNaN(limit)) throw new BadRequestException(`'limit' must be a number.`);
+                    pageLimit = limit;
+                }
 
                 var useDrafts = false;
-
-                if (event?.queryStringParameters?.draft !== undefined)
-                {
+                if (event?.queryStringParameters?.draft !== undefined) {
                     useDrafts = true;
                 }
 
-                var queryResponse = await dynamo.send(
-                    new QueryCommand({
-                        TableName: tableNameLevel,
-                        IndexName: "levelStatus-levelUpdatedAt-index",
-                        Select: "ALL_PROJECTED_ATTRIBUTES",
-                        Limit: 10,
-                        ScanIndexForward: false,
-                        KeyConditionExpression: "levelStatus = :status",
-                        ExpressionAttributeValues: {
-                            ":status": useDrafts ? "DRAFT" : "PUBLISHED"
-                        }
-                    })
-                );
+                var query = {
+                    TableName: tableNameLevel,
+                    IndexName: "levelStatus-levelUpdatedAt-index",
+                    Select: "ALL_PROJECTED_ATTRIBUTES",
+                    Limit: pageLimit,
+                    ScanIndexForward: false,
+                    KeyConditionExpression: "levelStatus = :status",
+                    ExpressionAttributeValues: {
+                        ":status": useDrafts ? "DRAFT" : "PUBLISHED"
+                    }
+                }
+
+                // Using levelId as a cursor, we have to fetch more level data in order to provide DDB with all the data it expects from the cursor
+                if (event?.queryStringParameters?.cursor) {
+                     var cursorLevelId = event.queryStringParameters.cursor;
+                     var cursorLevelQueryResponse = await dynamo.send(
+                        new GetCommand({
+                            TableName: tableNameLevel,
+                            Key: {
+                                "pk": `LEVEL#${cursorLevelId}`,
+                                "sk": `LEVEL#${cursorLevelId}`
+                            }
+                        })
+                    );
+    
+                    if (cursorLevelQueryResponse?.Item == undefined) throw new Error(`'cursor' ${cursorLevelId} is invalid`);
+                    // TODO More validation of queried response
+                    
+                    var cursorLevelData = cursorLevelQueryResponse.Item;
+                     query.ExclusiveStartKey = {
+                        levelStatus: cursorLevelData.levelStatus,
+                        levelUpdatedAt: cursorLevelData.levelUpdatedAt,
+                        pk: cursorLevelData.pk,
+                        sk: cursorLevelData.sk,
+                     };
+                }
+
+                var queryResponse = await dynamo.send(new QueryCommand(query));
 
                 // TODO Validation of response
 
@@ -158,8 +188,14 @@ export const handler = async (event, context) => {
                     });
                 }
 
+                var responseCursor;
+                if (queryResponse?.LastEvaluatedKey) {
+                    responseCursor = extractLevelId(queryResponse.LastEvaluatedKey.pk);
+                }
+
                 responseBody = {
-                    "levels": responseLevels
+                    "levels": responseLevels,
+                    "cursor": responseCursor,
                 }
 
                 break;
