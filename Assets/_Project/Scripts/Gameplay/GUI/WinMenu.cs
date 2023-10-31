@@ -1,5 +1,6 @@
 using System;
 using Browser;
+using Editarrr.Audio;
 using Editarrr.Level;
 using Level.Storage;
 using Singletons;
@@ -136,11 +137,21 @@ namespace Gameplay.GUI
             {
                 leaderboard.SetScores(scoreStubs);
             }
+
+            AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
         }
 
         public void OpenRatingMenu()
         {
             _ratingMenu.OpenMenu(_code);
+            AudioManager.Instance.PlayAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME);
+        }
+
+        public void CloseRatingMenu()
+        {
+            _ratingMenu.UpdateRating(0);
+            _ratingMenu.gameObject.SetActive(false);
+            AudioManager.Instance.PlayAudioClip(AudioManager.NEGATIVE_CLIP_NAME);
         }
 
         #region ButtonTriggers

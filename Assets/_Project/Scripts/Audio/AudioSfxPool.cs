@@ -4,7 +4,7 @@ using System;
 namespace Editarrr.Audio
 {
     [Serializable]
-    //AudioManager.instance.PlayAudioClip("clipName");
+    //AudioManager.Instance.PlayRandomizedAudioClip("clipName");
     [CreateAssetMenu(fileName = "audioClips", menuName = "Pool/Audio/new audio pool")]
     public class AudioSfxPool : ScriptableObject
     {

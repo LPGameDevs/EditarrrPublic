@@ -38,13 +38,13 @@ namespace UI
             popup.Setup(this);
 
             PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Open);
-            AudioManager.Instance.PlayAudioClip(popupSound);
+            AudioManager.Instance.PlayAudioClip(popupSound.name);
         }
 
         public virtual void Close()
         {
             PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Close);
-            AudioManager.Instance.PlayAudioClip(closeSound);
+            AudioManager.Instance.PlayAudioClip(closeSound.name);
         }
 
         public virtual string GetTitleText()

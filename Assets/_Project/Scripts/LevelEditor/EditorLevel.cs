@@ -58,6 +58,7 @@ namespace LevelEditor
         public void GetLevelLeaderboard()
         {
             OnLeaderboardRequest?.Invoke(Code);
+            AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
         }
 
         public void GoToReplay()

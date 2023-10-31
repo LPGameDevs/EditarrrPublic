@@ -36,6 +36,7 @@ namespace Editarrr.Audio
         public const string WARNING_CLIP_NAME = "warning";
         public const string YOHOHO_CLIP_NAME = "YoHoHo1";
         public const string BOOTY_CLIP_NAME = "Booty01";
+        public const string KEY_PICKUP_CLIP_NAME = "keyPickup";
         #endregion
 
         private void Start()

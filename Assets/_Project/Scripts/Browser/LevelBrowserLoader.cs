@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Browser;
+using Editarrr.Audio;
 using Editarrr.Level;
 using Level.Storage;
 using Singletons;
@@ -84,6 +85,7 @@ public class LevelBrowserLoader : MonoBehaviour
     public void CloseBrowser()
     {
         SceneTransitionManager.Instance.RemoveScene(SceneTransitionManager.BrowserSceneName);
+        AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
     }
 
     public void SetLevels(LevelStub[] levels)

@@ -24,7 +24,7 @@ namespace Browser
             }
             DownloadButton.interactable = false;
             OnBrowserLevelDownload?.Invoke(remote);
-            AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
+            AudioManager.Instance.PlayRandomizedAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME, 0.1f, 0.1f);
         }
 
         public void SetDownloaded()

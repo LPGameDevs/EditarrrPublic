@@ -200,7 +200,7 @@ namespace Editarrr.Level
                 this.LevelUploadedCallback = null;
             }
 
-            AudioManager.Instance.PlayAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME);
+            AudioManager.Instance.PlayRandomizedAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME, 0.1f, 0.1f);
         }
 
         private void SetRemoteUploadId(string code, string remoteId)

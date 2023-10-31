@@ -59,6 +59,6 @@ public class LevelSelectionLoader : MonoBehaviour
     public void OpenBrowser()
     {
         SceneTransitionManager.Instance.AddScene(SceneTransitionManager.BrowserSceneName);
-        AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
+        AudioManager.Instance.PlayRandomizedAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME, 0.1f, 0.1f);
     }
 }

@@ -77,7 +77,7 @@ namespace Singletons
             }
 
 
-            AudioManager.Instance.PlayAudioClip(TransitionSound);
+            AudioManager.Instance.PlayRandomizedAudioClip(TransitionSound.name, 0.1f, 0.1f);
             SceneManager.LoadScene(sceneName);
             OnSceneChanged?.Invoke(sceneName);
         }
@@ -85,7 +85,7 @@ namespace Singletons
         public void RestartLevel()
         {
             _restartInitiated = false;
-            AudioManager.Instance.PlayAudioClip(RestartSound);
+            AudioManager.Instance.PlayRandomizedAudioClip(RestartSound.name, 0.1f, 0.1f);
             GoToScene(SceneManager.GetActiveScene().name);
         }
 
