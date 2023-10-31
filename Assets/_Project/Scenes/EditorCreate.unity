@@ -2108,11 +2108,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08efd7dbef9b85d486f3727e3b75f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScrollSpeed: 0.7
+  ScrollSpeed: 0.5
   DragSpeedX: 3.5
   DragSpeedY: 2
   ZoomMax: 1
-  ZoomMin: 15
+  ZoomMin: 25
   <MousePosition>k__BackingField: {fileID: 11400000, guid: 11ba13480451f574e8c6ecdc13111c23, type: 2}
   <MouseScroll>k__BackingField: {fileID: 11400000, guid: c1cc2bb641eded5418bde62176409957, type: 2}
   <MouseMiddleButton>k__BackingField: {fileID: 11400000, guid: 4861822cf572eef43a7cbfca56333175, type: 2}

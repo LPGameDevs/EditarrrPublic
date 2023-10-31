@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2529705368807702006}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8880188651800130992}
-  m_RootOrder: 2
+  m_Father: {fileID: 7365896723894729379}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &6034560143588005430
 BoxCollider2D:
@@ -58,6 +58,39 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9375, y: 0.1875}
   m_EdgeRadius: 0
+--- !u!1 &7358738824021164730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7365896723894729379}
+  m_Layer: 0
+  m_Name: CollisionPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7365896723894729379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7358738824021164730}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8880188651554932568}
+  - {fileID: 4867831185701657288}
+  m_Father: {fileID: 8880188651800130992}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8880188651554932571
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,13 +115,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8880188651554932571}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8880188651800130992}
-  m_RootOrder: 1
+  m_Father: {fileID: 7365896723894729379}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &8880188651554932569
 BoxCollider2D:
@@ -145,8 +178,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8880188652851955651}
-  - {fileID: 8880188651554932568}
-  - {fileID: 4867831185701657288}
+  - {fileID: 7365896723894729379}
   m_Father: {fileID: 8880188652504104553}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -222,7 +254,24 @@ MonoBehaviour:
   - {fileID: -1076479582, guid: b0ee2950cec1dd149a0b08cbc14b08de, type: 3}
   - {fileID: -797782594, guid: b0ee2950cec1dd149a0b08cbc14b08de, type: 3}
   - {fileID: -1065806563, guid: b0ee2950cec1dd149a0b08cbc14b08de, type: 3}
+  <CollisionPivot>k__BackingField: {fileID: 7365896723894729379}
+  <Collider>k__BackingField: {fileID: 8880188651554932569}
   <Duration>k__BackingField: 1
+  <RespawnDuration>k__BackingField: 2
+  <RespawnFilter>k__BackingField:
+    useTriggers: 1
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 8
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
 --- !u!1 &8880188652851955650
 GameObject:
   m_ObjectHideFlags: 0
