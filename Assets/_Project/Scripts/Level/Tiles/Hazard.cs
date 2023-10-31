@@ -32,8 +32,6 @@ public class Hazard : MonoBehaviour
 		this.KnockBackPlayer(other.gameObject, forceDirection);
 	}
 
-    private void OnCollisionStay2D(Collision2D collision) => OnTriggerStay2D(collision.collider);
-
     public void KnockBackPlayer(GameObject other, Vector3 normal)
 	{
 		if (!other.TryGetComponent<HealthSystem>(out HealthSystem healthSystem) || healthSystem.IsInvincible())

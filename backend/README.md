@@ -16,6 +16,16 @@ To open your own Codepsace, from the repo homepage, simply click `Code > Create 
 
 More on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart)).
 
+### Recommended: Deploy Changes to the Lambda
+NOTE: Be careful because this affects the server actively used by the game.
+
+For now (until we develop a better way), the development workflow involves deploying Lambda changes with the [update-lambda.sh](./scripts/update-lambda.sh) script and testing them live.
+
+If you need to add APIs or modify the DynamoDB tables, @yanniboi will have to do the deployment (because only he has the proper authorization).
+
+### (NOT Recommended) Developing with a Local Lambda/DDB
+_This is NOT recommended because [start-locao.sh](./scripts/start-local.sh) is out-of-date and we haven't developed a way to keep it in-sync with the Terraform deploys to AWS_.
+
 To start the backend, from the Codespace, run shell script:
 ```sh
 cd backend
