@@ -1571,7 +1571,8 @@ MonoBehaviour:
     <TileDataSlotCount>k__BackingField: 10
   <TileGroupSwapper>k__BackingField:
     <EditorTileSelectionManager>k__BackingField: {fileID: 11400000, guid: b10f562adc978bb468e22b320a6a39dd, type: 2}
-    <TileGroupSwapperName>k__BackingField: TileGroupSwapper
+    <TileGroupSwapperNameLeft>k__BackingField: TileGroupSwapperLeft
+    <TileGroupSwapperNameRight>k__BackingField: TileGroupSwapperRight
   <SelectionPreview>k__BackingField:
     <EditorTileSelectionManager>k__BackingField: {fileID: 11400000, guid: b10f562adc978bb468e22b320a6a39dd, type: 2}
     <ContainerName>k__BackingField: SelectionPreview

@@ -136,6 +136,12 @@ namespace Editarrr.LevelEditor
             this.SetActiveElementIndex(this.ActiveElementIndex);
         }
 
+        public void PreviousGroup()
+        {
+            this.SetActiveGroupIndex(this.ActiveGroupIndex - 1);
+            this.SetActiveElementIndex(this.ActiveElementIndex);
+        }
+
         public void NextRotation()
         {
             this.SetRotation((Rotation)(((int)this.Rotation - 1).Loop(4)));
