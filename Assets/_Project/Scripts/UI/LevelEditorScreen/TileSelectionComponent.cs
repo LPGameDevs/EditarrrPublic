@@ -207,6 +207,7 @@ namespace Editarrr.UI.LevelEditor
                 {
                     if (string.IsNullOrEmpty(this.ToolTip.text))
                     {
+                        Debug.Log("String null or empty");
                         this.ToolTip.visible = false;
                         return;
                     }
