@@ -20,12 +20,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+    outputs:
+      replaceFiles: ${{ steps.replace.outputs.modifiedFiles }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           lfs: true
+      - name: Set Production Flag
+        uses: jacobtomlinson/gha-find-replace@v3
+        id: replace
+        with:
+          find: "CI_DEPLOY_TARGET"
+          replace: "DEPLOY_TARGET_PRODUCTION"
+          include: "ProjectSettings/ProjectSettings.asset"
 
       - name: Restore Library cache
         uses: actions/cache@v2
