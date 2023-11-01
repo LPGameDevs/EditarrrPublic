@@ -186,6 +186,12 @@ namespace Editarrr.Level
 
         private void OnScoreSubmitRequested(string code, float time, WinMenu.WinMenu_OnScoreSubmit callback)
         {
+#if YAN_DEBUG
+            Debug.Log("yan");
+#else
+            Debug.Log("not yan");
+#endif
+
             this.LevelManager.LevelStorage.LoadLevelData(code, ScoreLevelLoaded);
 
             void ScoreLevelLoaded(LevelSave levelSave)
