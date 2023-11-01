@@ -48,6 +48,7 @@ jobs:
       - uses: game-ci/unity-builder@v2
         with:
           targetPlatform: WebGL
+          allowDirtyBuild: true # This is necessary as we alter the deployment flag.
 
       - uses: actions/upload-artifact@v3
         with:
