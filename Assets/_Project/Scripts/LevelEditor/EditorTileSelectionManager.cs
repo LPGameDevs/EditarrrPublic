@@ -129,7 +129,6 @@ namespace Editarrr.LevelEditor
             this.SetRotation(Rotation.North);
         }
 
-
         public void NextGroup()
         {
             this.SetActiveGroupIndex(this.ActiveGroupIndex + 1);
