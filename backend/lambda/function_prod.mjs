@@ -27,10 +27,10 @@ const client = new DynamoDBClient(options);
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-const tableNameLevel = "editarrr-level-storage";
-const tableNameScore = "editarrr-score-storage";
-const tableNameRating = "editarrr-rating-storage";
-const tableNameAnalytics = "editarrr-analytics-storage";
+const tableNameLevel = "prod-editarrr-level-storage";
+const tableNameScore = "prod-editarrr-score-storage";
+const tableNameRating = "prod-editarrr-rating-storage";
+const tableNameAnalytics = "prod-editarrr-analytics-storage";
 
 const defaultPageLimit = 10;
 
