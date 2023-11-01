@@ -12,23 +12,28 @@ namespace Level.Storage
 {
     public class RemoteLevelStorageProviderAws : IRemoteLevelStorageProvider
     {
-        public const string AwsLevelUrlProd = "https://qwm1g0m783.execute-api.eu-north-1.amazonaws.com/prod";
-        public const string AwsLevelUrlDev = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com/dev";
+        private const string AwsLevelUrlProd = "https://qwm1g0m783.execute-api.eu-north-1.amazonaws.com/prod";
+        private const string AwsLevelUrlDev = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com/dev";
         private const string AwsScreenshotUrl = "https://editarrr-screenshots.s3.eu-north-1.amazonaws.com";
         private const bool ShowDebug = false;
 
-        private string AwsLevelUrl;
+        public static string AwsLevelUrl => GetLevelUrl();
 
         public void Initialize()
         {
-            // Default to dev env.
-            AwsLevelUrl = AwsLevelUrlDev;
+            // Nothing needed here.
+        }
+
+        private static string GetLevelUrl()
+        {
 
 #if DEPLOY_TARGET_PRODUCTION
             // Activate production env.
-            AwsLevelUrl = AwsLevelUrlProd;
+            return AwsLevelUrlProd;
 #endif
 
+            // Default to dev env.
+            return AwsLevelUrlDev;
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
