@@ -17,6 +17,8 @@ import { LevelsDbClient } from './db/levels.mjs';
 import { LevelsApi } from "./api/levels.mjs";
 import { ScoresDbClient } from './db/scores.mjs';
 import { ScoresApi } from './api/scores.mjs';
+import { RatingsDbClient } from './db/ratings.mjs';
+import { RatingsApi } from './api/ratings.mjs';
 
 /* TODO:
     * Refactor - Move all the code for each API into its own file
@@ -45,8 +47,11 @@ const scoresDbClient = new ScoresDbClient(dynamo);
 // TODO Move levels API logic to this class
 const scoresApi = new ScoresApi(scoresDbClient, levelsDbClient);
 
-// TODO dbClient/api pattern 
 const tableNameRating = "editarrr-rating-storage";
+// TODO Move all calls to the level storage to this client
+const ratingsDbClient = new RatingsDbClient(dynamo);
+// TODO Move levels API logic to this class
+const ratingsApi = new RatingsApi(ratingsDbClient, levelsDbClient);
 
 const tableNameAnalytics = "editarrr-analytics-storage";
 
@@ -299,7 +304,6 @@ export const handler = async (event, context) => {
 
             case "POST /levels/{id}/scores":
                 requestJSON = JSON.parse(event.body);
-
                 responseBody = await scoresApi.postScore(event.pathParameters.id, requestJSON);
                 break;
             case "GET /levels/{id}/scores":
@@ -354,45 +358,7 @@ export const handler = async (event, context) => {
 
             case "POST /levels/{id}/ratings":
                 requestJSON = JSON.parse(event.body);
-
-                var rating = requestJSON.rating;
-                if (!rating) throw new BadRequestException(`'rating' must be provided in the request.`);
-                var ratingLevelName = requestJSON.code;
-                if (!ratingLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
-                var ratingCreatorId = requestJSON.creator;
-                if (!ratingCreatorId) throw new BadRequestException(`'creator' must be provided in the request.`);
-                var ratingCreatorName = requestJSON.creatorName;
-                if (!ratingCreatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
-
-                // TODO Check that level exists.
-                // TODO Calc new avg
-                // TODO Calc new total
-
-                // TODO Overwrite any existing rating
-
-                var generatedRatingId = uuidv4();
-                var currentTimestamp = Date.now();
-
-                await dynamo.send(
-                    new PutCommand({
-                        TableName: tableNameRating,
-                        Item: {
-                            pk: `LEVEL#${event.pathParameters.id}`,
-                            sk: `RATING#${generatedRatingId}`,
-                            rating: rating,
-                            ratingLevelName: ratingLevelName,
-                            ratingCreatorId: ratingCreatorId,
-                            ratingCreatorName: ratingCreatorName,
-                            ratingSubmittedAt: currentTimestamp,
-                        },
-                    })
-                    // TODO Add the total, vag
-                );
-
-                responseBody = {
-                    "message": `Success! Created rating for: ${ratingLevelName}`,
-                    "id": generatedRatingId
-                }
+                responseBody = await ratingsApi.postRating(event.pathParameters.id, requestJSON);
                 break;
             case "GET /levels/{id}/ratings":
                 // TODO Validation of request
