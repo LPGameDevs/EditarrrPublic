@@ -1,9 +1,9 @@
 TABLE=editarrr-level-storage
 
 # Get
-aws dynamodb get-item \
-    --table-name $TABLE \
-    --key '{ "pk": { "S": "LEVEL#4a414edd-da39-4412-8dda-cc484c77966c"}, "sk": { "S": "LEVEL#4a414edd-da39-4412-8dda-cc484c77966c"} }'
+# aws dynamodb get-item \
+#     --table-name $TABLE \
+#     --key '{ "pk": { "S": "LEVEL#4a414edd-da39-4412-8dda-cc484c77966c"}, "sk": { "S": "LEVEL#4a414edd-da39-4412-8dda-cc484c77966c"} }'
 
 # Get First Page of a List
 # aws dynamodb query \
@@ -46,3 +46,10 @@ aws dynamodb get-item \
 #   --select "COUNT" \
 #   --key-condition-expression "levelStatus = :status" \
 #   --expression-attribute-values '{ ":status": { "S": "PUBLISHED" } }'
+
+# Update Item
+aws dynamodb update-item \
+    --table-name $TABLE \
+    --key '{"pk": {"S": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63"}, "sk": {"S": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63"}}' \
+    --update-expression "SET levelAvgScore = :avgScore, levelTotalScores = :totalScores" \
+    --expression-attribute-values '{":avgScore": {"N": "1.5"}, ":totalScores": {"N": "1"}}'

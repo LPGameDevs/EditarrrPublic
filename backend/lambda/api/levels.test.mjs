@@ -19,7 +19,7 @@ describe('GetLevel', function () {
         levelsApi = new LevelsApi(levelsDbClient);
     });
 
-    it('should return "Hello, World!"', async function () {
+    it('should fetch and translate a level from the db."', async function () {
         const ddbClientSendStub = stub(dynamoDbClient, 'send');
         ddbClientSendStub.returns({
             "Item": {
