@@ -2533,7 +2533,7 @@ PrefabInstance:
       objectReference: {fileID: 468777124318979835}
     - target: {fileID: 6522958623997308131, guid: b8ecbc41a938adc4cb7ff5474e6afbad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnClickBack
+      value: OnClickHome
       objectReference: {fileID: 0}
     - target: {fileID: 6522958623997308131, guid: b8ecbc41a938adc4cb7ff5474e6afbad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -6408,7 +6408,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 468777124318979835}
         m_TargetAssemblyTypeName: Gameplay.GUI.WinMenu, Assembly-CSharp
-        m_MethodName: OnClickBack
+        m_MethodName: OnClickHome
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
