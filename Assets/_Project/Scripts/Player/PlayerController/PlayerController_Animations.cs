@@ -11,16 +11,35 @@ namespace Player
 
         private Animator Animator { get; set; }
 
-        private void UpdateAnimationVariables()
+        private void UpdateAnimator()
         {
-            OnPlayerMoved(_collisions.down && _isMoving);
+            OnPlayerMoved(this.Collisions.Down && this.IsMoving);
 
-            Animator.SetFloat(VerticalVelocityAnim, _currentVerticalSpeed);
-            Animator.SetBool(GroundedAnim, _collisions.down);
+            Animator.SetFloat(VerticalVelocityAnim, this.VerticalSpeed);
+            Animator.SetBool(GroundedAnim, this.Collisions.Down);
 
             // @todo Should we take collision checks into account here?
-            Animator.SetBool(IsMovingAnim, _isMoving);
-            Animator.SetBool(JumpStartedAnim, _jumpStartThisFrame);
+            Animator.SetBool(IsMovingAnim, this.IsMoving);
+            Animator.SetBool(JumpStartedAnim, this.InputJumpPressed);
         }
+
+        //private static readonly int IsMovingAnim = Animator.StringToHash("IsMoving");
+        //private static readonly int GroundedAnim = Animator.StringToHash("Grounded");
+        //private static readonly int JumpStartedAnim = Animator.StringToHash("JumpStarted");
+        //private static readonly int VerticalVelocityAnim = Animator.StringToHash("VerticalVelocity");
+
+        //private Animator Animator { get; set; }
+
+        //private void UpdateAnimationVariables()
+        //{
+        //    OnPlayerMoved(_collisions.down && _isMoving);
+
+        //    Animator.SetFloat(VerticalVelocityAnim, _currentVerticalSpeed);
+        //    Animator.SetBool(GroundedAnim, _collisions.down);
+
+        //    // @todo Should we take collision checks into account here?
+        //    Animator.SetBool(IsMovingAnim, _isMoving);
+        //    Animator.SetBool(JumpStartedAnim, _jumpStartThisFrame);
+        //}
     }
 }

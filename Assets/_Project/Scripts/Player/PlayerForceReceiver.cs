@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerForceReceiver : MonoBehaviour
+public class PlayerForceReceiver : MonoBehaviour, IExternalForceReceiver
 {
 	public Vector2? ForcedMove { get; private set; }
 
@@ -22,7 +22,7 @@ public class PlayerForceReceiver : MonoBehaviour
 		this.CalculateForceMove();
 	}
 
-	private void Update()
+	private void FixedUpdate()
     {
         this.CalculateForceMove();
     }
@@ -39,4 +39,9 @@ public class PlayerForceReceiver : MonoBehaviour
 
         this.ForcedMove = this.Force * this.ImpulseTime;
     }
+}
+
+public interface IExternalForceReceiver
+{
+    void ReceiveImpulse(float force, Vector3 direction);
 }

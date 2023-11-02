@@ -36,7 +36,7 @@ public class Hazard : MonoBehaviour
 	{
 		if (!other.TryGetComponent<HealthSystem>(out HealthSystem healthSystem) || healthSystem.IsInvincible())
 			return;
-		if (!other.TryGetComponent<PlayerForceReceiver>(out PlayerForceReceiver forceReceiver))
+		if (!other.TryGetComponent<IExternalForceReceiver>(out IExternalForceReceiver forceReceiver))
 			return;
 
 		healthSystem.TakeDamage(_damage, this.StunDuration, this.DamageCooldown);

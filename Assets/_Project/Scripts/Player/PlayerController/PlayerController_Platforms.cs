@@ -4,14 +4,13 @@ using UnityEngine;
 
 namespace Player
 {
-
     public partial class PlayerController : IMoveOnPlatform
     {
         public bool IsOnPlatform { get; private set; }
         List<Transform> PlatformQueue { get; set; } = new List<Transform>();
         Transform CurrentPlatform { get; set; }
 
-        private void CalculatePlatform()
+        private void UpdatePlatform()
         {
             if (this.PlatformQueue.Count > 0)
             {
