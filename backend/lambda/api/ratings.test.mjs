@@ -4,30 +4,32 @@ import { assert, match, stub } from 'sinon';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
-import { ScoresApi } from './scores.mjs';
+import { RatingsApi } from './ratings.mjs';
 import { LevelsDbClient } from '../db/levels.mjs';
-import { ScoresDbClient } from '../db/scores.mjs';
+import { RatingsDbClient } from '../db/ratings.mjs';
 
 var dynamoDbClient;
 var ddbClientSendStub;
-var scoresDbClient;
+var ratingsDbClient;
 var levelsDbClient;
-var scoresApi;
+var ratingsApi;
 
-var tableNameScores = "editarrr-score-storage"
+var tableNameRatings = "editarrr-rating-storage"
 var tableNameLevels = "editarrr-level-storage"
 
-describe('PostScore', function () {
+var indexLevelIdRating = "pk-rating-index"
+
+describe('PostRating', function () {
     
     beforeEach(function () {
         dynamoDbClient = new DynamoDBDocumentClient(new DynamoDBClient({}));
         ddbClientSendStub = stub(dynamoDbClient, 'send');
-        scoresDbClient = new ScoresDbClient(dynamoDbClient);
+        ratingsDbClient = new RatingsDbClient(dynamoDbClient);
         levelsDbClient = new LevelsDbClient(dynamoDbClient);
-        scoresApi = new ScoresApi(scoresDbClient, levelsDbClient);
+        ratingsApi = new RatingsApi(ratingsDbClient, levelsDbClient);
     });
 
-    it('should check that the level exists, add the score, then calculate and store the avg & total number of scores."', async function () {
+    it('should check that the level exists, add the rating, then calculate and store the avg & total number of ratings."', async function () {
         // Arrange
         var levelId = "murphys-dads-level-id";
         var levelName = "Murphys Dads Level";
@@ -54,9 +56,8 @@ describe('PostScore', function () {
         });
 
         ddbClientSendStub.withArgs(match.has("input", {
-            TableName: tableNameScores,
-            IndexName: "scoreLevelName-score-index",
-            // TODO can we do a subset of attributes?
+            TableName: tableNameRatings,
+            IndexName: indexLevelIdRating,
             Select: "ALL_PROJECTED_ATTRIBUTES",
             KeyConditionExpression: "pk = :levelId",
             ExpressionAttributeValues: {
@@ -65,17 +66,17 @@ describe('PostScore', function () {
         })).returns({
             "Items": [
                 {
-                    score: 1.0
+                    rating: 1
                 },
                 {
-                    score: 3.0
+                    rating: 3
                 }
             ]
         });
         
         // Act
-        await scoresApi.postScore(levelId, {
-            "score": 1.0, 
+        await ratingsApi.postRating(levelId, {
+            "rating": 1, 
             "code": levelName,
             "creator": levelCreatorId,
             "creatorName": levelCreatorId,
@@ -83,10 +84,10 @@ describe('PostScore', function () {
 
         // Assert
         assert.calledWith(ddbClientSendStub, match.has("input", 
-            match.has("TableName", tableNameScores).and(
+            match.has("TableName", tableNameRatings).and(
             match.has("Item", 
                 match.has("pk", `LEVEL#${levelId}`).and(
-                match.has("score", 1.0)),
+                match.has("rating", 1)),
         ))));
         assert.calledWith(ddbClientSendStub, match.has("input", {
             TableName: tableNameLevels,
@@ -94,10 +95,10 @@ describe('PostScore', function () {
                 pk: `LEVEL#${levelId}`,
                 sk: `LEVEL#${levelId}`
             },
-            UpdateExpression: "SET levelAvgScore = :avgScore, levelTotalScores = :totalScores",
+            UpdateExpression: "SET levelAvgRating = :avgRating, levelTotalRatings = :totalRatings",
             ExpressionAttributeValues: {
-              ":avgScore": 2.0,
-              ":totalScores": 2,
+              ":avgRating": 2,
+              ":totalRatings": 2,
             },
         }));
     });
