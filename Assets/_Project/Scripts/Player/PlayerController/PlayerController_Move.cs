@@ -19,6 +19,13 @@ namespace Player
         private void UpdateMove()
         {
             this.Movement = new Vector3(this.HorizontalSpeed, this.VerticalSpeed) * Time.deltaTime;
+
+            if (!this.IsKnockback)
+            {
+                // Debug.Log($"Add External Force {this.ExternalForce}");
+                this.Movement += this.ExternalForce;
+            }
+
             // var move =  (Vector3.right) * this.HorizontalSpeed * this.DeltaTime;
 
             var hits = new RaycastHit2D[1];
