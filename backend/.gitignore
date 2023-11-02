@@ -6,3 +6,9 @@ function.zip
 
 # Sample Requests
 !requests/*.sh
+
+# Local Dev Files
+output.json
+
+# NPM
+node_modules/
