@@ -37,9 +37,6 @@ namespace Singletons
 
         bool _restartInitiated;
 
-        private bool StopRestartTransition { get; set; }
-
-
         private void OnEnable()
         {
             HealthSystem.OnDeath += OnDeath;
@@ -56,13 +53,7 @@ namespace Singletons
                 return;
 
             if (RestartInput.WasPressed && SceneManager.GetActiveScene().name.Equals(TestLevelSceneName))
-            {
-                bool cancelAutoRestart = this._restartInitiated;
-
-                this.RestartLevel();
-
-                this.StopRestartTransition = cancelAutoRestart;
-            }
+                RestartLevel();
         }
 
         public void TransitionedRestart()
@@ -85,7 +76,6 @@ namespace Singletons
                 AudioManager.Instance.FadeVolume(AudioManager.Instance.BgmSourceTwo, TransitionTime, 0f);
             }
 
-
             AudioManager.Instance.PlayRandomizedAudioClip(TransitionSound.name, 0.1f, 0.1f);
             SceneManager.LoadScene(sceneName);
             OnSceneChanged?.Invoke(sceneName);
@@ -93,6 +83,7 @@ namespace Singletons
 
         public void RestartLevel()
         {
+            CancelInvoke(nameof(RestartLevel));
             _restartInitiated = false;
             AudioManager.Instance.PlayAudioClip(RestartSound);
             GoToScene(SceneManager.GetActiveScene().name);
