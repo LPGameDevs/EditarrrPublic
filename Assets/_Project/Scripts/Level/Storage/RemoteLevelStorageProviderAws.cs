@@ -12,7 +12,7 @@ namespace Level.Storage
 {
     public class RemoteLevelStorageProviderAws : IRemoteLevelStorageProvider
     {
-        private const string AwsLevelUrlProd = "https://qwm1g0m783.execute-api.eu-north-1.amazonaws.com/prod";
+        private const string AwsLevelUrlProd = "https://e1pvn0880k.execute-api.eu-north-1.amazonaws.com/dev";
         private const string AwsLevelUrlDev = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com/dev";
         private const string AwsScreenshotUrl = "https://editarrr-screenshots.s3.eu-north-1.amazonaws.com";
         private const bool ShowDebug = false;

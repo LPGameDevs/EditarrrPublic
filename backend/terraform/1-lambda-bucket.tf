@@ -2,7 +2,7 @@
 
 # We use a random pet to generate a random name for the bucket.
 resource "random_pet" "lambda_bucket_name" {
-  prefix = "lambda"
+  prefix = "editarrr-lambda"
   length = 2
 }
 
