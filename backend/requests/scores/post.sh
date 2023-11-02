@@ -10,9 +10,9 @@ fi
 
 curl -X "POST" -H "Content-Type: application/json" -d \
     '{
-        "score": "1.0", 
-        "code": "Murphys Dads Level",
-        "creator": "murphys-dad-id",
-        "creatorName": "Murphys Dad"
+        "score": "7.0", 
+        "code": "29995",
+        "creator": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
+        "creatorName": "Murphys dad"
     }' \
     ${URL}/${LEVEL_ID}/scores | python3 -m json.tool

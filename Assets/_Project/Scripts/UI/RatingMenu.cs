@@ -4,12 +4,12 @@ using Singletons;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class RatingMenu : MonoBehaviour
 {
     [SerializeField] AudioClip[] _ratingSounds;
-    [SerializeField] AudioClip _submitSound;
     [SerializeField] Button[] _ratingButtons;
     [SerializeField] Image[] _coinImages;
     [SerializeField] Button _submitButton;
@@ -21,7 +21,7 @@ public class RatingMenu : MonoBehaviour
     public int CurrentUserRating { get => _currentUserRating; }
   
     private float _baseTextSize;
-    private int _currentUserRating = 0, _maxRating = 2;
+    private int _currentUserRating = 0, _maxRating = 3;
     private const string PARAMETER_NAME_ACTIVE = "active";
     private const string PARAMETER_NAME_PRESSED = "Pressed";
 
@@ -47,10 +47,11 @@ public class RatingMenu : MonoBehaviour
 
         for(int i=0; i<_ratingButtons.Length; i++)
         {
-            if(rating != i)
+            //_ratingButtons[i].OnDeselect(new UnityEngine.EventSystems.BaseEventData(FindObjectOfType<EventSystem>()));
+            if(rating-1 != i)
                 _ratingButtons[i].animator.SetTrigger(PARAMETER_NAME_PRESSED);
 
-            if (rating >= i)
+            if (rating-1 >= i)
                 _ratingButtons[i].animator.SetBool(PARAMETER_NAME_ACTIVE, true);
             else
             {
@@ -59,22 +60,25 @@ public class RatingMenu : MonoBehaviour
             }
         }
 
-        if(CurrentUserRating == 0)
+        if (rating > 0)
         {
-            _submitButton.interactable = true;
-            _currentRatingText.color = new Color(_currentRatingText.color.r, _currentRatingText.color.g, _currentRatingText.color.b, 1f);
+            AudioManager.Instance.PlayAudioClip(_ratingSounds[rating - 1]);
+
+            if (_currentUserRating == 0)
+            {
+                _submitButton.interactable = true;
+                _currentRatingText.color = new Color(_currentRatingText.color.r, _currentRatingText.color.g, _currentRatingText.color.b, 1f);
+            }
         }
 
         _currentUserRating = rating;
         _currentRatingText.fontSize = _baseTextSize + ((_currentUserRating + 1) * 10f);
-        _currentRatingText.text = $"{_currentUserRating + 1} / {_ratingButtons.Length}";
-
-        AudioManager.Instance.PlayAudioClip(_ratingSounds[rating]);
+        _currentRatingText.text = $"{_currentUserRating} / {_ratingButtons.Length}";
     }
 
     public void SubmitRating()
     {
-        AudioManager.Instance.PlayAudioClip(_submitSound);
+        AudioManager.Instance.PlayAudioClip(AudioManager.KEY_PICKUP_CLIP_NAME);
         _winMenu.SubmitRating(_currentUserRating);
         gameObject.SetActive(false);
     }

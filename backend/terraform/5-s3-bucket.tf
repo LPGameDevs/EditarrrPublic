@@ -1,5 +1,10 @@
+resource "random_pet" "screenshot_bucket_name" {
+  prefix = "editarrr-screenshot"
+  length = 2
+}
+
 resource "aws_s3_bucket" "screenshot_bucket" {
-  bucket = "editarrr-screenshots"
+  bucket        = random_pet.screenshot_bucket_name.id
 }
 
 resource "aws_s3_bucket_ownership_controls" "screenshot_bucket" {

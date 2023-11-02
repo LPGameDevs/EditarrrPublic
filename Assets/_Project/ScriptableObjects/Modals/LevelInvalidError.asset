@@ -16,4 +16,6 @@ MonoBehaviour:
   ContentText: For a level to be complete you have to at least have a player and
     a treasure chest.
   CloseText: I'll fix it...
-  Prefab: {fileID: 6251556039925704571, guid: 82c3b59bbbf0f3a2385deccf3b21d0f4, type: 3}
+  popupSound: {fileID: 8300000, guid: ea93c0c71762eeb4385628b526cd978f, type: 3}
+  closeSound: {fileID: 8300000, guid: a87ac7bb78a85474f94e448a3ee2e784, type: 3}
+  Prefab: {fileID: 690372002882256741, guid: 82c3b59bbbf0f3a2385deccf3b21d0f4, type: 3}

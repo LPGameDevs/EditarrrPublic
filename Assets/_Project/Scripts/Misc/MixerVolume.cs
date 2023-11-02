@@ -10,6 +10,7 @@ namespace Misc
     {
         [SerializeField] private AudioMixer _mixer;
         [SerializeField] private string _volumeParameter = "MasterVolume";
+        [SerializeField] bool _blockInitialPlayback;
 
         private Slider _slider;
         private AudioSource _audio;
@@ -28,7 +29,7 @@ namespace Misc
             float value = PreferencesManager.Instance.GetSlider(this._volumeParameter);
             _slider.onValueChanged.AddListener(SetLevel);
             _slider.value = value;
-            SetLevel(value);
+            //SetLevel(value);
         }
 
 
@@ -50,18 +51,17 @@ namespace Misc
         {
             PreferencesManager.Instance.SetSlider(this._volumeParameter, sliderValue);
 
-
-            Debug.Log("test");
             float value = Mathf.Log10(sliderValue) * 20;
             _mixer.SetFloat(_volumeParameter, value);
 
-            Debug.Log(value);
-
-
-            if (_audio != null)
+            if(_blockInitialPlayback)
             {
-                _playSound = true;
+                _blockInitialPlayback = false;
+                return;
             }
+                
+            if (_audio != null)
+                _playSound = true;
         }
     }
 }

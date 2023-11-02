@@ -1,3 +1,5 @@
+using Editarrr.Audio;
+using Editarrr.Input;
 using Level.Storage;
 using UnityEngine;
 
@@ -7,8 +9,17 @@ namespace Browser
     {
         public Transform Rows;
         public LeaderboardRow RowPrefab;
+        public GameObject LoadingOverlay;
+
+        [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
 
         private string _code;
+
+        private void Update()
+        {
+            if(PauseInput.WasPressed)
+                CloseButtonPressed();
+        }
 
         public void SetCode(string code)
         {
@@ -29,6 +40,8 @@ namespace Browser
                 LeaderboardRow row = Instantiate(RowPrefab, Rows);
                 row.SetRow(_code, i.ToString(), scoreStub.Score, scoreStub.CreatorName);
             }
+
+            LoadingOverlay.SetActive(false);
         }
 
         public void CloseButtonPressed()
@@ -37,6 +50,8 @@ namespace Browser
                 Destroy(child.gameObject);
             }
             gameObject.SetActive(false);
+            LoadingOverlay.SetActive(true);
+            AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
         }
     }
 }

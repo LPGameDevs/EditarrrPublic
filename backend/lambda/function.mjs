@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
 import {
     DynamoDBDocumentClient,
@@ -9,10 +11,14 @@ import {
     S3Client,
     PutObjectCommand
 } from "@aws-sdk/client-s3";
-import crypto from "crypto";
-import { Buffer } from 'buffer';
+
+import { BadRequestException, extractLevelId, uuidv4 } from "./utils.mjs";
 import { LevelsDbClient } from './db/levels.mjs';
 import { LevelsApi } from "./api/levels.mjs";
+import { ScoresDbClient } from './db/scores.mjs';
+import { ScoresApi } from './api/scores.mjs';
+import { RatingsDbClient } from './db/ratings.mjs';
+import { RatingsApi } from './api/ratings.mjs';
 
 /* TODO:
     * Refactor - Move all the code for each API into its own file
@@ -36,24 +42,20 @@ const levelsDbClient = new LevelsDbClient(dynamo);
 const levelsApi = new LevelsApi(levelsDbClient);
 
 const tableNameScore = "editarrr-score-storage";
+// TODO Move all calls to the level storage to this client
+const scoresDbClient = new ScoresDbClient(dynamo);
+// TODO Move levels API logic to this class
+const scoresApi = new ScoresApi(scoresDbClient, levelsDbClient);
+
 const tableNameRating = "editarrr-rating-storage";
+// TODO Move all calls to the level storage to this client
+const ratingsDbClient = new RatingsDbClient(dynamo);
+// TODO Move levels API logic to this class
+const ratingsApi = new RatingsApi(ratingsDbClient, levelsDbClient);
+
 const tableNameAnalytics = "editarrr-analytics-storage";
 
 const defaultPageLimit = 10;
-
-// From https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid - not sure if this is reliable haha
-function uuidv4() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-}
-
-class BadRequestException extends Error {
-    constructor(message) {
-        super(`error - Bad Request: ${message}`);
-        this.name = this.constructor.name;
-    }
-}
 
 export const handler = async (event, context) => {
     let requestJSON;
@@ -250,6 +252,8 @@ export const handler = async (event, context) => {
                 }
                 dbLevel.levelUpdatedAt = Date.now();
 
+                // TODO We should make this an "update" rather than a "put" (https://docs.aws.amazon.com/cli/latest/reference/dynamodb/update-item.html)
+                // because it eliminates the need for a "get"
                 await dynamo.send(
                     new PutCommand({
                         TableName: tableNameLevel,
@@ -300,46 +304,7 @@ export const handler = async (event, context) => {
 
             case "POST /levels/{id}/scores":
                 requestJSON = JSON.parse(event.body);
-
-                var score = requestJSON.score;
-                if (!score) throw new BadRequestException(`'score' must be provided in the request.`);
-                var scoreLevelName = requestJSON.code;
-                if (!scoreLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
-                var scoreCreatorId = requestJSON.creator;
-                if (!scoreCreatorId) throw new BadRequestException(`'creator' must be provided in the request.`);
-                var scoreCreatorName = requestJSON.creatorName;
-                if (!scoreCreatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
-
-                // TODO Validate that the level exists.
-
-                // TODO Get all existing ratings
-                // TODO Calc new avg
-                // TODO Calc new total
-
-                var generatedScoreId = uuidv4();
-                var currentTimestamp = Date.now();
-
-                await dynamo.send(
-                    new PutCommand({
-                        TableName: tableNameScore,
-                        Item: {
-                            pk: `LEVEL#${event.pathParameters.id}`,
-                            sk: `SCORE#${generatedScoreId}`,
-                            score: score,
-                            scoreLevelName: scoreLevelName,
-                            scoreCreatorId: scoreCreatorId,
-                            scoreCreatorName: scoreCreatorName,
-                            scoreSubmittedAt: currentTimestamp,
-                        },
-                    })
-                );
-
-                // TODO Update the total, avg score for the level
-
-                responseBody = {
-                    "message": `Success! Created score for: ${scoreLevelName}`,
-                    "id": generatedScoreId
-                }
+                responseBody = await scoresApi.postScore(event.pathParameters.id, requestJSON);
                 break;
             case "GET /levels/{id}/scores":
                 // TODO Validation of request
@@ -393,45 +358,7 @@ export const handler = async (event, context) => {
 
             case "POST /levels/{id}/ratings":
                 requestJSON = JSON.parse(event.body);
-
-                var rating = requestJSON.rating;
-                if (!rating) throw new BadRequestException(`'rating' must be provided in the request.`);
-                var ratingLevelName = requestJSON.code;
-                if (!ratingLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
-                var ratingCreatorId = requestJSON.creator;
-                if (!ratingCreatorId) throw new BadRequestException(`'creator' must be provided in the request.`);
-                var ratingCreatorName = requestJSON.creatorName;
-                if (!ratingCreatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
-
-                // TODO Check that level exists.
-                // TODO Calc new avg
-                // TODO Calc new total
-
-                // TODO Overwrite any existing rating
-
-                var generatedRatingId = uuidv4();
-                var currentTimestamp = Date.now();
-
-                await dynamo.send(
-                    new PutCommand({
-                        TableName: tableNameRating,
-                        Item: {
-                            pk: `LEVEL#${event.pathParameters.id}`,
-                            sk: `RATING#${generatedRatingId}`,
-                            rating: rating,
-                            ratingLevelName: ratingLevelName,
-                            ratingCreatorId: ratingCreatorId,
-                            ratingCreatorName: ratingCreatorName,
-                            ratingSubmittedAt: currentTimestamp,
-                        },
-                    })
-                    // TODO Add the total, vag
-                );
-
-                responseBody = {
-                    "message": `Success! Created rating for: ${ratingLevelName}`,
-                    "id": generatedRatingId
-                }
+                responseBody = await ratingsApi.postRating(event.pathParameters.id, requestJSON);
                 break;
             case "GET /levels/{id}/ratings":
                 // TODO Validation of request
@@ -636,14 +563,3 @@ export const handler = async (event, context) => {
         headers,
     };
 };
-
-// TODO Use the shared utils definition instead
-function extractLevelId(ddbLevelKeyStr) {
-    const splitDDBLevelKeyStr = ddbLevelKeyStr.match(/#([0-9a-f-]+)/i);
-
-    if (!splitDDBLevelKeyStr) {
-        throw new Error(`problem parsing database ID`)
-    }
-
-    return splitDDBLevelKeyStr[1];
-}

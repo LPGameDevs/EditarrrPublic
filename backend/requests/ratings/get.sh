@@ -8,4 +8,4 @@ if [ $# -eq 1 ]; then
   LEVEL_ID=$1
 fi
 
-curl ${URL}/${LEVEL_ID}/scores | python3 -m json.tool
+curl ${URL}/${LEVEL_ID}/ratings | python3 -m json.tool
