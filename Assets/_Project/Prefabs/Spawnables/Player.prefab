@@ -25971,7 +25971,7 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
-  <CollisionCheckDistance>k__BackingField: 0.015625
+  <CollisionCheckDistance>k__BackingField: 0.03125
   <Collisions>k__BackingField:
     <Up>k__BackingField: 0
     <Down>k__BackingField: 0
