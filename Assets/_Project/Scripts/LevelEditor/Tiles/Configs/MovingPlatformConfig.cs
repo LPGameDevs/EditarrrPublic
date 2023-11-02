@@ -56,6 +56,12 @@ namespace Editarrr.LevelEditor
             this.Distance = value;
         }
 
+
+        public override TileConfig Clone()
+        {
+            return new MovingPlatformConfig(this.Distance, this.MoveRight);
+        }
+
         public override string ToString()
         {
             return $"Moving Platform Config >> D = {this.Distance}, DIR = {this.MoveRight}";

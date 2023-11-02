@@ -53,6 +53,12 @@
             this.Inverted = evt.newValue;
         }
 
+
+        public override TileConfig Clone()
+        {
+            return new LeverBlockConfig(this.Channel, this.Inverted);
+        }
+
         public override string ToString()
         {
             return $"Lever Block Config >> C = {this.Channel}, I = {this.Inverted}";

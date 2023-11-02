@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db065503e7b7faf4ca7f77aab091f5a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1fb44c082d495694280ad4c1e16649d8, type: 3}
   m_Name: LeverBlockConfigData
   m_EditorClassIdentifier: 
   <Channel>k__BackingField: 0

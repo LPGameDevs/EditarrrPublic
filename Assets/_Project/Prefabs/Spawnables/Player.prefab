@@ -25988,13 +25988,13 @@ MonoBehaviour:
   <JumpHeight>k__BackingField: 3.5
   <CoyoteTime>k__BackingField: 0.1
   <JumpBuffer>k__BackingField: 0.1
-  <FallSpeedMin>k__BackingField: 80
-  <FallSpeedMax>k__BackingField: 120
+  <FallSpeedMin>k__BackingField: 60
+  <FallSpeedMax>k__BackingField: 90
   <JumpApexThreshold>k__BackingField: 0.5
   <CollisionResolveIterations>k__BackingField: 20
-  <Acceleration>k__BackingField: 10
-  <DeAcceleration>k__BackingField: 7
-  <MaxMoveSpeed>k__BackingField: 13
+  <Acceleration>k__BackingField: 5
+  <DeAcceleration>k__BackingField: 8
+  <MaxMoveSpeed>k__BackingField: 9
   <JumpApexBonus>k__BackingField: 2
 --- !u!114 &5335767767192113699
 MonoBehaviour:
