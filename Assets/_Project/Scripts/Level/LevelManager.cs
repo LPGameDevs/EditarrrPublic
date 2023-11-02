@@ -31,7 +31,7 @@ namespace Editarrr.Level
 
         [SerializeField] private bool RemoteStorageEnabled = false;
         [SerializeField] private bool UploadsAllowed = false;
-        public static bool DistributionStorageEnabled = false;
+        public static bool DistributionStorageEnabled = true;
 
         #endregion
 
@@ -323,9 +323,9 @@ namespace Editarrr.Level
 
         #endregion
 
-        public string GetScreenshotPath(string levelCode)
+        public string GetScreenshotPath(string levelCode, bool isDistro = false)
         {
-            return this.LevelStorage.GetScreenshotPath(levelCode);
+            return this.LevelStorage.GetScreenshotPath(levelCode, isDistro);
         }
 
         public bool LevelExists(string levelCode)

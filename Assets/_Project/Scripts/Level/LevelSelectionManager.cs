@@ -91,7 +91,7 @@ public class LevelSelectionManager : ManagerComponent
     {
         foreach (var level in levels)
         {
-            string screenshotPath = LevelManager.GetScreenshotPath(level.Code);
+            string screenshotPath = LevelManager.GetScreenshotPath(level.Code, level.IsDistro);
             _levelLoader.AddLevelPrefabFromData(level, screenshotPath);
         }
     }

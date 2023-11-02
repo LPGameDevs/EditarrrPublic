@@ -35,6 +35,11 @@ namespace Editarrr.Level
             return LocalRootDirectory + $"{code}/";
         }
 
+        private string GetDistroLevelPath(string code)
+        {
+            return DistroRootDirectory + $"{code}/";
+        }
+
         private string GetCreateLevelPath(string code)
         {
             string levelDirectory = this.GetLevelPath(code);
@@ -48,9 +53,15 @@ namespace Editarrr.Level
             return levelDirectory;
         }
 
-        public override string GetScreenshotPath(string code)
+        public override string GetScreenshotPath(string code, bool isDistro = false)
         {
             string path = this.GetCreateLevelPath(code) + "screenshot.png";
+
+            if (isDistro)
+            {
+                path = this.GetDistroLevelPath(code) + "screenshot.png";
+            }
+
             return path;
         }
 
@@ -182,8 +193,24 @@ namespace Editarrr.Level
 
             if (LevelManager.DistributionStorageEnabled)
             {
-                // @todo Load distribution levels from
-                string path = DistroRootDirectory;
+                dir = new DirectoryInfo(DistroRootDirectory);
+
+                foreach (DirectoryInfo levelDirectory in dir.GetDirectories())
+                {
+                    string path = this.GetDistroLevelPath(levelDirectory.Name);
+                    string levelFilePath = path + "level.json";
+                    if (!File.Exists(levelFilePath))
+                    {
+                        continue;
+                    }
+                    string data = File.ReadAllText(levelFilePath);
+                    LevelSave levelSave = JsonUtility.FromJson<LevelSave>(data);
+
+                    LevelStub stub = new LevelStub(levelSave.Code, levelSave.Creator, levelSave.CreatorName, levelSave.RemoteId ?? "", levelSave.Published);
+                    stub.SetDistro(true);
+
+                    levelsStubs.Add(stub);
+                }
             }
 
             callback?.Invoke(levelsStubs.ToArray());

@@ -53,6 +53,11 @@ public class LevelSelectionLoader : MonoBehaviour
             level.HideEditorTools();
         }
 
+        if (levelData.IsDistro)
+        {
+            level.HideDeleteButton();
+        }
+
         _loadedLevels.Add(level.transform);
     }
 

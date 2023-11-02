@@ -594,7 +594,7 @@ MonoBehaviour:
   ScreenshotImage: {fileID: 1009334344031754669}
   EditButton: {fileID: 0}
   UploadButton: {fileID: 0}
-  DeleteButton: {fileID: 0}
+  DeleteButton: {fileID: 5592826228265399632}
 --- !u!1 &6296508363751482076
 GameObject:
   m_ObjectHideFlags: 0

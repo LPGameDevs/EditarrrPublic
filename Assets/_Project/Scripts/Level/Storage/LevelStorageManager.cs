@@ -6,7 +6,7 @@ namespace Level.Storage
     {
         public abstract void Save(string code, string data);
         public abstract void SaveScreenshot(string code, byte[] screenshot);
-        public abstract string GetScreenshotPath(string code);
+        public abstract string GetScreenshotPath(string code, bool isDistro = false);
         public abstract bool LevelExists(string code);
         public abstract void CopyLevelFromDirectory(string code, string sourceDirectory);
         public abstract string GetLevelPath(string code);
