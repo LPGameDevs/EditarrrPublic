@@ -35,6 +35,9 @@ namespace Editarrr.Level
 
         #endregion
 
+        float _saveSoundBufferTime;
+        const float _saveSoundBufferDuration = 0.2f;
+
         public override void DoAwake()
         {
             LevelStorage.Initialize();
@@ -200,7 +203,12 @@ namespace Editarrr.Level
                 this.LevelUploadedCallback = null;
             }
 
-            AudioManager.Instance.PlayRandomizedAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME, 0.1f, 0.1f);
+            if(Time.time > _saveSoundBufferTime)
+            {
+                AudioManager.Instance.PlayAudioClip(AudioManager.LEVEL_SAVED_CLIP_NAME);
+                _saveSoundBufferTime = Time.time + _saveSoundBufferDuration;
+            }
+
         }
 
         private void SetRemoteUploadId(string code, string remoteId)

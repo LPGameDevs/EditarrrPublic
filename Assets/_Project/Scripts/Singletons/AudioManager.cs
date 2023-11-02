@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,11 +27,16 @@ namespace Editarrr.Audio
         Dictionary<string, MultiSound> multiSoundDict = new Dictionary<string, MultiSound>();
 
         #region Clip names
+        public const string MINOR_CLICK_CLIP_NAME = "click_AE";
+        public const string MEDIUM_CLICK_CLIP_NAME = "click3_SI";
+        public const string SCROLL_TICK_CLIP_NAME = "scrollTick";
         public const string AFFIRMATIVE_CLIP_NAME = "affirmative";
         public const string NEGATIVE_CLIP_NAME = "negative";
         public const string BUTTONCLICK_CLIP_NAME = "buttonClick";
+        public const string LEVEL_SAVED_CLIP_NAME = "levelSaved";
+        public const string LEVEL_SUBMITTED_CLIP_NAME = "levelSubmitted";
         public const string LEVEL_DESTROYED_CLIP_NAME = "levelDestroyed";
-        public const string LEVEL_UPLOADED_CLIP_NAME = "levelUploaded";
+
         public const string ATTENTION_CLIP_NAME = "attention";
         public const string DENIED_CLIP_NAME = "denied";
         public const string WARNING_CLIP_NAME = "warning";
@@ -91,32 +97,43 @@ namespace Editarrr.Audio
         public void PlayAudioClip(string clipName)
         {
             if (audioDict.ContainsKey(clipName))
-            {
-                sfxSources[currentSFXSource].PlayOneShot(audioDict[clipName]);
-                currentSFXSource = (currentSFXSource + 1) % sfxSources.Length;
-            }
+                PlayAudioClip(audioDict[clipName]);
             else
-            {
                 Debug.Log("AudioManager: AudioClip " + clipName + " not found in dictionary.");
-            }
         }
 
         public void PlayAudioClip(AudioClip clip)
         {
+            int attempts = 0;
+            while ((sfxSources[currentSFXSource].isPlaying && attempts < sfxSources.Length))
+            {
+                attempts++;
+                MarkNextSource();
+            }
+
+            sfxSources[currentSFXSource].pitch = 1;
+            sfxSources[currentSFXSource].volume = 1;
             sfxSources[currentSFXSource].PlayOneShot(clip);
-            currentSFXSource = (currentSFXSource + 1) % sfxSources.Length;
+            MarkNextSource();
         }
 
         public void PlayRandomizedAudioClip(string clipName, float pitchVariance, float volumeVariance)
         {
             if (audioDict.ContainsKey(clipName))
             {
+                int attempts = 0;
+                while((sfxSources[currentSFXSource].isPlaying && attempts < sfxSources.Length))
+                {
+                    attempts++;
+                    MarkNextSource();
+                }
+
                 float pitch = 1f + Random.Range(-pitchVariance, pitchVariance);
                 float volume = 1f + Random.Range(-volumeVariance, volumeVariance);
                 sfxSources[currentSFXSource].pitch = pitch;
                 sfxSources[currentSFXSource].volume = volume;
                 sfxSources[currentSFXSource].PlayOneShot(audioDict[clipName]);
-                currentSFXSource = (currentSFXSource + 1) % sfxSources.Length;
+                MarkNextSource();
             }
             else
             {
@@ -145,5 +162,7 @@ namespace Editarrr.Audio
                 Debug.Log("AudioManager: AudioClip " + soundName + " not found in multi sound dictionary.");
             }
         }
+
+        private void MarkNextSource() => currentSFXSource = (currentSFXSource + 1) % sfxSources.Length;
     }
 }

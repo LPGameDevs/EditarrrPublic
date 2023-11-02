@@ -1,4 +1,5 @@
 using Editarrr.Audio;
+using Editarrr.Input;
 using Level.Storage;
 using UnityEngine;
 
@@ -10,7 +11,15 @@ namespace Browser
         public LeaderboardRow RowPrefab;
         public GameObject LoadingOverlay;
 
+        [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
+
         private string _code;
+
+        private void Update()
+        {
+            if(PauseInput.WasPressed)
+                CloseButtonPressed();
+        }
 
         public void SetCode(string code)
         {

@@ -348,6 +348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelPrefab: {fileID: 5157802081767063974, guid: a0eb0e63520f012ca86b835690e914c6, type: 3}
   _loadingOverlay: {fileID: 2063159055}
+  <PauseInput>k__BackingField: {fileID: 11400000, guid: ff4dcd1715d1d3749abc905aba2a3ef5, type: 2}
 --- !u!222 &104350024
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -369,6 +370,7 @@ GameObject:
   - component: {fileID: 147898748}
   - component: {fileID: 147898747}
   - component: {fileID: 147898750}
+  - component: {fileID: 147898751}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -427,7 +429,19 @@ MonoBehaviour:
   m_VerticalScrollbarSpacing: -3
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 147898751}
+        m_TargetAssemblyTypeName: ScrollRectAugments, Assembly-CSharp
+        m_MethodName: OnValueChanged
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &147898748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,6 +493,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!114 &147898751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147898745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 534fb237cdc483342af41930805bba36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scrollTickDistance: {x: 0, y: 200}
 --- !u!1 &325463285
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,11 +20,15 @@ namespace Gameplay
         private void Start()
         {
             _animator = GetComponent<Animator>();
-
-            ManageKeys(0);
+            Invoke(nameof(InitializeState), 0.5f);
         }
 
-        private void ManageKeys(int countChange)
+        private void InitializeState()
+        {
+            ManageKeys();
+        }
+
+        private void ManageKeys(int countChange = 0)
         {
             _remainingKeys += countChange;
 

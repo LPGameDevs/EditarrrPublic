@@ -13,7 +13,7 @@ namespace Gameplay
 
         const string PICKUP_TRIGGER_NAME = "Pickup";
 
-        private void Awake()
+        private void Start()
         {
             OnKeyCountChanged?.Invoke(+1);
         }

@@ -35,7 +35,7 @@ namespace LevelEditor
         public void UploadLevel()
         {
             OnEditorLevelUpload?.Invoke(Code);
-            AudioManager.Instance.PlayAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME);
+            //AudioManager.Instance.PlayAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME);
         }
 
         public void GoToEditorLevel()

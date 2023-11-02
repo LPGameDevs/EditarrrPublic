@@ -6,6 +6,7 @@ using Level.Storage;
 using Singletons;
 using TMPro;
 using UnityEngine;
+using Editarrr.Input;
 using UnityEngine.UI;
 
 namespace Gameplay.GUI
@@ -24,7 +25,7 @@ namespace Gameplay.GUI
         [SerializeField] Animator _animator;
         [SerializeField] GameObject _leaderBoard;
         [SerializeField] RatingMenu _ratingMenu;
-
+        [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
 
         const string VICTORY_TRIGGER_NAME = "Victory";
 
@@ -33,6 +34,11 @@ namespace Gameplay.GUI
         private float _time;
         private string _timeText;
         private LevelState _levelData;
+        private void Update()
+        {
+            if (PauseInput.WasPressed)
+                OnClickHome();
+        }
 
         private void UpdateContent()
         {
@@ -169,7 +175,7 @@ namespace Gameplay.GUI
                 OpenRatingMenu();
         }
 
-        public void OnClickBack()
+        public void OnClickHome()
         {
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
         }

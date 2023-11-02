@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using Browser;
 using Editarrr.Audio;
 using Editarrr.Level;
+using Editarrr.Input;
 using Level.Storage;
 using Singletons;
 using UnityEngine;
 
 public class LevelBrowserLoader : MonoBehaviour
 {
-    private LevelManager _levelManager;
-
     [SerializeField] private LevelBrowserLevel _levelPrefab;
     [SerializeField] private GameObject _loadingOverlay;
+    [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
+
+    private LevelManager _levelManager;
     private List<LevelBrowserLevel> _loadedLevels = new List<LevelBrowserLevel>();
 
     private void Awake()
@@ -23,6 +25,12 @@ public class LevelBrowserLoader : MonoBehaviour
     private void Start()
     {
         StartLoading();
+    }
+
+    private void Update()
+    {
+        if(PauseInput)
+            CloseBrowser();
     }
 
     public void SetLevelManager(LevelManager levelManager)

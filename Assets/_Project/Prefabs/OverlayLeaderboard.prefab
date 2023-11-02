@@ -150,6 +150,7 @@ MonoBehaviour:
   Rows: {fileID: 6211415811187665846}
   RowPrefab: {fileID: 7927880058265487891, guid: 6e32a06831685e66e889b070d6453635, type: 3}
   LoadingOverlay: {fileID: 848318628467941645}
+  <PauseInput>k__BackingField: {fileID: 11400000, guid: ff4dcd1715d1d3749abc905aba2a3ef5, type: 2}
 --- !u!1 &1381070769634035060
 GameObject:
   m_ObjectHideFlags: 0

@@ -1921,6 +1921,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 466382011}
   m_CullTransparentMesh: 1
+--- !u!114 &518977074 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6522958623997308131, guid: b8ecbc41a938adc4cb7ff5474e6afbad, type: 3}
+  m_PrefabInstance: {fileID: 216307058}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &562469300
 GameObject:
   m_ObjectHideFlags: 0
@@ -6216,6 +6227,7 @@ MonoBehaviour:
   _animator: {fileID: 468777124318979836}
   _leaderBoard: {fileID: 1614280975}
   _ratingMenu: {fileID: 2046078181}
+  <PauseInput>k__BackingField: {fileID: 11400000, guid: ff4dcd1715d1d3749abc905aba2a3ef5, type: 2}
 --- !u!95 &468777124318979836
 Animator:
   serializedVersion: 5
@@ -6759,6 +6771,7 @@ GameObject:
   - component: {fileID: 468777124501797899}
   - component: {fileID: 468777124501797902}
   - component: {fileID: 468777124501797901}
+  - component: {fileID: 468777124501797903}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -6858,6 +6871,19 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 3, y: -5}
   m_UseGraphicAlpha: 1
+--- !u!114 &468777124501797903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468777124501797897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64237dd551962e24fadb80f14873bb2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _backEditorButton: {fileID: 518977074}
 --- !u!1 &468777124704156453
 GameObject:
   m_ObjectHideFlags: 0
@@ -7830,7 +7856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _winMenu: {fileID: 468777124318979835}
-  _pauseMenu: {fileID: 468777124501797898}
+  _pauseMenu: {fileID: 468777124501797903}
   _overlay: {fileID: 468777125436960750}
   _inputPrompt: {fileID: 466382011}
   <MoveInput>k__BackingField: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}

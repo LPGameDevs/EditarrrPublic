@@ -1,3 +1,4 @@
+using Editarrr.Audio;
 using Editarrr.Input;
 using Editarrr.Level;
 using Level.Storage;
@@ -11,7 +12,7 @@ namespace Gameplay.GUI
     public class GameplayGuiManager : MonoBehaviour
     {
         [SerializeField] private WinMenu _winMenu;
-        [SerializeField] private Transform _pauseMenu;
+        [SerializeField] private PauseMenu _pauseMenu;
         [SerializeField] private Image _overlay;
         [SerializeField] private GameObject _inputPrompt;
 
@@ -47,6 +48,7 @@ namespace Gameplay.GUI
         {
             _levelState = levelState;
             _winMenu.SetLevelData(levelState);
+            _pauseMenu.ToggleEditorButton(levelState.Published);
         }
 
         public void SetLevelManager(LevelManager levelManager)
@@ -87,6 +89,7 @@ namespace Gameplay.GUI
             PauseGame();
             SetOverlayAlpha(0.5f);
             _pauseMenu.gameObject.SetActive(true);
+            AudioManager.Instance.PlayAudioClip(AudioManager.NEGATIVE_CLIP_NAME);
         }
 
         public void HidePauseMenu()
@@ -95,6 +98,7 @@ namespace Gameplay.GUI
             UnPauseGame();
             SetOverlayAlpha(0f);
             _pauseMenu.gameObject.SetActive(false);
+            AudioManager.Instance.PlayAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME);
         }
 
         private void TogglePauseMenu()
