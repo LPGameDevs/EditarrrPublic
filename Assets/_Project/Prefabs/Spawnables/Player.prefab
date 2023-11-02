@@ -25939,9 +25939,9 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 2
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!114 &123399670
 MonoBehaviour:
@@ -25955,6 +25955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f319f23f6a7a7785bc2ba5180944b57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Rigidbody>k__BackingField: {fileID: 123399669}
   <Collider>k__BackingField: {fileID: 4715788225090088003}
   <GroundContactFilter>k__BackingField:
     useTriggers: 0

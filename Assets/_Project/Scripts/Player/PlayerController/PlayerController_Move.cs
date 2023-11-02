@@ -19,7 +19,7 @@ namespace Player
         private void UpdateMove()
         {
             this.Movement = new Vector3(this.HorizontalSpeed, this.VerticalSpeed) * Time.deltaTime;
-
+            
             if (!this.IsKnockback)
             {
                 // Debug.Log($"Add External Force {this.ExternalForce}");
@@ -31,7 +31,8 @@ namespace Player
             var hits = new RaycastHit2D[1];
             if (this.Collider.Cast(this.Movement, this.GroundContactFilter, hits, this.Movement.magnitude) == 0)
             {
-                this.transform.position += this.Movement;
+                // this.transform.position += this.Movement;
+                this.Rigidbody.MovePosition(this.transform.position + this.Movement);
                 return;
             }
 
@@ -67,7 +68,8 @@ namespace Player
             }
             finally
             {
-                this.transform.position = resolvePosition;
+                // this.transform.position = resolvePosition;
+                this.Rigidbody.MovePosition(resolvePosition);
             }
         }
 

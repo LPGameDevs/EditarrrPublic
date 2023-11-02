@@ -17,7 +17,9 @@ namespace Player
         public static event Action<bool> OnPlayerMoved;
 
 
+        [field: SerializeField] private Rigidbody2D Rigidbody { get; set; }
         private HealthSystem Health { get; set; }
+
 
         Vector3 Velocity { get; set; }
         Vector3 LastTransformPosition { get; set; }
