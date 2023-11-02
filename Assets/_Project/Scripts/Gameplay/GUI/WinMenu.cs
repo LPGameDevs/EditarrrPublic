@@ -12,7 +12,9 @@ namespace Gameplay.GUI
     public class WinMenu : MonoBehaviour
     {
         public static event Action<string, RemoteScoreStorage_AllScoresLoadedCallback> OnLeaderboardRequested;
-        public static event Action<string, float> OnScoreSubmit;
+
+        public delegate void WinMenu_OnScoreSubmit();
+        public static event Action<string, float, WinMenu_OnScoreSubmit> OnScoreSubmit;
         public static event Action<string, int> OnRatingSubmit;
 
         public TMP_Text LevelCode;
@@ -117,10 +119,14 @@ namespace Gameplay.GUI
         public void SubmitScore()
         {
             Debug.Log("Submitting score");
-            OnScoreSubmit?.Invoke(_code, _time);
+            OnScoreSubmit?.Invoke(_code, _time, OnSubmitScoreOpenDashboard);
             SubmitButton.onClick.RemoveAllListeners();
             SubmitButton.onClick.AddListener(OpenScoreboard);
-            OpenScoreboard();
+
+            void OnSubmitScoreOpenDashboard()
+            {
+                OpenScoreboard();
+            }
         }
 
         public void OpenScoreboard()

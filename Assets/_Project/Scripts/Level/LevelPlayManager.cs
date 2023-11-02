@@ -1,3 +1,4 @@
+using System;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
@@ -183,8 +184,14 @@ namespace Editarrr.Level
         #endregion
 
 
-        private void OnScoreSubmitRequested(string code, float time)
+        private void OnScoreSubmitRequested(string code, float time, WinMenu.WinMenu_OnScoreSubmit callback)
         {
+#if YAN_DEBUG
+            Debug.Log("yan");
+#else
+            Debug.Log("not yan");
+#endif
+
             this.LevelManager.LevelStorage.LoadLevelData(code, ScoreLevelLoaded);
 
             void ScoreLevelLoaded(LevelSave levelSave)
@@ -196,6 +203,9 @@ namespace Editarrr.Level
                     // @todo do we need this?
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelScoreSubmitted);
                     AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelScoreSubmitted, $"{code}-{time}");
+
+                    // Update leaderboard.
+                    callback.Invoke();
                 }
             }
         }

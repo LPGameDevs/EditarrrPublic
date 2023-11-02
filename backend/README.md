@@ -16,6 +16,22 @@ To open your own Codepsace, from the repo homepage, simply click `Code > Create 
 
 More on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart)).
 
+### Run Unit Tests
+```sh
+cd backend
+./scripts/run-tests.sh
+```
+
+### Recommended: Deploy Changes to the Lambda
+NOTE: Be careful because this affects the server actively used by the game.
+
+For now (until we develop a better way), the development workflow involves deploying Lambda changes with the [update-lambda.sh](./scripts/update-lambda.sh) script and testing them live.
+
+If you need to add APIs or modify the DynamoDB tables, @yanniboi will have to do the deployment (because only he has the proper authorization).
+
+### (NOT Recommended) Developing with a Local Lambda/DDB
+_This is NOT recommended because [start-locao.sh](./scripts/start-local.sh) is out-of-date and we haven't developed a way to keep it in-sync with the Terraform deploys to AWS_.
+
 To start the backend, from the Codespace, run shell script:
 ```sh
 cd backend
@@ -75,10 +91,8 @@ The backend API would have the following APIs:
 **GET `/levels`**
 
 **Query Params:**
-* `status` (Required) filters to levels of the provided status
-* `limit` (Optional) page limit, default: 10
-* `skip` (Optional) page skip, default: 0
-* `creator-id` (Optional) filters to levels for a creator
+* `cursor` (Optional) Provide the cursor value of a prior request to get the next page
+* `draft` (Optional) Queries for `DRAFT` levels rather than `PUBLISHED` levels.
 
 **Response:**
 ```json
@@ -95,9 +109,20 @@ The backend API would have the following APIs:
       "createdAt": 1686495335,
       "updatedAt": 1686495335,
     }
-  ]
+  ],
+  "cursor": "UUID" // For pagination - simply pass this as the 'cursor' param to another request to get the next page
 }
 ```
+
+Pagination is cursor-based (rather than offset) 
+because that's what DynamDB supports out-of-the-box 
+(https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.Pagination.html).
+
+The UI this would most naturally support would involve hitting the limit, 
+then showing a "Load More" button (or something like that),
+then fetching the next page of results.
+
+For flexibility, I've also added a "page limit" query param so the client can fetch more than 10 levels in a single page.
 
 ### Get Level
 
