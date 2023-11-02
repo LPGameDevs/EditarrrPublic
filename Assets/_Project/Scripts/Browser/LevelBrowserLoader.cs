@@ -1,17 +1,20 @@
 using System;
 using System.Collections.Generic;
 using Browser;
+using Editarrr.Audio;
 using Editarrr.Level;
+using Editarrr.Input;
 using Level.Storage;
 using Singletons;
 using UnityEngine;
 
 public class LevelBrowserLoader : MonoBehaviour
 {
-    private LevelManager _levelManager;
-
     [SerializeField] private LevelBrowserLevel _levelPrefab;
-    [SerializeField] private Transform _loadingSpinner;
+    [SerializeField] private GameObject _loadingOverlay;
+    [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
+
+    private LevelManager _levelManager;
     private List<LevelBrowserLevel> _loadedLevels = new List<LevelBrowserLevel>();
 
     private void Awake()
@@ -24,6 +27,12 @@ public class LevelBrowserLoader : MonoBehaviour
         StartLoading();
     }
 
+    private void Update()
+    {
+        if(PauseInput)
+            CloseBrowser();
+    }
+
     public void SetLevelManager(LevelManager levelManager)
     {
         _levelManager = levelManager;
@@ -31,12 +40,12 @@ public class LevelBrowserLoader : MonoBehaviour
 
     private void StartLoading()
     {
-        _loadingSpinner.gameObject.SetActive(true);
+        _loadingOverlay.SetActive(true);
     }
 
     private void StopLoading()
     {
-        _loadingSpinner.gameObject.SetActive(false);
+        _loadingOverlay.SetActive(false);
     }
 
     public void DestroyLevels()
@@ -81,9 +90,10 @@ public class LevelBrowserLoader : MonoBehaviour
         _loadedLevels.Add(level);
     }
 
-    public void GoToSelection()
+    public void CloseBrowser()
     {
-        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
+        SceneTransitionManager.Instance.RemoveScene(SceneTransitionManager.BrowserSceneName);
+        AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
     }
 
     public void SetLevels(LevelStub[] levels)

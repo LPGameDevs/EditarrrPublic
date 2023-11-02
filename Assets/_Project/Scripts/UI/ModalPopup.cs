@@ -1,3 +1,4 @@
+using Editarrr.Audio;
 using Editarrr.UI;
 using Singletons;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace UI
         [SerializeField] protected string TitleText;
         [SerializeField] protected string ContentText;
         [SerializeField] protected string CloseText;
+        [SerializeField] protected AudioClip popupSound;
+        [SerializeField] protected AudioClip closeSound;
         [SerializeField] protected ModalPopupBlock Prefab;
 
         public virtual void Open(Transform parent = null, bool alwaysShow = false)
@@ -35,11 +38,13 @@ namespace UI
             popup.Setup(this);
 
             PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Open);
+            AudioManager.Instance.PlayAudioClip(popupSound);
         }
 
         public virtual void Close()
         {
             PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Close);
+            AudioManager.Instance.PlayAudioClip(closeSound);
         }
 
         public virtual string GetTitleText()

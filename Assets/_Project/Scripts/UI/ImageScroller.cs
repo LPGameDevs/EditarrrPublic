@@ -16,7 +16,7 @@ public class ImageScroller : MonoBehaviour
     void Update()
     {
         if (scrollTarget.anchoredPosition.x > -sizeReference.rect.width)
-            transform.Translate(scrollSpeed, 0, 0);
+            transform.Translate(scrollSpeed * Time.deltaTime, 0, 0);
         else
             scrollTarget.anchoredPosition = startingPosition;
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Editarrr.Audio;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
@@ -33,6 +34,9 @@ namespace Editarrr.Level
         public static bool DistributionStorageEnabled = false;
 
         #endregion
+
+        float _saveSoundBufferTime;
+        const float _saveSoundBufferDuration = 0.2f;
 
         public override void DoAwake()
         {
@@ -198,6 +202,13 @@ namespace Editarrr.Level
                 // this.LevelUploadedCallback?.Invoke(null);
                 this.LevelUploadedCallback = null;
             }
+
+            if(Time.time > _saveSoundBufferTime)
+            {
+                AudioManager.Instance.PlayAudioClip(AudioManager.LEVEL_SAVED_CLIP_NAME);
+                _saveSoundBufferTime = Time.time + _saveSoundBufferDuration;
+            }
+
         }
 
         private void SetRemoteUploadId(string code, string remoteId)

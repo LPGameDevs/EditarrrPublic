@@ -1,7 +1,9 @@
 using System;
 using System.IO;
+using Editarrr.Audio;
 using LevelEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Browser
 {
@@ -10,7 +12,7 @@ namespace Browser
         public static event Action<string> OnBrowserLevelDownloadScreenshot;
         public static event Action<string> OnBrowserLevelDownload;
 
-        public Transform DownloadButton;
+        public Button DownloadButton;
 
         public void OnDownloadButtonPressed()
         {
@@ -20,12 +22,14 @@ namespace Browser
             {
                 remote = Code;
             }
+            DownloadButton.interactable = false;
             OnBrowserLevelDownload?.Invoke(remote);
+            AudioManager.Instance.PlayRandomizedAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME, 0.1f, 0.1f);
         }
 
         public void SetDownloaded()
         {
-            DownloadButton.gameObject.SetActive(false);
+            DownloadButton.interactable = false;
         }
 
         public override void SetScreenshot(string path, bool retry = false)

@@ -137,7 +137,7 @@
 
 .button-navigation:active {
     scale: 0.9 0.9;
-    -unity-background-image-tint-color: rgb(180, 180, 180);
+    -unity-background-image-tint-color: rgb(154, 154, 154);
 }
 
 .tile-data-slot {
@@ -179,4 +179,20 @@
     border-bottom-color: rgb(40, 40, 40);
     top: 88px;
     flex-shrink: 0;
+}
+
+.button-navigation-symbol {
+    background-image: url('project://database/Assets/_Project/Art/UI/UI_Tight.png?fileID=1763614365&guid=53cc67c92fd1bfb4abd11f589fa6fd10&type=3#UI_Tight_109');
+    width: 64%;
+    height: 64%;
+    -unity-background-scale-mode: scale-to-fit;
+    margin-bottom: 0;
+    margin-left: 6px;
+    margin-top: 0;
+    margin-right: 0;
+    padding-left: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    -unity-background-image-tint-color: rgba(51, 50, 61, 255);
 }
