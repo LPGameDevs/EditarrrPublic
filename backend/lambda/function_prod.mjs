@@ -11,8 +11,6 @@ import {
 } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 import { Buffer } from 'buffer';
-import { LevelsDbClient } from './db/levels.mjs';
-import { LevelsApi } from "./api/levels.mjs";
 
 /* TODO:
     * Refactor - Move all the code for each API into its own file
@@ -29,15 +27,10 @@ const client = new DynamoDBClient(options);
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-const tableNameLevel = "editarrr-level-storage";
-// TODO Move all calls to the level storage to this client
-const levelsDbClient = new LevelsDbClient(dynamo);
-// TODO Move levels API logic to this class
-const levelsApi = new LevelsApi(levelsDbClient);
-
-const tableNameScore = "editarrr-score-storage";
-const tableNameRating = "editarrr-rating-storage";
-const tableNameAnalytics = "editarrr-analytics-storage";
+const tableNameLevel = "prod-editarrr-level-storage";
+const tableNameScore = "prod-editarrr-score-storage";
+const tableNameRating = "prod-editarrr-rating-storage";
+const tableNameAnalytics = "prod-editarrr-analytics-storage";
 
 const defaultPageLimit = 10;
 
@@ -145,7 +138,6 @@ export const handler = async (event, context) => {
                 // Using levelId as a cursor, we have to fetch more level data in order to provide DDB with all the data it expects from the cursor
                 if (event?.queryStringParameters?.cursor) {
                      var cursorLevelId = event.queryStringParameters.cursor;
-                     // TODO Replace this with the dbClient command
                      var cursorLevelQueryResponse = await dynamo.send(
                         new GetCommand({
                             TableName: tableNameLevel,
@@ -182,7 +174,6 @@ export const handler = async (event, context) => {
 
                     var id = extractLevelId(dbLevel.pk);
 
-                    // TODO Include avg and total ratings & scores
                     responseLevels.push({
                         "id": id,
                         "name": dbLevel.levelName,
@@ -211,8 +202,38 @@ export const handler = async (event, context) => {
             case "GET /levels/{id}":
                 // TODO Validation of request
 
-                responseBody = await levelsApi.getLevel(event.pathParameters.id);
-                
+                var queryResponse = await dynamo.send(
+                    new GetCommand({
+                        TableName: tableNameLevel,
+                        Key: {
+                            "pk": `LEVEL#${event.pathParameters.id}`,
+                            "sk": `LEVEL#${event.pathParameters.id}`
+                        }
+                    })
+                );
+
+                if (!queryResponse.Item) throw new Error(`Level ${event.pathParameters.id} not found`);
+
+                var dbLevel = queryResponse.Item;
+
+                // TODO Validation of queried response
+
+                // TODO Refactor into a separate function
+                var id = extractLevelId(dbLevel.pk);
+
+                responseBody = {
+                    "id": id,
+                    "name": dbLevel.levelName,
+                    "creator": {
+                        "id": dbLevel.levelCreatorId,
+                        "name": dbLevel.levelCreatorName
+                    },
+                    "status": dbLevel.levelStatus,
+                    "createdAt": dbLevel.levelCreatedAt,
+                    "updatedAt": dbLevel.levelUpdatedAt,
+                    "data": dbLevel.levelData
+                }
+
                 break;
             case "PATCH /levels/{id}":
                 requestJSON = JSON.parse(event.body);
@@ -222,7 +243,6 @@ export const handler = async (event, context) => {
 
                 // TODO Validation of request
 
-                // TODO Replace this with the dbClient command
                 var queryResponse = await dynamo.send(
                     new GetCommand({
                         TableName: tableNameLevel,
@@ -301,6 +321,8 @@ export const handler = async (event, context) => {
             case "POST /levels/{id}/scores":
                 requestJSON = JSON.parse(event.body);
 
+                // TODO Check that level exists.
+
                 var score = requestJSON.score;
                 if (!score) throw new BadRequestException(`'score' must be provided in the request.`);
                 var scoreLevelName = requestJSON.code;
@@ -309,12 +331,6 @@ export const handler = async (event, context) => {
                 if (!scoreCreatorId) throw new BadRequestException(`'creator' must be provided in the request.`);
                 var scoreCreatorName = requestJSON.creatorName;
                 if (!scoreCreatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
-
-                // TODO Validate that the level exists.
-
-                // TODO Get all existing ratings
-                // TODO Calc new avg
-                // TODO Calc new total
 
                 var generatedScoreId = uuidv4();
                 var currentTimestamp = Date.now();
@@ -333,8 +349,6 @@ export const handler = async (event, context) => {
                         },
                     })
                 );
-
-                // TODO Update the total, avg score for the level
 
                 responseBody = {
                     "message": `Success! Created score for: ${scoreLevelName}`,
@@ -394,6 +408,8 @@ export const handler = async (event, context) => {
             case "POST /levels/{id}/ratings":
                 requestJSON = JSON.parse(event.body);
 
+                // TODO Check that level exists.
+
                 var rating = requestJSON.rating;
                 if (!rating) throw new BadRequestException(`'rating' must be provided in the request.`);
                 var ratingLevelName = requestJSON.code;
@@ -402,12 +418,6 @@ export const handler = async (event, context) => {
                 if (!ratingCreatorId) throw new BadRequestException(`'creator' must be provided in the request.`);
                 var ratingCreatorName = requestJSON.creatorName;
                 if (!ratingCreatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
-
-                // TODO Check that level exists.
-                // TODO Calc new avg
-                // TODO Calc new total
-
-                // TODO Overwrite any existing rating
 
                 var generatedRatingId = uuidv4();
                 var currentTimestamp = Date.now();
@@ -425,7 +435,6 @@ export const handler = async (event, context) => {
                             ratingSubmittedAt: currentTimestamp,
                         },
                     })
-                    // TODO Add the total, vag
                 );
 
                 responseBody = {
@@ -637,7 +646,6 @@ export const handler = async (event, context) => {
     };
 };
 
-// TODO Use the shared utils definition instead
 function extractLevelId(ddbLevelKeyStr) {
     const splitDDBLevelKeyStr = ddbLevelKeyStr.match(/#([0-9a-f-]+)/i);
 

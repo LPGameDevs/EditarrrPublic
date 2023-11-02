@@ -178,6 +178,7 @@
     border-top-color: rgb(40, 40, 40);
     border-bottom-color: rgb(40, 40, 40);
     top: 88px;
+    flex-shrink: 0;
 }
 
 .button-navigation-symbol {

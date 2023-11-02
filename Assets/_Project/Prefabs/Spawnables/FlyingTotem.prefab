@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: -8463723315205456912}
   - component: {fileID: 5926081874967404987}
   - component: {fileID: -242153438118041530}
+  - component: {fileID: 4672444065728389626}
   m_Layer: 10
   m_Name: FlyingTotem
   m_TagString: Untagged
@@ -309,6 +310,22 @@ MonoBehaviour:
   enemyAIController: {fileID: -8463723315205456912}
   exclamation: {fileID: 7253458429991118793}
   actionShowTime: 2
+--- !u!70 &4672444065728389626
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756266340693203146}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0072078644, y: -0.05917836}
+  m_Size: {x: 1.0190927, y: 0.70000166}
+  m_Direction: 1
 --- !u!1 &8201787337066556226
 GameObject:
   m_ObjectHideFlags: 0

@@ -64,7 +64,7 @@ namespace Singletons
                 value = value,
             };
 
-            RestClient.Post<AnalyticsResponse>($"{RemoteLevelStorageProviderAws.AwsLevelUrl}/dev/analytics",
+            RestClient.Post<AnalyticsResponse>($"{RemoteLevelStorageProviderAws.AwsLevelUrl}/analytics",
                 JsonUtility.ToJson(request)).Then(res =>
             {
                 Debug.Log("Analytics event tracked");
