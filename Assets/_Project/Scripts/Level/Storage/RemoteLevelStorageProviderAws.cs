@@ -14,10 +14,14 @@ namespace Level.Storage
     {
         private const string AwsLevelUrlProd = "https://e1pvn0880k.execute-api.eu-north-1.amazonaws.com/dev";
         private const string AwsLevelUrlDev = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com/dev";
-        private const string AwsScreenshotUrl = "https://editarrr-screenshots.s3.eu-north-1.amazonaws.com";
+
+        private const string AwsScreenshotUrlProd = "https://editarrr-screenshot-ethical-hare.s3.eu-north-1.amazonaws.com";
+        private const string AwsScreenshotUrlDev = "https://editarrr-screenshot-ideal-wren.s3.eu-north-1.amazonaws.com";
+
         private const bool ShowDebug = false;
 
         public static string AwsLevelUrl => GetLevelUrl();
+        public static string AwsScreenshotUrl => GetScreenshotUrl();
 
         public void Initialize()
         {
@@ -34,6 +38,18 @@ namespace Level.Storage
 
             // Default to dev env.
             return AwsLevelUrlDev;
+        }
+
+        private static string GetScreenshotUrl()
+        {
+
+#if DEPLOY_TARGET_PRODUCTION
+            // Activate production env.
+            return AwsScreenshotUrlProd;
+#endif
+
+            // Default to dev env.
+            return AwsScreenshotUrlDev;
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
@@ -204,7 +220,8 @@ namespace Level.Storage
                 }
                 else
                 {
-                    Debug.LogError("Error downloading image. Status code: " + response.StatusCode);
+                    Debug.LogError($"Error downloading image for level {code}. Status code: " + response.StatusCode);
+                    Debug.LogError(url);
                 }
             }
         }
