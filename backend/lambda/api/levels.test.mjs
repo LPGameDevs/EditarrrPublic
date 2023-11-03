@@ -1,5 +1,5 @@
-import { expect } from 'chai';
-import { stub } from 'sinon';
+import { expect, use } from 'chai';
+import { match, stub } from 'sinon';
 
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
@@ -8,20 +8,32 @@ import { LevelsApi } from './levels.mjs';
 import { LevelsDbClient } from '../db/levels.mjs';
 
 var dynamoDbClient;
+var ddbClientSendStub;
 var levelsDbClient;
 var levelsApi;
+
+const tableNameLevel = "editarrr-level-storage";
 
 describe('GetLevel', function () {
     
     beforeEach(function () {
         dynamoDbClient = new DynamoDBDocumentClient(new DynamoDBClient({}));
+        ddbClientSendStub = stub(dynamoDbClient, 'send');
         levelsDbClient = new LevelsDbClient(dynamoDbClient);
         levelsApi = new LevelsApi(levelsDbClient);
     });
 
-    it('should fetch and translate a level from the db."', async function () {
-        const ddbClientSendStub = stub(dynamoDbClient, 'send');
-        ddbClientSendStub.returns({
+    it('should fetch and translate a level from the db.', async function () {
+        // Arrange
+        const levelId = "4a414edd-da39-4412-8dda-cc484c77966c";
+        
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            Key: {
+                pk: `LEVEL#${levelId}`,
+                sk: `LEVEL#${levelId}`,
+            }
+        })).returns({
             "Item": {
                 "levelName": "65758",
                 "levelUpdatedAt": 1698515874383,
@@ -31,11 +43,18 @@ describe('GetLevel', function () {
                 "sk": "LEVEL#4a414edd-da39-4412-8dda-cc484c77966c",
                 "levelCreatedAt": 1698514557729,
                 "pk": "LEVEL#4a414edd-da39-4412-8dda-cc484c77966c",
-                "levelCreatorName": "Fresch"
+                "levelCreatorName": "Fresch",
+                "levelAvgScore": 1.0,
+                "levelTotalScores": 1,
+                "levelAvgRating": 1,
+                "levelTotalRatings": 1,
             }
         });
         
-        const result = await levelsApi.getLevel();
+        // Act
+        const result = await levelsApi.getLevel(levelId);
+
+        // Assert
         expect(result).to.deep.equal({
             "id": "4a414edd-da39-4412-8dda-cc484c77966c",
             "name": "65758",
@@ -47,7 +66,795 @@ describe('GetLevel', function () {
             "data": {},
             "status": "PUBLISHED",
             "createdAt": 1698514557729,
+            "avgScore": 1.0,
+            "totalScores": 1,
+            "avgRating": 1,
+            "totalRatings": 1,
+        });
+    });
+});
+
+describe('GetPagedLevels', function () {
     
+    beforeEach(function () {
+        dynamoDbClient = new DynamoDBDocumentClient(new DynamoDBClient({}));
+        ddbClientSendStub = stub(dynamoDbClient, 'send');
+        levelsDbClient = new LevelsDbClient(dynamoDbClient);
+        levelsApi = new LevelsApi(levelsDbClient);
+    });
+
+    it('should fetch the first page of levels sorted by last updated.', async function () {
+        // Arrange
+        var sortOptionQueryParam = "updated-at";
+        var sortAscQueryParam = "false";
+        var limitQueryParam = "2";
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = "false";
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelUpdatedAt-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 2,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            ExpressionAttributeValues: { ":status": "PUBLISHED" },
+        })).returns({
+            "Items":[
+                {
+                    "levelName": "Level 2",
+                    "levelUpdatedAt": 2,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+                {
+                    "levelName": "Level 1",
+                    "levelUpdatedAt": 1,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#1-1-1-1-1",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#1-1-1-1-1",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+            ] 
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 2",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 2,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                },
+                {
+                    "id": "1-1-1-1-1",
+                    "name": "Level 1",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                }
+            ]   
+        });
+    });
+
+    it('should fetch the first page of levels sorted by most recently created.', async function () {
+        // Arrange
+        var sortOptionQueryParam = "created-at";
+        var sortAscQueryParam = "false";
+        var limitQueryParam = "2";
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = "false";
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelCreatedAt-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 2,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            ExpressionAttributeValues: { ":status": "PUBLISHED" },
+        })).returns({
+            "Items":[
+                {
+                    "levelName": "Level 2",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 2,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+                {
+                    "levelName": "Level 1",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#1-1-1-1-1",
+                    "levelCreatedAt": 1,
+                    "pk": "LEVEL#1-1-1-1-1",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+            ] 
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 2",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 2,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                },
+                {
+                    "id": "1-1-1-1-1",
+                    "name": "Level 1",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                }
+            ]   
+        });
+    });
+
+    it('should fetch the first page of levels sorted by average score.', async function () {
+        // Arrange
+        var sortOptionQueryParam = "avg-score";
+        var sortAscQueryParam = "false";
+        var limitQueryParam = "2";
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = "false";
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelAvgScore-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 2,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            ExpressionAttributeValues: { ":status": "PUBLISHED" },
+        })).returns({
+            "Items":[
+                {
+                    "levelName": "Level 2",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 2.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+                {
+                    "levelName": "Level 1",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#1-1-1-1-1",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#1-1-1-1-1",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+            ] 
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 2",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 2.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                },
+                {
+                    "id": "1-1-1-1-1",
+                    "name": "Level 1",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                }
+            ]   
+        });
+    });
+
+    it('should fetch the first page of levels sorted by total number of scores.', async function () {
+        // Arrange
+        var sortOptionQueryParam = "total-scores";
+        var sortAscQueryParam = "false";
+        var limitQueryParam = "2";
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = "false";
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelTotalScores-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 2,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            ExpressionAttributeValues: { ":status": "PUBLISHED" },
+        })).returns({
+            "Items":[
+                {
+                    "levelName": "Level 2",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+                {
+                    "levelName": "Level 1",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#1-1-1-1-1",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#1-1-1-1-1",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 1,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+            ] 
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 2",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                },
+                {
+                    "id": "1-1-1-1-1",
+                    "name": "Level 1",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 1,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                }
+            ]   
+        });
+    });
+
+    it('should fetch the first page of levels sorted by average rating.', async function () {
+        // Arrange
+        var sortOptionQueryParam = "avg-rating";
+        var sortAscQueryParam = "false";
+        var limitQueryParam = "2";
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = "false";
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelAvgRating-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 2,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            ExpressionAttributeValues: { ":status": "PUBLISHED" },
+        })).returns({
+            "Items":[
+                {
+                    "levelName": "Level 2",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 2,
+                    "levelTotalRatings": 2,
+                },
+                {
+                    "levelName": "Level 1",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#1-1-1-1-1",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#1-1-1-1-1",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+            ] 
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 2",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 2,
+                    "totalRatings": 2,
+                },
+                {
+                    "id": "1-1-1-1-1",
+                    "name": "Level 1",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                }
+            ]   
+        });
+    });
+
+    it('should fetch the first page of levels sorted by total number of ratings.', async function () {
+        // Arrange
+        var sortOptionQueryParam = "total-ratings";
+        var sortAscQueryParam = "false";
+        var limitQueryParam = "2";
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = "false";
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelTotalRatings-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 2,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            ExpressionAttributeValues: { ":status": "PUBLISHED" },
+        })).returns({
+            "Items":[
+                {
+                    "levelName": "Level 2",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+                {
+                    "levelName": "Level 1",
+                    "levelUpdatedAt": 1698514557729,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#1-1-1-1-1",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#1-1-1-1-1",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 1,
+                },
+            ] 
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 2",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                },
+                {
+                    "id": "1-1-1-1-1",
+                    "name": "Level 1",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1698514557729,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 1,
+                }
+            ]   
+        });
+    });
+
+    it('should fetch the first page of levels, and return a cursor if there are more.', async function () {
+        // Arrange
+        var sortOptionQueryParam = undefined;
+        var sortAscQueryParam = undefined;
+        var limitQueryParam = "1";
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = undefined;
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelUpdatedAt-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 1,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            ExpressionAttributeValues: { ":status": "PUBLISHED" },
+        })).returns({
+            Items:[
+                {
+                    "levelName": "Level 2",
+                    "levelUpdatedAt": 2,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+            ],
+            LastEvaluatedKey: {
+                "levelUpdatedAt": 2,
+                "levelStatus": "PUBLISHED",
+                "sk": "LEVEL#2-2-2-2-2",
+                "pk": "LEVEL#2-2-2-2-2",
+            }
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 2",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 2,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                }
+            ],
+            cursor: "2-2-2-2-2",
+        });
+    });
+
+    it('should fetch the second page of levels if a cursor is provided.', async function () {
+        // Arrange
+        var sortOptionQueryParam = undefined;
+        var sortAscQueryParam = undefined;
+        var limitQueryParam = "1";
+        var cursorQueryParam = "2-2-2-2-2";
+        var useDraftsQueryParam = undefined;
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            Key: {
+                pk: `LEVEL#${cursorQueryParam}`,
+                sk: `LEVEL#${cursorQueryParam}`,
+            }
+        })).returns({
+            "Item": {
+                "levelName": "Level 2",
+                "levelUpdatedAt": 2,
+                "levelCreatorId": "user-1-id",
+                "levelData": {},
+                "levelStatus": "PUBLISHED",
+                "sk": "LEVEL#2-2-2-2-2",
+                "levelCreatedAt": 1698514557729,
+                "pk": "LEVEL#2-2-2-2-2",
+                "levelCreatorName": "User 1",
+                "levelAvgScore": 1.0,
+                "levelTotalScores": 2,
+                "levelAvgRating": 1,
+                "levelTotalRatings": 2,
+            }
+        });
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelUpdatedAt-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 1,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            ExpressionAttributeValues: { ":status": "PUBLISHED" },
+            ExclusiveStartKey: {
+                "levelUpdatedAt": 2,
+                "levelStatus": "PUBLISHED",
+                "sk": "LEVEL#2-2-2-2-2",
+                "pk": "LEVEL#2-2-2-2-2",
+            }
+        })).returns({
+            Items:[
+                {
+                    "levelName": "Level 1",
+                    "levelUpdatedAt": 1,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#1-1-1-1-1",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#1-1-1-1-1",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                },
+            ]
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "1-1-1-1-1",
+                    "name": "Level 1",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                }
+            ],
         });
     });
 });

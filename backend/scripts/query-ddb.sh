@@ -48,8 +48,8 @@ TABLE=editarrr-level-storage
 #   --expression-attribute-values '{ ":status": { "S": "PUBLISHED" } }'
 
 # Update Item
-aws dynamodb update-item \
-    --table-name $TABLE \
-    --key '{"pk": {"S": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63"}, "sk": {"S": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63"}}' \
-    --update-expression "SET levelAvgScore = :avgScore, levelTotalScores = :totalScores" \
-    --expression-attribute-values '{":avgScore": {"N": "1.5"}, ":totalScores": {"N": "1"}}'
+# aws dynamodb update-item \
+#     --table-name $TABLE \
+#     --key '{"pk": {"S": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63"}, "sk": {"S": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63"}}' \
+#     --update-expression "SET levelAvgScore = :avgScore, levelTotalScores = :totalScores" \
+#     --expression-attribute-values '{":avgScore": {"N": "1.5"}, ":totalScores": {"N": "1"}}'
