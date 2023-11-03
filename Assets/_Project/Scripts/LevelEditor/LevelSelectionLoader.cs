@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Editarrr.Audio;
 using Level.Storage;
 using LevelEditor;
 using Singletons;
@@ -52,11 +53,17 @@ public class LevelSelectionLoader : MonoBehaviour
             level.HideEditorTools();
         }
 
+        if (levelData.IsDistro)
+        {
+            level.HideDeleteButton();
+        }
+
         _loadedLevels.Add(level.transform);
     }
 
-    public void GoToBrowser()
+    public void OpenBrowser()
     {
-        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.BrowserSceneName);
+        SceneTransitionManager.Instance.AddScene(SceneTransitionManager.BrowserSceneName);
+        AudioManager.Instance.PlayRandomizedAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME, 0.1f, 0.1f);
     }
 }

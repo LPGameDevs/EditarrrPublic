@@ -57,6 +57,7 @@ MonoBehaviour:
   <ScreenCover>k__BackingField: {fileID: 3596702575686730016}
   _animator: {fileID: 5291331761890203402}
   _audioSource: {fileID: 5420396098820112027}
+  _soundEffects: []
 --- !u!95 &5291331761890203402
 Animator:
   serializedVersion: 5
@@ -193,7 +194,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 30
   m_TargetDisplay: 0
 --- !u!1 &6778450038052447726
 GameObject:
@@ -213,7 +214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &951297472240332905
 RectTransform:
   m_ObjectHideFlags: 0

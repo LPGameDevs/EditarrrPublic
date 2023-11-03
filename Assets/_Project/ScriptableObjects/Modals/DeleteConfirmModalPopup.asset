@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: DeleteConfirmModalPopup
   m_EditorClassIdentifier: 
   TitleText: Delete Level
-  ContentText: Deleting a level before it is published will remove it from your machine.
+  ContentText: Deleting a level before it is published will remove it permanently.
     It is safe to remove published levels as they are backed up elsewhere.
   CloseText: No thanks
-  Prefab: {fileID: 6251556039925704571, guid: 744e1a9c20cff2b7ab5c602c9029dce6, type: 3}
-  ConfirmText: Yea thats fine
+  popupSound: {fileID: 8300000, guid: 51f238dbb82998c4db29f3bcee78c726, type: 3}
+  closeSound: {fileID: 8300000, guid: a87ac7bb78a85474f94e448a3ee2e784, type: 3}
+  Prefab: {fileID: 1500526473269505961, guid: 744e1a9c20cff2b7ab5c602c9029dce6, type: 3}
+  ConfirmText: Yea that's fine
+  confirmSound: {fileID: 8300000, guid: 3906515d01334ef43ab63268cef18474, type: 3}

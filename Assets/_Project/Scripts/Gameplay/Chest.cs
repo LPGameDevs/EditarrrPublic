@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 namespace Gameplay
@@ -11,30 +12,28 @@ namespace Gameplay
 
         private Animator _animator;
 
+        private int _remainingKeys;
         private bool _isWon;
         private bool _isOpen;
         private static readonly int Open = Animator.StringToHash("Open");
 
-        private void Awake()
-        {
-            _animator = GetComponent<Animator>();
-        }
-
         private void Start()
         {
-            // Unlock the treasure chest if there are no keys.
-            FindKeys();
+            _animator = GetComponent<Animator>();
+            Invoke(nameof(InitializeState), 0.5f);
         }
 
-        private void FindKeys()
+        private void InitializeState()
         {
-            var key = GameObject.FindWithTag("Key");
-            if (key)
-            {
-                // If a key was found, leave the chest locked.
-                return;
-            }
-            SetOpen();
+            ManageKeys();
+        }
+
+        private void ManageKeys(int countChange = 0)
+        {
+            _remainingKeys += countChange;
+
+            if (_remainingKeys == 0)
+                SetOpen();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -66,12 +65,12 @@ namespace Gameplay
 
         private void OnEnable()
         {
-            Key.OnKeyPickup += SetOpen;
+            Key.OnKeyCountChanged += ManageKeys;
         }
 
         private void OnDisable()
         {
-            Key.OnKeyPickup -= SetOpen;
+            Key.OnKeyCountChanged -= ManageKeys;
         }
     }
 }

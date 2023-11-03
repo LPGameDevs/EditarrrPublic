@@ -290,7 +290,8 @@ resource "aws_iam_policy" "dynamoDBLambdaPolicy" {
           "dynamodb:Scan",
           "dynamodb:Query",
           "dynamodb:GetItem",
-          "dynamodb:PutItem"
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
         ]
         Resource = "*"
         #        Resource = [

@@ -90,4 +90,6 @@ MonoBehaviour:
     links:
     - value: {fileID: 11400000, guid: d287971872d4d7e408da675ecc5e0da7, type: 2}
       action: {fileID: 7635530670321881424, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: d287971872d4d7e408da675ecc5e0da7, type: 2}
+      action: {fileID: 7635530670321881424, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
     <IsActive>k__BackingField: 1

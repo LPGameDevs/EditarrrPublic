@@ -83,6 +83,10 @@ public class LevelSelectionManager : ManagerComponent
         this.DestroyAndRefreshLevels();
     }
 
+    private void OnEnable() => SceneTransitionManager.OnSceneRemoved += OnSceneClosed;
+
+    private void OnDisable() => SceneTransitionManager.OnSceneRemoved -= OnSceneClosed;
+
     private void DestroyAndRefreshLevels()
     {
         _levelLoader.DestroyLevels();
@@ -94,9 +98,17 @@ public class LevelSelectionManager : ManagerComponent
     {
         foreach (var level in levels)
         {
-            string screenshotPath = LevelManager.GetScreenshotPath(level.Code);
+            string screenshotPath = LevelManager.GetScreenshotPath(level.Code, level.IsDistro);
             _levelLoader.AddLevelPrefabFromData(level, screenshotPath);
         }
+    }
+
+    private void OnSceneClosed(string sceneName)
+    {
+        if (sceneName != SceneTransitionManager.BrowserSceneName)
+            return;
+
+        DestroyAndRefreshLevels();
     }
 
     private void OnLevelDeleted(string code)

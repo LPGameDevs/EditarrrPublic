@@ -26,7 +26,9 @@ namespace Singletons
         public static readonly string ReplayLevelSceneName = "EditorReplay";
         public static readonly string BrowserSceneName = "LevelBrowser";
 
-        public static Action<string> OnSceneChange;
+        public static Action<string> OnSceneChanged;
+        public static Action<string> OnSceneAdded;
+        public static Action<string> OnSceneRemoved;    
 
         [field: SerializeField, Tooltip("Restart input map")] private InputValue RestartInput { get; set; }
         [field: SerializeField, Tooltip("Active scene reloads after this time")] private float TransitionTime { get; set; }
@@ -61,8 +63,6 @@ namespace Singletons
 
             _restartInitiated = true;
 
-            //TODO: Play sfx/jingles, transitiion animations, etc.
-            //TODO: Stop time?
             Invoke(nameof(RestartLevel), TransitionTime);
         }
 
@@ -76,17 +76,29 @@ namespace Singletons
                 AudioManager.Instance.FadeVolume(AudioManager.Instance.BgmSourceTwo, TransitionTime, 0f);
             }
 
-
-            AudioManager.Instance.PlayAudioClip(TransitionSound);
+            AudioManager.Instance.PlayRandomizedAudioClip(TransitionSound.name, 0.1f, 0.1f);
             SceneManager.LoadScene(sceneName);
-            OnSceneChange?.Invoke(sceneName);
+            OnSceneChanged?.Invoke(sceneName);
         }
 
         public void RestartLevel()
         {
+            CancelInvoke(nameof(RestartLevel));
             _restartInitiated = false;
             AudioManager.Instance.PlayAudioClip(RestartSound);
             GoToScene(SceneManager.GetActiveScene().name);
+        }
+
+        public void AddScene(string sceneName)
+        {
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+            OnSceneAdded?.Invoke(sceneName);
+        }
+
+        public void RemoveScene(string sceneName)
+        {
+            SceneManager.UnloadSceneAsync(sceneName);
+            OnSceneRemoved?.Invoke(sceneName);
         }
 
         private void OnDeath(object sender, System.EventArgs e) => TransitionedRestart();

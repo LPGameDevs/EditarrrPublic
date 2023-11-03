@@ -1,4 +1,5 @@
 using System;
+using Editarrr.Audio;
 using Singletons;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace UI
         private Action _onConfirm;
 
         [SerializeField] protected string ConfirmText;
+        [SerializeField] protected AudioClip confirmSound;
 
         public override void Open(Transform parent = null, bool alwaysShow = false)
         {
@@ -27,6 +29,7 @@ namespace UI
             popup.Setup(this);
 
             PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Open);
+            AudioManager.Instance.PlayAudioClip(popupSound);
         }
 
         public void Confirm()
@@ -34,6 +37,7 @@ namespace UI
             this._onConfirm?.Invoke();
 
             PreferencesManager.Instance.SetModalEventTracked(this.name, ModalPopupAction.Confirm);
+            AudioManager.Instance.PlayAudioClip(confirmSound);
         }
 
         public void SetConfirm(Action uploadLevel)

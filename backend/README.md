@@ -16,18 +16,26 @@ To open your own Codepsace, from the repo homepage, simply click `Code > Create 
 
 More on using GitHub codespaces [here](https://docs.github.com/en/codespaces/getting-started/quickstart)).
 
-To start the backend, from the Codespace, run shell script:
+### Run Unit Tests
 ```sh
 cd backend
-./scripts/start-local.sh # Starts the DynamoDB, API Gateway, and Lambda locally
+./scripts/run-tests.sh
 ```
 
-You can make requests locally using the scripts in the [requests](./requests/) directory:
+### Deploy
+We deploy using Terraform, with separate S3, API Gatway, Lambdas, and DynamoDBs for `dev` and `prod` "environments". 
+
+You should develop and test changes with unit tests as much as possible, then test changes by deploying to the `dev` environment with Terraform. See how to deploy with Terraform [here](./terraform/README.md).
+
+@yanniboi will manage promotion of changes from `dev` to `prod`.
+
+### Making Requests
+You can make requests using the scripts in the [requests](./requests/) directory:
 ```sh
 ./requests/post.sh
 ./requests/get-all.sh
 ```
-(if you want to make remote requests to the actual AWS service, set `export REMOTE=true`)
+
 
 ## Architecture
 ```mermaid
@@ -75,10 +83,8 @@ The backend API would have the following APIs:
 **GET `/levels`**
 
 **Query Params:**
-* `status` (Required) filters to levels of the provided status
-* `limit` (Optional) page limit, default: 10
-* `skip` (Optional) page skip, default: 0
-* `creator-id` (Optional) filters to levels for a creator
+* `cursor` (Optional) Provide the cursor value of a prior request to get the next page
+* `draft` (Optional) Queries for `DRAFT` levels rather than `PUBLISHED` levels.
 
 **Response:**
 ```json
@@ -95,9 +101,20 @@ The backend API would have the following APIs:
       "createdAt": 1686495335,
       "updatedAt": 1686495335,
     }
-  ]
+  ],
+  "cursor": "UUID" // For pagination - simply pass this as the 'cursor' param to another request to get the next page
 }
 ```
+
+Pagination is cursor-based (rather than offset) 
+because that's what DynamDB supports out-of-the-box 
+(https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.Pagination.html).
+
+The UI this would most naturally support would involve hitting the limit, 
+then showing a "Load More" button (or something like that),
+then fetching the next page of results.
+
+For flexibility, I've also added a "page limit" query param so the client can fetch more than 10 levels in a single page.
 
 ### Get Level
 

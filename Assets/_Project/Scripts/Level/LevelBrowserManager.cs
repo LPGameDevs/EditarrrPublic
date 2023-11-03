@@ -83,7 +83,7 @@ public class LevelBrowserManager : ManagerComponent
         Debug.Log("Download finished for level " + level.Code + ".");
 
         // Update display.
-        DestroyAndRefreshLevels();
+        //DestroyAndRefreshLevels();
     }
 
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
@@ -96,7 +96,7 @@ public class LevelBrowserManager : ManagerComponent
         LevelManager.CopyLevelFromSteamDirectory(item);
 
         // Update display.
-        DestroyAndRefreshLevels();
+        //DestroyAndRefreshLevels();
     }
 #endif
 

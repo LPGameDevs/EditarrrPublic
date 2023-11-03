@@ -1,5 +1,11 @@
 # Project dependencies
 terraform {
+  backend "s3" {
+    bucket                  = "editarrrr-terraform-state-bucket"
+    profile                 = "editarrr-dev"
+    key                     = "terraform_state/terraform.tfstate"
+    region                  = "eu-north-1"
+  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -19,5 +25,6 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "eu-north-1"
+  region  = "eu-north-1"
+  profile = "editarrr-dev"
 }

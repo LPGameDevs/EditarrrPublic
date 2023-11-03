@@ -11,30 +11,32 @@ namespace Editarrr.UI.LevelEditor
         {
             [field: SerializeField, Header("Data")] private EditorTileSelectionManager EditorTileSelectionManager { get; set; }
 
-            [field: SerializeField, Header("Names")] public string TileGroupSwapperName { get; private set; } = "TileGroupSwapper";
+            [field: SerializeField, Header("Names")] public string TileGroupSwapperNameLeft { get; private set; } = "TileGroupSwapperLeft";
+            [field: SerializeField] public string TileGroupSwapperNameRight { get; private set; } = "TileGroupSwapperRight";
 
-            private Button TileGroupSwapperElement { get; set; }
+            private Button TileGroupSwapperElementLeft { get; set; }
+            private Button TileGroupSwapperElementRight { get; set; }
 
             public override void Initialize(UIElement root, VisualElement visualElement)
             {
-                this.TileGroupSwapperElement = visualElement.Q<Button>(this.TileGroupSwapperName);
-                this.TileGroupSwapperElement.RegisterCallback<PointerEnterEvent>(LevelEditorScreen.PointerEnter);
-                this.TileGroupSwapperElement.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
+                this.TileGroupSwapperElementLeft = visualElement.Q<Button>(this.TileGroupSwapperNameLeft);
+                this.TileGroupSwapperElementLeft.RegisterCallback<PointerEnterEvent>(LevelEditorScreen.PointerEnter);
+                this.TileGroupSwapperElementLeft.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
 
-                this.TileGroupSwapperElement.clicked += this.TileGroupSwapperElement_Clicked;
+                this.TileGroupSwapperElementRight = visualElement.Q<Button>(this.TileGroupSwapperNameRight);
+                this.TileGroupSwapperElementRight.RegisterCallback<PointerEnterEvent>(LevelEditorScreen.PointerEnter);
+                this.TileGroupSwapperElementRight.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
 
-                EditorTileSelectionManager.ActiveGroupChanged += this.SetActiveGroup;
-                this.SetActiveGroup(this.EditorTileSelectionManager.ActiveGroup);
+                this.TileGroupSwapperElementLeft.clicked += () => this.TileGroupSwapperElement_Clicked(true);
+                this.TileGroupSwapperElementRight.clicked += () => this.TileGroupSwapperElement_Clicked(false);
             }
 
-            private void SetActiveGroup(EditorTileGroupData editorTileGroup)
+            private void TileGroupSwapperElement_Clicked(bool isLeftElement)
             {
-                this.TileGroupSwapperElement.text = $"{this.EditorTileSelectionManager.ActiveGroupIndex + 1}";
-            }
-
-            private void TileGroupSwapperElement_Clicked()
-            {
-                this.EditorTileSelectionManager.NextGroup();
+                if (isLeftElement)
+                    this.EditorTileSelectionManager.PreviousGroup();
+                else
+                    this.EditorTileSelectionManager.NextGroup();
             }
         }
     }
