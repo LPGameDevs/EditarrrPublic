@@ -196,6 +196,8 @@ export const handler = async (event, context) => {
                         "status": dbLevel.levelStatus,
                         "updatedAt": dbLevel.levelUpdatedAt,
                         "createdAt": dbLevel.levelCreatedAt,
+                        "totalRatings": dbLevel.levelTotalRatings ?? 0,
+                        "totalScores": dbLevel.levelTotalScores ?? 0,
                         "version": dbLevel.version,
                     });
                 }
