@@ -211,8 +211,10 @@ namespace Level.Storage
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
         {
+            string limit = "100";
+
             // Get request to /levels
-            RestClient.Get<AwsLevels>($"{AwsLevelUrl}/levels").Then(res =>
+            RestClient.Get<AwsLevels>($"{AwsLevelUrl}/levels?limit={limit}").Then(res =>
             {
                 var levelStubs = new List<LevelStub>();
                 foreach (var level in res.levels)
