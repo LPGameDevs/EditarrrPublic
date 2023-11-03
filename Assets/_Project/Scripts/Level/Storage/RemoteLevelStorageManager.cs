@@ -35,7 +35,7 @@ namespace Level.Storage
             }
             // @todo Change this so multiple providers can be used at once.
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
-            if (Providers.Contains(RemoteLevelStorageProviderType.Steam))
+            if (SteamIntegration.SteamManager.Instance.IsInitialized && Providers.Contains(RemoteLevelStorageProviderType.Steam))
             {
                 provider = new RemoteLevelStorageProviderSteam();
                 provider.Initialize();

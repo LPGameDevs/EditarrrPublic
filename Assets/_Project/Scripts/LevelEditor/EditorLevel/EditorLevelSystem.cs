@@ -20,6 +20,7 @@ namespace Editarrr.LevelEditor
         [field: SerializeField] public Canvas ModalCanvas { get; private set; }
         [field: SerializeField] public ModalPopup StartModal { get; private set; }
         [field: SerializeField] public ModalPopup InvalidModal { get; private set; }
+        [field: SerializeField] public AchievementPopupBlock Achievement { get; private set; }
 
         protected override void PreAwake()
         {
@@ -30,6 +31,7 @@ namespace Editarrr.LevelEditor
             this.Manager.SetCanvas(this.ModalCanvas);
             this.Manager.SetStartModal(this.StartModal);
             this.Manager.SetInvalidModal(this.InvalidModal);
+            this.Manager.SetAchievementBlock(this.Achievement);
         }
     }
 }

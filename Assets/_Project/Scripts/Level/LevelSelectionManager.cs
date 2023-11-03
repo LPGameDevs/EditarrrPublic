@@ -245,6 +245,6 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload -= OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest -= OnLeaderboardRequested;
-        AchievementManager.OnShowAchievement += OnShowAchievement;
+        AchievementManager.OnShowAchievement -= OnShowAchievement;
     }
 }

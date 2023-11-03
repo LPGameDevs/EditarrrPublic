@@ -4690,6 +4690,8 @@ MonoBehaviour:
   <Background>k__BackingField: {fileID: 2009914521}
   <GameplayGuiManager>k__BackingField: {fileID: 468777125453443629}
   <Recorder>k__BackingField: {fileID: 864187789}
+  <ModalCanvas>k__BackingField: {fileID: 468777125453443628}
+  <Achievement>k__BackingField: {fileID: 1779356922124130506, guid: 821be1f0f93ea47b393a883bd3c4989a, type: 3}
 --- !u!1 &1857817945
 GameObject:
   m_ObjectHideFlags: 0

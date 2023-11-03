@@ -65,13 +65,13 @@ namespace Level.Storage
 
             RestClient.Get<AwsLevel>($"{AwsLevelUrl}/levels/{levelSave.RemoteId}").Then(res =>
             {
-                Debug.Log("UPLOAD - Existing level found for ." + res.name);
+                Debug.Log("UPLOAD - Existing level found for " + res.name);
 
                 // Existing level found.
                 this.Update(request, callback);
             }).Catch(_ =>
             {
-                Debug.Log("UPLOAD - No level found for ." + request.name);
+                Debug.Log("UPLOAD - No level found for " + request.name);
                 // No level found.
                 this.Insert(request, callback);
             });
@@ -93,11 +93,18 @@ namespace Level.Storage
             RestClient.Patch<AwsUploadResponse>($"{AwsLevelUrl}/levels/{request.id}", JsonUtility.ToJson(request))
                 .Then(res =>
                 {
-                    callback?.Invoke(request.name, res.id.ToString());
+                    callback?.Invoke(request.name, request.id);
                     this.LogMessage("Levels", JsonUtility.ToJson(res, true));
-
+                })
+                .Finally(() =>
+                {
                     UploadScreenshot(request.name);
-                }).Catch(err => { this.LogMessage("Error", err.Message); });
+                })
+                .Catch(err =>
+                {
+                    this.LogMessage("Error", err.Message);
+                    throw err;
+                });
         }
 
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)

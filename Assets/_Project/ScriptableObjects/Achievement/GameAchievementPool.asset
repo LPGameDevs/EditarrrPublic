@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <PopupAchievements>k__BackingField:
   - {fileID: 11400000, guid: 4f93c485f5849776cad3f1041a7595cf, type: 2}
+  - {fileID: 11400000, guid: 0cde9c9ac36fae97dab540ece5f8c106, type: 2}
+  - {fileID: 11400000, guid: dc92b438a83d175e9ae9c05ac53a8bf6, type: 2}
+  - {fileID: 11400000, guid: d206466957b50d81ea5e932e7ed3c50d, type: 2}

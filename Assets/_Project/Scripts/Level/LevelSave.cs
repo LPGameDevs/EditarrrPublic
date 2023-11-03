@@ -141,7 +141,7 @@ namespace Editarrr.Level
         {
             this.Completed = true;
         }
-        
+
         /**
          * Check if the level has everything required to be saved or uploaded.
          */
@@ -166,10 +166,10 @@ namespace Editarrr.Level
                     return true;
                 }
             }
-            
+
             return false;
         }
-        
+
     }
 
 }
