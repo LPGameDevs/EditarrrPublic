@@ -98,7 +98,7 @@ namespace Editarrr.Level
             }
         }
 
-        public void LoadAll(LevelManager_AllLevelsLoadedCallback loadedCallback)
+        public void LoadAll(LevelManager_AllLevelsLoadedCallback loadedCallback, RemoteLevelLoadQuery query = null)
         {
             this.LevelsLoadedCallback = loadedCallback;
 
@@ -342,4 +342,10 @@ namespace Editarrr.Level
     public delegate void LevelManager_LevelUploadedCallback(LevelSave levelSave);
 
     public delegate void LevelManager_AllLevelsLoadedCallback(LevelStub[] levelStates);
+
+    public struct RemoteLevelLoadQuery
+    {
+        public int limit;
+        public string cursor;
+    }
 }

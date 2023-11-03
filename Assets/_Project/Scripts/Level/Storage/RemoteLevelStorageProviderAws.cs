@@ -336,6 +336,7 @@ namespace Level.Storage
     public class AwsLevels
     {
         public AwsLevel[] levels;
+        public string cursor;
     }
 
     [Serializable]

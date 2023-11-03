@@ -16,6 +16,7 @@ public class LevelBrowserManager : ManagerComponent
 
     // From system
     private LevelBrowserLoader _levelLoader { get; set; }
+    private RemoteLevelLoadQuery LevelQuery { get; set; }
 
 
     public void SetLevelLoader(LevelBrowserLoader levelLoader)
@@ -31,6 +32,10 @@ public class LevelBrowserManager : ManagerComponent
 
     public override void DoStart()
     {
+        this.LevelQuery = new RemoteLevelLoadQuery()
+        {
+            limit = 20
+        };
         LevelManager.DoStart();
         this.DestroyAndRefreshLevels();
     }
@@ -39,7 +44,7 @@ public class LevelBrowserManager : ManagerComponent
     {
         _levelLoader.DestroyLevels();
 
-        LevelManager.LoadAll(SetLevelsAfterLoad);
+        LevelManager.LoadAll(SetLevelsAfterLoad, this.LevelQuery);
 
         void SetLevelsAfterLoad(LevelStub[] levels)
         {
