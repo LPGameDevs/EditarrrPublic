@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
 import {
     DynamoDBDocumentClient,
@@ -10,8 +12,15 @@ import {
     S3Client,
     PutObjectCommand
 } from "@aws-sdk/client-s3";
-import crypto from "crypto";
-import { Buffer } from 'buffer';
+
+import { BadRequestException, extractLevelId, uuidv4 } from "./utils.mjs";
+import { LevelsDbClient } from './db/levels.mjs';
+import { LevelsApi } from "./api/levels.mjs";
+import { ScoresDbClient } from './db/scores.mjs';
+import { ScoresApi } from './api/scores.mjs';
+import { RatingsDbClient } from './db/ratings.mjs';
+import { RatingsApi } from './api/ratings.mjs';
+
 /* TODO:
     * Refactor - Move all the code for each API into its own file
     * Unit Tests
@@ -28,23 +37,26 @@ const client = new DynamoDBClient(options);
 const dynamo = DynamoDBDocumentClient.from(client);
 
 const tableNameLevel = "editarrr-level-storage";
+// TODO Move all calls to the level storage to this client
+const levelsDbClient = new LevelsDbClient(dynamo);
+// TODO Move levels API logic to this class
+const levelsApi = new LevelsApi(levelsDbClient);
+
 const tableNameScore = "editarrr-score-storage";
+// TODO Move all calls to the level storage to this client
+const scoresDbClient = new ScoresDbClient(dynamo);
+// TODO Move levels API logic to this class
+const scoresApi = new ScoresApi(scoresDbClient, levelsDbClient);
+
 const tableNameRating = "editarrr-rating-storage";
+// TODO Move all calls to the level storage to this client
+const ratingsDbClient = new RatingsDbClient(dynamo);
+// TODO Move levels API logic to this class
+const ratingsApi = new RatingsApi(ratingsDbClient, levelsDbClient);
+
 const tableNameAnalytics = "editarrr-analytics-storage";
 
-// From https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid - not sure if this is reliable haha
-function uuidv4() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-}
-
-class BadRequestException extends Error {
-    constructor(message) {
-        super(`error - Bad Request: ${message}`);
-        this.name = this.constructor.name;
-    }
-}
+const defaultPageLimit = 10;
 
 export const handler = async (event, context) => {
     let requestJSON;
@@ -109,28 +121,57 @@ export const handler = async (event, context) => {
             case "GET /levels":
                 // TODO Validation of request
 
-                // TODO Inclusion of request params in the query
+                var pageLimit = defaultPageLimit;
+                if (event?.queryStringParameters?.limit !== undefined) {
+                    var limit = parseInt(event.queryStringParameters.limit);
+                    if (isNaN(limit)) throw new BadRequestException(`'limit' must be a number.`);
+                    pageLimit = limit;
+                }
 
                 var useDrafts = false;
-
-                if (event?.queryStringParameters?.draft !== undefined)
-                {
+                if (event?.queryStringParameters?.draft !== undefined) {
                     useDrafts = true;
                 }
 
-                var queryResponse = await dynamo.send(
-                    new QueryCommand({
-                        TableName: tableNameLevel,
-                        IndexName: "levelStatus-levelUpdatedAt-index",
-                        Select: "ALL_PROJECTED_ATTRIBUTES",
-                        Limit: 10,
-                        ScanIndexForward: false,
-                        KeyConditionExpression: "levelStatus = :status",
-                        ExpressionAttributeValues: {
-                            ":status": useDrafts ? "DRAFT" : "PUBLISHED"
-                        }
-                    })
-                );
+                var query = {
+                    TableName: tableNameLevel,
+                    IndexName: "levelStatus-levelUpdatedAt-index",
+                    Select: "ALL_PROJECTED_ATTRIBUTES",
+                    Limit: pageLimit,
+                    ScanIndexForward: false,
+                    KeyConditionExpression: "levelStatus = :status",
+                    ExpressionAttributeValues: {
+                        ":status": useDrafts ? "DRAFT" : "PUBLISHED"
+                    }
+                }
+
+                // Using levelId as a cursor, we have to fetch more level data in order to provide DDB with all the data it expects from the cursor
+                if (event?.queryStringParameters?.cursor) {
+                     var cursorLevelId = event.queryStringParameters.cursor;
+                     // TODO Replace this with the dbClient command
+                     var cursorLevelQueryResponse = await dynamo.send(
+                        new GetCommand({
+                            TableName: tableNameLevel,
+                            Key: {
+                                "pk": `LEVEL#${cursorLevelId}`,
+                                "sk": `LEVEL#${cursorLevelId}`
+                            }
+                        })
+                    );
+
+                    if (cursorLevelQueryResponse?.Item == undefined) throw new Error(`'cursor' ${cursorLevelId} is invalid`);
+                    // TODO More validation of queried response
+
+                    var cursorLevelData = cursorLevelQueryResponse.Item;
+                     query.ExclusiveStartKey = {
+                        levelStatus: cursorLevelData.levelStatus,
+                        levelUpdatedAt: cursorLevelData.levelUpdatedAt,
+                        pk: cursorLevelData.pk,
+                        sk: cursorLevelData.sk,
+                     };
+                }
+
+                var queryResponse = await dynamo.send(new QueryCommand(query));
 
                 // TODO Validation of response
 
@@ -144,6 +185,7 @@ export const handler = async (event, context) => {
 
                     var id = extractLevelId(dbLevel.pk);
 
+                    // TODO Include avg and total ratings & scores
                     responseLevels.push({
                         "id": id,
                         "name": dbLevel.levelName,
@@ -158,45 +200,21 @@ export const handler = async (event, context) => {
                     });
                 }
 
+                var responseCursor;
+                if (queryResponse?.LastEvaluatedKey) {
+                    responseCursor = extractLevelId(queryResponse.LastEvaluatedKey.pk);
+                }
+
                 responseBody = {
-                    "levels": responseLevels
+                    "levels": responseLevels,
+                    "cursor": responseCursor,
                 }
 
                 break;
             case "GET /levels/{id}":
                 // TODO Validation of request
 
-                var queryResponse = await dynamo.send(
-                    new GetCommand({
-                        TableName: tableNameLevel,
-                        Key: {
-                            "pk": `LEVEL#${event.pathParameters.id}`,
-                            "sk": `LEVEL#${event.pathParameters.id}`
-                        }
-                    })
-                );
-
-                if (!queryResponse.Item) throw new Error(`Level ${event.pathParameters.id} not found`);
-
-                var dbLevel = queryResponse.Item;
-
-                // TODO Validation of queried response
-
-                // TODO Refactor into a separate function
-                var id = extractLevelId(dbLevel.pk);
-
-                responseBody = {
-                    "id": id,
-                    "name": dbLevel.levelName,
-                    "creator": {
-                        "id": dbLevel.levelCreatorId,
-                        "name": dbLevel.levelCreatorName
-                    },
-                    "status": dbLevel.levelStatus,
-                    "createdAt": dbLevel.levelCreatedAt,
-                    "updatedAt": dbLevel.levelUpdatedAt,
-                    "data": dbLevel.levelData
-                }
+                responseBody = await levelsApi.getLevel(event.pathParameters.id);
 
                 break;
             case "PATCH /levels/{id}":
@@ -207,6 +225,7 @@ export const handler = async (event, context) => {
 
                 // TODO Validation of request
 
+                // TODO Replace this with the dbClient command
                 var queryResponse = await dynamo.send(
                     new GetCommand({
                         TableName: tableNameLevel,
@@ -234,6 +253,8 @@ export const handler = async (event, context) => {
                 }
                 dbLevel.levelUpdatedAt = Date.now();
 
+                // TODO We should make this an "update" rather than a "put" (https://docs.aws.amazon.com/cli/latest/reference/dynamodb/update-item.html)
+                // because it eliminates the need for a "get"
                 await dynamo.send(
                     new PutCommand({
                         TableName: tableNameLevel,
@@ -284,40 +305,7 @@ export const handler = async (event, context) => {
 
             case "POST /levels/{id}/scores":
                 requestJSON = JSON.parse(event.body);
-
-                // TODO Check that level exists.
-
-                var score = requestJSON.score;
-                if (!score) throw new BadRequestException(`'score' must be provided in the request.`);
-                var scoreLevelName = requestJSON.code;
-                if (!scoreLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
-                var scoreCreatorId = requestJSON.creator;
-                if (!scoreCreatorId) throw new BadRequestException(`'creator' must be provided in the request.`);
-                var scoreCreatorName = requestJSON.creatorName;
-                if (!scoreCreatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
-
-                var generatedScoreId = uuidv4();
-                var currentTimestamp = Date.now();
-
-                await dynamo.send(
-                    new PutCommand({
-                        TableName: tableNameScore,
-                        Item: {
-                            pk: `LEVEL#${event.pathParameters.id}`,
-                            sk: `SCORE#${generatedScoreId}`,
-                            score: score,
-                            scoreLevelName: scoreLevelName,
-                            scoreCreatorId: scoreCreatorId,
-                            scoreCreatorName: scoreCreatorName,
-                            scoreSubmittedAt: currentTimestamp,
-                        },
-                    })
-                );
-
-                responseBody = {
-                    "message": `Success! Created score for: ${scoreLevelName}`,
-                    "id": generatedScoreId
-                }
+                responseBody = await scoresApi.postScore(event.pathParameters.id, requestJSON);
                 break;
             case "GET /levels/{id}/scores":
                 // TODO Validation of request
@@ -371,40 +359,7 @@ export const handler = async (event, context) => {
 
             case "POST /levels/{id}/ratings":
                 requestJSON = JSON.parse(event.body);
-
-                // TODO Check that level exists.
-
-                var rating = requestJSON.rating;
-                if (!rating) throw new BadRequestException(`'rating' must be provided in the request.`);
-                var ratingLevelName = requestJSON.code;
-                if (!ratingLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
-                var ratingCreatorId = requestJSON.creator;
-                if (!ratingCreatorId) throw new BadRequestException(`'creator' must be provided in the request.`);
-                var ratingCreatorName = requestJSON.creatorName;
-                if (!ratingCreatorName) throw new BadRequestException(`'creatorName' must be provided in the request.`);
-
-                var generatedRatingId = uuidv4();
-                var currentTimestamp = Date.now();
-
-                await dynamo.send(
-                    new PutCommand({
-                        TableName: tableNameRating,
-                        Item: {
-                            pk: `LEVEL#${event.pathParameters.id}`,
-                            sk: `RATING#${generatedRatingId}`,
-                            rating: rating,
-                            ratingLevelName: ratingLevelName,
-                            ratingCreatorId: ratingCreatorId,
-                            ratingCreatorName: ratingCreatorName,
-                            ratingSubmittedAt: currentTimestamp,
-                        },
-                    })
-                );
-
-                responseBody = {
-                    "message": `Success! Created rating for: ${ratingLevelName}`,
-                    "id": generatedRatingId
-                }
+                responseBody = await ratingsApi.postRating(event.pathParameters.id, requestJSON);
                 break;
             case "GET /levels/{id}/ratings":
                 // TODO Validation of request
@@ -746,13 +701,3 @@ export const handler = async (event, context) => {
         headers,
     };
 };
-
-function extractLevelId(ddbLevelKeyStr) {
-    const splitDDBLevelKeyStr = ddbLevelKeyStr.match(/#([0-9a-f-]+)/i);
-
-    if (!splitDDBLevelKeyStr) {
-        throw new Error(`problem parsing database ID`)
-    }
-
-    return splitDDBLevelKeyStr[1];
-}

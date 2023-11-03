@@ -78,6 +78,8 @@ MonoBehaviour:
       action: {fileID: 7738365300880229555, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
     - value: {fileID: 11400000, guid: d4bf20c1b8981c94cad46baa325c5c34, type: 2}
       action: {fileID: 6592856376003603870, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
+    - value: {fileID: 11400000, guid: 9fc2e45b026622b4e8270e4d39d570f6, type: 2}
+      action: {fileID: 3947652205488865581, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
     <IsActive>k__BackingField: 1
   - <Name>k__BackingField: Development
     links:
@@ -86,6 +88,8 @@ MonoBehaviour:
     <IsActive>k__BackingField: 1
   - <Name>k__BackingField: UI
     links:
+    - value: {fileID: 11400000, guid: d287971872d4d7e408da675ecc5e0da7, type: 2}
+      action: {fileID: 7635530670321881424, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
     - value: {fileID: 11400000, guid: d287971872d4d7e408da675ecc5e0da7, type: 2}
       action: {fileID: 7635530670321881424, guid: 8310ceb244fa80f449177de41be403e5, type: 3}
     <IsActive>k__BackingField: 1

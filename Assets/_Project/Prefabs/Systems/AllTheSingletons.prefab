@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1669690219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1669690220}
+  - component: {fileID: 1669690221}
+  m_Layer: 0
+  m_Name: AchievementManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1669690220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669690219}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4318917341212615922}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1669690221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669690219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d649151780414382e6ad3dbf86001e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AchievementPool: {fileID: 11400000, guid: 8b5a1480d701513bda73a7f31e5647e5, type: 2}
 --- !u!1 &2283036675160398487
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,7 +77,8 @@ Transform:
   - {fileID: 8735408346765437042}
   - {fileID: 6921163407437754799}
   - {fileID: 8772646088498682797}
-  - {fileID: 4859235543844648552}
+  - {fileID: 6840969978613669578}
+  - {fileID: 1669690220}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -211,6 +257,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2208904029525526178, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2289342733094404154, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
       propertyPath: m_Name
       value: ScreenEffectManager
@@ -221,9 +271,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
---- !u!4 &4859235543844648552 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 232185566788234752, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
+--- !u!224 &6840969978613669578 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2208904029525526178, guid: 93dfbad2a940ec74ba84f07380e4b75a, type: 3}
   m_PrefabInstance: {fileID: 4636345253730539624}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6104866072560549532
@@ -295,6 +345,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4318917341212615922}
     m_Modifications:
+    - target: {fileID: 3124189786846601556, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: d986a0510bde7e33e9e8d40ad0a93d83, type: 2}
+    - target: {fileID: 3124189786846601556, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5511227745930802508, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
       propertyPath: m_RootOrder
       value: 0

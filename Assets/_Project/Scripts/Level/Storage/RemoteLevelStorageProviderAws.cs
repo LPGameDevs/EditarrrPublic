@@ -12,13 +12,44 @@ namespace Level.Storage
 {
     public class RemoteLevelStorageProviderAws : IRemoteLevelStorageProvider
     {
-        public const string AwsLevelUrl = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com";
-        private const string AwsScreenshotUrl = "https://editarrr-screenshots.s3.eu-north-1.amazonaws.com";
+        private const string AwsLevelUrlProd = "https://e1pvn0880k.execute-api.eu-north-1.amazonaws.com/dev";
+        private const string AwsLevelUrlDev = "https://tlfb41owe5.execute-api.eu-north-1.amazonaws.com/dev";
+
+        private const string AwsScreenshotUrlProd = "https://editarrr-screenshot-ethical-hare.s3.eu-north-1.amazonaws.com";
+        private const string AwsScreenshotUrlDev = "https://editarrr-screenshot-ideal-wren.s3.eu-north-1.amazonaws.com";
+
         private const bool ShowDebug = false;
+
+        public static string AwsLevelUrl => GetLevelUrl();
+        public static string AwsScreenshotUrl => GetScreenshotUrl();
 
         public void Initialize()
         {
-            // No initialization needed.
+            // Nothing needed here.
+        }
+
+        private static string GetLevelUrl()
+        {
+
+#if DEPLOY_TARGET_PRODUCTION
+            // Activate production env.
+            return AwsLevelUrlProd;
+#endif
+
+            // Default to dev env.
+            return AwsLevelUrlDev;
+        }
+
+        private static string GetScreenshotUrl()
+        {
+
+#if DEPLOY_TARGET_PRODUCTION
+            // Activate production env.
+            return AwsScreenshotUrlProd;
+#endif
+
+            // Default to dev env.
+            return AwsScreenshotUrlDev;
         }
 
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback)
@@ -48,15 +79,15 @@ namespace Level.Storage
                 }
             };
 
-            RestClient.Get<AwsLevel>($"{AwsLevelUrl}/dev/levels/{levelSave.RemoteId}").Then(res =>
+            RestClient.Get<AwsLevel>($"{AwsLevelUrl}/levels/{levelSave.RemoteId}").Then(res =>
             {
-                Debug.Log("UPLOAD - Existing level found for ." + res.name);
+                Debug.Log("UPLOAD - Existing level found for " + res.name);
 
                 // Existing level found.
                 this.Update(request, callback);
             }).Catch(_ =>
             {
-                Debug.Log("UPLOAD - No level found for ." + request.name);
+                Debug.Log("UPLOAD - No level found for " + request.name);
                 // No level found.
                 this.Insert(request, callback);
             });
@@ -64,7 +95,7 @@ namespace Level.Storage
 
         private void Insert(AwsLevel request, RemoteLevelStorage_LevelUploadedCallback callback)
         {
-            RestClient.Post<AwsUploadResponse>($"{AwsLevelUrl}/dev/levels", JsonUtility.ToJson(request)).Then(res =>
+            RestClient.Post<AwsUploadResponse>($"{AwsLevelUrl}/levels", JsonUtility.ToJson(request)).Then(res =>
             {
                 callback?.Invoke(request.name, res.id);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
@@ -75,19 +106,26 @@ namespace Level.Storage
 
         private void Update(AwsLevel request, RemoteLevelStorage_LevelUploadedCallback callback)
         {
-            RestClient.Patch<AwsUploadResponse>($"{AwsLevelUrl}/dev/levels/{request.id}", JsonUtility.ToJson(request))
+            RestClient.Patch<AwsUploadResponse>($"{AwsLevelUrl}/levels/{request.id}", JsonUtility.ToJson(request))
                 .Then(res =>
                 {
-                    callback?.Invoke(request.name, res.id.ToString());
+                    callback?.Invoke(request.name, request.id);
                     this.LogMessage("Levels", JsonUtility.ToJson(res, true));
-
+                })
+                .Finally(() =>
+                {
                     UploadScreenshot(request.name);
-                }).Catch(err => { this.LogMessage("Error", err.Message); });
+                })
+                .Catch(err =>
+                {
+                    this.LogMessage("Error", err.Message);
+                    throw err;
+                });
         }
 
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
-            RestClient.Get<AwsLevel>($"{AwsLevelUrl}/dev/levels/{code}").Then(res =>
+            RestClient.Get<AwsLevel>($"{AwsLevelUrl}/levels/{code}").Then(res =>
             {
                 // @todo make sure we store the remote level id in the save.
                 var save = new LevelSave(res.creator.id, res.creator.name, res.name);
@@ -129,7 +167,7 @@ namespace Level.Storage
             // Webgl needs a custom solution for uploading image files.
             return;
 #endif
-            var uploadUrl = $"{AwsLevelUrl}/dev/screenshot/{code}.png";
+            var uploadUrl = $"{AwsLevelUrl}/screenshot/{code}.png";
             var imagePath = LocalLevelStorageManager.LocalRootDirectory + code + "/screenshot.png";
             using (var httpClient = new HttpClient())
             {
@@ -182,15 +220,18 @@ namespace Level.Storage
                 }
                 else
                 {
-                    Debug.LogError("Error downloading image. Status code: " + response.StatusCode);
+                    Debug.LogError($"Error downloading image for level {code}. Status code: " + response.StatusCode);
+                    Debug.LogError(url);
                 }
             }
         }
 
         public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
         {
+            string limit = "100";
+
             // Get request to /levels
-            RestClient.Get<AwsLevels>($"{AwsLevelUrl}/dev/levels").Then(res =>
+            RestClient.Get<AwsLevels>($"{AwsLevelUrl}/levels?limit={limit}").Then(res =>
             {
                 var levelStubs = new List<LevelStub>();
                 foreach (var level in res.levels)
@@ -227,7 +268,7 @@ namespace Level.Storage
                 creatorName = userName
             };
 
-            RestClient.Post<AwsUploadResponse>($"{AwsLevelUrl}/dev/levels/{levelSave.RemoteId}/scores", JsonUtility.ToJson(request)).Then(res =>
+            RestClient.Post<AwsUploadResponse>($"{AwsLevelUrl}/levels/{levelSave.RemoteId}/scores", JsonUtility.ToJson(request)).Then(res =>
             {
                 Debug.Log("Score uploaded for level: " + levelSave.Code);
                 callback?.Invoke(levelSave.Code, res.id);
@@ -237,7 +278,7 @@ namespace Level.Storage
         public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
         {
             // Get request to /levels/{id}/scores
-            RestClient.Get<AwsScores>($"{AwsLevelUrl}/dev/levels/{code}/scores").Then(res =>
+            RestClient.Get<AwsScores>($"{AwsLevelUrl}/levels/{code}/scores").Then(res =>
             {
                 var scoreStubs = new List<ScoreStub>();
                 foreach (var score in res.scores)
@@ -269,7 +310,7 @@ namespace Level.Storage
                 creatorName = userName
             };
 
-            RestClient.Post<AwsUploadResponse>($"{AwsLevelUrl}/dev/levels/{levelSave.RemoteId}/ratings", JsonUtility.ToJson(request)).Then(res =>
+            RestClient.Post<AwsUploadResponse>($"{AwsLevelUrl}/levels/{levelSave.RemoteId}/ratings", JsonUtility.ToJson(request)).Then(res =>
             {
                 Debug.Log("Rating uploaded for level: " + levelSave.Code);
                 callback?.Invoke(levelSave.Code, res.id);
@@ -279,7 +320,7 @@ namespace Level.Storage
         public void GetRatingsForLevel(string code, RemoteRatingStorage_AllRatingsLoadedCallback callback)
         {
             // Get request to /levels/{id}/ratings
-            RestClient.Get<AwsRatings>($"{AwsLevelUrl}/dev/levels/{code}/ratings").Then(res =>
+            RestClient.Get<AwsRatings>($"{AwsLevelUrl}/levels/{code}/ratings").Then(res =>
             {
                 var ratingStubs = new List<RatingStub>();
                 foreach (var rating in res.ratings)

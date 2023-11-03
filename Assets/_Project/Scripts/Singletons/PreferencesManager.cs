@@ -76,6 +76,17 @@ namespace Singletons
             return hasTracked == 1;
         }
 
+        public void SetAchievementTracked(string name, ModalPopupAction action)
+        {
+            PlayerPrefs.SetInt($"ModalPopupTrack-{name}-{action.ToString()}", 1);
+        }
+
+        public bool IsAchievementTracked(string name, ModalPopupAction action)
+        {
+            int hasTracked = PlayerPrefs.GetInt($"ModalPopupTrack-{name}-{action.ToString()}", 0);
+            return hasTracked == 1;
+        }
+
         public float GetSlider(string volumeParameter)
         {
             return PlayerPrefs.GetFloat($"SliderVolume-{volumeParameter}", 0.7f);
@@ -95,6 +106,11 @@ namespace Singletons
         {
             int hasLevelRating = PlayerPrefs.GetInt($"LevelRating-{code}", 0);
             return hasLevelRating == 1;
+        }
+
+        public int GetLevelRating(string code)
+        {
+            return PlayerPrefs.GetInt($"LevelRating-{code}", 0);
         }
 
         public void Initialize()

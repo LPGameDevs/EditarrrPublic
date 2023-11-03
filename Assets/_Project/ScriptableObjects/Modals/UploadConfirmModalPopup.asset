@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbabd8677df44ec88e797abcafacc23, type: 3}
   m_Name: UploadConfirmModalPopup
   m_EditorClassIdentifier: 
-  TitleText: Upload Level
-  ContentText: Uploading means others can play your level, however you will no longer
+  TitleText: Submit Level
+  ContentText: Submitting means others can play your level, however you will no longer
     be able to make any changes to it.
   CloseText: No thanks
-  Prefab: {fileID: 6251556039925704571, guid: 744e1a9c20cff2b7ab5c602c9029dce6, type: 3}
-  ConfirmText: Yea thats fine
+  popupSound: {fileID: 8300000, guid: 5a50462162195f84aa7aaf39402b2c95, type: 3}
+  closeSound: {fileID: 8300000, guid: 4167298f869a3264f9c8b997f09a9031, type: 3}
+  Prefab: {fileID: 1500526473269505961, guid: 744e1a9c20cff2b7ab5c602c9029dce6, type: 3}
+  ConfirmText: Yea that's fine
+  confirmSound: {fileID: 8300000, guid: 1242abd387123dd4b9bbec7e716cb063, type: 3}

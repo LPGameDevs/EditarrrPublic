@@ -20,7 +20,10 @@ namespace SteamIntegration
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
         protected void Start()
         {
-            TrackAchievements();
+            if (IsInitialized)
+            {
+                TrackAchievements();
+            }
         }
 #endif
 

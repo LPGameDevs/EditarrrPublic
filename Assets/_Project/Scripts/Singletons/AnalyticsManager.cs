@@ -41,7 +41,6 @@ namespace Singletons
         {
             _creatorId = PreferencesManager.Instance.GetUserId();
             _creatorName = PreferencesManager.Instance.GetUserName();
-            string test = "";
         }
 
         public void TrackEvent(AnalyticsEvent trackedEvent, string value = "")
@@ -64,7 +63,7 @@ namespace Singletons
                 value = value,
             };
 
-            RestClient.Post<AnalyticsResponse>($"{RemoteLevelStorageProviderAws.AwsLevelUrl}/dev/analytics",
+            RestClient.Post<AnalyticsResponse>($"{RemoteLevelStorageProviderAws.AwsLevelUrl}/analytics",
                 JsonUtility.ToJson(request)).Then(res =>
             {
                 Debug.Log("Analytics event tracked");

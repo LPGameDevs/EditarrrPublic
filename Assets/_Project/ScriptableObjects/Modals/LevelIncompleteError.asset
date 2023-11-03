@@ -16,4 +16,6 @@ MonoBehaviour:
   ContentText: You have made changes to the level since the last time you finished
     it. Please complete the level so we know its beatable before uploading.
   CloseText: I'm on it!
-  Prefab: {fileID: 6251556039925704571, guid: 82c3b59bbbf0f3a2385deccf3b21d0f4, type: 3}
+  popupSound: {fileID: 8300000, guid: ea93c0c71762eeb4385628b526cd978f, type: 3}
+  closeSound: {fileID: 8300000, guid: a87ac7bb78a85474f94e448a3ee2e784, type: 3}
+  Prefab: {fileID: 690372002882256741, guid: 82c3b59bbbf0f3a2385deccf3b21d0f4, type: 3}

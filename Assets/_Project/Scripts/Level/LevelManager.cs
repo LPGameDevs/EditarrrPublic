@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Editarrr.Audio;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
@@ -30,9 +31,12 @@ namespace Editarrr.Level
 
         [SerializeField] private bool RemoteStorageEnabled = false;
         [SerializeField] private bool UploadsAllowed = false;
-        public static bool DistributionStorageEnabled = false;
+        public static bool DistributionStorageEnabled = true;
 
         #endregion
+
+        float _saveSoundBufferTime;
+        const float _saveSoundBufferDuration = 0.2f;
 
         public override void DoAwake()
         {
@@ -194,10 +198,16 @@ namespace Editarrr.Level
                     this.SetRemoteUploadId(code, remoteId);
                 }
 
-                // @todo do not invoke this with null.
-                // this.LevelUploadedCallback?.Invoke(null);
+                this.LevelUploadedCallback?.Invoke(levelSave);
                 this.LevelUploadedCallback = null;
             }
+
+            if(Time.time > _saveSoundBufferTime)
+            {
+                AudioManager.Instance.PlayAudioClip(AudioManager.LEVEL_SAVED_CLIP_NAME);
+                _saveSoundBufferTime = Time.time + _saveSoundBufferDuration;
+            }
+
         }
 
         private void SetRemoteUploadId(string code, string remoteId)
@@ -312,9 +322,9 @@ namespace Editarrr.Level
 
         #endregion
 
-        public string GetScreenshotPath(string levelCode)
+        public string GetScreenshotPath(string levelCode, bool isDistro = false)
         {
-            return this.LevelStorage.GetScreenshotPath(levelCode);
+            return this.LevelStorage.GetScreenshotPath(levelCode, isDistro);
         }
 
         public bool LevelExists(string levelCode)

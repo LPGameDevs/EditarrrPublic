@@ -59,22 +59,6 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
   #   type = "M" # JSON Blob
   # }
 
-  # Score Items
-  # pk: LEVEL#<levelId>
-  # sk: SCORE#<score>
-  # attribute {
-  #   name = "scoreUserId"
-  #   type = "S" # userId # optional - only for "logged in" users
-  # }
-  # attribute {
-  #   name = "scorePlayerName"
-  #   type = "S" # not necessarily the userName, because it might not be a "logged in" user
-  # }
-  # attribute {
-  #   name = "scoreSubmittedAt"
-  #   type = "N" # Epoch
-  # }
-
   # User Items
   # pk: USER#<userId>
   # sk: USER#<userId>
@@ -142,18 +126,18 @@ resource "aws_dynamodb_table" "editarrr-score-storage" {
     type = "S" # Number of seconds 0015.123
   }
 
-#  attribute {
-#    name = "scoreLevelName"
-#    type = "S" # 12345
-#  }
-#  attribute {
-#    name = "scoreSubmittedAt"
-#    type = "N" # Epoch
-#  }
-#  attribute {
-#    name = "scoreCreatorId"
-#    type = "S" #userId
-#  }
+  #  attribute {
+  #    name = "scoreLevelName"
+  #    type = "S" # 12345
+  #  }
+  #  attribute {
+  #    name = "scoreSubmittedAt"
+  #    type = "N" # Epoch
+  #  }
+  #  attribute {
+  #    name = "scoreCreatorId"
+  #    type = "S" #userId
+  #  }
   # attribute {
   #   name = "scoreCreatorName"
   #   type = "S"
@@ -306,7 +290,8 @@ resource "aws_iam_policy" "dynamoDBLambdaPolicy" {
           "dynamodb:Scan",
           "dynamodb:Query",
           "dynamodb:GetItem",
-          "dynamodb:PutItem"
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
         ]
         Resource = "*"
         #        Resource = [

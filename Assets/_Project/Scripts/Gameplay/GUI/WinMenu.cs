@@ -1,10 +1,12 @@
 using System;
 using Browser;
+using Editarrr.Audio;
 using Editarrr.Level;
 using Level.Storage;
 using Singletons;
 using TMPro;
 using UnityEngine;
+using Editarrr.Input;
 using UnityEngine.UI;
 
 namespace Gameplay.GUI
@@ -12,7 +14,9 @@ namespace Gameplay.GUI
     public class WinMenu : MonoBehaviour
     {
         public static event Action<string, RemoteScoreStorage_AllScoresLoadedCallback> OnLeaderboardRequested;
-        public static event Action<string, float> OnScoreSubmit;
+
+        public delegate void WinMenu_OnScoreSubmit();
+        public static event Action<string, float, WinMenu_OnScoreSubmit> OnScoreSubmit;
         public static event Action<string, int> OnRatingSubmit;
 
         public TMP_Text LevelCode;
@@ -21,8 +25,9 @@ namespace Gameplay.GUI
         public bool IsReplay = false;
 
         [SerializeField] Animator _animator;
-        [SerializeField] GameObject scoreBoard, ratingMenu;
-
+        [SerializeField] GameObject _leaderBoard;
+        [SerializeField] RatingMenu _ratingMenu;
+        [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
 
         const string VICTORY_TRIGGER_NAME = "Victory";
 
@@ -31,6 +36,11 @@ namespace Gameplay.GUI
         private float _time;
         private string _timeText;
         private LevelState _levelData;
+        private void Update()
+        {
+            if (PauseInput.WasPressed)
+                OnClickHome();
+        }
 
         private void UpdateContent()
         {
@@ -116,17 +126,21 @@ namespace Gameplay.GUI
         public void SubmitScore()
         {
             Debug.Log("Submitting score");
-            OnScoreSubmit?.Invoke(_code, _time);
+            OnScoreSubmit?.Invoke(_code, _time, OnSubmitScoreOpenDashboard);
             SubmitButton.onClick.RemoveAllListeners();
             SubmitButton.onClick.AddListener(OpenScoreboard);
-            OpenScoreboard();
+
+            void OnSubmitScoreOpenDashboard()
+            {
+                OpenScoreboard();
+            }
         }
 
         public void OpenScoreboard()
         {
-            scoreBoard.SetActive(true);
+            _leaderBoard.SetActive(true);
 
-            var leaderboard = scoreBoard.GetComponent<LeaderboardForm>();
+            var leaderboard = _leaderBoard.GetComponent<LeaderboardForm>();
             leaderboard.SetCode(this._code);
 
             OnLeaderboardRequested?.Invoke(this._code, LeaderboardScoresLoaded);
@@ -135,11 +149,21 @@ namespace Gameplay.GUI
             {
                 leaderboard.SetScores(scoreStubs);
             }
+
+            AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
         }
 
         public void OpenRatingMenu()
         {
-            ratingMenu.SetActive(true);
+            _ratingMenu.OpenMenu(_code);
+            AudioManager.Instance.PlayAudioClip(AudioManager.AFFIRMATIVE_CLIP_NAME);
+        }
+
+        public void CloseRatingMenu()
+        {
+            _ratingMenu.UpdateRating(0);
+            _ratingMenu.gameObject.SetActive(false);
+            AudioManager.Instance.PlayAudioClip(AudioManager.NEGATIVE_CLIP_NAME);
         }
 
         #region ButtonTriggers
@@ -157,7 +181,7 @@ namespace Gameplay.GUI
                 OpenRatingMenu();
         }
 
-        public void OnClickBack()
+        public void OnClickHome()
         {
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
         }

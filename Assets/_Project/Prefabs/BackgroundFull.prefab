@@ -236,7 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollTarget: {fileID: 5367185195183274648}
   sizeReference: {fileID: 5367185196773816128}
-  scrollSpeed: -0.003
+  scrollSpeed: -0.4
 --- !u!1 &5367185195275505637
 GameObject:
   m_ObjectHideFlags: 0

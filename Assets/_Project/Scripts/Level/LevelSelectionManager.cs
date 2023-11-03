@@ -29,6 +29,7 @@ public class LevelSelectionManager : ManagerComponent
     private IModalPopup _incompleteModal { get; set; }
     private IModalPopup _uploadModal { get; set; }
     private IModalPopup _deleteModal { get; set; }
+    private AchievementPopupBlock _achievementBlock { get; set; }
 
     public void SetCanvas(Canvas modalCanvas)
     {
@@ -55,6 +56,11 @@ public class LevelSelectionManager : ManagerComponent
         _incompleteModal = modal;
     }
 
+    public void SetAchievementBlock(AchievementPopupBlock block)
+    {
+        _achievementBlock = block;
+    }
+
     public void SetLevelLoader(LevelSelectionLoader levelLoader)
     {
         _levelLoader = levelLoader;
@@ -76,6 +82,10 @@ public class LevelSelectionManager : ManagerComponent
         this.DestroyAndRefreshLevels();
     }
 
+    private void OnEnable() => SceneTransitionManager.OnSceneRemoved += OnSceneClosed;
+
+    private void OnDisable() => SceneTransitionManager.OnSceneRemoved -= OnSceneClosed;
+
     private void DestroyAndRefreshLevels()
     {
         _levelLoader.DestroyLevels();
@@ -87,9 +97,17 @@ public class LevelSelectionManager : ManagerComponent
     {
         foreach (var level in levels)
         {
-            string screenshotPath = LevelManager.GetScreenshotPath(level.Code);
+            string screenshotPath = LevelManager.GetScreenshotPath(level.Code, level.IsDistro);
             _levelLoader.AddLevelPrefabFromData(level, screenshotPath);
         }
+    }
+
+    private void OnSceneClosed(string sceneName)
+    {
+        if (sceneName != SceneTransitionManager.BrowserSceneName)
+            return;
+
+        DestroyAndRefreshLevels();
     }
 
     private void OnLevelDeleted(string code)
@@ -201,6 +219,14 @@ public class LevelSelectionManager : ManagerComponent
         }
     }
 
+    private void OnShowAchievement(PopupAchievement achievement)
+    {
+
+        var popup = Instantiate(this._achievementBlock, this.ModalCanvas.transform);
+        popup.Setup(achievement);
+
+    }
+
     public override void DoOnEnable()
     {
         EditorLevel.OnEditorLevelSelected += OnLevelSelected;
@@ -208,6 +234,7 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload += OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest += OnLeaderboardRequested;
+        AchievementManager.OnShowAchievement += OnShowAchievement;
     }
 
     public override void DoOnDisable()
@@ -217,5 +244,6 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload -= OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest -= OnLeaderboardRequested;
+        AchievementManager.OnShowAchievement -= OnShowAchievement;
     }
 }

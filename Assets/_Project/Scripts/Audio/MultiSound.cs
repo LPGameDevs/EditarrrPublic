@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System;
-//AudioManager.instance.PlayAudioClip("clipName");
 
 [Serializable]
 [CreateAssetMenu(fileName = "new multi Sound",  menuName = "Pool/Audio/multi sound")]

@@ -31,6 +31,7 @@ namespace Level.Storage
         public string CreatorName { get; private set; }
         public string RemoteId { get; private set; }
         public bool Published { get; private set; }
+        public bool IsDistro { get; private set; }
 
         public LevelStub(string code, string creator, string creatorName, string remoteId = "", bool published = false)
         {
@@ -39,6 +40,12 @@ namespace Level.Storage
             this.CreatorName = creatorName;
             this.RemoteId = remoteId;
             this.Published = published;
+            this.IsDistro = false;
+        }
+
+        public void SetDistro(bool isDistro)
+        {
+            this.IsDistro = isDistro;
         }
     }
 

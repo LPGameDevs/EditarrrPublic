@@ -16,4 +16,6 @@ MonoBehaviour:
   ContentText: Welcome to the level editor, this is where you can get started creating
     levels.
   CloseText: Get started
-  Prefab: {fileID: 6251556039925704571, guid: 82c3b59bbbf0f3a2385deccf3b21d0f4, type: 3}
+  popupSound: {fileID: 8300000, guid: 6efda8286c197a64889bf76535342c12, type: 3}
+  closeSound: {fileID: 8300000, guid: 2bde7878f593b244ca1e991a0afdba03, type: 3}
+  Prefab: {fileID: 690372002882256741, guid: 82c3b59bbbf0f3a2385deccf3b21d0f4, type: 3}

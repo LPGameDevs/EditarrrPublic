@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
+  m_Name: Lever
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Lever
+  <Description>k__BackingField: 
+  <UISprite>k__BackingField: {fileID: 878758241, guid: 5feb8aada5336ce4da1503548794e23d, type: 3}
+  <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 2149dff132cffbd4d9816b9d1396ed93, type: 2}
+  <Tile>k__BackingField: {fileID: 11400000, guid: 7a3b502071f6ae947a1b1903e95a738f, type: 2}
+  <Config>k__BackingField: {fileID: 11400000, guid: 535676257938ea747b041e8ffa0eec26, type: 2}
+  <LevelLimit>k__BackingField: 0
+  <IsBackground>k__BackingField: 0

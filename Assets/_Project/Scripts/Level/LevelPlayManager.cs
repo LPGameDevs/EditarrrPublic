@@ -1,3 +1,4 @@
+using System;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
@@ -5,6 +6,7 @@ using Gameplay;
 using Gameplay.GUI;
 using LevelEditor;
 using Singletons;
+using UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TileData = Editarrr.LevelEditor.TileData;
@@ -31,10 +33,12 @@ namespace Editarrr.Level
 
         [field: SerializeField] private Tilemap Tilemap_Foreground { get; set; }
         [field: SerializeField] private Tilemap Tilemap_Background { get; set; }
+        private Canvas ModalCanvas { get; set; }
 
         private GameplayGuiManager _gameplayGuiManager;
         private GhostRecorder _recorder;
         private string _code;
+        private AchievementPopupBlock AchievementBlock { get; set; }
 
         public LevelState Level { get; private set; }
         #endregion
@@ -69,6 +73,17 @@ namespace Editarrr.Level
             this._recorder = ghostRecorder;
             this._recorder.SetLevelManager(this.LevelManager);
         }
+
+        public void SetCanvas(Canvas modalCanvas)
+        {
+            this.ModalCanvas = modalCanvas;
+        }
+
+        public void SetAchievementBlock(AchievementPopupBlock block)
+        {
+            this.AchievementBlock = block;
+        }
+
 
         public override void DoStart()
         {
@@ -183,8 +198,14 @@ namespace Editarrr.Level
         #endregion
 
 
-        private void OnScoreSubmitRequested(string code, float time)
+        private void OnScoreSubmitRequested(string code, float time, WinMenu.WinMenu_OnScoreSubmit callback)
         {
+#if YAN_DEBUG
+            Debug.Log("yan");
+#else
+            Debug.Log("not yan");
+#endif
+
             this.LevelManager.LevelStorage.LoadLevelData(code, ScoreLevelLoaded);
 
             void ScoreLevelLoaded(LevelSave levelSave)
@@ -196,6 +217,9 @@ namespace Editarrr.Level
                     // @todo do we need this?
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelScoreSubmitted);
                     AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelScoreSubmitted, $"{code}-{time}");
+
+                    // Update leaderboard.
+                    callback.Invoke();
                 }
             }
         }
@@ -217,11 +241,20 @@ namespace Editarrr.Level
             }
         }
 
+        private void OnShowAchievement(PopupAchievement achievement)
+        {
+
+            var popup = Instantiate(this.AchievementBlock, this.ModalCanvas.transform);
+            popup.Setup(achievement);
+
+        }
+
         public override void DoOnEnable()
         {
             WinMenu.OnScoreSubmit += this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit += this.OnRatingSubmitRequested;
             Chest.OnChestOpened += this.OnLevelCompleted;
+            AchievementManager.OnShowAchievement += OnShowAchievement;
         }
 
         public override void DoOnDisable()
@@ -229,6 +262,7 @@ namespace Editarrr.Level
             WinMenu.OnScoreSubmit -= this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit -= this.OnRatingSubmitRequested;
             Chest.OnChestOpened -= this.OnLevelCompleted;
+            AchievementManager.OnShowAchievement -= OnShowAchievement;
         }
     }
 }
