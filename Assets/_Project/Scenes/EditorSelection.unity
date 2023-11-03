@@ -2364,6 +2364,7 @@ MonoBehaviour:
   <DeleteModal>k__BackingField: {fileID: 11400000, guid: ab55e4b69b9d30f4d971e7dc223ade40, type: 2}
   <InvalidModal>k__BackingField: {fileID: 11400000, guid: ec2c9e6e90372bdfda4e89d7876bf483, type: 2}
   <IncompleteModal>k__BackingField: {fileID: 11400000, guid: e335819f8fd145e1693134d4b81f9378, type: 2}
+  <Achievement>k__BackingField: {fileID: 1779356922124130506, guid: 821be1f0f93ea47b393a883bd3c4989a, type: 3}
 --- !u!1 &1352974965
 GameObject:
   m_ObjectHideFlags: 0
@@ -3046,7 +3047,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1228113649}
   m_HandleRect: {fileID: 1228113648}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

@@ -8,6 +8,7 @@ using Level.Storage;
 using LevelEditor;
 using Singletons;
 using UI;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LevelSelectionManager", menuName = "Managers/Level/new Level Selection Manager")]
@@ -29,6 +30,7 @@ public class LevelSelectionManager : ManagerComponent
     private IModalPopup _incompleteModal { get; set; }
     private IModalPopup _uploadModal { get; set; }
     private IModalPopup _deleteModal { get; set; }
+    private AchievementPopupBlock _achievementBlock { get; set; }
 
     public void SetCanvas(Canvas modalCanvas)
     {
@@ -53,6 +55,11 @@ public class LevelSelectionManager : ManagerComponent
     public void SetIncompleteModal(IModalPopup modal)
     {
         _incompleteModal = modal;
+    }
+
+    public void SetAchievementBlock(AchievementPopupBlock block)
+    {
+        _achievementBlock = block;
     }
 
     public void SetLevelLoader(LevelSelectionLoader levelLoader)
@@ -213,6 +220,14 @@ public class LevelSelectionManager : ManagerComponent
         }
     }
 
+    private void OnShowAchievement(PopupAchievement achievement)
+    {
+
+        var popup = Instantiate(this._achievementBlock, this.ModalCanvas.transform);
+        popup.Setup(achievement);
+
+    }
+
     public override void DoOnEnable()
     {
         EditorLevel.OnEditorLevelSelected += OnLevelSelected;
@@ -220,6 +235,7 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload += OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest += OnLeaderboardRequested;
+        AchievementManager.OnShowAchievement += OnShowAchievement;
     }
 
     public override void DoOnDisable()
@@ -229,5 +245,6 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload -= OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest -= OnLeaderboardRequested;
+        AchievementManager.OnShowAchievement -= OnShowAchievement;
     }
 }

@@ -1,4 +1,8 @@
+using System;
+using Editarrr.LevelEditor;
 using SteamIntegration;
+using UI;
+using UnityEditor;
 
 namespace Singletons
 {
@@ -30,6 +34,10 @@ namespace Singletons
      */
     public class AchievementManager : UnitySingleton<AchievementManager>, IUnitySinglton
     {
+        public static event Action<PopupAchievement> OnShowAchievement;
+
+        private AchievementPool _achievementPool;
+
         public void UnlockAchievement(GameAchievement achievement)
         {
             if (SteamManager.Instance.IsInitialized)
@@ -38,12 +46,17 @@ namespace Singletons
                 return;
             }
 
-            // @todo: Implement this for other platforms.
+            PopupAchievement popup = _achievementPool.Get(achievement);
+            if (popup != null)
+            {
+                OnShowAchievement?.Invoke(popup);
+            }
         }
 
         public void Initialize()
         {
             // Nothing needed here.
+            _achievementPool = (AchievementPool) AssetDatabase.LoadAssetAtPath("Assets/_Project/ScriptableObjects/Achievement/GameAchievementPool.asset", typeof(AchievementPool));
         }
     }
 }

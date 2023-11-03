@@ -157,10 +157,10 @@ export const handler = async (event, context) => {
                             }
                         })
                     );
-    
+
                     if (cursorLevelQueryResponse?.Item == undefined) throw new Error(`'cursor' ${cursorLevelId} is invalid`);
                     // TODO More validation of queried response
-                    
+
                     var cursorLevelData = cursorLevelQueryResponse.Item;
                      query.ExclusiveStartKey = {
                         levelStatus: cursorLevelData.levelStatus,
@@ -214,7 +214,7 @@ export const handler = async (event, context) => {
                 // TODO Validation of request
 
                 responseBody = await levelsApi.getLevel(event.pathParameters.id);
-                
+
                 break;
             case "PATCH /levels/{id}":
                 requestJSON = JSON.parse(event.body);
