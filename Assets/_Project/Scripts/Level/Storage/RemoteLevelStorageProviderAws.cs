@@ -141,6 +141,8 @@ namespace Level.Storage
                 }
 
                 save.SetTiles(tileStates);
+                save.SetTotalRatings(res.totalRatings);
+                save.SetTotalScores(res.totalScores);
                 save.SetVersion(res.version);
                 save.SetPublished(res.status == "PUBLISHED");
                 callback?.Invoke(save);
@@ -238,6 +240,9 @@ namespace Level.Storage
                 {
                     var levelStub = new LevelStub(level.name, level.creator.id, level.creator.name, level.id,
                         level.status == "PUBLISHED");
+
+                    levelStub.SetTotalRatings(level.totalRatings);
+                    levelStub.SetTotalScores(level.totalScores);
                     levelStubs.Add(levelStub);
                 }
 
@@ -373,6 +378,8 @@ namespace Level.Storage
         public string status;
         public uint createdAt;
         public uint updatedAt;
+        public int totalRatings;
+        public int totalScores;
         public int version;
         public AwsLevelData data;
     }

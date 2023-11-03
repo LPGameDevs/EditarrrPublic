@@ -3,6 +3,7 @@ import { Buffer } from 'buffer';
 import {DynamoDBClient} from "@aws-sdk/client-dynamodb";
 import {
     DynamoDBDocumentClient,
+    ScanCommand,
     QueryCommand,
     PutCommand,
     GetCommand,
@@ -195,6 +196,8 @@ export const handler = async (event, context) => {
                         "status": dbLevel.levelStatus,
                         "updatedAt": dbLevel.levelUpdatedAt,
                         "createdAt": dbLevel.levelCreatedAt,
+                        "totalRatings": dbLevel.levelTotalRatings ?? 0,
+                        "totalScores": dbLevel.levelTotalScores ?? 0,
                         "version": dbLevel.version,
                     });
                 }
@@ -539,6 +542,143 @@ export const handler = async (event, context) => {
 
                 responseBody = {
                     "analytics": responseAnalytics
+                }
+                break;
+
+            case "GET /all/levels":
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var scanResponse = await dynamo.send(
+                    new ScanCommand({
+                        TableName: tableNameLevel,
+                        // ExpressionAttributeNames: {
+                        // "#AT": "AlbumTitle",
+                        // },
+                        // ProjectionExpression: "#ST, #AT",
+                    })
+                );
+
+                // TODO Validation of response
+
+                var dbLevels = scanResponse.Items;
+
+                var responseLevels = [];
+                for (let i = 0; i < dbLevels.length; i++) {
+                    var dbLevel = dbLevels[i];
+
+                    // TODO Validation
+
+                    var id = extractLevelId(dbLevel.pk);
+
+                    responseLevels.push({
+                        "id": id,
+                        "name": dbLevel.levelName,
+                        "creator": {
+                            "id": dbLevel.levelCreatorId,
+                            "name": dbLevel.levelCreatorName
+                        },
+                        "status": dbLevel.levelStatus,
+                        "updatedAt": dbLevel.levelUpdatedAt,
+                        "createdAt": dbLevel.levelCreatedAt,
+                        "version": dbLevel.version,
+                    });
+                }
+
+                responseBody = {
+                    "levels": responseLevels
+                }
+                break;
+            case "GET /all/scores":
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var scanResponse = await dynamo.send(
+                    new ScanCommand({
+                        TableName: tableNameScore,
+                        // ExpressionAttributeNames: {
+                        // "#AT": "AlbumTitle",
+                        // },
+                        // ProjectionExpression: "#ST, #AT",
+                    })
+                );
+
+                // TODO Validation of response
+
+                var dbScores = scanResponse.Items;
+
+                var responseScores = [];
+                for (let i = 0; i < dbScores.length; i++) {
+                    var dbScore = dbScores[i];
+
+                    // TODO Validation
+
+                    var id = extractLevelId(dbScore.sk);
+                    var levelId = extractLevelId(dbScore.pk);
+
+                    responseScores.push({
+                        "scoreId": id,
+                        "levelId": levelId,
+                        "score": dbScore.score,
+                        "code": dbScore.scoreLevelName,
+                        "creator": {
+                            "id": dbScore.scoreCreatorId,
+                            "name": dbScore.scoreCreatorName
+                        },
+                        "submittedAt": dbScore.scoreSubmittedAt,
+                    });
+                }
+
+                responseBody = {
+                    "scores": responseScores
+                }
+                break;
+            case "GET /all/ratings":
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var scanResponse = await dynamo.send(
+                    new ScanCommand({
+                        TableName: tableNameRating,
+                        // ExpressionAttributeNames: {
+                        // "#AT": "AlbumTitle",
+                        // },
+                        // ProjectionExpression: "#ST, #AT",
+                    })
+                );
+
+                // TODO Validation of response
+
+                var dbRatings = scanResponse.Items;
+
+
+                var responseRatings = [];
+                for (let i = 0; i < dbRatings.length; i++) {
+                    var dbRating = dbRatings[i];
+
+                    // TODO Validation
+
+                    var id = extractLevelId(dbRating.sk);
+                    var levelId = extractLevelId(dbRating.pk);
+
+                    responseRatings.push({
+                        "ratingId": id,
+                        "levelId": levelId,
+                        "rating": dbRating.rating,
+                        "code": dbRating.ratingLevelName,
+                        "creator": {
+                            "id": dbRating.ratingCreatorId,
+                            "name": dbRating.ratingCreatorName
+                        },
+                        "submittedAt": dbRating.ratingSubmittedAt,
+                    });
+                }
+
+                responseBody = {
+                    "ratings": responseRatings
                 }
                 break;
 

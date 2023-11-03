@@ -148,6 +148,27 @@ resource "aws_apigatewayv2_route" "get_type_analytics" {
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 
+resource "aws_apigatewayv2_route" "get_all_levels" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "GET /all/levels"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
+resource "aws_apigatewayv2_route" "get_all_scores" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "GET /all/scores"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
+resource "aws_apigatewayv2_route" "get_all_ratings" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "GET /all/ratings"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
 resource "aws_lambda_permission" "api_gateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
