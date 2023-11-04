@@ -48,6 +48,8 @@ namespace Editarrr.LevelEditor
         [field: SerializeField, Header("Managers")] private EditorTileSelectionManager EditorTileSelection { get; set; }
         [field: SerializeField] private LevelManager LevelManager { get; set; }
 
+        private AchievementPopupBlock AchievementBlock { get; set; }
+
         #region Input
         [field: SerializeField, Header("Input")] private InputValue MousePosition { get; set; }
         [field: SerializeField] private InputValue MouseLeftButton { get; set; }
@@ -119,6 +121,11 @@ namespace Editarrr.LevelEditor
         public void SetInvalidModal(ModalPopup invalidModal)
         {
             this.InvalidModal = invalidModal;
+        }
+
+        public void SetAchievementBlock(AchievementPopupBlock block)
+        {
+            AchievementBlock = block;
         }
 
         public override void DoAwake()
@@ -747,14 +754,24 @@ namespace Editarrr.LevelEditor
             this.InvalidModal.Open(this.ModalCanvas.transform, true);
         }
 
+        private void OnShowAchievement(PopupAchievement achievement)
+        {
+
+            var popup = Instantiate(this.AchievementBlock, this.ModalCanvas.transform);
+            popup.Setup(achievement);
+
+        }
+
         public override void DoOnEnable()
         {
             LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest += ShowInvalidLevelModal;
+            AchievementManager.OnShowAchievement += OnShowAchievement;
         }
 
         public override void DoOnDisable()
         {
             LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest -= ShowInvalidLevelModal;
+            AchievementManager.OnShowAchievement -= OnShowAchievement;
         }
     }
 }

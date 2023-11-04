@@ -3,7 +3,16 @@ guid: 1f9b3774f9ae99141a0f7d6c445ebf3d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - <Manager>k__BackingField: {instanceID: 0}
+  - <ScreenshotCamera>k__BackingField: {instanceID: 0}
+  - <Camera>k__BackingField: {instanceID: 0}
+  - <Tilemap_Foreground>k__BackingField: {instanceID: 0}
+  - <Tilemap_Background>k__BackingField: {instanceID: 0}
+  - <ModalCanvas>k__BackingField: {instanceID: 0}
+  - <StartModal>k__BackingField: {instanceID: 0}
+  - <InvalidModal>k__BackingField: {instanceID: 0}
+  - <Achievement>k__BackingField: {fileID: 1779356922124130506, guid: 821be1f0f93ea47b393a883bd3c4989a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

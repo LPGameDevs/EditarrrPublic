@@ -17,6 +17,8 @@ namespace Systems
         [field: SerializeField] private Tilemap Background { get; set; }
         [field: SerializeField] private GameplayGuiManager GameplayGuiManager { get; set; }
         [field: SerializeField] private GhostRecorder Recorder { get; set; }
+        [field: SerializeField] public Canvas ModalCanvas { get; private set; }
+        [field: SerializeField] public AchievementPopupBlock Achievement { get; private set; }
 
 
         protected override void PreAwake()
@@ -26,6 +28,8 @@ namespace Systems
 
             this.Manager.SetGuiManager(this.GameplayGuiManager);
             this.Manager.SetRecorder(this.Recorder);
+            this.Manager.SetCanvas(this.ModalCanvas);
+            this.Manager.SetAchievementBlock(this.Achievement);
         }
     }
 }

@@ -29,7 +29,7 @@ public class LevelBrowserLoader : MonoBehaviour
 
     private void Update()
     {
-        if(PauseInput)
+        if(PauseInput.WasPressed)
             CloseBrowser();
     }
 

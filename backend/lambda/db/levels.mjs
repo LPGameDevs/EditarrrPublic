@@ -1,8 +1,56 @@
 import {
-    GetCommand, UpdateCommand,
+    GetCommand, UpdateCommand, QueryCommand
 } from "@aws-sdk/lib-dynamodb";
 
 const tableNameLevel = "editarrr-level-storage";
+
+const indexStatusUpdatedAt = "levelStatus-levelUpdatedAt-index";
+const indexStatusCreatedAt = "levelStatus-levelCreatedAt-index";
+const indexStatusAvgScore = "levelStatus-levelAvgScore-index"
+const indexStatusTotalScores = "levelStatus-levelTotalScores-index";
+const indexStatusAvgRating = "levelStatus-levelAvgRating-index";
+const indexStatusTotalRatings = "levelStatus-levelTotalRatings-index";
+
+// Because JS doesn't have enums...
+export class LevelsSortOptions {
+    static UPDATED_AT = "updated-at";
+    static CREATED_AT = "created-at";
+    static AVG_SCORE = "avg-score";
+    static TOTAL_SCORES = "total-scores";
+    static AVG_RATING = "avg-rating";
+    static TOTAL_RATINGS = "total-ratings";
+
+    static isValid(str) {
+        for (const validOption in LevelsSortOptions) {
+            if (LevelsSortOptions[validOption] === str) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static getAllValidValues() {
+        return Object.values(LevelsSortOptions);
+    }
+}
+
+const sortOptionToIndex = {
+    [LevelsSortOptions.UPDATED_AT]: indexStatusUpdatedAt,
+    [LevelsSortOptions.CREATED_AT]: indexStatusCreatedAt,
+    [LevelsSortOptions.AVG_SCORE]: indexStatusAvgScore,
+    [LevelsSortOptions.TOTAL_SCORES]: indexStatusTotalScores,
+    [LevelsSortOptions.AVG_RATING]: indexStatusAvgRating,
+    [LevelsSortOptions.TOTAL_RATINGS]: indexStatusTotalRatings,
+}
+
+const sortOptionToAttributeName = {
+    [LevelsSortOptions.UPDATED_AT]: "levelUpdatedAt",
+    [LevelsSortOptions.CREATED_AT]: "levelCreatedAt",
+    [LevelsSortOptions.AVG_SCORE]: "levelAvgScore",
+    [LevelsSortOptions.TOTAL_SCORES]: "levelTotalScores",
+    [LevelsSortOptions.AVG_RATING]: "levelAvgRating",
+    [LevelsSortOptions.TOTAL_RATINGS]: "levelTotalRatings",
+}
 
 export class LevelsDbClient {
     constructor(dynamoDbClient) {
@@ -25,6 +73,49 @@ export class LevelsDbClient {
         if (!getResponse?.Item) throw new Error(`Level ${levelId} not found`);
 
         return getResponse.Item;
+    }
+
+    async getPagedLevels(
+        sortOption,
+        sortAsc,
+        pageLimit, 
+        cursor,
+        useDrafts, 
+    ) {
+        var query = {
+            TableName: tableNameLevel,
+            IndexName: sortOptionToIndex[sortOption],
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: pageLimit,
+            ScanIndexForward: sortAsc,
+            KeyConditionExpression: "levelStatus = :status",
+            ExpressionAttributeValues: {
+                ":status": useDrafts ? "DRAFT" : "PUBLISHED"
+            }
+        }
+
+        if (cursor) {
+            // Using levelId as a cursor, we have to fetch more level data in order to provide DDB with all the data it expects from the cursor
+            var cursorLevelData = await this.getLevel(cursor);
+            
+            var sortedAttributeName = sortOptionToAttributeName[sortOption];
+
+            query.ExclusiveStartKey = {
+                levelStatus: cursorLevelData.levelStatus,
+                [sortedAttributeName]: cursorLevelData[sortedAttributeName],
+                pk: cursorLevelData.pk,
+                sk: cursorLevelData.sk,
+            };
+        }
+
+        var queryResponse = await this.dynamoDbClient.send(new QueryCommand(query));
+
+        // TODO Validation of response
+
+        return {
+            levels: queryResponse.Items,
+            cursor: queryResponse.LastEvaluatedKey,
+        };
     }
 
     async updateLevelScoreData(levelId, avgScore, totalNumberOfScores) {

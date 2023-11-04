@@ -36,23 +36,38 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     name = "levelCreatorId"
     type = "S" #userId
   }
-
   attribute {
     name = "levelStatus"
     type = "S" # PUBLISHED|DRAFT
   }
-
   attribute {
     name = "levelUpdatedAt"
     type = "N" # Epoch
   }
+  attribute {
+    name = "levelCreatedAt"
+    type = "N" # Epoch
+  }
+  attribute {
+    name = "levelAvgScore"
+    type = "N"
+  }
+  attribute {
+    name = "levelTotalScores"
+    type = "N"
+  }
+  attribute {
+    name = "levelAvgRating"
+    type = "N"
+  }
+  attribute {
+    name = "levelTotalRatings"
+    type = "N"
+  }
+
   # attribute {
   #   name = "levelName"
   #   type = "S"
-  # }
-  # attribute {
-  #   name = "levelCreatedAt"
-  #   type = "N" # Epoch
   # }
   # attribute {
   #   name = "levelData"
@@ -72,7 +87,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelCreatorId"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName", "version"]
+    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -82,7 +97,57 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+
+  global_secondary_index {
+    name            = "levelStatus-levelCreatedAt-index"
+    hash_key        = "levelStatus"
+    range_key       = "levelCreatedAt"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+
+  global_secondary_index {
+    name            = "levelStatus-levelAvgScore-index"
+    hash_key        = "levelStatus"
+    range_key       = "levelAvgScore"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+
+  global_secondary_index {
+    name            = "levelStatus-levelTotalScores-index"
+    hash_key        = "levelStatus"
+    range_key       = "levelTotalScores"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelAvgRating", "levelTotalRatings"]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+
+  global_secondary_index {
+    name            = "levelStatus-levelAvgRating-index"
+    hash_key        = "levelStatus"
+    range_key       = "levelAvgRating"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelTotalRatings"]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+
+  global_secondary_index {
+    name            = "levelStatus-levelTotalRatings-index"
+    hash_key        = "levelStatus"
+    range_key       = "levelTotalRatings"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating"]
     write_capacity  = 0
     read_capacity   = 0
   }

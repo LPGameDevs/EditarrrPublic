@@ -7,6 +7,17 @@ export class BadRequestException extends Error {
     }
 }
 
+export function asBool(str) {
+    switch(str) {
+        case "true":
+            return true
+        case "false":
+            return false
+        default:
+            return undefined
+    } 
+}
+
 export function extractLevelId(ddbLevelKeyStr) {
     const splitDDBLevelKeyStr = ddbLevelKeyStr.match(/#([0-9a-f-]+)/i);
 
