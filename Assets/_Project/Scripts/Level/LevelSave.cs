@@ -24,6 +24,8 @@ namespace Editarrr.Level
         [field: SerializeField] public string LocalDirectory { get; private set; }
         [field: SerializeField] public string RemoteId { get; private set; } = "";
         [field: SerializeField] public ulong SteamId { get; private set; }
+        [field: SerializeField] public int TotalRatings { get; private set; } = 0;
+        [field: SerializeField] public int TotalScores { get; private set; } = 0;
         [field: SerializeField] public int Version { get; private set; } = 0;
         [field: SerializeField] public bool Completed { get; private set; } = false;
 
@@ -135,6 +137,16 @@ namespace Editarrr.Level
         {
             this.Version = version;
             this.Completed = false;
+        }
+
+        public void SetTotalRatings(int ratings)
+        {
+            this.TotalRatings = ratings;
+        }
+
+        public void SetTotalScores(int scores)
+        {
+            this.TotalScores = scores;
         }
 
         public void MarkAsCompleted()

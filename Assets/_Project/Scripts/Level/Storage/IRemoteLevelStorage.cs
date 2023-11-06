@@ -31,6 +31,8 @@ namespace Level.Storage
         public string CreatorName { get; private set; }
         public string RemoteId { get; private set; }
         public bool Published { get; private set; }
+        public int TotalRatings { get; private set; } = 0;
+        public int TotalScores { get; private set; } = 0;
         public bool IsDistro { get; private set; }
 
         public LevelStub(string code, string creator, string creatorName, string remoteId = "", bool published = false)
@@ -46,6 +48,16 @@ namespace Level.Storage
         public void SetDistro(bool isDistro)
         {
             this.IsDistro = isDistro;
+        }
+
+        public void SetTotalRatings(int ratings)
+        {
+            this.TotalRatings = ratings;
+        }
+
+        public void SetTotalScores(int scores)
+        {
+            this.TotalScores = scores;
         }
     }
 
