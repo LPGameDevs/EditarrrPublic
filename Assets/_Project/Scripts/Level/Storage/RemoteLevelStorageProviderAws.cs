@@ -228,12 +228,21 @@ namespace Level.Storage
             }
         }
 
-        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
+        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback, RemoteLevelLoadQuery? query = null)
         {
-            string limit = "100";
+            string limit = "10";
+            string cursor = "";
+            if (query != null)
+            {
+                limit = query.Value.limit.ToString();
+                cursor = query.Value.cursor;
+            }
+
+            string queryParams = $"?limit={limit}";
+            queryParams += cursor.Length > 0 ? $"&cursor={cursor}" : "";
 
             // Get request to /levels
-            RestClient.Get<AwsLevels>($"{AwsLevelUrl}/levels?limit={limit}").Then(res =>
+            RestClient.Get<AwsLevels>($"{AwsLevelUrl}/levels{queryParams}").Then(res =>
             {
                 var levelStubs = new List<LevelStub>();
                 foreach (var level in res.levels)
@@ -246,7 +255,7 @@ namespace Level.Storage
                     levelStubs.Add(levelStub);
                 }
 
-                callback?.Invoke(levelStubs.ToArray());
+                callback?.Invoke(levelStubs.ToArray(), res.cursor);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
@@ -367,6 +376,7 @@ namespace Level.Storage
     public class AwsLevels
     {
         public AwsLevel[] levels;
+        public string cursor;
     }
 
     [Serializable]

@@ -98,20 +98,20 @@ namespace Editarrr.Level
             }
         }
 
-        public void LoadAll(LevelManager_AllLevelsLoadedCallback loadedCallback)
+        public void LoadAll(LevelManager_AllLevelsLoadedCallback loadedCallback, RemoteLevelLoadQuery? query = null)
         {
             this.LevelsLoadedCallback = loadedCallback;
 
             if (RemoteStorageEnabled)
             {
-                this.RemoteLevelStorage.LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback);
+                this.RemoteLevelStorage.LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback, query);
             }
             else
             {
                 this.LevelStorage.LoadAllLevelData(LevelStorage_AllLevelsLoadedCallback);
             }
 
-            void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs)
+            void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs, string cursor = "")
             {
                 if (levelStubs == null)
                 {
@@ -125,7 +125,7 @@ namespace Editarrr.Level
                     levels.Add(levelStub);
                 }
 
-                this.LevelsLoadedCallback?.Invoke(levels.ToArray());
+                this.LevelsLoadedCallback?.Invoke(levels.ToArray(), cursor);
                 this.LevelsLoadedCallback = null;
             }
 
@@ -340,5 +340,11 @@ namespace Editarrr.Level
     public delegate void LevelManager_LevelLoadedCallback(LevelState levelState);
     public delegate void LevelManager_LevelUploadedCallback(LevelSave levelSave);
 
-    public delegate void LevelManager_AllLevelsLoadedCallback(LevelStub[] levelStates);
+    public delegate void LevelManager_AllLevelsLoadedCallback(LevelStub[] levelStates, string cursor = "");
+
+    public struct RemoteLevelLoadQuery
+    {
+        public int limit;
+        public string cursor;
+    }
 }
