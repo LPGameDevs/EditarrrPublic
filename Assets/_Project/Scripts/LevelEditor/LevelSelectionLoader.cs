@@ -13,6 +13,8 @@ public class LevelSelectionLoader : MonoBehaviour
     public EditorLevel LevelPrefab;
     public EditorLevel DraftPrefab;
 
+    [SerializeField] Transform[] _categories;
+
     private List<Transform> _loadedLevels = new List<Transform>();
 
     public void DestroyLevels()

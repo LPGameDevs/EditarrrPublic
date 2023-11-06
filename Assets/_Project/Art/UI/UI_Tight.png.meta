@@ -2166,13 +2166,13 @@ TextureImporter:
       name: UI_Tight_98
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 41
-        width: 85
+        width: 86
         height: 42
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 7, y: 10, z: 8, w: 10}
+      border: {x: 8, y: 10, z: 8, w: 10}
       outline: []
       physicsShape: []
       tessellationDetail: 0
