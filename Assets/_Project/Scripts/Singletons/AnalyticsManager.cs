@@ -41,7 +41,6 @@ namespace Singletons
         {
             _creatorId = PreferencesManager.Instance.GetUserId();
             _creatorName = PreferencesManager.Instance.GetUserName();
-            string test = "";
         }
 
         public void TrackEvent(AnalyticsEvent trackedEvent, string value = "")

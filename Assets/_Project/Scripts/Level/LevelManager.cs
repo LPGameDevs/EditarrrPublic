@@ -198,8 +198,7 @@ namespace Editarrr.Level
                     this.SetRemoteUploadId(code, remoteId);
                 }
 
-                // @todo do not invoke this with null.
-                // this.LevelUploadedCallback?.Invoke(null);
+                this.LevelUploadedCallback?.Invoke(levelSave);
                 this.LevelUploadedCallback = null;
             }
 

@@ -587,6 +587,7 @@ MonoBehaviour:
   <ModalCanvas>k__BackingField: {fileID: 1705024224}
   <StartModal>k__BackingField: {fileID: 11400000, guid: db92f3fe960704fbaae89f1abff61873, type: 2}
   <InvalidModal>k__BackingField: {fileID: 11400000, guid: ec2c9e6e90372bdfda4e89d7876bf483, type: 2}
+  <Achievement>k__BackingField: {fileID: 1779356922124130506, guid: 821be1f0f93ea47b393a883bd3c4989a, type: 3}
 --- !u!1 &259712007
 GameObject:
   m_ObjectHideFlags: 0
