@@ -16,6 +16,6 @@ namespace Level.Storage
     }
 
     public delegate void LevelStorage_LevelLoadedCallback(LevelSave levelSave);
-    public delegate void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levelSaves);
+    public delegate void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levelSaves, string cursor = "");
 
 }

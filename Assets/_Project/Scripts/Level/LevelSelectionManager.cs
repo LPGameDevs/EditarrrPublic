@@ -93,7 +93,7 @@ public class LevelSelectionManager : ManagerComponent
         LevelManager.LoadAll(this.LevelStorage_AllLevelsLoadedCallback);
     }
 
-    private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels)
+    private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels, string cursor = "")
     {
         foreach (var level in levels)
         {
