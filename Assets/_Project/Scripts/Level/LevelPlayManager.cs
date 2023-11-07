@@ -50,6 +50,8 @@ namespace Editarrr.Level
             string code = this.Exchange.CodeToLoad;
             this._gameplayGuiManager.SetLevelCode(code);
             this._recorder.SetLevelCode(code);
+            if (AchievementManager.Instance != null)
+                AchievementManager.Instance.SetLevelCode(code);
         }
 
         public void SetForeground(Tilemap tilemap)
