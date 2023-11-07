@@ -36,6 +36,8 @@ const client = new DynamoDBClient(options);
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
+const screenshotBucketProd = "editarrr-screenshot-ethical-hare";
+const screenshotBucketDev = "editarrr-screenshot-ideal-wren";
 const tableNameLevel = "editarrr-level-storage";
 // TODO Move all calls to the level storage to this client
 const levelsDbClient = new LevelsDbClient(dynamo);
@@ -198,7 +200,7 @@ export const handler = async (event, context) => {
 
                 // Set the parameters
                 const params = {
-                    Bucket: "editarrr-screenshots",
+                    Bucket: screenshotBucketDev,
                     Key: event.pathParameters.filename,
                     Body: imageBuffer,
                     ACL: "public-read",

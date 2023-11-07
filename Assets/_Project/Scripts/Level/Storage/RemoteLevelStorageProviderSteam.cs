@@ -163,7 +163,7 @@ namespace Level.Storage
             Debug.Log("Downloading" + isDownloading);
         }
 
-        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
+        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback, RemoteLevelLoadQuery? query = null)
         {
             // Disabling level browsing for now.
             return;

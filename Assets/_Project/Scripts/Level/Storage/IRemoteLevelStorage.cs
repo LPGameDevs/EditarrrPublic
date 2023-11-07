@@ -11,7 +11,7 @@ namespace Level.Storage
         public void Initialize();
         public void Upload(LevelSave levelSave, RemoteLevelStorage_LevelUploadedCallback callback);
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback);
-        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback);
+        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback, RemoteLevelLoadQuery? query = null);
     }
 
     public delegate void RemoteRatingStorage_RatingSubmittedCallback(string code, string remoteId, bool isSteam = false);
@@ -21,7 +21,8 @@ namespace Level.Storage
     public delegate void RemoteLevelStorage_LevelUploadedCallback(string code, string remoteId, bool isSteam = false);
     public delegate void RemoteLevelStorage_LevelLoadedCallback(LevelSave levelsave);
     public delegate void RemoteLevelStorage_LevelScreenshotDownloadedCallback();
-    public delegate void RemoteLevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs);
+
+    public delegate void RemoteLevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs, string cursor = "");
 
     [Serializable]
     public class LevelStub
