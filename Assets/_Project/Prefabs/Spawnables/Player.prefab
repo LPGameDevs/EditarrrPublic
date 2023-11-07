@@ -25983,7 +25983,7 @@ MonoBehaviour:
   <IsDebugMode>k__BackingField: 0
   <BreakOnFrame>k__BackingField: 0
   <BreakOnStartFalling>k__BackingField: 0
-  <SetFPSOnStart>k__BackingField: 1
+  <SetFPSOnStart>k__BackingField: 0
   <FallClamp>k__BackingField: -40
   <JumpCanceledGravityModifier>k__BackingField: 3
   <InputMove>k__BackingField: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
