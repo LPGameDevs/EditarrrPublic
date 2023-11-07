@@ -25957,7 +25957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Rigidbody>k__BackingField: {fileID: 123399669}
   <Visuals>k__BackingField: {fileID: 2401548298578535207}
-  <VisualLerp>k__BackingField: 50
+  <VisualLerp>k__BackingField: 100
   <Collider>k__BackingField: {fileID: 4715788225090088003}
   <GroundContactFilter>k__BackingField:
     useTriggers: 0
