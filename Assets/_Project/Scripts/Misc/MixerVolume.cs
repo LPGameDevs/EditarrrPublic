@@ -18,20 +18,15 @@ namespace Misc
         private float _playSoundDelay = 0.5f;
         private float _playSoundTimer = 0;
 
-        private void Awake()
+        public void Initialize()
         {
             _slider = GetComponent<Slider>();
             _audio = GetComponent<AudioSource>();
-        }
 
-        private void Start()
-        {
             float value = PreferencesManager.Instance.GetSlider(this._volumeParameter);
             _slider.onValueChanged.AddListener(SetLevel);
             _slider.value = value;
-            //SetLevel(value);
         }
-
 
         private void Update()
         {

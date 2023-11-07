@@ -149,7 +149,7 @@ public class LevelSelectionManager : ManagerComponent
                 confirmModal.SetConfirm(UploadLevel);
             }
 
-            this._uploadModal.Open(this.ModalCanvas.transform);
+            this._uploadModal.Open(this.ModalCanvas.transform, true);
 
             void UploadLevel()
             {

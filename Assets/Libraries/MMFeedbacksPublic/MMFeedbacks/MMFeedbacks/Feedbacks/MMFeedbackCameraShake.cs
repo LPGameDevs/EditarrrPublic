@@ -24,7 +24,7 @@ namespace MoreMountains.Feedbacks
         /// <param name="attenuation"></param>
         protected override void CustomPlayFeedback(Vector3 position, float attenuation = 1.0f)
         {
-            if (Active)
+            if (Active && SettingsManager.ScreenShakeEnabled)
             {
                 MMCameraShakeEvent.Trigger(CameraShakeProperties.Duration, CameraShakeProperties.Amplitude * attenuation, CameraShakeProperties.Frequency, Channel);
             }

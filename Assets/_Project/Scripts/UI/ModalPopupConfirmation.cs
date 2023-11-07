@@ -40,9 +40,9 @@ namespace UI
             AudioManager.Instance.PlayAudioClip(confirmSound);
         }
 
-        public void SetConfirm(Action uploadLevel)
+        public void SetConfirm(Action buttonAction)
         {
-            this._onConfirm = uploadLevel;
+            this._onConfirm = buttonAction;
         }
 
         public virtual string GetConfirmText()
