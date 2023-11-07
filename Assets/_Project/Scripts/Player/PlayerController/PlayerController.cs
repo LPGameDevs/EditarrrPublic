@@ -18,8 +18,13 @@ namespace Player
 
 
         [field: SerializeField] private Rigidbody2D Rigidbody { get; set; }
+
         private HealthSystem Health { get; set; }
 
+        [field: SerializeField] private SpriteRenderer Visuals { get; set; }
+        private Transform VisualRoot { get; set; }
+
+        [field: SerializeField] private float VisualLerp { get; set; } = .5f;
 
         Vector3 Velocity { get; set; }
         Vector3 LastTransformPosition { get; set; }
@@ -29,16 +34,27 @@ namespace Player
         float StunDuration { get; set; }
         bool IsStunned { get => this.StunDuration > 0; }
 
+        float TimeScale { get; set; }
+        float FrameTime { get; set; }
+        float FrameRate { get; set; } = 50;
+        float FrameRateStep { get; set; }
+
         void Awake()
         {
             this.Health = this.GetComponent<HealthSystem>();
             this.Animator = this.GetComponentInChildren<Animator>();
             this.AwakeExternalForce();
+
+            this.FrameRateStep = 1f / this.FrameRate;
+
+            this.VisualRoot = new GameObject("Player Visuals").transform;
+            this.Visuals.transform.SetParent(this.VisualRoot, false);
+            this.NextPosition = this.PrevPosition = this.VisualRoot.position = this.transform.position;
         }
 
         private void Start()
         {
-            // Application.targetFrameRate = 20;
+            // Application.targetFrameRate = 30;
 
             this.StartDebug();
             this.StartCollision();
@@ -66,51 +82,98 @@ namespace Player
         {
             if (this.IsDebugMode)
             {
-                this.UpdateDebug();
-            }
-            else
-            {
-                // this.DeltaTime = (this.DeltaTime + Time.deltaTime) / 2f;
-                // this.DeltaTime = Time.deltaTime;
+                this.TimeScale = Time.deltaTime;
                 this.UpdateController();
+                return;
             }
+
+            this.TimeScale = this.FrameRateStep;
+            this.FrameTime += Time.deltaTime;
+
+            this.UpdateInput();
+            this.UpdatePlatform();
+
+            if (this.FrameTime >= this.FrameRateStep)
+            {
+                if (!this._active)
+                    return;
+
+                this.Velocity = this.transform.position - this.LastTransformPosition;
+                this.LastTransformPosition = this.transform.position;
+                
+                this.ResetValues();
+
+                this.UpdateCollision();
+
+                while (this.FrameTime >= this.FrameRateStep)
+                {
+                    this.FrameTime -= this.FrameRateStep;
+
+                    this.UpdateStun();
+
+                    this.UpdateJumpApex();
+                    this.UpdateWalk();
+                    this.UpdateGravity();
+                    this.UpdateJump();
+                    this.UpdateExternalForce();
+                    this.UpdateMoveConstraints();
+
+                    this.UpdateMoveValue();
+                }
+
+                this.PrevPosition = this.NextPosition;
+                this.UpdateMove();
+                this.transform.position = this.NextPosition;
+
+                // this.PrevPosition = this.transform.position;
+
+                this.UpdateAnimator();
+                this.UpdateSpriteDirection();
+
+                this.ExternalForce = Vector3.zero;
+            }
+
+            // this.VisualRoot.position = Vector3.Lerp(this.VisualRoot.position, this.NextPosition, .8f);
+
+            this.VisualRoot.position = 
+                Vector3.Lerp(this.VisualRoot.position, this.NextPosition, 1 - Mathf.Pow(.5f, Time.deltaTime * this.VisualLerp));
+
+
+            //float t = this.FrameTime / this.FrameRateStep;
+            // this.Visuals.transform.position = Vector3.Lerp(this.NextPosition, this.PrevPosition, t);
+
+
+            //this.Accu += Time.deltaTime;
+            //this.UpdateInput();
+
+            //while (this.Accu >= this.FrameRateStep)
+            //{
+            //    this.TimeScale = this.FrameRateStep;
+            //    this.UpdateController();
+            //    this.Accu -= this.FrameRateStep;
+            //}
         }
 
-        //private void UpdateController()
-        //{
-        //    if (!this._active)
-        //        return;
+        private void ResetValues()
+        {
+            this.Movement = Vector3.zero;
+        }
 
-        //    this.Velocity = this.transform.position - this.LastTransformPosition;
-        //    this.LastTransformPosition = this.transform.position;
-
-
-        //    this.UpdatePlatform();
-        //    this.UpdateInput();
-        //    this.UpdateStun();
-
-
-        //    this.UpdateJumpApex();
-        //    this.UpdateWalk();
-        //    this.UpdateGravity();
-        //    this.UpdateJump();
-
-        //    this.UpdateMove();
-
-
-        //    this.UpdateCollision();
-
-        //    this.UpdateAnimator();
-        //    this.UpdateSpriteDirection();
-        //}
-
-        private void FixedUpdate()
+        private void UpdateController()
         {
             if (!this._active)
                 return;
 
             this.Velocity = this.transform.position - this.LastTransformPosition;
             this.LastTransformPosition = this.transform.position;
+
+            this.Movement = Vector3.zero;
+
+            this.UpdateCollision();
+
+            this.UpdatePlatform();
+            this.UpdateInput();
+            this.UpdateStun();
 
             this.UpdateJumpApex();
             this.UpdateWalk();
@@ -119,30 +182,21 @@ namespace Player
             this.UpdateExternalForce();
             this.UpdateMoveConstraints();
 
+            this.UpdateMoveValue();
             this.UpdateMove();
-
-
-            this.UpdateCollision();
-        }
-
-        private void UpdateController()
-        {
-            if (!this._active)
-                return;
-
-            this.UpdatePlatform();
-            this.UpdateInput();
-            this.UpdateStun();
+            this.transform.position = this.NextPosition;
 
             this.UpdateAnimator();
             this.UpdateSpriteDirection();
         }
+
 
         private void UpdateSpriteDirection()
         {
             if (this.RawInputMove != 0)
             {
                 this.transform.localScale = new Vector2(Mathf.Sign(this.RawInputMove), 1f);
+                this.VisualRoot.localScale = new Vector2(Mathf.Sign(this.RawInputMove), 1f);
             }
         }
 
@@ -163,7 +217,7 @@ namespace Player
 
         private void UpdateStun()
         {
-            this.StunDuration = (this.StunDuration - Time.deltaTime).ClampMin(0);
+            this.StunDuration = (this.StunDuration - this.TimeScale).ClampMin(0);
         }
 
 

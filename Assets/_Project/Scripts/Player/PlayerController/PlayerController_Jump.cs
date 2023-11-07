@@ -41,7 +41,7 @@ namespace Player
                 this.InputJumpTime = float.MinValue;
 
                 OnPlayerJumped?.Invoke();
-                Debug.Log($"Jump with {this.VerticalSpeed}");
+                Debug.Log($"Jump == VS: {this.VerticalSpeed}, CT: {this.CoyoteTimeActive}, JB: {this.JumpBufferActive}");
             }
 
             if (!this.Collisions.Down && this.InputJumpReleased && !this.JumpCanceled && this.Velocity.y > 0)
@@ -59,7 +59,7 @@ namespace Player
             }
             else if (!this.Collisions.Down)
             {
-                this.AirTime += Time.deltaTime;
+                this.AirTime += this.TimeScale;
             }
 
             this.CoyoteTimeActive = this.CoyoteJumpFlag && !this.Collisions.Down && this.LastGroundedTime + this.CoyoteTime > Time.time;
@@ -75,6 +75,16 @@ namespace Player
             {
                 this.JumpApexInfluence = Mathf.InverseLerp(this.JumpApexThreshold, 0, Mathf.Abs(this.Velocity.y));
                 this.FallSpeed = Mathf.Lerp(this.FallSpeedMin, this.FallSpeedMax, this.JumpApexInfluence);
+                //float target = Mathf.Lerp(this.FallSpeedMin, this.FallSpeedMax, this.JumpApexInfluence * (Time.deltaTime * .25f));
+
+                //float tI = Mathf.InverseLerp(this.JumpApexThreshold, 0, Mathf.Abs(this.Velocity.y));
+                //this.JumpApexInfluence = Mathf.Lerp(this.JumpApexInfluence, tI, Time.deltaTime * Time.deltaTime);
+
+
+                //float t = Mathf.Lerp(this.FallSpeedMin, this.FallSpeedMax, this.JumpApexInfluence);
+                //float target = t;
+                ////float target = Mathf.Lerp(this.FallSpeedMin, this.FallSpeedMax, this.JumpApexInfluence * (Time.deltaTime * .25f));
+                //this.FallSpeed = target; // Mathf.Lerp(this.FallSpeedMin, this.FallSpeedMax, this.JumpApexInfluence);
             }
             else
             {

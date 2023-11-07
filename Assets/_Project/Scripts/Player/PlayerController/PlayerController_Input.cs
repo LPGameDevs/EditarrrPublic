@@ -24,9 +24,17 @@ namespace Player
         {
             this.UpdateInputLock();
 
-            this.RawInputMove = this.InputLocked ? 0 : this.InputMove.Read<Vector2>().x;
+            if (this.IsDebugMode)
+            {
+                this.RawInputMove = 1;
+                this.IsMoving = true;
+            }
+            else
+            {
+                this.RawInputMove = this.InputLocked ? 0 : this.InputMove.Read<Vector2>().x;
+                this.IsMoving = this.InputMove.IsPressed && !this.InputLocked;
+            }
 
-            this.IsMoving = this.InputMove.IsPressed && !this.InputLocked;
 
             this.InputJumpPressed = this.InputJump.WasPressed && !this.InputLocked;
             this.InputJumpReleased = !this.InputJump.IsPressed && !this.InputLocked;

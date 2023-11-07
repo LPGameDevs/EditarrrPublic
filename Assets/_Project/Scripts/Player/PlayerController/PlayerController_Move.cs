@@ -9,6 +9,11 @@ namespace Player
 
         private Vector3 Movement { get; set; }
 
+        private Vector3 PrevPosition { get; set; }
+        private Vector3 NextPosition { get; set; }
+
+
+
         //[field: SerializeField] private InputValue InputJump { get; set; }
 
         private void StartMove()
@@ -16,23 +21,27 @@ namespace Player
 
         }
 
-        private void UpdateMove()
+        private void UpdateMoveValue()
         {
-            this.Movement = new Vector3(this.HorizontalSpeed, this.VerticalSpeed) * Time.deltaTime;
+            this.Movement += new Vector3(this.HorizontalSpeed, this.VerticalSpeed) * this.TimeScale;
             
             if (!this.IsKnockback)
             {
                 // Debug.Log($"Add External Force {this.ExternalForce}");
                 this.Movement += this.ExternalForce;
             }
+        }
 
-            // var move =  (Vector3.right) * this.HorizontalSpeed * this.DeltaTime;
-
+        private void UpdateMove()
+        {
             var hits = new RaycastHit2D[1];
-            if (this.Collider.Cast(this.Movement, this.GroundContactFilter, hits, this.Movement.magnitude) == 0)
+            if (this.Collider.Cast(this.Movement.normalized, this.GroundContactFilter, hits, this.Movement.magnitude) == 0)
             {
-                // this.transform.position += this.Movement;
-                this.Rigidbody.MovePosition(this.transform.position + this.Movement);
+                var targetPosition = this.transform.position + this.Movement;
+                this.NextPosition = targetPosition;
+                // this.transform.position = targetPosition;
+
+                // this.Rigidbody.MovePosition(this.transform.position + this.Movement);
                 return;
             }
 
@@ -48,7 +57,8 @@ namespace Player
                 {
                     t += stepSize / factor;
 
-                    if (this.Collider.Cast(this.Movement.normalized, this.GroundContactFilter, hits, this.Movement.magnitude * t + .005f) > 0)
+                    if (this.Collider.Cast(this.Movement.normalized, this.GroundContactFilter, hits, this.Movement.magnitude * t 
+                        + this.CollisionCheckDistance / 4f) > 0)
                     {
                         if (failed <= 2 && i < this.CollisionResolveIterations)
                         {
@@ -58,7 +68,7 @@ namespace Player
                             factor *= 2;
                             continue;
                         }
-                        
+
                         return;
                     }
 
@@ -69,7 +79,9 @@ namespace Player
             finally
             {
                 // this.transform.position = resolvePosition;
-                this.Rigidbody.MovePosition(resolvePosition);
+                this.NextPosition = resolvePosition;
+
+                // this.Rigidbody.MovePosition(resolvePosition);
             }
         }
 

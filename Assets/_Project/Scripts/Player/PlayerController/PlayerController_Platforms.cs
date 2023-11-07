@@ -25,7 +25,7 @@ namespace Player
 
             if (this.IsOnPlatform)
             {
-                this.ExternalForce = this.CurrentPlatform.Delta;
+                this.ExternalForce += this.CurrentPlatform.Delta;
             }
             else
             {

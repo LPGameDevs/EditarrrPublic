@@ -38,7 +38,7 @@ namespace Editarrr.Level.Tiles
         }
 
         
-        private void FixedUpdate()
+        private void Update()
         {
             Vector3 target = this.Target;
 

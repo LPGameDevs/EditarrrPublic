@@ -24,13 +24,13 @@ namespace Player
             if (this.IsMoving)
             {
                 targetValue = this.RawInputMove * this.MaxMoveSpeed;
-                rate = this.Acceleration * Time.deltaTime;
+                rate = this.Acceleration * this.TimeScale;
                 clampBonus = Mathf.Sign(this.RawInputMove) * this.JumpApexInfluence * this.JumpApexBonus;
             }
             else
             {
                 targetValue = 0;
-                rate = this.DeAcceleration * Time.deltaTime;
+                rate = this.DeAcceleration * this.TimeScale;
                 clampBonus = 0;
             }
 

@@ -13,7 +13,7 @@ namespace Player
 
         private void UpdateGravity()
         {
-            if (this.Collisions.Down)
+            if (this.Collisions.Down && this.VerticalSpeed <= 0)
             {
                 this.VerticalSpeed = this.VerticalSpeed < 0 ? 0 : this.VerticalSpeed;
             }
@@ -22,7 +22,7 @@ namespace Player
                 var fallSpeed = this.JumpCanceled && this.VerticalSpeed > 0 ? this.FallSpeed * this.JumpCanceledGravityModifier : this.FallSpeed;
 
                 float currentVerticalSpeed = this.VerticalSpeed;
-                this.VerticalSpeed = (this.VerticalSpeed - (fallSpeed * Time.deltaTime)).ClampMin(this.FallClamp);
+                this.VerticalSpeed = (this.VerticalSpeed - (fallSpeed * this.TimeScale)).ClampMin(this.FallClamp);
 
                 if (currentVerticalSpeed >= 0f && this.VerticalSpeed < 0f)
                 {
