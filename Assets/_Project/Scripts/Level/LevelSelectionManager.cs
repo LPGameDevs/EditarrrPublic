@@ -169,7 +169,7 @@ public class LevelSelectionManager : ManagerComponent
         }
 
         AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelSubmitted);
-        TwitchManager.Instance.SendNotification($"{level.Creator} just uploaded a new level: {level.Code}.");
+        TwitchManager.Instance.SendNotification($"{level.CreatorName} just uploaded a new level: {level.Code}.");
 
         // Update display.
         DestroyAndRefreshLevels();

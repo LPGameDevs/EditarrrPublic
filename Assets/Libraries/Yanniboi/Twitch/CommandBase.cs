@@ -10,7 +10,7 @@ namespace Yanniboi.Twitch
         public abstract string CommandName { get; }
 
         // @todo Add Aliases.
-    
+
         public virtual void Execute(string user, string message)
         {
             if (IsValid(user, message, out TwitchMessage error))
@@ -52,13 +52,16 @@ namespace Yanniboi.Twitch
         protected void SendMessage(TwitchMessage message, string var = "")
         {
             string messageText = message.Text;
+
+            messageText = String.Format(messageText, var);
+
             if (messageText.Length > 0)
             {
                 OnCommandMessage?.Invoke(message.Name, messageText);
             }
         }
     }
-    
+
     public class TwitchMessage {
         public bool IsError {get; private set;}
         public string Name {get; private set;}
@@ -68,7 +71,7 @@ namespace Yanniboi.Twitch
             Name = name;
             Text = description;
         }
-    
+
         public TwitchMessage(string name, string description, bool isError) {
             Name = name;
             Text = description;

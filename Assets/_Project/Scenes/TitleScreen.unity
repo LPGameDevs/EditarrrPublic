@@ -1186,6 +1186,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 942252054, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+      propertyPath: oauth
+      value: oauth:fxzu8x0v2zurdu6b5r1nxya45ujjx4
+      objectReference: {fileID: 0}
+    - target: {fileID: 942252054, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+      propertyPath: _debug
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2283036675160398487, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
       propertyPath: m_Name
       value: AllTheSingletons
@@ -1234,8 +1242,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6921163407437754798, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+--- !u!1 &942252049 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 942252049, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+  m_PrefabInstance: {fileID: 912089232}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &942252055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942252049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd14900404dc4015b05ba90a7ab896c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1072579209 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6522958623997308135, guid: b8ecbc41a938adc4cb7ff5474e6afbad, type: 3}
