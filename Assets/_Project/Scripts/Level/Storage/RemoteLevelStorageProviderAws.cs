@@ -70,6 +70,7 @@ namespace Level.Storage
                     id = userId
                 },
                 status = levelSave.Published ? "PUBLISHED" : "DRAFT",
+                labels = levelSave.GetLabels(),
                 version = levelSave.Version,
                 data = new AwsLevelData()
                 {
@@ -144,6 +145,11 @@ namespace Level.Storage
                 save.SetTotalRatings(res.totalRatings);
                 save.SetTotalScores(res.totalScores);
                 save.SetVersion(res.version);
+
+                foreach (var label in res.labels)
+                {
+                    save.SetLabel(label);
+                }
                 save.SetPublished(res.status == "PUBLISHED");
                 callback?.Invoke(save);
 
@@ -388,6 +394,7 @@ namespace Level.Storage
         public string status;
         public uint createdAt;
         public uint updatedAt;
+        public string[] labels;
         public int totalRatings;
         public int totalScores;
         public int version;
