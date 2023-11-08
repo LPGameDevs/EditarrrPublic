@@ -32,11 +32,25 @@ namespace Singletons
     /**
      * This class is used to store user preferences.
      */
-    public class AchievementManager : UnitySingleton<AchievementManager>, IUnitySinglton
+    public class AchievementManager : UnityPersistentSingleton<AchievementManager>
     {
         public static event Action<PopupAchievement> OnShowAchievement;
 
         [SerializeField] AchievementPool AchievementPool;
+
+        public void ProgressAchievement(GameAchievement achievement)
+        {
+            // For achievements that have thresholds we increment the count with every step.
+
+            // Get current count.
+            // Add one.
+            // Check if new threshold is reached.
+            bool thresholdReached = true;
+            if (thresholdReached)
+            {
+                UnlockAchievement(achievement);
+            }
+        }
 
         public void UnlockAchievement(GameAchievement achievement)
         {
@@ -51,11 +65,6 @@ namespace Singletons
             {
                 OnShowAchievement?.Invoke(popup);
             }
-        }
-
-        public void Initialize()
-        {
-            // Nothing needed here.
         }
     }
 }

@@ -7,12 +7,12 @@ export class LevelsApi {
     constructor(levelsDbClient) {
         this.levelsDbClient = levelsDbClient;
     }
-    
+
     async getPagedLevels(
-        requestSortOption, 
-        requestSortAsc, 
-        requestLimit, 
-        requestCursor, 
+        requestSortOption,
+        requestSortAsc,
+        requestLimit,
+        requestCursor,
         requestUseDrafts,
     ) {
         var sortOption = LevelsSortOptions.UPDATED_AT;
@@ -42,10 +42,10 @@ export class LevelsApi {
         var queryResponse = await this.levelsDbClient.getPagedLevels(
             sortOption,
             sortAsc,
-            pageLimit, 
+            pageLimit,
             requestCursor,
             useDrafts);
-    
+
         var dbLevels = queryResponse.levels;
         var responseLevels = [];
         for (let i = 0; i < dbLevels.length; i++) {
@@ -86,6 +86,7 @@ function asApiLevel(dbLevel) {
             "id": dbLevel.levelCreatorId,
             "name": dbLevel.levelCreatorName
         },
+        "labels": dbLevel.levelLabels ?? [],
         "status": dbLevel.levelStatus,
         "createdAt": dbLevel.levelCreatedAt,
         "updatedAt": dbLevel.levelUpdatedAt,

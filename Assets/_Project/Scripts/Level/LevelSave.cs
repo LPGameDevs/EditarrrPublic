@@ -1,6 +1,7 @@
 ﻿using Editarrr.LevelEditor;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Editarrr.Misc;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Editarrr.Level
 
         [field: SerializeField] public TileSave[] Tiles { get; private set; } = new TileSave[0];
 
+        [field: SerializeField] private List<string> Labels { get; set; } = new List<string>();
         [field: SerializeField] public int ScaleX { get; private set; }
         [field: SerializeField] public int ScaleY { get; private set; }
         [field: SerializeField] public string LocalDirectory { get; private set; }
@@ -50,6 +52,12 @@ namespace Editarrr.Level
             this.ScaleX = levelState.Tiles.GetLength(0);
             this.ScaleY = levelState.Tiles.GetLength(1);
 
+            // @todo Add configuration for settings levels.
+            if (true)
+            {
+                this.SetLabel("GDFG");
+            }
+
             List<TileSave> tiles = new List<TileSave>();
 
             for (int y = 0; y < this.ScaleY; y++)
@@ -77,6 +85,27 @@ namespace Editarrr.Level
             }
 
             this.Tiles = tiles.ToArray();
+        }
+
+        public string[] GetLabels()
+        {
+            return this.Labels.ToArray();
+        }
+
+        public void SetLabel(string label)
+        {
+            if (!this.Labels.Contains(label))
+            {
+                this.Labels.Add(label);
+            }
+        }
+
+        public void UnsetLabel(string label)
+        {
+            if (this.Labels.Contains(label))
+            {
+                this.Labels.Remove(label);
+            }
         }
 
         public void SetLocalDirectory(string localDirectory)
