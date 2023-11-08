@@ -92,11 +92,13 @@ namespace Gameplay.GUI
             UpdateContent();
             _animator.SetTrigger(VICTORY_TRIGGER_NAME);
 
+            string currentUser = PreferencesManager.Instance.GetUserName();
             // @todo only show this if its not the players own level.
-            if (_user != PreferencesManager.Instance.GetUserName())
+            if (_user != currentUser)
             {
                 AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelCompleted);
             }
+            TwitchManager.Instance.SendNotification($"{currentUser} just finished level {_code} in {_timeText}.");
         }
 
         public void SetCode(string code)

@@ -32,7 +32,7 @@ namespace Singletons
     /**
      * This class is used to store user preferences.
      */
-    public class AchievementManager : UnitySingleton<AchievementManager>, IUnitySinglton
+    public class AchievementManager : UnityPersistentSingleton<AchievementManager>
     {
         public static event Action<PopupAchievement> OnShowAchievement;
 
@@ -65,11 +65,6 @@ namespace Singletons
             {
                 OnShowAchievement?.Invoke(popup);
             }
-        }
-
-        public void Initialize()
-        {
-            // Nothing needed here.
         }
     }
 }
