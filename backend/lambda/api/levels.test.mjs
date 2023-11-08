@@ -70,6 +70,7 @@ describe('GetLevel', function () {
             "totalScores": 1,
             "avgRating": 1,
             "totalRatings": 1,
+            "labels": [],
         });
     });
 });
@@ -115,6 +116,7 @@ describe('GetPagedLevels', function () {
                     "levelTotalScores": 2,
                     "levelAvgRating": 1,
                     "levelTotalRatings": 2,
+                    "labels": [],
                 },
                 {
                     "levelName": "Level 1",
@@ -130,6 +132,7 @@ describe('GetPagedLevels', function () {
                     "levelTotalScores": 2,
                     "levelAvgRating": 1,
                     "levelTotalRatings": 2,
+                    "labels": [],
                 },
             ] 
         });
@@ -162,6 +165,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 },
                 {
                     "id": "1-1-1-1-1",
@@ -178,6 +182,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 }
             ]   
         });
@@ -262,6 +267,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 },
                 {
                     "id": "1-1-1-1-1",
@@ -278,6 +284,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 }
             ]   
         });
@@ -362,6 +369,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 },
                 {
                     "id": "1-1-1-1-1",
@@ -378,6 +386,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 }
             ]   
         });
@@ -462,6 +471,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 },
                 {
                     "id": "1-1-1-1-1",
@@ -478,6 +488,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 1,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 }
             ]   
         });
@@ -562,6 +573,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 2,
                     "totalRatings": 2,
+                    "labels": [],
                 },
                 {
                     "id": "1-1-1-1-1",
@@ -578,6 +590,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 }
             ]   
         });
@@ -662,6 +675,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 },
                 {
                     "id": "1-1-1-1-1",
@@ -678,6 +692,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 1,
+                    "labels": [],
                 }
             ]   
         });
@@ -753,6 +768,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 }
             ],
             cursor: "2-2-2-2-2",
@@ -853,6 +869,7 @@ describe('GetPagedLevels', function () {
                     "totalScores": 2,
                     "avgRating": 1,
                     "totalRatings": 2,
+                    "labels": [],
                 }
             ],
         });
