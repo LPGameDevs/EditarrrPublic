@@ -93,6 +93,7 @@ export const handler = async (event, context) => {
                 // TODO Further validation of status (introduce an enum?)
                 var levelData = requestJSON.data;
                 if (!levelData) throw new BadRequestException(`'data' must be provided in the request.`);
+                var labels = requestJSON.labels ?? [];
 
                 var generatedLevelId = uuidv4();
                 var currentTimestamp = Date.now();
@@ -109,6 +110,7 @@ export const handler = async (event, context) => {
                             levelStatus: levelStatus,
                             levelCreatedAt: currentTimestamp,
                             levelUpdatedAt: currentTimestamp,
+                            levelLabels: labels,
                             levelData: levelData
                         },
                     })

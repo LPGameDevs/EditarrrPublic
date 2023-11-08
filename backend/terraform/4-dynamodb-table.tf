@@ -87,7 +87,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelCreatorId"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -97,7 +97,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -107,7 +107,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelCreatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -117,7 +117,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelAvgScore"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -127,7 +127,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelTotalScores"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -137,7 +137,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelAvgRating"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -147,7 +147,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelTotalRatings"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }

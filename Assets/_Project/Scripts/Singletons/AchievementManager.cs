@@ -38,6 +38,20 @@ namespace Singletons
 
         [SerializeField] AchievementPool AchievementPool;
 
+        public void ProgressAchievement(GameAchievement achievement)
+        {
+            // For achievements that have thresholds we increment the count with every step.
+
+            // Get current count.
+            // Add one.
+            // Check if new threshold is reached.
+            bool thresholdReached = true;
+            if (thresholdReached)
+            {
+                UnlockAchievement(achievement);
+            }
+        }
+
         public void UnlockAchievement(GameAchievement achievement)
         {
             if (SteamManager.Instance.IsInitialized)
