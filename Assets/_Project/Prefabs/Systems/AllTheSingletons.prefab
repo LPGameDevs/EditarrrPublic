@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 69651f767a05058d98c47255f512f3db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   oauth: oauth:2q05l5whrkdsmhelc0pqydj0hevrv2
   nickName: editarrr
   channelName: zackavelli_
@@ -62,8 +62,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 377525fc55eea25aeb4bfb9927462bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!114 &942252052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,8 +74,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfa6476332da4a77af8e2f6b05a4f8fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!114 &942252051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,8 +86,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2e06f6564db48a6a1eb64c210a5109c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!114 &7850450147172965972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd14900404dc4015b05ba90a7ab896c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &1669690219
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,9 +142,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6d649151780414382e6ad3dbf86001e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   AchievementPool: {fileID: 11400000, guid: 8b5a1480d701513bda73a7f31e5647e5, type: 2}
+  DeathAchievements: {fileID: 11400000, guid: e2a9b16cdf0fb9447b068abaa48d933d, type: 2}
+  LevelCompletedAchievements: {fileID: 11400000, guid: d079ac0939def7f489b7304ec6111e79, type: 2}
+  LevelPlayedAchievements: {fileID: 11400000, guid: 74e2c11ad8551e641b85bad80effbcda, type: 2}
 --- !u!1 &1649636713442347307
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,8 +204,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_Material: {fileID: 0}
   m_Color: {r: 0.20000002, g: 0.19607845, b: 0.2392157, a: 1}
   m_RaycastTarget: 1
@@ -311,8 +314,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c175ec3daad4594bac07759d51ae1df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _musicSlider: {fileID: 4785735465737708031}
   _sfxSlider: {fileID: 4785735464514758613}
   _screenShakeToggle: {fileID: 2447559698965072967}
@@ -350,8 +353,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_IgnoreReversedGraphics: 1
   m_BlockingObjects: 0
   m_BlockingMask:
@@ -366,11 +369,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6522958623997308130, guid: b8ecbc41a938adc4cb7ff5474e6afbad, type: 3}
       propertyPath: m_Sprite
-      value: 
+      value:
       objectReference: {fileID: 1931395949, guid: 53cc67c92fd1bfb4abd11f589fa6fd10, type: 3}
     - target: {fileID: 6522958623997308131, guid: b8ecbc41a938adc4cb7ff5474e6afbad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
+      value:
       objectReference: {fileID: 7942568419636489290}
     - target: {fileID: 6522958623997308131, guid: b8ecbc41a938adc4cb7ff5474e6afbad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -809,7 +812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6626815280115386632, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
+      value:
       objectReference: {fileID: 7942568419636489290}
     - target: {fileID: 8106928622115919209, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -931,8 +934,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!114 &4785735464514758613 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106928622115919207, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
@@ -942,8 +945,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4aa30ccfcd89a90e9353f68a1be95fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!114 &4785735465737708031 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8106928623438943053, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
@@ -953,8 +956,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4aa30ccfcd89a90e9353f68a1be95fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1 &4925219989745837602 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8552939126469072016, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
@@ -969,8 +972,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1001 &4636345253730539624
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1112,7 +1115,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3124189786846601556, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
       propertyPath: m_fontAsset
-      value: 
+      value:
       objectReference: {fileID: 11400000, guid: d986a0510bde7e33e9e8d40ad0a93d83, type: 2}
     - target: {fileID: 3124189786846601556, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
       propertyPath: m_hasFontAssetChanged

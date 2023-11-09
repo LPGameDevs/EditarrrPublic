@@ -1,5 +1,7 @@
 using System;
 using Editarrr.LevelEditor;
+using Gameplay;
+using Player;
 using SteamIntegration;
 using UI;
 using UnityEngine;
@@ -36,7 +38,12 @@ namespace Singletons
     {
         public static event Action<PopupAchievement> OnShowAchievement;
 
+        private string _code = "";
+
         [SerializeField] AchievementPool AchievementPool;
+        [SerializeField] ThresholdAchievement DeathAchievements;
+        [SerializeField] ThresholdAchievement LevelCompletedAchievements;
+        [SerializeField] ThresholdAchievement LevelPlayedAchievements;
 
         public void ProgressAchievement(GameAchievement achievement)
         {
@@ -54,16 +61,76 @@ namespace Singletons
 
         public void UnlockAchievement(GameAchievement achievement)
         {
-            if (SteamManager.Instance.IsInitialized)
+            if (!PreferencesManager.Instance.IsAchievementUnlocked(achievement))
             {
-                var success = SteamManager.Instance.UnlockAchievement(achievement);
-                return;
-            }
+                PreferencesManager.Instance.SetAchievementUnlocked(achievement);
 
-            PopupAchievement popup = AchievementPool.Get(achievement);
-            if (popup != null)
+                if (SteamManager.Instance.IsInitialized)
+                {
+                    var success = SteamManager.Instance.UnlockAchievement(achievement);
+                    return;
+                }
+
+                PopupAchievement popup = AchievementPool.Get(achievement);
+                if (popup != null)
+                {
+                    OnShowAchievement?.Invoke(popup);
+                }
+            }
+        }
+
+        public void SetLevelCode(string code)
+        {
+            _code = code;
+        }
+
+        public void Initialize()
+        {
+            // Nothing needed here.
+        }
+
+        private void OnEnable()
+        {
+            HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(DeathAchievements);
+            HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(LevelPlayedAchievements, true);
+            Chest.OnChestOpened += () => HandleAchievementProgress(LevelCompletedAchievements);
+            Chest.OnChestOpened += () => HandleAchievementProgress(LevelPlayedAchievements, true);
+        }
+
+        private void OnDisable()
+        {
+            HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(DeathAchievements);
+            HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(LevelPlayedAchievements, true);
+            Chest.OnChestOpened -= () => HandleAchievementProgress(LevelCompletedAchievements);
+            Chest.OnChestOpened -= () => HandleAchievementProgress(LevelPlayedAchievements, true);
+        }
+
+        private void HandleAchievementProgress(ThresholdAchievement achievement, bool needsCode = false)
+        {
+            var saveString = needsCode ? achievement.SavePrefString + _code : achievement.SavePrefString;
+
+            if (saveString != "")
             {
-                OnShowAchievement?.Invoke(popup);
+                if (!PlayerPrefs.HasKey(saveString))
+                {
+                    PlayerPrefs.SetInt(saveString, 1);
+                }
+                else
+                {
+                    var currentProgress = PlayerPrefs.GetInt(saveString);
+
+                    foreach (var threshold in achievement.AchievementDictionary)
+                    {
+                        if (currentProgress < threshold.Value && currentProgress + 1 == threshold.Value)
+                        {
+                            Instance.UnlockAchievement(threshold.Key);
+                            break;
+                        }
+                    }
+
+                    currentProgress++;
+                    PlayerPrefs.SetInt(saveString, currentProgress);
+                }
             }
         }
     }
