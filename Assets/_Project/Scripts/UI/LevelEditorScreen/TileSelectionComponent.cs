@@ -43,7 +43,6 @@ namespace Editarrr.UI.LevelEditor
                     this.TileDataSlotContainerElement.Add(template);
 
                     Label toolTip = template.Q<Label>("ToolTip");
-                    VisualElement tileTip = template.Q<VisualElement>("TileTip");
 
                     Button button = template.Q<Button>(name);
                     button.userData = i;
@@ -54,7 +53,7 @@ namespace Editarrr.UI.LevelEditor
                     VisualElement countContainer = template.Q<VisualElement>(this.TileDataSlotCountContainerName);
                     Label countContainerValue = countContainer.Q<Label>(this.TileDataSlotCountContainerLabelName);
 
-                    TileButton tileButton = this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue, toolTip, tileTip);
+                    TileButton tileButton = this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue, toolTip);
 
                     template.RegisterCallback<PointerEnterEvent>(tileButton.ShowToolTip);
                     template.RegisterCallback<PointerLeaveEvent>(tileButton.HideToolTip);
@@ -155,18 +154,16 @@ namespace Editarrr.UI.LevelEditor
                 public VisualElement CountContainer { get; private set; }
                 public Label Count { get; private set; }
                 public Label ToolTip { get; private set; }
-                public VisualElement TileTip { get; private set; }
 
                 public EditorTileData EditorTileData { get; private set; }
 
-                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count, Label toolTip, VisualElement tileTip)
+                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count, Label toolTip)
                 {
                     this.Button = button;
                     this.Image = image;
                     this.CountContainer = countContainer;
                     this.Count = count;
                     this.ToolTip = toolTip;
-                    this.TileTip = tileTip;
 
                     this.SetToolTip(false);
                 }
@@ -212,11 +209,9 @@ namespace Editarrr.UI.LevelEditor
                     {
                         Debug.Log("String null or empty");
                         this.ToolTip.visible = false;
-                        this.TileTip.visible = false;
                         return;
                     }
 
-                    this.TileTip.visible = value;
                     this.ToolTip.visible = value;
                 }
             }

@@ -76,14 +76,14 @@ namespace Singletons
             return hasTracked == 1;
         }
 
-        public void SetAchievementTracked(string name, ModalPopupAction action)
+        public void SetAchievementUnlocked(GameAchievement achievement)
         {
-            PlayerPrefs.SetInt($"ModalPopupTrack-{name}-{action.ToString()}", 1);
+            PlayerPrefs.SetInt($"AchievementUnlock-{achievement.ToString()}", 1);
         }
 
-        public bool IsAchievementTracked(string name, ModalPopupAction action)
+        public bool IsAchievementUnlocked(GameAchievement achievement)
         {
-            int hasTracked = PlayerPrefs.GetInt($"ModalPopupTrack-{name}-{action.ToString()}", 0);
+            int hasTracked = PlayerPrefs.GetInt($"AchievementUnlock-{achievement.ToString()}", 0);
             return hasTracked == 1;
         }
 

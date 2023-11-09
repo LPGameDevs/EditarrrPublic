@@ -7,5 +7,4 @@
         </ui:VisualElement>
     </ui:Button>
     <ui:Label text="A long string of text to test how this box will look later, why does this resize so much in game?" display-tooltip-when-elided="true" name="ToolTip" class="toolTip" style="right: 94px; top: 119px; left: 0; flex-wrap: nowrap; white-space: normal; font-size: 22px; -unity-background-scale-mode: scale-to-fit; width: 250px; height: auto; -unity-text-align: upper-center;" />
-    <ui:VisualElement name="TileTip" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Tiletip.png?fileID=21300000&amp;guid=c9e85733a78c6f54d8596fa066fecbf2&amp;type=3#Tiletip&apos;); flex-shrink: 1; flex-grow: 0; max-height: 300px; min-height: 300px; height: 300px; width: 335px; max-width: 335px; min-width: 335px; padding-left: -100px; padding-right: -100px; padding-top: -100px; padding-bottom: -100px; align-items: center;" />
 </ui:UXML>

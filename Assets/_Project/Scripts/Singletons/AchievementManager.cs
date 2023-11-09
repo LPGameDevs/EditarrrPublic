@@ -47,16 +47,21 @@ namespace Singletons
 
         public void UnlockAchievement(GameAchievement achievement)
         {
-            if (SteamManager.Instance.IsInitialized)
+            if (!PreferencesManager.Instance.IsAchievementUnlocked(achievement))
             {
-                var success = SteamManager.Instance.UnlockAchievement(achievement);
-                return;
-            }
+                PreferencesManager.Instance.SetAchievementUnlocked(achievement);
 
-            PopupAchievement popup = AchievementPool.Get(achievement);
-            if (popup != null)
-            {
-                OnShowAchievement?.Invoke(popup);
+                if (SteamManager.Instance.IsInitialized)
+                {
+                    var success = SteamManager.Instance.UnlockAchievement(achievement);
+                    return;
+                }
+
+                PopupAchievement popup = AchievementPool.Get(achievement);
+                if (popup != null)
+                {
+                    OnShowAchievement?.Invoke(popup);
+                }
             }
         }
 

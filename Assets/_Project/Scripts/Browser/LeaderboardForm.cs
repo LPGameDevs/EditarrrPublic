@@ -1,6 +1,8 @@
 using Editarrr.Audio;
 using Editarrr.Input;
 using Level.Storage;
+using Singletons;
+using System;
 using UnityEngine;
 
 namespace Browser
@@ -37,6 +39,10 @@ namespace Browser
             {
                 i++;
                 if (i > 5) break;
+
+                if (i == 0 && scoreStub.Creator == PreferencesManager.Instance.GetUserId() /*&& ToDo: not level creator*/)
+                    AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelLeaderboardTopped);
+
                 LeaderboardRow row = Instantiate(RowPrefab, Rows);
                 row.SetRow(_code, i.ToString(), scoreStub.Score, scoreStub.CreatorName);
             }
