@@ -86,6 +86,11 @@ public class LevelSelectionManager : ManagerComponent
 
     private void OnDisable() => SceneTransitionManager.OnSceneRemoved -= OnSceneClosed;
 
+    private void OnFilterLevels()
+    {
+        DestroyAndRefreshLevels();
+    }
+
     private void DestroyAndRefreshLevels()
     {
         _levelLoader.DestroyLevels();
@@ -97,6 +102,11 @@ public class LevelSelectionManager : ManagerComponent
     {
         foreach (var level in levels)
         {
+            if (!this._levelLoader.LevelFilterApplies(level))
+            {
+                continue;
+            }
+
             string screenshotPath = LevelManager.GetScreenshotPath(level.Code, level.IsDistro);
             _levelLoader.AddLevelPrefabFromData(level, screenshotPath);
         }
@@ -235,6 +245,7 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload += OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest += OnLeaderboardRequested;
+        LevelSelectionLoader.OnFilterChanged += OnFilterLevels;
         AchievementManager.OnShowAchievement += OnShowAchievement;
     }
 
@@ -245,6 +256,7 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload -= OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest -= OnLeaderboardRequested;
+        LevelSelectionLoader.OnFilterChanged -= OnFilterLevels;
         AchievementManager.OnShowAchievement -= OnShowAchievement;
     }
 }
