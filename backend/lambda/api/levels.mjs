@@ -1,5 +1,5 @@
 import { LevelsSortOptions } from "../db/levels.mjs";
-import { BadRequestException, asBool, extractLevelId } from "../utils.mjs";
+import { BadRequestException, asBool, extractId } from "../utils.mjs";
 
 const defaultPageLimit = 10;
 
@@ -7,12 +7,12 @@ export class LevelsApi {
     constructor(levelsDbClient) {
         this.levelsDbClient = levelsDbClient;
     }
-    
+
     async getPagedLevels(
-        requestSortOption, 
-        requestSortAsc, 
-        requestLimit, 
-        requestCursor, 
+        requestSortOption,
+        requestSortAsc,
+        requestLimit,
+        requestCursor,
         requestUseDrafts,
     ) {
         var sortOption = LevelsSortOptions.UPDATED_AT;
@@ -42,10 +42,10 @@ export class LevelsApi {
         var queryResponse = await this.levelsDbClient.getPagedLevels(
             sortOption,
             sortAsc,
-            pageLimit, 
+            pageLimit,
             requestCursor,
             useDrafts);
-    
+
         var dbLevels = queryResponse.levels;
         var responseLevels = [];
         for (let i = 0; i < dbLevels.length; i++) {
@@ -61,7 +61,7 @@ export class LevelsApi {
         }
 
         if (queryResponse.cursor) {
-            response.cursor = extractLevelId(queryResponse.cursor.pk);
+            response.cursor = extractId(queryResponse.cursor.pk);
         }
 
         return response
@@ -77,7 +77,7 @@ export class LevelsApi {
 }
 
 function asApiLevel(dbLevel) {
-    var id = extractLevelId(dbLevel.pk);
+    var id = extractId(dbLevel.pk);
 
     var apiLevel = {
         "id": id,
@@ -86,6 +86,7 @@ function asApiLevel(dbLevel) {
             "id": dbLevel.levelCreatorId,
             "name": dbLevel.levelCreatorName
         },
+        "labels": dbLevel.levelLabels ?? [],
         "status": dbLevel.levelStatus,
         "createdAt": dbLevel.levelCreatedAt,
         "updatedAt": dbLevel.levelUpdatedAt,

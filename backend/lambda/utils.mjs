@@ -18,8 +18,9 @@ export function asBool(str) {
     } 
 }
 
-export function extractLevelId(ddbLevelKeyStr) {
-    const splitDDBLevelKeyStr = ddbLevelKeyStr.match(/#([0-9a-f-]+)/i);
+// Pulls out the ID of a str of the format '<STR_TYPE>#<ID?'
+export function extractId(ddbKeyStr) {
+    const splitDDBLevelKeyStr = ddbKeyStr.match(/#([0-9a-f-]+)/i);
 
     if (!splitDDBLevelKeyStr) {
         throw new Error(`problem parsing database ID`)

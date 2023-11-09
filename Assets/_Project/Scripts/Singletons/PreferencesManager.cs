@@ -13,6 +13,8 @@ namespace Singletons
         public const string UserNameStorageKey = "UserName";
         public const string SessionStorageKey = "UserSession";
         public const string DefaultUserName = "anon";
+        public const string ScreenShakeKey = "screenShake";
+        public const string ScreenFlashKey = "screenFlash";
 
         public string GetUserId()
         {
@@ -116,6 +118,18 @@ namespace Singletons
         public void Initialize()
         {
             // Nothing needed here.
+        }
+
+        public void SetBoolean(string key, bool value)
+        {
+            int storedValue = value ? 1 : 0;
+            PlayerPrefs.SetInt(key, storedValue);
+        }
+
+        public bool GetBoolean(string key)
+        {
+            int storedValue = PlayerPrefs.GetInt(key, 1);
+            return storedValue == 1 ? true : false;
         }
     }
 }

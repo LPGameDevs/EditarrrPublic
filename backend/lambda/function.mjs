@@ -13,7 +13,7 @@ import {
     PutObjectCommand
 } from "@aws-sdk/client-s3";
 
-import { BadRequestException, extractLevelId, uuidv4 } from "./utils.mjs";
+import { BadRequestException, extractId, uuidv4 } from "./utils.mjs";
 import { LevelsDbClient, LevelsSortOptions } from './db/levels.mjs';
 import { LevelsApi } from "./api/levels.mjs";
 import { ScoresDbClient } from './db/scores.mjs';
@@ -93,6 +93,7 @@ export const handler = async (event, context) => {
                 // TODO Further validation of status (introduce an enum?)
                 var levelData = requestJSON.data;
                 if (!levelData) throw new BadRequestException(`'data' must be provided in the request.`);
+                var labels = requestJSON.labels ?? [];
 
                 var generatedLevelId = uuidv4();
                 var currentTimestamp = Date.now();
@@ -109,6 +110,7 @@ export const handler = async (event, context) => {
                             levelStatus: levelStatus,
                             levelCreatedAt: currentTimestamp,
                             levelUpdatedAt: currentTimestamp,
+                            levelLabels: labels,
                             levelData: levelData
                         },
                     })
@@ -224,53 +226,13 @@ export const handler = async (event, context) => {
                 responseBody = await scoresApi.postScore(event.pathParameters.id, requestJSON);
                 break;
             case "GET /levels/{id}/scores":
-                // TODO Validation of request
-
-                // TODO Inclusion of request params in the query
-
-                var queryResponse = await dynamo.send(
-                    new QueryCommand({
-                        TableName: tableNameScore,
-                        IndexName: "scoreLevelName-score-index",
-                        Select: "ALL_PROJECTED_ATTRIBUTES",
-                        Limit: 10,
-                        ScanIndexForward: true, // sort in desc order.
-                        KeyConditionExpression: "pk = :levelId",
-                        ExpressionAttributeValues: {
-                            ":levelId": "LEVEL#" + event.pathParameters.id
-                        }
-                    })
-                );
-
-                // TODO Validation of response
-
-                var dbScores = queryResponse.Items;
-
-                var responseScores = [];
-                for (let i = 0; i < dbScores.length; i++) {
-                    var dbScore = dbScores[i];
-
-                    // TODO Validation
-
-                    var id = extractLevelId(dbScore.sk);
-                    var levelId = extractLevelId(dbScore.pk);
-
-                    responseScores.push({
-                        "scoreId": id,
-                        "levelId": levelId,
-                        "score": dbScore.score,
-                        "code": dbScore.scoreLevelName,
-                        "creator": {
-                            "id": dbScore.scoreCreatorId,
-                            "name": dbScore.scoreCreatorName
-                        },
-                        "submittedAt": dbScore.scoreSubmittedAt,
-                    });
-                }
-
-                responseBody = {
-                    "scores": responseScores
-                }
+                responseBody = await scoresApi.getPagedScores(
+                    event.pathParameters.id,
+                    event?.queryStringParameters?.["sort-option"],
+                    event?.queryStringParameters?.["sort-asc"],
+                    event?.queryStringParameters?.limit,
+                    event?.queryStringParameters?.cursor,
+                    event?.queryStringParameters?.["de-dupe-by-user"]);
                 break;
 
             case "POST /levels/{id}/ratings":
@@ -306,8 +268,8 @@ export const handler = async (event, context) => {
 
                     // TODO Validation
 
-                    var id = extractLevelId(dbRating.sk);
-                    var levelId = extractLevelId(dbRating.pk);
+                    var id = extractId(dbRating.sk);
+                    var levelId = extractId(dbRating.pk);
 
                     responseRatings.push({
                         "ratingId": id,
@@ -391,8 +353,8 @@ export const handler = async (event, context) => {
 
                     // TODO Validation
 
-                    var id = extractLevelId(dbAnalytic.sk);
-                    var userId = extractLevelId(dbAnalytic.pk);
+                    var id = extractId(dbAnalytic.sk);
+                    var userId = extractId(dbAnalytic.pk);
 
                     responseAnalytics.push({
                         "analyticsId": id,
@@ -439,8 +401,8 @@ export const handler = async (event, context) => {
 
                     // TODO Validation
 
-                    var id = extractLevelId(dbAnalytic.sk);
-                    var userId = extractLevelId(dbAnalytic.pk);
+                    var id = extractId(dbAnalytic.sk);
+                    var userId = extractId(dbAnalytic.pk);
 
                     responseAnalytics.push({
                         "analyticsId": id,
@@ -484,7 +446,7 @@ export const handler = async (event, context) => {
 
                     // TODO Validation
 
-                    var id = extractLevelId(dbLevel.pk);
+                    var id = extractId(dbLevel.pk);
 
                     responseLevels.push({
                         "id": id,
@@ -529,8 +491,8 @@ export const handler = async (event, context) => {
 
                     // TODO Validation
 
-                    var id = extractLevelId(dbScore.sk);
-                    var levelId = extractLevelId(dbScore.pk);
+                    var id = extractId(dbScore.sk);
+                    var levelId = extractId(dbScore.pk);
 
                     responseScores.push({
                         "scoreId": id,
@@ -575,8 +537,8 @@ export const handler = async (event, context) => {
 
                     // TODO Validation
 
-                    var id = extractLevelId(dbRating.sk);
-                    var levelId = extractLevelId(dbRating.pk);
+                    var id = extractId(dbRating.sk);
+                    var levelId = extractId(dbRating.pk);
 
                     responseRatings.push({
                         "ratingId": id,

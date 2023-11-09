@@ -35,7 +35,11 @@ namespace Singletons
         private string _creatorId;
         private string _creatorName;
 
+#if DEPLOY_TARGET_PRODUCTION
+        private bool _enableTracking = true;
+#else
         private bool _enableTracking = false;
+#endif
 
         public void Initialize()
         {
