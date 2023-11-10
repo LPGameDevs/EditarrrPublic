@@ -664,6 +664,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1377181442721627893, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7942568419636489290}
+    - target: {fileID: 1377181442721627893, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleScreenShake
+      objectReference: {fileID: 0}
     - target: {fileID: 2261047642014264883, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -711,6 +719,10 @@ PrefabInstance:
     - target: {fileID: 2939441905766460097, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917003070994179229, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
+      propertyPath: m_Name
+      value: Backboard
       objectReference: {fileID: 0}
     - target: {fileID: 3970779837410192877, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
       propertyPath: m_Pivot.x
@@ -796,6 +808,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5386805184066448962, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386805184066448962, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386805184066448962, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386805184066448962, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5595172098931912852, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -811,6 +839,14 @@ PrefabInstance:
     - target: {fileID: 5595172098931912852, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5595172099213497197, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7942568419636489290}
+    - target: {fileID: 5595172099213497197, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleScreenFlash
       objectReference: {fileID: 0}
     - target: {fileID: 6626815280115386632, guid: 3c751272152650a40ad2c2a31b52582b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
