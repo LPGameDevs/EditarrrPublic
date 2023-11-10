@@ -14,6 +14,8 @@ namespace Player
         private bool _endedJumpEarly = true;
         private float _apexPoint; // Becomes 1 at the apex of a jump
         private float _lastJumpPressed;
+        private bool _twitchJumpRequested = false;
+        private bool _twitchBouncy = false;
         private bool CanUseCoyote => _coyoteUsable && !_collisions.down && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _collisions.down && _lastJumpPressed + _jumpBuffer > Time.time;
 
@@ -41,6 +43,11 @@ namespace Player
                 _coyoteUsable = false;
                 _timeLeftGrounded = float.MinValue;
                 OnPlayerJumped?.Invoke();
+
+                if (!_twitchBouncy)
+                {
+                    _twitchJumpRequested = false;
+                }
             }
 
             // End the jump early if button released
@@ -60,6 +67,17 @@ namespace Player
             {
                 if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;
             }
+        }
+
+        private void TwitchJump()
+        {
+            _twitchJumpRequested = true;
+        }
+
+        private void TwitchBouncy()
+        {
+            _twitchJumpRequested = true;
+            _twitchBouncy = true;
         }
     }
 }

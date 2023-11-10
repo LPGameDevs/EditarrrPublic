@@ -10,6 +10,8 @@ namespace Twitch
         private void Start()
         {
             _enabledCommands.Add(new GameCommand());
+            _enabledCommands.Add(new JumpCommand());
+            _enabledCommands.Add(new BouncyCommand());
         }
 
         private void SendMessages(string messageName, string message) {

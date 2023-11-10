@@ -6,6 +6,7 @@ using Editarrr.Input;
 using Editarrr.Level.Tiles;
 using Gameplay.GUI;
 using Systems;
+using Twitch;
 using UnityEngine;
 
 namespace Player
@@ -128,6 +129,11 @@ namespace Player
             {
                 _jumpReleaseThisFrame = true;
             }
+            else if (_twitchJumpRequested)
+            {
+                _jumpStartThisFrame = true;
+                _lastJumpPressed = Time.time;
+            }
         }
 
         #endregion
@@ -221,6 +227,8 @@ namespace Player
         internal override void OnEnable()
         {
             base.OnEnable();
+            JumpCommand.OnTwitchJump += TwitchJump;
+            BouncyCommand.OnTwitchJumpForever += TwitchBouncy;
             HealthSystem.OnDeath += DeathInputLock;
             HealthSystem.OnHitPointsChanged += TakeDamage;
         }
@@ -228,6 +236,8 @@ namespace Player
         internal override void OnDisable()
         {
             base.OnDisable();
+            JumpCommand.OnTwitchJump -= TwitchJump;
+            BouncyCommand.OnTwitchJumpForever -= TwitchBouncy;
             HealthSystem.OnDeath -= DeathInputLock;
             HealthSystem.OnHitPointsChanged -= TakeDamage;
         }
