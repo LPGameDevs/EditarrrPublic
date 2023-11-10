@@ -59,11 +59,14 @@ namespace Editarrr.Level
 
         public override string GetScreenshotPath(string code, bool isDistro = false)
         {
-            string path = this.GetCreateLevelPath(code) + "screenshot.png";
-
+            string path = "";
             if (isDistro)
             {
                 path = this.GetDistroLevelPath(code) + "screenshot.png";
+            }
+            else
+            {
+                path = this.GetCreateLevelPath(code) + "screenshot.png";
             }
 
             return path;
@@ -153,17 +156,29 @@ namespace Editarrr.Level
 
             if (!Directory.Exists(path))
             {
-                // No level Directory found, return null!
-                callback?.Invoke(null);
-                return;
+                path = this.GetDistroLevelPath(code);
+
+                if (!Directory.Exists(path))
+                {
+                    // No level Directory found, return null!
+                    callback?.Invoke(null);
+                    return;
+                }
             }
 
             string levelFilePath = path + "level.json";
             if (!File.Exists(levelFilePath))
             {
-                // No level found, return null!
-                callback?.Invoke(null);
-                return;
+                // Fallback just in case.
+                path = this.GetDistroLevelPath(code);
+                levelFilePath = path + "level.json";
+
+                if (!File.Exists(levelFilePath))
+                {
+                    // No level found, return null!
+                    callback?.Invoke(null);
+                    return;
+                }
             }
 
             string data = File.ReadAllText(levelFilePath);
