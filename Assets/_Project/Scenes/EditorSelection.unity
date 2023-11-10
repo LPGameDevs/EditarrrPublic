@@ -996,6 +996,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 340407134}
   m_CullTransparentMesh: 0
+--- !u!114 &410443608 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7942568419636489290, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+  m_PrefabInstance: {fileID: 770217696}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c175ec3daad4594bac07759d51ae1df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &433679906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1697,6 +1708,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2447559698965072967, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 410443608}
+    - target: {fileID: 2447559698965072967, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 2841027486837745783, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
       propertyPath: m_TargetGraphic
       value: 
@@ -1788,6 +1807,14 @@ PrefabInstance:
     - target: {fileID: 9173210995924779558, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9173210996179902943, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 410443608}
+    - target: {fileID: 9173210996179902943, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}

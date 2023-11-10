@@ -9,6 +9,8 @@ namespace Singletons
      */
     public class PreferencesManager : UnitySingleton<PreferencesManager>, IUnitySinglton
     {
+        public static event Action<string> OnStreamerChannelChanged;
+
         public const string UserIdStorageKey = "UserId";
         public const string UserNameStorageKey = "UserName";
         public const string SessionStorageKey = "UserSession";
@@ -130,6 +132,27 @@ namespace Singletons
         {
             int storedValue = PlayerPrefs.GetInt(key, 1);
             return storedValue == 1 ? true : false;
+        }
+
+        public string GetStreamerChannel()
+        {
+            return PlayerPrefs.GetString($"StreamerChannel", "zackavelli_");
+        }
+
+        public void SetStreamerChannel(string channel)
+        {
+            PlayerPrefs.SetString($"StreamerChannel", channel);
+            OnStreamerChannelChanged?.Invoke(channel);
+        }
+
+        public int GetFps()
+        {
+            return PlayerPrefs.GetInt($"TargetFPS", 120);
+        }
+
+        public void SetFps(int fps)
+        {
+            PlayerPrefs.SetInt($"TargetFPS", fps);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Singletons;
 using UnityEngine;
 
 namespace Yanniboi.Twitch
@@ -24,11 +25,13 @@ namespace Yanniboi.Twitch
         private System.Threading.Thread inProc, outProc;
         private void StartIRC()
         {
+            channelName = PreferencesManager.Instance.GetStreamerChannel();
+
             System.Net.Sockets.TcpClient sock = new System.Net.Sockets.TcpClient();
             sock.Connect(server, port);
             if (!sock.Connected)
             {
-                this.DebugLog("Failed to connect!");
+                Debug.LogError("Twitch IRC: Failed to connect!");
                 return;
             }
             var networkStream = sock.GetStream();
@@ -132,14 +135,34 @@ namespace Yanniboi.Twitch
             Debug.Log(msg);
         }
 
+        private void UpdateChannel(string channel)
+        {
+            stopThreads = true;
+            while (inProc.IsAlive || outProc.IsAlive)
+            {
+                this.DebugLog("inProc:" + inProc.IsAlive.ToString());
+                this.DebugLog("outProc:" + outProc.IsAlive.ToString());
+            }
+
+            stopThreads = false;
+            this.channelName = channel;
+            StartIRC();
+        }
+
         #region MonoBehaviour Events
+
         void OnEnable()
         {
+            PreferencesManager.OnStreamerChannelChanged += UpdateChannel;
+
             stopThreads = false;
             StartIRC();
         }
+
         void OnDisable()
         {
+            PreferencesManager.OnStreamerChannelChanged -= UpdateChannel;
+
             stopThreads = true;
             //while (inProc.IsAlive || outProc.IsAlive) ;
             //print("inProc:" + inProc.IsAlive.ToString());
@@ -171,5 +194,7 @@ namespace Yanniboi.Twitch
         public void Initialize()
         {
         }
+
+
     }
 }

@@ -5904,11 +5904,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleScreenFlash
+      objectReference: {fileID: 0}
+    - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6344029126233027975, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
       propertyPath: m_Pivot.x
@@ -6082,11 +6098,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleScreenShake
+      objectReference: {fileID: 0}
+    - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SettingsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6344029126233027970, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6344029126233027975, guid: e04b388103061c0488adf6d04d288c0c, type: 3}
       propertyPath: m_Pivot.x
