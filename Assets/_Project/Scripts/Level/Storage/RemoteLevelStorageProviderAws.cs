@@ -70,6 +70,7 @@ namespace Level.Storage
                     id = userId
                 },
                 status = levelSave.Published ? "PUBLISHED" : "DRAFT",
+                labels = levelSave.GetLabels(),
                 version = levelSave.Version,
                 data = new AwsLevelData()
                 {
@@ -144,6 +145,11 @@ namespace Level.Storage
                 save.SetTotalRatings(res.totalRatings);
                 save.SetTotalScores(res.totalScores);
                 save.SetVersion(res.version);
+
+                foreach (var label in res.labels)
+                {
+                    save.SetLabel(label);
+                }
                 save.SetPublished(res.status == "PUBLISHED");
                 callback?.Invoke(save);
 
@@ -228,12 +234,21 @@ namespace Level.Storage
             }
         }
 
-        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
+        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback, RemoteLevelLoadQuery? query = null)
         {
-            string limit = "100";
+            string limit = "10";
+            string cursor = "";
+            if (query != null)
+            {
+                limit = query.Value.limit.ToString();
+                cursor = query.Value.cursor;
+            }
+
+            string queryParams = $"?limit={limit}";
+            queryParams += cursor.Length > 0 ? $"&cursor={cursor}" : "";
 
             // Get request to /levels
-            RestClient.Get<AwsLevels>($"{AwsLevelUrl}/levels?limit={limit}").Then(res =>
+            RestClient.Get<AwsLevels>($"{AwsLevelUrl}/levels{queryParams}").Then(res =>
             {
                 var levelStubs = new List<LevelStub>();
                 foreach (var level in res.levels)
@@ -246,7 +261,7 @@ namespace Level.Storage
                     levelStubs.Add(levelStub);
                 }
 
-                callback?.Invoke(levelStubs.ToArray());
+                callback?.Invoke(levelStubs.ToArray(), res.cursor);
                 this.LogMessage("Levels", JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
@@ -367,6 +382,7 @@ namespace Level.Storage
     public class AwsLevels
     {
         public AwsLevel[] levels;
+        public string cursor;
     }
 
     [Serializable]
@@ -378,6 +394,7 @@ namespace Level.Storage
         public string status;
         public uint createdAt;
         public uint updatedAt;
+        public string[] labels;
         public int totalRatings;
         public int totalScores;
         public int version;

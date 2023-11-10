@@ -86,6 +86,11 @@ public class LevelSelectionManager : ManagerComponent
 
     private void OnDisable() => SceneTransitionManager.OnSceneRemoved -= OnSceneClosed;
 
+    private void OnFilterLevels()
+    {
+        DestroyAndRefreshLevels();
+    }
+
     private void DestroyAndRefreshLevels()
     {
         _levelLoader.DestroyLevels();
@@ -93,10 +98,15 @@ public class LevelSelectionManager : ManagerComponent
         LevelManager.LoadAll(this.LevelStorage_AllLevelsLoadedCallback);
     }
 
-    private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels)
+    private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels, string cursor = "")
     {
         foreach (var level in levels)
         {
+            if (!this._levelLoader.LevelFilterApplies(level))
+            {
+                continue;
+            }
+
             string screenshotPath = LevelManager.GetScreenshotPath(level.Code, level.IsDistro);
             _levelLoader.AddLevelPrefabFromData(level, screenshotPath);
         }
@@ -149,7 +159,7 @@ public class LevelSelectionManager : ManagerComponent
                 confirmModal.SetConfirm(UploadLevel);
             }
 
-            this._uploadModal.Open(this.ModalCanvas.transform);
+            this._uploadModal.Open(this.ModalCanvas.transform, true);
 
             void UploadLevel()
             {
@@ -169,6 +179,7 @@ public class LevelSelectionManager : ManagerComponent
         }
 
         AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelSubmitted);
+        TwitchManager.Instance.SendNotification($"{level.CreatorName} just uploaded a new level: {level.Code}.");
 
         // Update display.
         DestroyAndRefreshLevels();
@@ -234,6 +245,7 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload += OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest += OnLeaderboardRequested;
+        LevelSelectionLoader.OnFilterChanged += OnFilterLevels;
         AchievementManager.OnShowAchievement += OnShowAchievement;
     }
 
@@ -244,6 +256,7 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
         EditorLevel.OnEditorLevelUpload -= OnLevelUploadRequested;
         EditorLevel.OnLeaderboardRequest -= OnLeaderboardRequested;
+        LevelSelectionLoader.OnFilterChanged -= OnFilterLevels;
         AchievementManager.OnShowAchievement -= OnShowAchievement;
     }
 }

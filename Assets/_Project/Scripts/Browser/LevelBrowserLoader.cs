@@ -2,14 +2,16 @@ using System;
 using System.Collections.Generic;
 using Browser;
 using Editarrr.Audio;
-using Editarrr.Level;
 using Editarrr.Input;
+using Editarrr.Level;
 using Level.Storage;
 using Singletons;
 using UnityEngine;
 
 public class LevelBrowserLoader : MonoBehaviour
 {
+    public static event Action OnLevelBrowserClosed;
+
     [SerializeField] private LevelBrowserLevel _levelPrefab;
     [SerializeField] private GameObject _loadingOverlay;
     [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
@@ -92,6 +94,7 @@ public class LevelBrowserLoader : MonoBehaviour
 
     public void CloseBrowser()
     {
+        OnLevelBrowserClosed?.Invoke();
         SceneTransitionManager.Instance.RemoveScene(SceneTransitionManager.BrowserSceneName);
         AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
     }

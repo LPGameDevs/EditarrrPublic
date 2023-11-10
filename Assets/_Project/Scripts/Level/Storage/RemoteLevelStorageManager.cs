@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Level;
 using Editarrr.Misc;
@@ -68,11 +67,11 @@ namespace Level.Storage
             }
         }
 
-        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback)
+        public void LoadAllLevelData(RemoteLevelStorage_AllLevelsLoadedCallback callback, RemoteLevelLoadQuery? query = null)
         {
             foreach (var provider in _providers)
             {
-                provider.LoadAllLevelData(callback);
+                provider.LoadAllLevelData(callback, query);
             }
         }
 

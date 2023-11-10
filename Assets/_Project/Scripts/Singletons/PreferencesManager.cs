@@ -9,10 +9,14 @@ namespace Singletons
      */
     public class PreferencesManager : UnitySingleton<PreferencesManager>, IUnitySinglton
     {
+        public static event Action<string> OnStreamerChannelChanged;
+
         public const string UserIdStorageKey = "UserId";
         public const string UserNameStorageKey = "UserName";
         public const string SessionStorageKey = "UserSession";
         public const string DefaultUserName = "anon";
+        public const string ScreenShakeKey = "screenShake";
+        public const string ScreenFlashKey = "screenFlash";
 
         public string GetUserId()
         {
@@ -76,14 +80,14 @@ namespace Singletons
             return hasTracked == 1;
         }
 
-        public void SetAchievementTracked(string name, ModalPopupAction action)
+        public void SetAchievementUnlocked(GameAchievement achievement)
         {
-            PlayerPrefs.SetInt($"ModalPopupTrack-{name}-{action.ToString()}", 1);
+            PlayerPrefs.SetInt($"AchievementUnlock-{achievement.ToString()}", 1);
         }
 
-        public bool IsAchievementTracked(string name, ModalPopupAction action)
+        public bool IsAchievementUnlocked(GameAchievement achievement)
         {
-            int hasTracked = PlayerPrefs.GetInt($"ModalPopupTrack-{name}-{action.ToString()}", 0);
+            int hasTracked = PlayerPrefs.GetInt($"AchievementUnlock-{achievement.ToString()}", 0);
             return hasTracked == 1;
         }
 
@@ -116,6 +120,39 @@ namespace Singletons
         public void Initialize()
         {
             // Nothing needed here.
+        }
+
+        public void SetBoolean(string key, bool value)
+        {
+            int storedValue = value ? 1 : 0;
+            PlayerPrefs.SetInt(key, storedValue);
+        }
+
+        public bool GetBoolean(string key)
+        {
+            int storedValue = PlayerPrefs.GetInt(key, 1);
+            return storedValue == 1 ? true : false;
+        }
+
+        public string GetStreamerChannel()
+        {
+            return PlayerPrefs.GetString($"StreamerChannel", "zackavelli_");
+        }
+
+        public void SetStreamerChannel(string channel)
+        {
+            PlayerPrefs.SetString($"StreamerChannel", channel);
+            OnStreamerChannelChanged?.Invoke(channel);
+        }
+
+        public int GetFps()
+        {
+            return PlayerPrefs.GetInt($"TargetFPS", 120);
+        }
+
+        public void SetFps(int fps)
+        {
+            PlayerPrefs.SetInt($"TargetFPS", fps);
         }
     }
 }

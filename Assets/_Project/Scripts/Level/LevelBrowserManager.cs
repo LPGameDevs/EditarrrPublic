@@ -1,6 +1,5 @@
 using Browser;
 using Editarrr.Level;
-using Editarrr.LevelEditor;
 using Editarrr.Managers;
 using Editarrr.Misc;
 using Level.Storage;
@@ -16,6 +15,9 @@ public class LevelBrowserManager : ManagerComponent
 
     // From system
     private LevelBrowserLoader _levelLoader { get; set; }
+    private RemoteLevelLoadQuery LevelQuery { get; set; }
+    private string NextCursor, PreviousCursor = "";
+    BrowserPager.PagerRequestResultHasMore PagerRequestResultHasMoreCallback { get; set; }
 
 
     public void SetLevelLoader(LevelBrowserLoader levelLoader)
@@ -31,6 +33,12 @@ public class LevelBrowserManager : ManagerComponent
 
     public override void DoStart()
     {
+        this.PreviousCursor = "";
+        this.LevelQuery = new RemoteLevelLoadQuery()
+        {
+            limit = 20,
+            cursor = "",
+        };
         LevelManager.DoStart();
         this.DestroyAndRefreshLevels();
     }
@@ -39,11 +47,14 @@ public class LevelBrowserManager : ManagerComponent
     {
         _levelLoader.DestroyLevels();
 
-        LevelManager.LoadAll(SetLevelsAfterLoad);
+        LevelManager.LoadAll(SetLevelsAfterLoad, this.LevelQuery);
 
-        void SetLevelsAfterLoad(LevelStub[] levels)
+        void SetLevelsAfterLoad(LevelStub[] levels, string cursor = "")
         {
             _levelLoader.SetLevels(levels);
+            this.NextCursor = cursor;
+            this.PagerRequestResultHasMoreCallback?.Invoke(levels.Length == this.LevelQuery.limit);
+            this.PagerRequestResultHasMoreCallback = null;
         }
     }
 
@@ -100,10 +111,31 @@ public class LevelBrowserManager : ManagerComponent
     }
 #endif
 
+    private void OnBrowserPagerUpdateRequested(int update, BrowserPager.PagerRequestResultHasMore callback)
+    {
+        this.PagerRequestResultHasMoreCallback = callback;
+        var remoteLevelLoadQuery = this.LevelQuery;
+        remoteLevelLoadQuery.cursor = "";
+        if (update == 1)
+        {
+            this.PreviousCursor = remoteLevelLoadQuery.cursor;
+            remoteLevelLoadQuery.cursor = this.NextCursor;
+        }
+        else if (update == -1)
+        {
+            this.NextCursor = remoteLevelLoadQuery.cursor;
+            remoteLevelLoadQuery.cursor = this.PreviousCursor;
+        }
+
+        this.LevelQuery = remoteLevelLoadQuery;
+        DestroyAndRefreshLevels();
+    }
+
     public override void DoOnEnable()
     {
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot += OnLevelScreenshotDownloadRequested;
+        BrowserPager.OnBrowserPagerUpdated += OnBrowserPagerUpdateRequested;
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete += OnSteamLevelDownloadComplete;
 #endif
@@ -115,6 +147,7 @@ public class LevelBrowserManager : ManagerComponent
     {
         LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot -= OnLevelScreenshotDownloadRequested;
+        BrowserPager.OnBrowserPagerUpdated -= OnBrowserPagerUpdateRequested;
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete -= OnSteamLevelDownloadComplete;
 #endif

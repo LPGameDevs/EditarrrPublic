@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Editarrr.Misc;
 using Level.Storage;
+using Proyecto26;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Editarrr.Level
 {
@@ -55,11 +59,14 @@ namespace Editarrr.Level
 
         public override string GetScreenshotPath(string code, bool isDistro = false)
         {
-            string path = this.GetCreateLevelPath(code) + "screenshot.png";
-
+            string path = "";
             if (isDistro)
             {
                 path = this.GetDistroLevelPath(code) + "screenshot.png";
+            }
+            else
+            {
+                path = this.GetCreateLevelPath(code) + "screenshot.png";
             }
 
             return path;
@@ -149,17 +156,29 @@ namespace Editarrr.Level
 
             if (!Directory.Exists(path))
             {
-                // No level Directory found, return null!
-                callback?.Invoke(null);
-                return;
+                path = this.GetDistroLevelPath(code);
+
+                if (!Directory.Exists(path))
+                {
+                    // No level Directory found, return null!
+                    callback?.Invoke(null);
+                    return;
+                }
             }
 
             string levelFilePath = path + "level.json";
             if (!File.Exists(levelFilePath))
             {
-                // No level found, return null!
-                callback?.Invoke(null);
-                return;
+                // Fallback just in case.
+                path = this.GetDistroLevelPath(code);
+                levelFilePath = path + "level.json";
+
+                if (!File.Exists(levelFilePath))
+                {
+                    // No level found, return null!
+                    callback?.Invoke(null);
+                    return;
+                }
             }
 
             string data = File.ReadAllText(levelFilePath);
@@ -183,6 +202,7 @@ namespace Editarrr.Level
                 {
                     continue;
                 }
+
                 string data = File.ReadAllText(levelFilePath);
                 LevelSave levelSave = JsonUtility.FromJson<LevelSave>(data);
 
@@ -193,6 +213,41 @@ namespace Editarrr.Level
 
             if (LevelManager.DistributionStorageEnabled)
             {
+#if UNITY_WEBGL
+                // @todo Distros are currently not supported for webgl.
+                if (false)
+                {
+                    Debug.Log("levels enabled");
+
+                    dir = new DirectoryInfo(DistroRootDirectory);
+
+                    Debug.Log(DistroRootDirectory);
+                    Debug.Log(dir.Name);
+
+                    string[] demos = new[]
+                    {
+                        "demo1",
+                        "demo2",
+                        "demo3",
+                        "demo4",
+                        "demo5",
+                    };
+
+                    foreach (string demo in demos)
+                    {
+                        Debug.Log(demo);
+                        string levelFilePath =
+                            Path.Combine(Application.streamingAssetsPath, "levels", demo, "level.json");
+                        Debug.Log(levelFilePath);
+
+                        // if (!File.Exists(levelFilePath))
+                        // {
+                        // continue;
+                        // }
+                        GetDistroLevelFromUrl(levelFilePath);
+                    }
+                }
+#else
                 dir = new DirectoryInfo(DistroRootDirectory);
 
                 foreach (DirectoryInfo levelDirectory in dir.GetDirectories())
@@ -211,9 +266,47 @@ namespace Editarrr.Level
 
                     levelsStubs.Add(stub);
                 }
+#endif
             }
 
             callback?.Invoke(levelsStubs.ToArray());
+        }
+
+        private async void GetDistroLevelFromUrl(string uri)
+        {
+            RestClient.Get<AwsLevel>(uri).Then(res =>
+            {
+                // @todo make sure we store the remote level id in the save.
+                var save = new LevelSave(res.creator.id, res.creator.name, res.name);
+
+                save.SetRemoteId(res.id);
+
+                var tiles = JsonUtility.FromJson<AwsTileData>(res.data.tiles);
+                var tileStates = new TileState[res.data.scaleX, res.data.scaleY];
+
+                foreach (var tileSave in tiles.tiles)
+                {
+                    tileStates[tileSave.X, tileSave.Y] = new TileState(tileSave);
+                }
+
+                save.SetTiles(tileStates);
+                save.SetTotalRatings(res.totalRatings);
+                save.SetTotalScores(res.totalScores);
+                save.SetVersion(res.version);
+
+                foreach (var label in res.labels)
+                {
+                    save.SetLabel(label);
+                }
+                save.SetPublished(res.status == "PUBLISHED");
+                // callback?.Invoke(save);
+
+                // @todo return level data.
+                Debug.Log(JsonUtility.ToJson(res, true));
+            }).Catch(err =>
+            {
+                Debug.LogError(err.Message);
+            });
         }
 
         public override void Delete(string code)

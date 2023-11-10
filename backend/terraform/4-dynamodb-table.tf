@@ -74,20 +74,20 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
   #   type = "M" # JSON Blob
   # }
 
-  # User Items
-  # pk: USER#<userId>
-  # sk: USER#<userId>
-  # attribute {
-  #   name = "userName"
-  #   type = "S"
-  # }
+
+  # GSIs
+  # Note: GSI creation is very slow. Increasing WCUs & RCUs might help, and be zero-to-no-cost
+  # Terraform deploy took 32m 31s when adding 5 GSIs (https://github.com/LPGameDevs/EditarrrPublic/pull/163) 
+  # I think we can make it faster at little-to-no-cost (based on https://aws.amazon.com/dynamodb/pricing/provisioned/) 
+  # by adding read/write-capacity units to the DB and GSIs: https://stackoverflow.com/questions/47920651/creation-of-gsi-taking-long-time
+  # (right now, WCUs and RCUs are set to 0)
 
   global_secondary_index {
     name            = "levelCreatorId-levelUpdatedAt-index"
     hash_key        = "levelCreatorId"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelStatus", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -97,7 +97,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelUpdatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -107,7 +107,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelCreatedAt"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -117,7 +117,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelAvgScore"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelTotalScores", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -127,7 +127,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelTotalScores"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelAvgRating", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -137,7 +137,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelAvgRating"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelTotalRatings"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -147,7 +147,7 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     hash_key        = "levelStatus"
     range_key       = "levelTotalRatings"
     projection_type = "INCLUDE"
-    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating"]
+    non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
@@ -279,6 +279,15 @@ resource "aws_dynamodb_table" "editarrr-rating-storage" {
     read_capacity   = 0
   }
 }
+
+# TODO User Table?
+# User Items
+# pk: USER#<userId>
+# sk: USER#<userId>
+# attribute {
+#   name = "userName"
+#   type = "S"
+# }
 
 # Create the dynamodb table for analytics.
 resource "aws_dynamodb_table" "editarrr-analytics-storage" {

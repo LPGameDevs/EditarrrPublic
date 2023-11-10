@@ -1,19 +1,38 @@
+using System;
 using System.Collections.Generic;
 using Editarrr.Audio;
 using Level.Storage;
 using LevelEditor;
 using Singletons;
 using UnityEngine;
+using UnityEngine.UI;
+
+public enum LevelFilterMetric
+{
+    None = 0,
+    Demo = 1,
+    Draft = 2,
+    Published = 3,
+    Downloaded = 4,
+}
 
 /**
  * Responsible for showing levels on the selection screen.
  */
 public class LevelSelectionLoader : MonoBehaviour
 {
+    public static event Action OnFilterChanged;
+
     public EditorLevel LevelPrefab;
     public EditorLevel DraftPrefab;
 
+    [SerializeField] Button FilterDemosButton;
+    [SerializeField] Button FilterDraftsButton;
+    [SerializeField] Button FilterPublishedButton;
+    [SerializeField] Button FilterDownloadedButton;
+
     private List<Transform> _loadedLevels = new List<Transform>();
+    private LevelFilterMetric CurrentFilter = LevelFilterMetric.None;
 
     public void DestroyLevels()
     {
@@ -61,9 +80,129 @@ public class LevelSelectionLoader : MonoBehaviour
         _loadedLevels.Add(level.transform);
     }
 
+    public bool LevelFilterApplies(LevelStub level)
+    {
+        bool filterApplies = false;
+        string currentUserId = PreferencesManager.Instance.GetUserId();
+
+        switch (this.CurrentFilter)
+        {
+            default:
+            case LevelFilterMetric.None:
+                filterApplies = true;
+                break;
+
+            case LevelFilterMetric.Demo:
+                if (level.IsDistro)
+                {
+                    filterApplies = true;
+                }
+                break;
+
+            case LevelFilterMetric.Draft:
+                if (!level.IsDistro && !level.Published)
+                {
+                    filterApplies = true;
+                }
+                break;
+
+            case LevelFilterMetric.Published:
+                if (!level.IsDistro && level.Published && level.Creator == currentUserId)
+                {
+                    filterApplies = true;
+                }
+                break;
+
+            case LevelFilterMetric.Downloaded:
+                if (!level.IsDistro && level.Published && level.Creator != currentUserId)
+                {
+                    filterApplies = true;
+                }
+                break;
+        }
+
+        if (filterApplies)
+        {
+            Debug.Log(level.Code);
+            Debug.Log(currentUserId);
+            Debug.Log(level.Creator);
+        }
+
+        return filterApplies;
+    }
+
+    public void ButtonPressedFilterDemos()
+    {
+        if (this.CurrentFilter == LevelFilterMetric.Demo)
+        {
+            SetLevelFilter(LevelFilterMetric.None);
+            return;
+        }
+
+        Debug.Log("Filter by Demos");
+        SetLevelFilter(LevelFilterMetric.Demo);
+    }
+
+    public void ButtonPressedFilterDrafts()
+    {
+        if (this.CurrentFilter == LevelFilterMetric.Draft)
+        {
+            SetLevelFilter(LevelFilterMetric.None);
+            return;
+        }
+
+        Debug.Log("Filter by Drafts");
+        SetLevelFilter(LevelFilterMetric.Draft);
+    }
+
+    public void ButtonPressedFilterPublished()
+    {
+        if (this.CurrentFilter == LevelFilterMetric.Published)
+        {
+            SetLevelFilter(LevelFilterMetric.None);
+            return;
+        }
+
+        Debug.Log("Filter by Published");
+        SetLevelFilter(LevelFilterMetric.Published);
+    }
+
+    public void ButtonPressedFilterDownloaded()
+    {
+        if (this.CurrentFilter == LevelFilterMetric.Downloaded)
+        {
+            SetLevelFilter(LevelFilterMetric.None);
+            return;
+        }
+
+        Debug.Log("Filter by Downloaded");
+        SetLevelFilter(LevelFilterMetric.Downloaded);
+    }
+
+    private void SetLevelFilter(LevelFilterMetric filter)
+    {
+        CurrentFilter = filter;
+        OnFilterChanged?.Invoke();
+    }
+
     public void OpenBrowser()
     {
         SceneTransitionManager.Instance.AddScene(SceneTransitionManager.BrowserSceneName);
         AudioManager.Instance.PlayRandomizedAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME, 0.1f, 0.1f);
+    }
+
+    private void OnCloseBrowser()
+    {
+        SetLevelFilter(LevelFilterMetric.Downloaded);
+    }
+
+    private void OnEnable()
+    {
+        LevelBrowserLoader.OnLevelBrowserClosed += OnCloseBrowser;
+    }
+
+    private void OnDisable()
+    {
+        LevelBrowserLoader.OnLevelBrowserClosed -= OnCloseBrowser;
     }
 }
