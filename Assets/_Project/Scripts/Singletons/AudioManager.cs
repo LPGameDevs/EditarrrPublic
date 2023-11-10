@@ -30,13 +30,15 @@ namespace Editarrr.Audio
         public const string MINOR_CLICK_CLIP_NAME = "click_AE";
         public const string MEDIUM_CLICK_CLIP_NAME = "click3_SI";
         public const string SCROLL_TICK_CLIP_NAME = "scrollTick";
+        public const string EDITOR_PLACE_CLIP_NAME = "EditorPlace_SI";
+        public const string EDITOR_REMOVE_CLIP_NAME = "EditorRemove_SI";
         public const string AFFIRMATIVE_CLIP_NAME = "affirmative";
         public const string NEGATIVE_CLIP_NAME = "negative";
         public const string BUTTONCLICK_CLIP_NAME = "buttonClick";
         public const string LEVEL_SAVED_CLIP_NAME = "levelSaved";
         public const string LEVEL_SUBMITTED_CLIP_NAME = "levelSubmitted";
         public const string LEVEL_DESTROYED_CLIP_NAME = "levelDestroyed";
-
+        public const string SNAP_CLIP_NAME = "Snap";
         public const string ATTENTION_CLIP_NAME = "attention";
         public const string DENIED_CLIP_NAME = "denied";
         public const string WARNING_CLIP_NAME = "warning";

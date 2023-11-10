@@ -18,7 +18,7 @@ namespace Misc
         private float _playSoundDelay = 0.5f;
         private float _playSoundTimer = 0;
 
-        public void Initialize()
+        public void Start()
         {
             _slider = GetComponent<Slider>();
             _audio = GetComponent<AudioSource>();

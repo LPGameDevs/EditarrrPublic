@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Editarrr.Audio;
 using Singletons;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,9 +16,9 @@ namespace LevelEditor
         public static event Action<string> OnEditorLevelDelete;
         public static event Action<string> OnLeaderboardRequest;
 
-        public Text Title;
-        public Text Creator;
-        public Text RemoteId;
+        public TMP_Text Title;
+        public TMP_Text Creator;
+        public TMP_Text RemoteId;
         public RawImage ScreenshotImage;
         public Transform EditButton;
         public Transform UploadButton;

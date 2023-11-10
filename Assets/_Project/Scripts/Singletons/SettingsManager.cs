@@ -24,8 +24,8 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
         QualitySettings.vSyncCount = 1;
 
 
-        _musicSlider.Initialize();
-        _sfxSlider.Initialize();
+        _musicSlider.Start();
+        _sfxSlider.Start();
 
         _screenShakeToggle.isOn = ScreenShakeEnabled = PreferencesManager.Instance.GetBoolean(PreferencesManager.ScreenShakeKey);
         _screenFlashToggle.isOn = ScreenFlashEnabled = PreferencesManager.Instance.GetBoolean(PreferencesManager.ScreenFlashKey);
