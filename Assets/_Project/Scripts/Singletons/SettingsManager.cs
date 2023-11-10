@@ -38,6 +38,11 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
         SceneTransitionManager.OnSceneChanged += ToggleSettingsButton;
     }
 
+    private void OnDisable()
+    {
+        SceneTransitionManager.OnSceneChanged -= ToggleSettingsButton;
+    }
+
     private void ToggleSettingsButton(string sceneName)
     {
         _settingsButton.SetActive(!sceneName.Equals(SceneTransitionManager.TestLevelSceneName));
@@ -72,8 +77,16 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
         _settingsOverlay.SetActive(false);
     }
 
-    public void ToggleScreenShake(bool setActive) => PreferencesManager.Instance.SetBoolean(PreferencesManager.ScreenShakeKey, setActive);
+    public void ToggleScreenShake(bool setActive)
+    {
+        PreferencesManager.Instance.SetBoolean(PreferencesManager.ScreenShakeKey, setActive);
+        ScreenShakeEnabled = setActive;
+    }
 
-    public void ToggleScreenFlash(bool setActive) => PreferencesManager.Instance.SetBoolean(PreferencesManager.ScreenFlashKey, setActive);
 
+    public void ToggleScreenFlash(bool setActive)
+    {
+        PreferencesManager.Instance.SetBoolean(PreferencesManager.ScreenFlashKey, setActive);
+        ScreenFlashEnabled = setActive;
+    }
 }
