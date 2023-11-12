@@ -15,7 +15,6 @@ namespace Editarrr.UI.LevelEditor
             [field: SerializeField] private EditorLevelManager EditorLevelManager { get; set; }
 
             [field: SerializeField, Header("Templates")] private VisualTreeAsset TileDataSlotTemplate { get; set; }
-            [field: SerializeField] private VisualTreeAsset TiletipAsset { get; set; }
 
             [field: SerializeField, Header("Names")] public string TileDataSlotContainerName { get; private set; } = "TileSelectionContainer";
             [field: SerializeField] public string TileDataSlotName { get; private set; } = "TileDataSlot";
@@ -31,8 +30,6 @@ namespace Editarrr.UI.LevelEditor
             public override void Initialize(UIElement root, VisualElement visualElement)
             {
                 this.TileDataSlotContainerElement = visualElement.Q<VisualElement>(this.TileDataSlotContainerName);
-                var tiletipContainer = this.TiletipAsset.Instantiate();
-                tiletipContainer.visible = false;
 
                 this.TileDataSlotElements = new TileButton[this.TileDataSlotCount];
 
@@ -46,8 +43,6 @@ namespace Editarrr.UI.LevelEditor
                     template.RegisterCallback<PointerLeaveEvent>(LevelEditorScreen.PointerLeave);
                     this.TileDataSlotContainerElement.Add(template);
 
-                    Label toolTip = template.Q<Label>("ToolTip");
-
                     Button button = template.Q<Button>(name);
                     button.userData = i;
                     button.clickable.clickedWithEventInfo += this.TileDataSlotElements_Clicked;
@@ -57,7 +52,7 @@ namespace Editarrr.UI.LevelEditor
                     VisualElement countContainer = template.Q<VisualElement>(this.TileDataSlotCountContainerName);
                     Label countContainerValue = countContainer.Q<Label>(this.TileDataSlotCountContainerLabelName);
 
-                    TileButton tileButton = this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue, toolTip, tiletipContainer);
+                    TileButton tileButton = this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue);
 
                     template.RegisterCallback<PointerEnterEvent>(tileButton.ShowToolTip);
                     template.RegisterCallback<PointerLeaveEvent>(tileButton.HideToolTip);
@@ -157,7 +152,6 @@ namespace Editarrr.UI.LevelEditor
                 public VisualElement Image { get; private set; }
                 public VisualElement CountContainer { get; private set; }
                 public Label Count { get; private set; }
-                public Label ToolTip { get; private set; }
 
                 public EditorTileData EditorTileData { get; private set; }
                 public TemplateContainer TiletipContainer { get; private set; }
@@ -166,16 +160,12 @@ namespace Editarrr.UI.LevelEditor
                 public static event Action<EditorTileData> OnTileButtonHover;
                 public static event Action OnTileButtonExit;
 
-                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count, Label toolTip, TemplateContainer tiletipContainer)
+                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count)
                 {
                     this.Button = button;
                     this.Image = image;
                     this.CountContainer = countContainer;
                     this.Count = count;
-                    this.ToolTip = toolTip;
-                    this.TiletipContainer = tiletipContainer;
-
-                    this.SetToolTip(false);
                 }
 
                 public void SetData(EditorTileData editorTileData)
@@ -184,18 +174,15 @@ namespace Editarrr.UI.LevelEditor
 
                     Sprite sprite = null;
                     bool countContainer = false;
-                    string toolTipContent = "";
 
                     if (editorTileData != null)
                     {
                         sprite = editorTileData.UISprite;
                         countContainer = editorTileData.LevelLimit > 0;
-                        toolTipContent = editorTileData.Description;
                     }
 
                     this.Image.style.backgroundImage = new StyleBackground(sprite);
                     this.CountContainer.style.visibility = new StyleEnum<Visibility>(countContainer ? Visibility.Visible : Visibility.Hidden);
-                    this.ToolTip.text = toolTipContent;
                 }
 
                 public void UpdateCount(int count)
@@ -211,16 +198,6 @@ namespace Editarrr.UI.LevelEditor
                 internal void HideToolTip(PointerLeaveEvent evt)
                 {
                     OnTileButtonExit?.Invoke();
-                }
-
-                private void SetToolTip(bool value)
-                {
-                    if (string.IsNullOrEmpty(this.ToolTip.text))
-                    {
-                        this.ToolTip.visible = false;
-                        return;
-                    }
-                    this.ToolTip.visible = value;
                 }
             }
         }

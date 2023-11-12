@@ -28,7 +28,7 @@ namespace Editarrr.UI.LevelEditor
         private readonly float _setInvisibleTimerMax = 0.2f;
         private float _setInvisibleTimer = 0;
         private bool _toBeSetInvisible;
-        private Vector3 _yCorrection = new Vector3(0, 50, 0);
+        private Vector3 _yCorrection = new(0, 50, 0);
 
         #endregion
 
