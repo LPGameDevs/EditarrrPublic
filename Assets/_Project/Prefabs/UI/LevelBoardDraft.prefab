@@ -1059,6 +1059,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1708781052333334162}
     m_Modifications:
+    - target: {fileID: 567163044329505631, guid: b8ecbc41a938adc4cb7ff5474e6afbad, type: 3}
+      propertyPath: hoverClip
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 626699150325525010, guid: b8ecbc41a938adc4cb7ff5474e6afbad, type: 3}
       propertyPath: m_fontSize
       value: 12
