@@ -1,4 +1,5 @@
 ﻿using Editarrr.LevelEditor;
+using Mono.Cecil.Cil;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,6 +15,7 @@ namespace Editarrr.UI.LevelEditor
             [field: SerializeField] private EditorLevelManager EditorLevelManager { get; set; }
 
             [field: SerializeField, Header("Templates")] private VisualTreeAsset TileDataSlotTemplate { get; set; }
+            [field: SerializeField] private VisualTreeAsset TiletipAsset { get; set; }
 
             [field: SerializeField, Header("Names")] public string TileDataSlotContainerName { get; private set; } = "TileSelectionContainer";
             [field: SerializeField] public string TileDataSlotName { get; private set; } = "TileDataSlot";
@@ -29,6 +31,8 @@ namespace Editarrr.UI.LevelEditor
             public override void Initialize(UIElement root, VisualElement visualElement)
             {
                 this.TileDataSlotContainerElement = visualElement.Q<VisualElement>(this.TileDataSlotContainerName);
+                var tiletipContainer = this.TiletipAsset.Instantiate();
+                tiletipContainer.visible = false;
 
                 this.TileDataSlotElements = new TileButton[this.TileDataSlotCount];
 
@@ -53,7 +57,7 @@ namespace Editarrr.UI.LevelEditor
                     VisualElement countContainer = template.Q<VisualElement>(this.TileDataSlotCountContainerName);
                     Label countContainerValue = countContainer.Q<Label>(this.TileDataSlotCountContainerLabelName);
 
-                    TileButton tileButton = this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue, toolTip);
+                    TileButton tileButton = this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue, toolTip, tiletipContainer);
 
                     template.RegisterCallback<PointerEnterEvent>(tileButton.ShowToolTip);
                     template.RegisterCallback<PointerLeaveEvent>(tileButton.HideToolTip);
@@ -147,7 +151,7 @@ namespace Editarrr.UI.LevelEditor
                 }
             }
 
-            private class TileButton
+            public class TileButton
             {
                 public Button Button { get; private set; }
                 public VisualElement Image { get; private set; }
@@ -156,14 +160,20 @@ namespace Editarrr.UI.LevelEditor
                 public Label ToolTip { get; private set; }
 
                 public EditorTileData EditorTileData { get; private set; }
+                public TemplateContainer TiletipContainer { get; private set; }
+                public Vector2 CurrentPosition { get; private set; }
 
-                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count, Label toolTip)
+                public static event Action<EditorTileData> OnTileButtonHover;
+                public static event Action OnTileButtonExit;
+
+                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count, Label toolTip, TemplateContainer tiletipContainer)
                 {
                     this.Button = button;
                     this.Image = image;
                     this.CountContainer = countContainer;
                     this.Count = count;
                     this.ToolTip = toolTip;
+                    this.TiletipContainer = tiletipContainer;
 
                     this.SetToolTip(false);
                 }
@@ -195,23 +205,21 @@ namespace Editarrr.UI.LevelEditor
 
                 internal void ShowToolTip(PointerEnterEvent evt)
                 {
-                    this.SetToolTip(true);
+                    OnTileButtonHover?.Invoke(this.EditorTileData);
                 }
 
                 internal void HideToolTip(PointerLeaveEvent evt)
                 {
-                    this.SetToolTip(false);
+                    OnTileButtonExit?.Invoke();
                 }
 
                 private void SetToolTip(bool value)
                 {
                     if (string.IsNullOrEmpty(this.ToolTip.text))
                     {
-                        Debug.Log("String null or empty");
                         this.ToolTip.visible = false;
                         return;
                     }
-
                     this.ToolTip.visible = value;
                 }
             }

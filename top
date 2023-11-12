@@ -1,0 +1,682 @@
+warning: in the working copy of 'Assets/_Project/Scenes/EditorCreate.unity', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFirstThreshold.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFourthThreshold.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsSecondThreshold.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsThirdThreshold.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/LevelCompleted.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/LevelRated.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/LevelScoreSubmitted.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/LevelSubmitted.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFirstThreshold.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFourthThreshold.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/PlayerDiedSecondThreshold.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/ScriptableObjects/Achievement/PlayerDiedThirdThreshold.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/fonts/JumpandPlay_Variant2.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/fonts/JumpandPlay_Variant3.asset', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'Assets/_Project/fonts/JumpandPlay_Variant4.asset', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/Assets/_Project/Scenes/EditorCreate.unity b/Assets/_Project/Scenes/EditorCreate.unity[m
+[1mindex 807908d..3f691a3 100644[m
+[1m--- a/Assets/_Project/Scenes/EditorCreate.unity[m
+[1m+++ b/Assets/_Project/Scenes/EditorCreate.unity[m
+[36m@@ -1153,10 +1153,90 @@[m [mPrefabInstance:[m
+   m_Modification:[m
+     m_TransformParent: {fileID: 0}[m
+     m_Modifications:[m
+[32m+[m[32m    - target: {fileID: 1882855918020188275, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 1882855918020188275, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 1882855918020188275, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 1882855918020188275, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 1882855918020188275, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 1882855918020188275, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+     - target: {fileID: 2283036675160398487, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+       propertyPath: m_Name[m
+       value: AllTheSingletons[m
+       objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 2447559698701840318, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 2447559698701840318, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 2447559698701840318, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 2447559698701840318, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 3281746940541279361, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 3281746940541279361, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 3281746940541279361, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 3281746940541279361, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 3281746940541279361, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 3281746940541279361, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4024487742076248226, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4024487742076248226, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4024487742076248226, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4024487742076248226, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+     - target: {fileID: 4318917341212615922, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+       propertyPath: m_RootOrder[m
+       value: 4[m
+[36m@@ -1201,6 +1281,134 @@[m [mPrefabInstance:[m
+       propertyPath: m_LocalEulerAnglesHint.z[m
+       value: 0[m
+       objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4760020509470233689, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4760020509470233689, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4760020509470233689, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4760020509470233689, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4760020509470233689, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4760020509470233689, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735464514758619, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735464514758619, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735464514758619, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735464514758619, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735464551168204, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735464563293038, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735464619785827, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465350123201, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465350123201, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465350123201, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465350123201, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465350123201, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465350123201, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465612453206, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465737708029, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465737708029, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465737708029, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 4785735465737708029, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 8658741392221002992, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 8658741392221002992, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 8658741392221002992, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 8658741392221002992, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 9173210995924779558, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 9173210995924779558, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 9173210995924779558, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 9173210995924779558, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+     m_RemovedComponents: [][m
+   m_SourcePrefab: {fileID: 100100000, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}[m
+ --- !u!1 &926229325[m
+[36m@@ -1564,6 +1772,7 @@[m [mMonoBehaviour:[m
+     <EditorTileSelectionManager>k__BackingField: {fileID: 11400000, guid: b10f562adc978bb468e22b320a6a39dd, type: 2}[m
+     <EditorLevelManager>k__BackingField: {fileID: 11400000, guid: 523fc9c1fa79b0c4ea3bea3e8d1d4677, type: 2}[m
+     <TileDataSlotTemplate>k__BackingField: {fileID: 9197481963319205126, guid: b48c3db677d7a8444a6c7b122c093bb9, type: 3}[m
+[32m+[m[32m    <TiletipAsset>k__BackingField: {fileID: 9197481963319205126, guid: e02991873edd7ef41b7476b88544b17b, type: 3}[m
+     <TileDataSlotContainerName>k__BackingField: TileSelectionContainer[m
+     <TileDataSlotName>k__BackingField: TileDataSlot[m
+     <TileDataSlotImageName>k__BackingField: Image[m
+[36m@@ -1866,7 +2075,8 @@[m [mRectTransform:[m
+   m_LocalPosition: {x: 0, y: 0, z: 0}[m
+   m_LocalScale: {x: 0, y: 0, z: 0}[m
+   m_ConstrainProportionsScale: 0[m
+[31m-  m_Children: [][m
+[32m+[m[32m  m_Children:[m
+[32m+[m[32m  - {fileID: 5285759519494146528}[m
+   m_Father: {fileID: 0}[m
+   m_RootOrder: 5[m
+   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}[m
+[36m@@ -2496,3 +2706,105 @@[m [mPrefabInstance:[m
+       objectReference: {fileID: 0}[m
+     m_RemovedComponents: [][m
+   m_SourcePrefab: {fileID: 100100000, guid: d1ab2208b98f3e345b4c8761621e287b, type: 3}[m
+[32m+[m[32m--- !u!1001 &5285759519494146527[m
+[32m+[m[32mPrefabInstance:[m
+[32m+[m[32m  m_ObjectHideFlags: 0[m
+[32m+[m[32m  serializedVersion: 2[m
+[32m+[m[32m  m_Modification:[m
+[32m+[m[32m    m_TransformParent: {fileID: 1705024225}[m
+[32m+[m[32m    m_Modifications:[m
+[32m+[m[32m    - target: {fileID: 4108113664735355920, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_Name[m
+[32m+[m[32m      value: Tiletip[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_Pivot.x[m
+[32m+[m[32m      value: 0.5[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_Pivot.y[m
+[32m+[m[32m      value: 0.5[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_RootOrder[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMax.y[m
+[32m+[m[32m      value: 1[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchorMin.y[m
+[32m+[m[32m      value: 1[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.x[m
+[32m+[m[32m      value: 346.875[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_SizeDelta.y[m
+[32m+[m[32m      value: 281.25[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalPosition.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalPosition.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalPosition.z[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalRotation.w[m
+[32m+[m[32m      value: 1[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalRotation.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalRotation.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalRotation.z[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.x[m
+[32m+[m[32m      value: 960[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_AnchoredPosition.y[m
+[32m+[m[32m      value: -540[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalEulerAnglesHint.x[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalEulerAnglesHint.y[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    - target: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m      propertyPath: m_LocalEulerAnglesHint.z[m
+[32m+[m[32m      value: 0[m
+[32m+[m[32m      objectReference: {fileID: 0}[m
+[32m+[m[32m    m_RemovedComponents: [][m
+[32m+[m[32m  m_SourcePrefab: {fileID: 100100000, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m--- !u!224 &5285759519494146528 stripped[m
+[32m+[m[32mRectTransform:[m
+[32m+[m[32m  m_CorrespondingSourceObject: {fileID: 6802967431123388223, guid: 2c564a21a7e5f834b909c23211a717a9, type: 3}[m
+[32m+[m[32m  m_PrefabInstance: {fileID: 5285759519494146527}[m
+[32m+[m[32m  m_PrefabAsset: {fileID: 0}[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFirstThreshold.asset b/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFirstThreshold.asset[m
+[1mindex 792b6f1..98dfc69 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFirstThreshold.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFirstThreshold.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: CompletedLevelsFirstThreshold[m
+   m_EditorClassIdentifier: [m
+   Type: 20[m
+[31m-  TitleText: Following the field guide![m
+[32m+[m[32m  TitleText: Landlubber - Complete Five Levels[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFourthThreshold.asset b/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFourthThreshold.asset[m
+[1mindex c6dae7f..e53bb2a 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFourthThreshold.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsFourthThreshold.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: CompletedLevelsFourthThreshold[m
+   m_EditorClassIdentifier: [m
+   Type: 23[m
+[31m-  TitleText: Zackavelli-esque[m
+[32m+[m[32m  TitleText: King Of The Pirates - Complete Fifty Levels[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsSecondThreshold.asset b/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsSecondThreshold.asset[m
+[1mindex ee56213..d1ddda2 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsSecondThreshold.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsSecondThreshold.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: CompletedLevelsSecondThreshold[m
+   m_EditorClassIdentifier: [m
+   Type: 21[m
+[31m-  TitleText: Getting good![m
+[32m+[m[32m  TitleText: Powder Monkey - Complete Ten Levels[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsThirdThreshold.asset b/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsThirdThreshold.asset[m
+[1mindex 2c74d5c..113d78c 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsThirdThreshold.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/CompletedLevelsThirdThreshold.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: CompletedLevelsThirdThreshold[m
+   m_EditorClassIdentifier: [m
+   Type: 22[m
+[31m-  TitleText: Field guide counselor![m
+[32m+[m[32m  TitleText: Field Guide Counselor - Complete Twenty Levels[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/LevelCompleted.asset b/Assets/_Project/ScriptableObjects/Achievement/LevelCompleted.asset[m
+[1mindex 36d61ff..8a22404 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/LevelCompleted.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/LevelCompleted.asset[m
+[36m@@ -13,7 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: LevelCompleted[m
+   m_EditorClassIdentifier: [m
+   Type: 3[m
+[31m-  TitleText: Level Completed![m
+[31m-  ContentText: [m
+[31m-  CloseText: [m
+[31m-  Prefab: {fileID: 0}[m
+[32m+[m[32m  TitleText: First Voyage - Complete a level[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/LevelRated.asset b/Assets/_Project/ScriptableObjects/Achievement/LevelRated.asset[m
+[1mindex 8cdda6c..8726217 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/LevelRated.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/LevelRated.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: LevelRated[m
+   m_EditorClassIdentifier: [m
+   Type: 2[m
+[31m-  TitleText: Level Rated![m
+[32m+[m[32m  TitleText: Giver Of Starrrrs - Rate A Level[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/LevelScoreSubmitted.asset b/Assets/_Project/ScriptableObjects/Achievement/LevelScoreSubmitted.asset[m
+[1mindex 41c5b31..227667c 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/LevelScoreSubmitted.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/LevelScoreSubmitted.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: LevelScoreSubmitted[m
+   m_EditorClassIdentifier: [m
+   Type: 4[m
+[31m-  TitleText: Score Submitted :D[m
+[32m+[m[32m  TitleText: Contender - Submit A Score[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/LevelSubmitted.asset b/Assets/_Project/ScriptableObjects/Achievement/LevelSubmitted.asset[m
+[1mindex b0ff64f..7193d69 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/LevelSubmitted.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/LevelSubmitted.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: LevelSubmitted[m
+   m_EditorClassIdentifier: [m
+   Type: 1[m
+[31m-  TitleText: Level Uploaded![m
+[32m+[m[32m  TitleText: Submit - Upload A Level[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFirstThreshold.asset b/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFirstThreshold.asset[m
+[1mindex e4f3a0b..a0d64f6 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFirstThreshold.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFirstThreshold.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: PlayerDiedFirstThreshold[m
+   m_EditorClassIdentifier: [m
+   Type: 10[m
+[31m-  TitleText: You died a few times![m
+[32m+[m[32m  TitleText: Keelhauled - Die Five Times[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFourthThreshold.asset b/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFourthThreshold.asset[m
+[1mindex af0a1ba..2154379 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFourthThreshold.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedFourthThreshold.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: PlayerDiedFourthThreshold[m
+   m_EditorClassIdentifier: [m
+   Type: 13[m
+[31m-  TitleText: BFF with Davey Jones, this one.[m
+[32m+[m[32m  TitleText: Rations For The Kraken - Die Fifty Times[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedSecondThreshold.asset b/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedSecondThreshold.asset[m
+[1mindex e514e31..d39768b 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedSecondThreshold.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedSecondThreshold.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: PlayerDiedSecondThreshold[m
+   m_EditorClassIdentifier: [m
+   Type: 11[m
+[31m-  TitleText: You died a few more times![m
+[32m+[m[32m  TitleText: Featherrrr'd N' Tarrrred! - Die Ten Times[m
+[1mdiff --git a/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedThirdThreshold.asset b/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedThirdThreshold.asset[m
+[1mindex cd67819..ab7be37 100644[m
+[1m--- a/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedThirdThreshold.asset[m
+[1m+++ b/Assets/_Project/ScriptableObjects/Achievement/PlayerDiedThirdThreshold.asset[m
+[36m@@ -13,4 +13,4 @@[m [mMonoBehaviour:[m
+   m_Name: PlayerDiedThirdThreshold[m
+   m_EditorClassIdentifier: [m
+   Type: 12[m
+[31m-  TitleText: Are you dying on purpose?[m
+[32m+[m[32m  TitleText: Grim Reaparrrr - Die Twenty Times[m
+[1mdiff --git a/Assets/_Project/Scripts/LevelEditor/EditorTileData.cs b/Assets/_Project/Scripts/LevelEditor/EditorTileData.cs[m
+[1mindex babd737..95e4b49 100644[m
+[1m--- a/Assets/_Project/Scripts/LevelEditor/EditorTileData.cs[m
+[1m+++ b/Assets/_Project/Scripts/LevelEditor/EditorTileData.cs[m
+[36m@@ -26,5 +26,6 @@[m [mnamespace Editarrr.LevelEditor[m
+         public bool IsInfinite { get => this.LevelLimit <= 0; }[m
+ [m
+         [field: SerializeField] public bool IsBackground { get; private set; }[m
+[32m+[m[32m        [field: SerializeField] public bool IsQonfigurable { get; private set; }[m
+     }[m
+ }[m
+[1mdiff --git a/Assets/_Project/Scripts/UI/LevelEditorScreen/TileSelectionComponent.cs b/Assets/_Project/Scripts/UI/LevelEditorScreen/TileSelectionComponent.cs[m
+[1mindex cdcf1f8..f137ae1 100644[m
+[1m--- a/Assets/_Project/Scripts/UI/LevelEditorScreen/TileSelectionComponent.cs[m
+[1m+++ b/Assets/_Project/Scripts/UI/LevelEditorScreen/TileSelectionComponent.cs[m
+[36m@@ -1,4 +1,5 @@[m
+ ﻿using Editarrr.LevelEditor;[m
+[32m+[m[32musing Mono.Cecil.Cil;[m
+ using System;[m
+ using UnityEngine;[m
+ using UnityEngine.UIElements;[m
+[36m@@ -14,6 +15,7 @@[m [mnamespace Editarrr.UI.LevelEditor[m
+             [field: SerializeField] private EditorLevelManager EditorLevelManager { get; set; }[m
+ [m
+             [field: SerializeField, Header("Templates")] private VisualTreeAsset TileDataSlotTemplate { get; set; }[m
+[32m+[m[32m            [field: SerializeField] private VisualTreeAsset TiletipAsset { get; set; }[m
+ [m
+             [field: SerializeField, Header("Names")] public string TileDataSlotContainerName { get; private set; } = "TileSelectionContainer";[m
+             [field: SerializeField] public string TileDataSlotName { get; private set; } = "TileDataSlot";[m
+[36m@@ -29,6 +31,8 @@[m [mnamespace Editarrr.UI.LevelEditor[m
+             public override void Initialize(UIElement root, VisualElement visualElement)[m
+             {[m
+                 this.TileDataSlotContainerElement = visualElement.Q<VisualElement>(this.TileDataSlotContainerName);[m
+[32m+[m[32m                var tiletipContainer = this.TiletipAsset.Instantiate();[m
+[32m+[m[32m                tiletipContainer.visible = false;[m
+ [m
+                 this.TileDataSlotElements = new TileButton[this.TileDataSlotCount];[m
+ [m
+[36m@@ -53,7 +57,7 @@[m [mnamespace Editarrr.UI.LevelEditor[m
+                     VisualElement countContainer = template.Q<VisualElement>(this.TileDataSlotCountContainerName);[m
+                     Label countContainerValue = countContainer.Q<Label>(this.TileDataSlotCountContainerLabelName);[m
+ [m
+[31m-                    TileButton tileButton = this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue, toolTip);[m
+[32m+[m[32m                    TileButton tileButton = this.TileDataSlotElements[i] = new TileButton(button, image, countContainer, countContainerValue, toolTip, tiletipContainer);[m
+ [m
+                     template.RegisterCallback<PointerEnterEvent>(tileButton.ShowToolTip);[m
+                     template.RegisterCallback<PointerLeaveEvent>(tileButton.HideToolTip);[m
+[36m@@ -147,7 +151,7 @@[m [mnamespace Editarrr.UI.LevelEditor[m
+                 }[m
+             }[m
+ [m
+[31m-            private class TileButton[m
+[32m+[m[32m            public class TileButton[m
+             {[m
+                 public Button Button { get; private set; }[m
+                 public VisualElement Image { get; private set; }[m
+[36m@@ -156,14 +160,20 @@[m [mnamespace Editarrr.UI.LevelEditor[m
+                 public Label ToolTip { get; private set; }[m
+ [m
+                 public EditorTileData EditorTileData { get; private set; }[m
+[32m+[m[32m                public TemplateContainer TiletipContainer { get; private set; }[m
+[32m+[m[32m                public Vector2 CurrentPosition { get; private set; }[m
+ [m
+[31m-                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count, Label toolTip)[m
+[32m+[m[32m                public static event Action<EditorTileData> OnTileButtonHover;[m
+[32m+[m[32m                public static event Action OnTileButtonExit;[m
+[32m+[m
+[32m+[m[32m                public TileButton(Button button, VisualElement image, VisualElement countContainer, Label count, Label toolTip, TemplateContainer tiletipContainer)[m
+                 {[m
+                     this.Button = button;[m
+                     this.Image = image;[m
+                     this.CountContainer = countContainer;[m
+                     this.Count = count;[m
+                     this.ToolTip = toolTip;[m
+[32m+[m[32m                    this.TiletipContainer = tiletipContainer;[m
+ [m
+                     this.SetToolTip(false);[m
+                 }[m
+[36m@@ -195,23 +205,21 @@[m [mnamespace Editarrr.UI.LevelEditor[m
+ [m
+                 internal void ShowToolTip(PointerEnterEvent evt)[m
+                 {[m
+[31m-                    this.SetToolTip(true);[m
+[32m+[m[32m                    OnTileButtonHover?.Invoke(this.EditorTileData);[m
+                 }[m
+ [m
+                 internal void HideToolTip(PointerLeaveEvent evt)[m
+                 {[m
+[31m-                    this.SetToolTip(false);[m
+[32m+[m[32m                    OnTileButtonExit?.Invoke();[m
+                 }[m
+ [m
+                 private void SetToolTip(bool value)[m
+                 {[m
+                     if (string.IsNullOrEmpty(this.ToolTip.text))[m
+                     {[m
+[31m-                        Debug.Log("String null or empty");[m
+                         this.ToolTip.visible = false;[m
+                         return;[m
+                     }[m
+[31m-[m
+                     this.ToolTip.visible = value;[m
+                 }[m
+             }[m
+[1mdiff --git a/Assets/_Project/UI/LevelEditorScreen/Tiletip.uxml b/Assets/_Project/UI/LevelEditorScreen/Tiletip.uxml[m
+[1mindex 826a60b..8540b94 100644[m
+[1m--- a/Assets/_Project/UI/LevelEditorScreen/Tiletip.uxml[m
+[1m+++ b/Assets/_Project/UI/LevelEditorScreen/Tiletip.uxml[m
+[36m@@ -1,9 +1,10 @@[m
+[31m-<?xml version="1.0" encoding="utf-8"?>[m
+[31m-<engine:UXML[m
+[31m-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"[m
+[31m-    xmlns:engine="UnityEngine.UIElements"[m
+[31m-    xmlns:editor="UnityEditor.UIElements"[m
+[31m-    xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"[m
+[31m->[m
+[31m-    [m
+[31m-</engine:UXML>[m
+\ No newline at end of file[m
+[32m+[m[32m<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">[m
+[32m+[m[32m    <ui:VisualElement name="TiletipBackground" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Tiletip.png?fileID=21300000&amp;guid=c9e85733a78c6f54d8596fa066fecbf2&amp;type=3#Tiletip&apos;); width: 333px; height: 270px; align-items: center; justify-content: space-around; flex-shrink: 0;">[m
+[32m+[m[32m        <ui:Label text="Red Spikes of Death" display-tooltip-when-elided="true" name="TileName" style="width: 227px; top: 10px; -unity-font: url(&apos;project://database/Assets/_Project/fonts/JumpandPlay.otf?fileID=12800000&amp;guid=9cb5fa0482db22642a555c94098baaa2&amp;type=3#JumpandPlay&apos;); -unity-text-align: middle-center; flex-wrap: nowrap; white-space: normal; max-height: 24px; font-size: 18px; -unity-font-style: bold; position: absolute; left: 40px;" />[m
+[32m+[m[32m        <ui:VisualElement name="RotatableCheckmark" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Checkmark_green.png?fileID=21300000&amp;guid=e02db3d01d9f25242b8100ef7d46b7b9&amp;type=3#Checkmark_green&apos;); width: 40px; height: 36px; right: 177px; bottom: 173px; position: absolute;" />[m
+[32m+[m[32m        <ui:VisualElement name="RotatableCross" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Cross_red.png?fileID=21300000&amp;guid=e5d915287ec8ab745ba2267abc1e5ece&amp;type=3#Cross_red&apos;); width: 40px; height: 36px; right: 177px; bottom: 173px; position: absolute;" />[m
+[32m+[m[32m        <ui:VisualElement name="QonfigurableCheckmark" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Checkmark_green.png?fileID=21300000&amp;guid=e02db3d01d9f25242b8100ef7d46b7b9&amp;type=3#Checkmark_green&apos;); width: 40px; height: 36px; right: 61px; bottom: 173px; position: absolute;" />[m
+[32m+[m[32m        <ui:VisualElement name="QonfigurableCross" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Cross_red.png?fileID=21300000&amp;guid=e5d915287ec8ab745ba2267abc1e5ece&amp;type=3#Cross_red&apos;); width: 40px; height: 36px; right: 61px; bottom: 173px; position: absolute;" />[m
+[32m+[m[32m        <ui:Label text="A suuuuuuper long test description to check how the tiletip description will look like, in case it get&apos;s like super super ridiculously long" display-tooltip-when-elided="true" name="TileDescription" style="width: 190px; -unity-font: url(&apos;project://database/Assets/_Project/fonts/JumpandPlay.otf?fileID=12800000&amp;guid=9cb5fa0482db22642a555c94098baaa2&amp;type=3#JumpandPlay&apos;); -unity-text-align: middle-center; bottom: 35px; height: 110px; max-width: 190px; max-height: 110px; min-width: 190px; min-height: 110px; white-space: normal; position: absolute; flex-grow: 1; left: 68px;" />[m
+[32m+[m[32m    </ui:VisualElement>[m
+[32m+[m[32m</ui:UXML>[m
+[1mdiff --git a/Assets/_Project/fonts/JumpandPlay_Variant2.asset b/Assets/_Project/fonts/JumpandPlay_Variant2.asset[m
+[1mindex 038b9c2..69be080 100644[m
+[1m--- a/Assets/_Project/fonts/JumpandPlay_Variant2.asset[m
+[1m+++ b/Assets/_Project/fonts/JumpandPlay_Variant2.asset[m
+[36m@@ -1184,6 +1184,21 @@[m [mMonoBehaviour:[m
+     m_Scale: 1[m
+     m_AtlasIndex: 0[m
+     m_ClassDefinitionType: 0[m
+[32m+[m[32m  - m_Index: 91[m
+[32m+[m[32m    m_Metrics:[m
+[32m+[m[32m      m_Width: 51.640625[m
+[32m+[m[32m      m_Height: 74.3125[m
+[32m+[m[32m      m_HorizontalBearingX: 0[m
+[32m+[m[32m      m_HorizontalBearingY: 69.171875[m
+[32m+[m[32m      m_HorizontalAdvance: 56.03125[m
+[32m+[m[32m    m_GlyphRect:[m
+[32m+[m[32m      m_X: 835[m
+[32m+[m[32m      m_Y: 410[m
+[32m+[m[32m      m_Width: 52[m
+[32m+[m[32m      m_Height: 76[m
+[32m+[m[32m    m_Scale: 1[m
+[32m+[m[32m    m_AtlasIndex: 0[m
+[32m+[m[32m    m_ClassDefinitionType: 0[m
+   m_CharacterTable:[m
+   - m_ElementType: 1[m
+     m_Unicode: 32[m
+[36m@@ -1461,6 +1476,10 @@[m [mMonoBehaviour:[m
+     m_Unicode: 8230[m
+     m_GlyphIndex: 211[m
+     m_Scale: 1[m
+[32m+[m[32m  - m_ElementType: 1[m
+[32m+[m[32m    m_Unicode: 122[m
+[32m+[m[32m    m_GlyphIndex: 91[m
+[32m+[m[32m    m_Scale: 1[m
+   m_AtlasTextures:[m
+   - {fileID: 4323660145443335523}[m
+   m_AtlasTextureIndex: 0[m
+[36m@@ -1735,6 +1754,10 @@[m [mMonoBehaviour:[m
+     m_Y: 393[m
+     m_Width: 81[m
+     m_Height: 105[m
+[32m+[m[32m  - m_X: 825[m
+[32m+[m[32m    m_Y: 400[m
+[32m+[m[32m    m_Width: 71[m
+[32m+[m[32m    m_Height: 95[m
+   m_FreeGlyphRects:[m
+   - m_X: 77[m
+     m_Y: 40[m
+[36m@@ -1932,10 +1955,6 @@[m [mMonoBehaviour:[m
+     m_Y: 299[m
+     m_Width: 10[m
+     m_Height: 3[m
+[31m-  - m_X: 825[m
+[31m-    m_Y: 302[m
+[31m-    m_Width: 8[m
+[31m-    m_Height: 721[m
+   - m_X: 431[m
+     m_Y: 495[m
+     m_Width: 212[m
+[36m@@ -1956,10 +1975,6 @@[

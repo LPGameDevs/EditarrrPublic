@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<engine:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:engine="UnityEngine.UIElements"
-    xmlns:editor="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
->
-    
-</engine:UXML>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="TiletipBackground" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Tiletip.png?fileID=21300000&amp;guid=c9e85733a78c6f54d8596fa066fecbf2&amp;type=3#Tiletip&apos;); width: 333px; height: 270px; align-items: center; justify-content: space-around; flex-shrink: 0;">
+        <ui:Label text="Red Spikes of Death" display-tooltip-when-elided="true" name="TileName" style="width: 227px; top: 10px; -unity-font: url(&apos;project://database/Assets/_Project/fonts/JumpandPlay.otf?fileID=12800000&amp;guid=9cb5fa0482db22642a555c94098baaa2&amp;type=3#JumpandPlay&apos;); -unity-text-align: middle-center; flex-wrap: nowrap; white-space: normal; max-height: 24px; font-size: 18px; -unity-font-style: bold; position: absolute; left: 40px;" />
+        <ui:VisualElement name="RotatableCheckmark" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Checkmark_green.png?fileID=21300000&amp;guid=e02db3d01d9f25242b8100ef7d46b7b9&amp;type=3#Checkmark_green&apos;); width: 40px; height: 36px; right: 177px; bottom: 173px; position: absolute;" />
+        <ui:VisualElement name="RotatableCross" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Cross_red.png?fileID=21300000&amp;guid=e5d915287ec8ab745ba2267abc1e5ece&amp;type=3#Cross_red&apos;); width: 40px; height: 36px; right: 177px; bottom: 173px; position: absolute;" />
+        <ui:VisualElement name="QonfigurableCheckmark" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Checkmark_green.png?fileID=21300000&amp;guid=e02db3d01d9f25242b8100ef7d46b7b9&amp;type=3#Checkmark_green&apos;); width: 40px; height: 36px; right: 61px; bottom: 173px; position: absolute;" />
+        <ui:VisualElement name="QonfigurableCross" style="background-image: url(&apos;project://database/Assets/_Project/Art/UI/Cross_red.png?fileID=21300000&amp;guid=e5d915287ec8ab745ba2267abc1e5ece&amp;type=3#Cross_red&apos;); width: 40px; height: 36px; right: 61px; bottom: 173px; position: absolute;" />
+        <ui:Label text="A suuuuuuper long test description to check how the tiletip description will look like, in case it get&apos;s like super super ridiculously long" display-tooltip-when-elided="true" name="TileDescription" style="width: 190px; -unity-font: url(&apos;project://database/Assets/_Project/fonts/JumpandPlay.otf?fileID=12800000&amp;guid=9cb5fa0482db22642a555c94098baaa2&amp;type=3#JumpandPlay&apos;); -unity-text-align: middle-center; bottom: 35px; height: 110px; max-width: 190px; max-height: 110px; min-width: 190px; min-height: 110px; white-space: normal; position: absolute; flex-grow: 1; left: 68px;" />
+    </ui:VisualElement>
+</ui:UXML>
