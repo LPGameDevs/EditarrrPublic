@@ -100,7 +100,7 @@ namespace Player
 
                 this.Velocity = this.transform.position - this.LastTransformPosition;
                 this.LastTransformPosition = this.transform.position;
-                
+
                 this.ResetValues();
 
                 this.UpdateCollision();
@@ -134,10 +134,7 @@ namespace Player
             }
 
             // this.VisualRoot.position = Vector3.Lerp(this.VisualRoot.position, this.NextPosition, .8f);
-
-            this.VisualRoot.position = 
-                Vector3.Lerp(this.VisualRoot.position, this.NextPosition, 1 - Mathf.Pow(.5f, Time.deltaTime * this.VisualLerp));
-
+            this.UpdateVisuals();
 
             //float t = this.FrameTime / this.FrameRateStep;
             // this.Visuals.transform.position = Vector3.Lerp(this.NextPosition, this.PrevPosition, t);
@@ -152,6 +149,12 @@ namespace Player
             //    this.UpdateController();
             //    this.Accu -= this.FrameRateStep;
             //}
+        }
+
+        private void UpdateVisuals()
+        {
+            this.VisualRoot.position =
+                Vector3.Lerp(this.VisualRoot.position, this.NextPosition, 1 - Mathf.Pow(.5f, Time.deltaTime * this.VisualLerp));
         }
 
         private void ResetValues()
@@ -239,10 +242,10 @@ namespace Player
         {
             base.Deactivate();
             //_velocity = Vector3.zero;
-            this.Movement = Vector3.zero;
-            this.VerticalSpeed = 0f;
-            this.HorizontalSpeed = 0f;
-            this.IsMoving = false;
+            // this.Movement = Vector3.zero;
+            // this.VerticalSpeed = 0f;
+            // this.HorizontalSpeed = 0f;
+            // this.IsMoving = false;
         }
         #endregion
 

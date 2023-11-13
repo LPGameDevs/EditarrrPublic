@@ -4,7 +4,7 @@ namespace Player
 {
     public partial class PlayerController
     {
-        [field: SerializeField, Header("JUMP")] private float JumpHeight { get; set; } = 4f;
+        [field: SerializeField, Header("JUMP")] private float JumpForce { get; set; } = 4f;
         [field: SerializeField] private float CoyoteTime { get; set; } = 0.1f;
         [field: SerializeField] private float JumpBuffer { get; set; } = 0.1f;
         [field: SerializeField] private float FallSpeedMin { get; set; } = 80f;
@@ -25,17 +25,13 @@ namespace Player
         private float AirTime { get; set; }
 
 
-
-
         private void UpdateJump()
         {
             this.UpdateJumpValues();
 
             if ((this.InputJumpPressed && this.CanJump) || this.JumpBufferActive)
-            {
-                var initialVelocity = Mathf.Sqrt(2 * Mathf.Abs(this.FallSpeedMin) * this.JumpHeight);
-
-                this.VerticalSpeed = initialVelocity;
+            {                
+                this.VerticalSpeed = this.JumpForce;
                 this.JumpCanceled = false;
                 this.CoyoteJumpFlag = false;
                 this.InputJumpTime = float.MinValue;
@@ -75,6 +71,7 @@ namespace Player
             {
                 this.JumpApexInfluence = Mathf.InverseLerp(this.JumpApexThreshold, 0, Mathf.Abs(this.Velocity.y));
                 this.FallSpeed = Mathf.Lerp(this.FallSpeedMin, this.FallSpeedMax, this.JumpApexInfluence);
+
                 //float target = Mathf.Lerp(this.FallSpeedMin, this.FallSpeedMax, this.JumpApexInfluence * (Time.deltaTime * .25f));
 
                 //float tI = Mathf.InverseLerp(this.JumpApexThreshold, 0, Mathf.Abs(this.Velocity.y));

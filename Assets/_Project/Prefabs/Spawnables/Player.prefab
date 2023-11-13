@@ -25957,7 +25957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Rigidbody>k__BackingField: {fileID: 123399669}
   <Visuals>k__BackingField: {fileID: 2401548298578535207}
-  <VisualLerp>k__BackingField: 100
+  <VisualLerp>k__BackingField: 70
   <Collider>k__BackingField: {fileID: 4715788225090088003}
   <GroundContactFilter>k__BackingField:
     useTriggers: 0
@@ -25984,15 +25984,15 @@ MonoBehaviour:
   <BreakOnFrame>k__BackingField: 0
   <BreakOnStartFalling>k__BackingField: 0
   <SetFPSOnStart>k__BackingField: 0
-  <FallClamp>k__BackingField: -40
+  <FallClamp>k__BackingField: -25
   <JumpCanceledGravityModifier>k__BackingField: 3
   <InputMove>k__BackingField: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
   <InputJump>k__BackingField: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}
-  <JumpHeight>k__BackingField: 4
+  <JumpForce>k__BackingField: 17.5
   <CoyoteTime>k__BackingField: 0.1
   <JumpBuffer>k__BackingField: 0.1
-  <FallSpeedMin>k__BackingField: 60
-  <FallSpeedMax>k__BackingField: 90
+  <FallSpeedMin>k__BackingField: 40
+  <FallSpeedMax>k__BackingField: 60
   <JumpApexThreshold>k__BackingField: 0.5
   <CollisionResolveIterations>k__BackingField: 20
   <Acceleration>k__BackingField: 5
