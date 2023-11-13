@@ -110,7 +110,7 @@ export const handler = async (event, context) => {
                             levelStatus: levelStatus,
                             levelCreatedAt: currentTimestamp,
                             levelUpdatedAt: currentTimestamp,
-                            levelLabels: labels,
+                            labels: labels,
                             levelData: levelData
                         },
                     })
@@ -140,6 +140,7 @@ export const handler = async (event, context) => {
                 var updatedLevelName = requestJSON.name;
                 var updatedStatus = requestJSON.status;
                 var updatedData = requestJSON.data;
+                var labels = requestJSON.labels ?? [];
 
                 // TODO Validation of request
 
@@ -185,7 +186,8 @@ export const handler = async (event, context) => {
                             levelStatus: dbLevel.levelStatus,
                             levelCreatedAt: dbLevel.levelCreatedAt,
                             levelUpdatedAt: dbLevel.levelUpdatedAt,
-                            levelData: dbLevel.levelData
+                            levelData: dbLevel.levelData,
+                            labels: labels,
                         },
                     })
                 );

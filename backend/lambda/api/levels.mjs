@@ -86,7 +86,7 @@ function asApiLevel(dbLevel) {
             "id": dbLevel.levelCreatorId,
             "name": dbLevel.levelCreatorName
         },
-        "labels": dbLevel.levelLabels ?? [],
+        "labels": dbLevel.labels ?? [],
         "status": dbLevel.levelStatus,
         "createdAt": dbLevel.levelCreatedAt,
         "updatedAt": dbLevel.levelUpdatedAt,
