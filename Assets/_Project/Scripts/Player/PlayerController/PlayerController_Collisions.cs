@@ -36,6 +36,11 @@ namespace Player
             this.OnGroundCheck?.Invoke(groundCheck);
 
             this.IsLanding = !this.Collisions.Down && groundCheck;
+            if (this.IsLanding)
+            {
+                OnPlayerLanded(this.VerticalSpeed);
+                this.AirTime = 0;
+            }
 
             this.Collisions.Down = groundCheck;
             this.Collisions.Left = this.Collider.Cast(Vector2.left, this.GroundContactFilter, hit, this.CollisionCheckDistance) > 0;
