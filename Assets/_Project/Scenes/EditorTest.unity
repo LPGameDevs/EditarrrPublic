@@ -292,7 +292,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 45063361}
+  selectableComponent: {fileID: 0}
+  hoverClip: {fileID: 0}
 --- !u!1 &49095120
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,7 +747,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 120787686}
+  selectableComponent: {fileID: 0}
+  hoverClip: {fileID: 0}
 --- !u!4 &128745900 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7929345714747916045, guid: 6a2db6e321682a046b943bd62f7bdf48, type: 3}
@@ -1608,11 +1610,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &395898081 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5745324699318540611, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
-  m_PrefabInstance: {fileID: 1864850047}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &401376506
 GameObject:
   m_ObjectHideFlags: 0
@@ -2558,7 +2555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 782994158}
+  selectableComponent: {fileID: 0}
+  hoverClip: {fileID: 0}
 --- !u!1001 &843081412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3127,7 +3125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 1028530565}
+  selectableComponent: {fileID: 0}
+  hoverClip: {fileID: 0}
 --- !u!1001 &1041264799
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4610,17 +4609,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2181570797501693318, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2283036675160398487, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
       propertyPath: m_Name
       value: AllTheSingletons
-      objectReference: {fileID: 0}
-    - target: {fileID: 3271792589866371539, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4318917341212615922, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
       propertyPath: m_RootOrder
@@ -4666,14 +4657,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4925219989745837602, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7942568419636489290, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
-      propertyPath: _settingsButton
-      value: 
-      objectReference: {fileID: 395898081}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eb9b97aa1801cb4e8af6f27fb3acfc5, type: 3}
 --- !u!1 &1930255582
@@ -5830,7 +5813,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 2108644608}
+  selectableComponent: {fileID: 0}
+  hoverClip: {fileID: 0}
 --- !u!1 &2121278072
 GameObject:
   m_ObjectHideFlags: 0
@@ -6392,7 +6376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 468777124346725386}
+  selectableComponent: {fileID: 0}
+  hoverClip: {fileID: 0}
 --- !u!1 &468777124415517750
 GameObject:
   m_ObjectHideFlags: 0
@@ -7163,7 +7148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 468777125363728550}
+  selectableComponent: {fileID: 0}
+  hoverClip: {fileID: 0}
 --- !u!1 &468777125406541297
 GameObject:
   m_ObjectHideFlags: 0
@@ -7481,7 +7467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 468777125424424696}
+  selectableComponent: {fileID: 0}
+  hoverClip: {fileID: 0}
 --- !u!1 &468777125436960748
 GameObject:
   m_ObjectHideFlags: 0
@@ -8055,7 +8042,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 468777125890140464}
+  selectableComponent: {fileID: 0}
+  hoverClip: {fileID: 0}
 --- !u!1 &468777125920440206
 GameObject:
   m_ObjectHideFlags: 0
