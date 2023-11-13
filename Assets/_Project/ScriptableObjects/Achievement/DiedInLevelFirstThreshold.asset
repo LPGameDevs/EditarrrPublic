@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa90c4812ec91b25597e6d4a646d522a, type: 3}
-  m_Name: PlayedLevelsThirdThreshold
+  m_Name: DiedInLevelFirstThreshold
   m_EditorClassIdentifier: 
-  Type: 32
-  TitleText: Seahorse grade achieved!
+  Type: 30
+  TitleText: The Old College Try - Die Five Times In The Same Level
