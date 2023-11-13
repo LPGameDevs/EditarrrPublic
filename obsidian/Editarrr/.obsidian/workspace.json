@@ -32,6 +32,30 @@
             }
           },
           {
+            "id": "4c39f0e3c868dc8b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Twitch Settings.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "26956ea5fea83f33",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "GDFG or Stream category.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
             "id": "876733ac8c2b5d96",
             "type": "leaf",
             "state": {
@@ -54,7 +78,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -120,7 +144,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md",
+                "file": "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -137,7 +161,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md",
+                "file": "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -160,7 +184,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md"
+                "file": "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md"
               }
             }
           },
@@ -218,8 +242,37 @@
           }
         ],
         "direction": "vertical",
-        "x": 3318,
-        "y": 463,
+        "x": 1993,
+        "y": 451,
+        "width": 1024,
+        "height": 800,
+        "maximize": false,
+        "zoom": 0
+      },
+      {
+        "id": "d8583dc86800b68e",
+        "type": "window",
+        "children": [
+          {
+            "id": "07980092d2c133ca",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "906db76397b4a112",
+                "type": "leaf",
+                "state": {
+                  "type": "excalidraw",
+                  "state": {
+                    "file": "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "vertical",
+        "x": 88,
+        "y": 560,
         "width": 1024,
         "height": 800,
         "maximize": false,
@@ -227,8 +280,15 @@
       }
     ]
   },
-  "active": "29fc5fbdde080158",
+  "active": "906db76397b4a112",
   "lastOpenFiles": [
+    "Pasted Image 20231113095008_508.png",
+    "Pasted Image 20231113095008_492.png",
+    "Pasted Image 20231113094308_482.png",
+    "Pasted Image 20231113094253_472.png",
+    "GDFG or Stream category.md",
+    "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md",
+    "Twitch Settings.md",
     "Systems.md",
     "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md",
     "Steam Integration.md",
@@ -243,9 +303,6 @@
     "ReferencedFiles/Pasted Image 20230921113336_289.png",
     "ReferencedFiles/Pasted Image 20230921113051_286.png",
     "ReferencedFiles/Pasted Image 20230921113034_285.png",
-    "ReferencedFiles/Pasted Image 20230921113019_285.png",
-    "ReferencedFiles/Pasted Image 20230921113004_285.png",
-    "ReferencedFiles/Pasted Image 20230921112834_283.png",
     "Excalidraw"
   ]
 }
