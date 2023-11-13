@@ -144,7 +144,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md",
+                "file": "GDFG or Stream category.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -161,7 +161,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md",
+                "file": "GDFG or Stream category.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -184,7 +184,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md"
+                "file": "GDFG or Stream category.md"
               }
             }
           },
@@ -221,35 +221,6 @@
     "type": "floating",
     "children": [
       {
-        "id": "a429d44b3f43528b",
-        "type": "window",
-        "children": [
-          {
-            "id": "522bc75eafd223aa",
-            "type": "tabs",
-            "children": [
-              {
-                "id": "29fc5fbdde080158",
-                "type": "leaf",
-                "state": {
-                  "type": "excalidraw",
-                  "state": {
-                    "file": "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md"
-                  }
-                }
-              }
-            ]
-          }
-        ],
-        "direction": "vertical",
-        "x": 1993,
-        "y": 451,
-        "width": 1024,
-        "height": 800,
-        "maximize": false,
-        "zoom": 0
-      },
-      {
         "id": "d8583dc86800b68e",
         "type": "window",
         "children": [
@@ -280,17 +251,17 @@
       }
     ]
   },
-  "active": "906db76397b4a112",
+  "active": "26956ea5fea83f33",
   "lastOpenFiles": [
+    "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md",
+    "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md",
     "Pasted Image 20231113095008_508.png",
     "Pasted Image 20231113095008_492.png",
     "Pasted Image 20231113094308_482.png",
     "Pasted Image 20231113094253_472.png",
     "GDFG or Stream category.md",
-    "Excalidraw/GDFG or Stream category 2023-11-13 09.42.23.excalidraw.md",
     "Twitch Settings.md",
     "Systems.md",
-    "Excalidraw/Systems 2023-10-06 12.21.43.excalidraw.md",
     "Steam Integration.md",
     "Excalidraw/Steam Integration 2023-09-20 09.11.11.excalidraw.md",
     "Spotted Bugs.md",
@@ -302,7 +273,6 @@
     "ReferencedFiles/Pasted Image 20230921113437_297.png",
     "ReferencedFiles/Pasted Image 20230921113336_289.png",
     "ReferencedFiles/Pasted Image 20230921113051_286.png",
-    "ReferencedFiles/Pasted Image 20230921113034_285.png",
     "Excalidraw"
   ]
 }

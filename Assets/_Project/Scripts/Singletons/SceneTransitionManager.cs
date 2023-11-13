@@ -18,7 +18,7 @@ namespace Singletons
      */
     public class SceneTransitionManager : UnityPersistentSingleton<SceneTransitionManager>
     {
-        public static readonly string StartSceneName = "StartScreen";
+        public static readonly string StartSceneName = "TitleScreen";
         public static readonly string LevelSelectionSceneName = "EditorSelection";
         public static readonly string TestLevelSceneName = "EditorTest";
         public static readonly string CreateLevelSceneName = "EditorCreate";
@@ -28,7 +28,7 @@ namespace Singletons
 
         public static Action<string> OnSceneChanged;
         public static Action<string> OnSceneAdded;
-        public static Action<string> OnSceneRemoved;    
+        public static Action<string> OnSceneRemoved;
 
         [field: SerializeField, Tooltip("Restart input map")] private InputValue RestartInput { get; set; }
         [field: SerializeField, Tooltip("Active scene reloads after this time")] private float TransitionTime { get; set; }

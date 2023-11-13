@@ -17,6 +17,7 @@ namespace Singletons
         public const string DefaultUserName = "anon";
         public const string ScreenShakeKey = "screenShake";
         public const string ScreenFlashKey = "screenFlash";
+        public const string StreamerKey = "userIsStreamer";
 
         public string GetUserId()
         {
@@ -128,21 +129,32 @@ namespace Singletons
             PlayerPrefs.SetInt(key, storedValue);
         }
 
-        public bool GetBoolean(string key)
+        public bool GetBoolean(string key, int defaultValue = 1)
         {
-            int storedValue = PlayerPrefs.GetInt(key, 1);
+            int storedValue = PlayerPrefs.GetInt(key, defaultValue);
             return storedValue == 1 ? true : false;
         }
 
         public string GetStreamerChannel()
         {
-            return PlayerPrefs.GetString($"StreamerChannel", "zackavelli_");
+            return PlayerPrefs.GetString($"StreamerChannel", "");
         }
 
         public void SetStreamerChannel(string channel)
         {
             PlayerPrefs.SetString($"StreamerChannel", channel);
             OnStreamerChannelChanged?.Invoke(channel);
+        }
+
+        public bool GetIsStreamer()
+        {
+            int isStreamer = PlayerPrefs.GetInt($"StreamerChannelIsStreamer", 0);
+            return isStreamer == 1;
+        }
+
+        public void SetIsStreamer()
+        {
+            PlayerPrefs.SetInt($"StreamerChannelIsStreamer", 1);
         }
 
         public int GetFps()
@@ -153,6 +165,38 @@ namespace Singletons
         public void SetFps(int fps)
         {
             PlayerPrefs.SetInt($"TargetFPS", fps);
+        }
+
+        public bool IsOnboarded()
+        {
+            int isOnboarded = PlayerPrefs.GetInt("OnboardingCompleted", 0);
+            return isOnboarded == 1;
+        }
+
+        public void SetOnboarded()
+        {
+            PlayerPrefs.SetInt("OnboardingCompleted", 1);
+        }
+
+        public UserTagType GetUserTypeTag()
+        {
+            int tag = PlayerPrefs.GetInt("UserTypeTag", (int) UserTagType.None);
+            UserTagType tagType = (UserTagType) tag;
+
+            return tagType;
+        }
+
+        public void SetUserTypeTag(UserTagType currentTag)
+        {
+            PlayerPrefs.SetInt("UserTypeTag", (int) currentTag);
+        }
+
+        public void ResetAll()
+        {
+            var id = this.GetUserId();
+            PlayerPrefs.DeleteAll();
+            this.SetUserId(id);
+            this.StartNewSession();
         }
     }
 }
