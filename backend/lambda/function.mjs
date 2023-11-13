@@ -122,12 +122,16 @@ export const handler = async (event, context) => {
                 }
                 break;
             case "GET /levels":
+                var filters = {
+                    anyOfLabels: event?.queryStringParameters?.["any-of-labels"]?.split(","),
+                };
                 responseBody = await levelsApi.getPagedLevels(
                     event?.queryStringParameters?.["sort-option"],
                     event?.queryStringParameters?.["sort-asc"],
                     event?.queryStringParameters?.limit,
                     event.queryStringParameters?.cursor,
-                    event?.queryStringParameters?.draft);
+                    event?.queryStringParameters?.draft,
+                    filters);
                 break;
             case "GET /levels/{id}":
                 // TODO Validation of request

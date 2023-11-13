@@ -14,6 +14,7 @@ export class LevelsApi {
         requestLimit,
         requestCursor,
         requestUseDrafts,
+        requestFilters,
     ) {
         var sortOption = LevelsSortOptions.UPDATED_AT;
         if (requestSortOption !== undefined) {
@@ -44,7 +45,8 @@ export class LevelsApi {
             sortAsc,
             pageLimit,
             requestCursor,
-            useDrafts);
+            useDrafts,
+            requestFilters);
 
         var dbLevels = queryResponse.levels;
         var responseLevels = [];

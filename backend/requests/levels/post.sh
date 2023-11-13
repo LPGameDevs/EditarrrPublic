@@ -5,12 +5,13 @@ set -eo pipefail
 
 curl -X "POST" -H "Content-Type: application/json" -d \
     '{
-        "name": "Murphys Dads Level", 
+        "name": "Murphys Dads Test Level", 
         "creator": {
-            "id": "murphys-dad-id",
-            "name": "Murphys Dad"
+            "id": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
+            "name": "Murphys dad"
         }, 
         "status": "PUBLISHED", 
-        "data": {"foo": "bar"} 
+        "data": {"foo": "bar"},
+        "labels": [ "test" ]
     }' \
     ${URL} | python3 -m json.tool
