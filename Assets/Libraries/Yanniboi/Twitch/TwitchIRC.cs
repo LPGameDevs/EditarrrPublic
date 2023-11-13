@@ -26,6 +26,10 @@ namespace Yanniboi.Twitch
         private void StartIRC()
         {
             channelName = PreferencesManager.Instance.GetStreamerChannel();
+            if (channelName.Length == 0)
+            {
+                return;
+            }
 
             System.Net.Sockets.TcpClient sock = new System.Net.Sockets.TcpClient();
             sock.Connect(server, port);
@@ -138,14 +142,22 @@ namespace Yanniboi.Twitch
         private void UpdateChannel(string channel)
         {
             stopThreads = true;
-            while (inProc.IsAlive || outProc.IsAlive)
+            if (inProc != null || outProc != null)
             {
-                this.DebugLog("inProc:" + inProc.IsAlive.ToString());
-                this.DebugLog("outProc:" + outProc.IsAlive.ToString());
+                while (inProc.IsAlive || outProc.IsAlive)
+                {
+                    this.DebugLog("inProc:" + inProc.IsAlive.ToString());
+                    this.DebugLog("outProc:" + outProc.IsAlive.ToString());
+                }
+            }
+
+            this.channelName = channel;
+            if (channel.Length == 0)
+            {
+                return;
             }
 
             stopThreads = false;
-            this.channelName = channel;
             StartIRC();
         }
 

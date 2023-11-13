@@ -53,3 +53,14 @@ TABLE=editarrr-level-storage
 #     --key '{"pk": {"S": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63"}, "sk": {"S": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63"}}' \
 #     --update-expression "SET levelAvgScore = :avgScore, levelTotalScores = :totalScores" \
 #     --expression-attribute-values '{":avgScore": {"N": "1.5"}, ":totalScores": {"N": "1"}}'
+
+# Get Levels with at least one of the queried labels
+# aws dynamodb query \
+#   --table-name $TABLE \
+#   --index-name "levelStatus-levelUpdatedAt-index" \
+#   --select "ALL_PROJECTED_ATTRIBUTES" \
+#   --limit 10 \
+#   --no-scan-index-forward \
+#   --key-condition-expression "levelStatus = :status" \
+#   --filter-expression "contains(labels, :label1) OR contains(labels, :label2)" \
+#   --expression-attribute-values '{ ":status": { "S": "PUBLISHED" }, ":label1": { "S": "test" }, ":label2": { "S": "GDFG" } }'

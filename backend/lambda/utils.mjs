@@ -35,3 +35,10 @@ export function uuidv4() {
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
 }
+
+export function isArrayOfStrings(x) {
+    if (!Array.isArray(x)) {
+        return false;
+    }
+    return x.every(item => typeof item === 'string');
+}

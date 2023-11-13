@@ -1,6 +1,7 @@
 import {
     GetCommand, UpdateCommand, QueryCommand
 } from "@aws-sdk/lib-dynamodb";
+import { BadRequestException, isArrayOfStrings } from "../utils.mjs";
 
 const tableNameLevel = "editarrr-level-storage";
 
@@ -81,6 +82,7 @@ export class LevelsDbClient {
         pageLimit, 
         cursor,
         useDrafts, 
+        filters,
     ) {
         var query = {
             TableName: tableNameLevel,
@@ -106,6 +108,19 @@ export class LevelsDbClient {
                 pk: cursorLevelData.pk,
                 sk: cursorLevelData.sk,
             };
+        }
+
+        if (filters?.anyOfLabels !== undefined) {
+            if (!isArrayOfStrings) throw new BadRequestException(`'anyOfLabels' must be a comma-separated list of strings. E.g. 'anyOfLabels=test,GDFG'`);
+
+            var anyOfLabels = filters?.anyOfLabels;
+            if (anyOfLabels.length > 0) {
+                query.FilterExpression = anyOfLabels.map((label, index) => `contains(labels, :label${index})`).join(" OR ");
+                query.ExpressionAttributeValues = anyOfLabels.reduce((values, label, index) => {
+                    values[`:label${index}`] = label;
+                    return values;
+                }, query.ExpressionAttributeValues);
+            }
         }
 
         var queryResponse = await this.dynamoDbClient.send(new QueryCommand(query));
@@ -158,3 +173,4 @@ export class LevelsDbClient {
         );
     }
 }
+    

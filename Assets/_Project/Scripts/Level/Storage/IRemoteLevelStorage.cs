@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Editarrr.Level;
 
 namespace Level.Storage
@@ -35,6 +36,7 @@ namespace Level.Storage
         public int TotalRatings { get; private set; } = 0;
         public int TotalScores { get; private set; } = 0;
         public bool IsDistro { get; private set; }
+        public List<string> Labels { get; set; } = new List<string>();
 
         public LevelStub(string code, string creator, string creatorName, string remoteId = "", bool published = false)
         {
@@ -49,6 +51,27 @@ namespace Level.Storage
         public void SetDistro(bool isDistro)
         {
             this.IsDistro = isDistro;
+        }
+
+        public string[] GetLabels()
+        {
+            return this.Labels.ToArray();
+        }
+
+        public void SetLabel(string label)
+        {
+            if (!this.Labels.Contains(label))
+            {
+                this.Labels.Add(label);
+            }
+        }
+
+        public void UnsetLabel(string label)
+        {
+            if (this.Labels.Contains(label))
+            {
+                this.Labels.Remove(label);
+            }
         }
 
         public void SetTotalRatings(int ratings)

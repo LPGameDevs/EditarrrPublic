@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Browser;
 using Editarrr.Audio;
 using Editarrr.Input;
@@ -99,11 +100,38 @@ public class LevelBrowserLoader : MonoBehaviour
         AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
     }
 
+    private string GetFilterLabel()
+    {
+        string label = "";
+
+        var tag = PreferencesManager.Instance.GetUserTypeTag();
+        if (tag == UserTagType.GDFG)
+        {
+            label = "GDFG";
+        }
+        else if (tag == UserTagType.Stream)
+        {
+            string streamer = PreferencesManager.Instance.GetStreamerChannel();
+            label = streamer;
+        }
+
+        return label;
+    }
+
     public void SetLevels(LevelStub[] levels)
     {
         StopLoading();
         foreach (var level in levels)
         {
+            string filterLabel = GetFilterLabel();
+
+            if (filterLabel.Length > 0)
+            {
+                if (!level.GetLabels().Contains(filterLabel))
+                {
+                    continue;
+                }
+            }
             AddLevelPrefabFromData(level);
         }
         // The scroll content needs to be resized to fit all the levels.

@@ -36,3 +36,7 @@ echo
 echo "Getting the levels with the most ratings"
 curl ${URL}?'sort-option=total-ratings&sort-asc=false&limit='${LIMIT} | python3 -m json.tool
 echo
+
+echo "Getting levels that have the 'test' label"
+curl ${URL}?'any-of-labels=test,GDFG' | python3 -m json.tool
+echo
