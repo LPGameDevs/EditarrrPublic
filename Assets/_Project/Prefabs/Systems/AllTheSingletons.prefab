@@ -147,7 +147,7 @@ MonoBehaviour:
   AchievementPool: {fileID: 11400000, guid: 8b5a1480d701513bda73a7f31e5647e5, type: 2}
   DeathAchievements: {fileID: 11400000, guid: e2a9b16cdf0fb9447b068abaa48d933d, type: 2}
   LevelCompletedAchievements: {fileID: 11400000, guid: d079ac0939def7f489b7304ec6111e79, type: 2}
-  LevelPlayedAchievements: {fileID: 11400000, guid: 74e2c11ad8551e641b85bad80effbcda, type: 2}
+  DiedInLevelAchievements: {fileID: 11400000, guid: 7b48dd560779d1642a9d3776391dafc1, type: 2}
 --- !u!1 &1649636713442347307
 GameObject:
   m_ObjectHideFlags: 0
