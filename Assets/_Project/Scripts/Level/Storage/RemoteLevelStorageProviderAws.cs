@@ -304,7 +304,7 @@ namespace Level.Storage
         public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
         {
             // Get request to /levels/{id}/scores
-            RestClient.Get<AwsScores>($"{AwsLevelUrl}/levels/{code}/scores?de-dupe-by-user=true").Then(res =>
+            RestClient.Get<AwsScores>($"{AwsLevelUrl}/levels/{code}/scores?de-dupe-by-user=true&sort-asc=false").Then(res =>
             {
                 var scoreStubs = new List<ScoreStub>();
                 foreach (var score in res.scores)
