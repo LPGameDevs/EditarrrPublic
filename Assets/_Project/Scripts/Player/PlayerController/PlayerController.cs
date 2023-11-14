@@ -227,6 +227,7 @@ namespace Player
         private void HealthSystem_OnDeath(object sender, EventArgs e)
         {
             this.SetInputLock(true);
+            TriggerDeathAnimation();
         }
 
 

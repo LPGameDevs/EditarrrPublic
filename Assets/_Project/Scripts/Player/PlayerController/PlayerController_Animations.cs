@@ -6,8 +6,8 @@ namespace Player
     {
         private static readonly int IsMovingAnim = Animator.StringToHash("IsMoving");
         private static readonly int GroundedAnim = Animator.StringToHash("Grounded");
-        private static readonly int JumpStartedAnim = Animator.StringToHash("JumpStarted");
         private static readonly int VerticalVelocityAnim = Animator.StringToHash("VerticalVelocity");
+        private static readonly int DeathAnim = Animator.StringToHash("Dead");
 
         private Animator Animator { get; set; }
 
@@ -20,8 +20,9 @@ namespace Player
 
             // @todo Should we take collision checks into account here?
             Animator.SetBool(IsMovingAnim, this.IsMoving);
-            Animator.SetBool(JumpStartedAnim, this.InputJumpPressed);
         }
+
+        private void TriggerDeathAnimation() => Animator.SetBool(DeathAnim, true);
 
         //private static readonly int IsMovingAnim = Animator.StringToHash("IsMoving");
         //private static readonly int GroundedAnim = Animator.StringToHash("Grounded");
