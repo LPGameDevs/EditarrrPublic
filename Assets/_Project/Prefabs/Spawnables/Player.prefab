@@ -25984,7 +25984,7 @@ MonoBehaviour:
   <BreakOnFrame>k__BackingField: 0
   <BreakOnStartFalling>k__BackingField: 0
   <SetFPSOnStart>k__BackingField: 0
-  <FallClamp>k__BackingField: -25
+  <FallClamp>k__BackingField: -30
   <JumpCanceledGravityModifier>k__BackingField: 3
   <InputMove>k__BackingField: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
   <InputJump>k__BackingField: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}

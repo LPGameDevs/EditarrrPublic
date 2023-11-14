@@ -38,7 +38,7 @@ namespace Player
             this.IsLanding = !this.Collisions.Down && groundCheck;
             if (this.IsLanding)
             {
-                OnPlayerLanded(this.VerticalSpeed);
+                OnPlayerLanded?.Invoke(this.VerticalSpeed);
                 this.AirTime = 0;
             }
 
