@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Editarrr.Misc;
+using Singletons;
 using UnityEngine;
 
 namespace Editarrr.Level
@@ -52,10 +53,15 @@ namespace Editarrr.Level
             this.ScaleX = levelState.Tiles.GetLength(0);
             this.ScaleY = levelState.Tiles.GetLength(1);
 
-            // @todo Add configuration for settings levels.
-            if (true)
+            UserTagType tagType = PreferencesManager.Instance.GetUserTypeTag();
+            if (tagType == UserTagType.GDFG)
             {
                 this.SetLabel("GDFG");
+            }
+            else if (tagType == UserTagType.Stream)
+            {
+                string streamer = PreferencesManager.Instance.GetStreamerChannel();
+                this.SetLabel(streamer);
             }
 
             List<TileSave> tiles = new List<TileSave>();

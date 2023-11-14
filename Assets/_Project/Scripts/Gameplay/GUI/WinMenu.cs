@@ -98,7 +98,6 @@ namespace Gameplay.GUI
             {
                 AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelCompleted);
             }
-            TwitchManager.Instance.SendNotification($"{currentUser} just finished level {_code} in {_timeText}.");
         }
 
         public void SetCode(string code)
@@ -123,6 +122,9 @@ namespace Gameplay.GUI
             {
                 TimerText.text = timeText;
             }
+
+            string currentUser = PreferencesManager.Instance.GetUserName();
+            TwitchManager.Instance.SendNotification($"{currentUser} just finished level {_code} in {_timeText}.");
         }
 
         public void SubmitScore()

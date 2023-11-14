@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa90c4812ec91b25597e6d4a646d522a, type: 3}
-  m_Name: PlayedLevelsFourthThreshold
+  m_Name: DiedInLevelFourthThreshold
   m_EditorClassIdentifier: 
   Type: 33
-  TitleText: Surfing along!
+  TitleText: Definition of Insanity - Die Fifty Times In The Same Level
