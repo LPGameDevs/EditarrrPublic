@@ -25988,8 +25988,8 @@ MonoBehaviour:
   <JumpCanceledGravityModifier>k__BackingField: 3
   <InputMove>k__BackingField: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
   <InputJump>k__BackingField: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}
-  <JumpForce>k__BackingField: 17.5
-  <CoyoteTime>k__BackingField: 0.1
+  <JumpForce>k__BackingField: 18.5
+  <CoyoteTime>k__BackingField: 0.15
   <JumpBuffer>k__BackingField: 0.1
   <FallSpeedMin>k__BackingField: 40
   <FallSpeedMax>k__BackingField: 60
@@ -25997,7 +25997,7 @@ MonoBehaviour:
   <CollisionResolveIterations>k__BackingField: 20
   <Acceleration>k__BackingField: 5
   <DeAcceleration>k__BackingField: 8
-  <MaxMoveSpeed>k__BackingField: 9
+  <MaxMoveSpeed>k__BackingField: 10
   <JumpApexBonus>k__BackingField: 2
 --- !u!114 &5335767767192113699
 MonoBehaviour:
