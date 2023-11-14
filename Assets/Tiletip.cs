@@ -1,8 +1,5 @@
 using Editarrr.LevelEditor;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 using static Editarrr.UI.LevelEditor.LevelEditorScreen.TileSelectionComponent;
