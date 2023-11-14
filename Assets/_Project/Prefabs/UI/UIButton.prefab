@@ -201,7 +201,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 6522958623997308131}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 6522958623997308129}
+  _shadow2: {fileID: 6522958623997308134}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &6522958624150880169
 GameObject:
   m_ObjectHideFlags: 0

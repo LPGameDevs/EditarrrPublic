@@ -8,19 +8,33 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Selectable))]
 public class UISelectableAugment : MonoBehaviour
 {
-    [SerializeField, HideInInspector] private Selectable selectableComponent;
-    [SerializeField] AudioClip hoverClip;
+    public string NameTag {  get => _nameTag; }
+
+    [SerializeField, HideInInspector] Selectable _selectableComponent;
+    [SerializeField] AudioClip _hoverClip;
+    [SerializeField] Shadow _shadow1, _shadow2;
+    [SerializeField] Outline _outline1, _outline2;
+    [SerializeField] string _nameTag = string.Empty;
 
     private void Reset()
     {
-        selectableComponent = GetComponent<Selectable>();
+        _selectableComponent = GetComponent<Selectable>();
+        
     }
 
     public void PlayHoverSound()
     {
-        if(hoverClip != null)
-            AudioManager.Instance.PlayAudioClip(hoverClip);
+        if(_hoverClip != null)
+            AudioManager.Instance.PlayAudioClip(_hoverClip);
         else
             AudioManager.Instance.PlayAudioClip(AudioManager.MINOR_CLICK_CLIP_NAME);
+    }
+
+    public void LockIn(bool activateLock)
+    {
+        _outline1.enabled = activateLock;
+        _outline2.enabled = activateLock;
+        _shadow1.enabled = !activateLock;
+        _shadow2.enabled = !activateLock;     
     }
 }

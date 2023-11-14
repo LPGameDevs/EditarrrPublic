@@ -4,7 +4,10 @@ using Editarrr.Managers;
 using Editarrr.Misc;
 using Level.Storage;
 using Singletons;
+using System.Linq;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
+using static SortingSelector;
 
 [CreateAssetMenu(fileName = "LevelBrowserManager", menuName = "Managers/Level/new Level Browser Manager")]
 public class LevelBrowserManager : ManagerComponent
@@ -19,6 +22,8 @@ public class LevelBrowserManager : ManagerComponent
     private string NextCursor, PreviousCursor = "";
     BrowserPager.PagerRequestResultHasMore PagerRequestResultHasMoreCallback { get; set; }
 
+    SortingState _currentSortingState = SortingState.Inactive;
+    string _sortingCriterionName = "";
 
     public void SetLevelLoader(LevelBrowserLoader levelLoader)
     {
@@ -32,7 +37,7 @@ public class LevelBrowserManager : ManagerComponent
         this.PreviousCursor = "";
         this.LevelQuery = new RemoteLevelLoadQuery()
         {
-            limit = 20,
+            limit = 50,
             cursor = "",
         };
     }
@@ -51,7 +56,15 @@ public class LevelBrowserManager : ManagerComponent
 
         void SetLevelsAfterLoad(LevelStub[] levels, string cursor = "")
         {
-            _levelLoader.SetLevels(levels);
+            IOrderedEnumerable<LevelStub> orderedlevels = null;
+            if (SortingState.Ascending == _currentSortingState)
+                orderedlevels = levels.OrderBy(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
+            else if (SortingState.Descending == _currentSortingState)
+                orderedlevels = levels.OrderByDescending(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
+            else
+                orderedlevels = levels.OrderBy(x => x.Code);
+
+           _levelLoader.SetLevels(orderedlevels.ToArray());
             this.NextCursor = cursor;
             this.PagerRequestResultHasMoreCallback?.Invoke(levels.Length == this.LevelQuery.limit);
             this.PagerRequestResultHasMoreCallback = null;
@@ -131,11 +144,19 @@ public class LevelBrowserManager : ManagerComponent
         DestroyAndRefreshLevels();
     }
 
+    private void OnSortingCriteriaChanged(SortingState doNotUse, SortingSelector newSelector)
+    {
+        _currentSortingState = newSelector.CurrentState;
+        _sortingCriterionName = newSelector.SortingCriterionName;
+        DestroyAndRefreshLevels();
+    }
+
     public override void DoOnEnable()
     {
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot += OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated += OnBrowserPagerUpdateRequested;
+        SortingSelector.OnStateChanged += OnSortingCriteriaChanged;
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete += OnSteamLevelDownloadComplete;
 #endif
@@ -148,6 +169,7 @@ public class LevelBrowserManager : ManagerComponent
         LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot -= OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated -= OnBrowserPagerUpdateRequested;
+        SortingSelector.OnStateChanged -= OnSortingCriteriaChanged;
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete -= OnSteamLevelDownloadComplete;
 #endif

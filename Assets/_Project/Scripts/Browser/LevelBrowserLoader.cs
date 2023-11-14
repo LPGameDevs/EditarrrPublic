@@ -121,6 +121,8 @@ public class LevelBrowserLoader : MonoBehaviour
     public void SetLevels(LevelStub[] levels)
     {
         StopLoading();
+        levels = SortLevels(levels);
+
         foreach (var level in levels)
         {
             string filterLabel = GetFilterLabel();
@@ -143,6 +145,12 @@ public class LevelBrowserLoader : MonoBehaviour
         // 680 is roughly the height of the scroll view.
         var contentOffset = contentHeight > 680 ? (contentHeight - 680) / 2 : 0;
         currentTransform.anchoredPosition = new Vector2(currentTransform.anchoredPosition.x, -contentOffset);
+    }
+
+    private LevelStub[] SortLevels(LevelStub[] levels)
+    {
+        levels.OrderBy(x => x.CreatorName);
+        return levels;
     }
 
     public void ReloadScreenshot(string code)

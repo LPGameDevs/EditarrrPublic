@@ -4,6 +4,7 @@ using Editarrr.Audio;
 using Level.Storage;
 using LevelEditor;
 using Singletons;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,11 +26,9 @@ public class LevelSelectionLoader : MonoBehaviour
 
     public EditorLevel LevelPrefab;
     public EditorLevel DraftPrefab;
+    public GameObject LoadingOverlay;
 
-    [SerializeField] Button FilterDemosButton;
-    [SerializeField] Button FilterDraftsButton;
-    [SerializeField] Button FilterPublishedButton;
-    [SerializeField] Button FilterDownloadedButton;
+    [SerializeField] UISelectableAugment[] _filterButtons;
 
     private List<Transform> _loadedLevels = new List<Transform>();
     private LevelFilterMetric CurrentFilter = LevelFilterMetric.None;
@@ -182,6 +181,10 @@ public class LevelSelectionLoader : MonoBehaviour
     private void SetLevelFilter(LevelFilterMetric filter)
     {
         CurrentFilter = filter;
+        foreach(var button in _filterButtons)
+            button.LockIn(button.NameTag.Equals(filter.HumanName()));
+
+        AudioManager.Instance.PlayAudioClip(AudioManager.SNAP_CLIP_NAME);
         OnFilterChanged?.Invoke();
     }
 
