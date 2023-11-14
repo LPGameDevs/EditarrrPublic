@@ -37,6 +37,12 @@
             this.CanRespawn = evt.newValue;
         }
 
+
+        public override TileConfig Clone()
+        {
+            return new CrackedPlankConfig(this.CanRespawn);
+        }
+
         public override string ToString()
         {
             return $"Cracked Plank Config >> CR = {this.CanRespawn}";

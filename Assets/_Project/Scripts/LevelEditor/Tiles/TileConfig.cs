@@ -36,6 +36,7 @@ namespace Editarrr.LevelEditor
         }
 
         protected abstract int[] GetJSONData();
+        public abstract TileConfig Clone();
     }
 
     public delegate UnityEngine.UIElements.VisualElement GetElement(string title, object obj);

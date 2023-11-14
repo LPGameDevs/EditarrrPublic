@@ -85,6 +85,8 @@ namespace Editarrr.LevelEditor
 
         private EditorHoverTile EditorHoverTile { get; set; }
 
+        Dictionary<TileType, TileConfig> ConfigStore { get; set; }
+
 
         public void SetSceneCamera(Camera camera)
         {
@@ -131,6 +133,7 @@ namespace Editarrr.LevelEditor
             this.LevelManager.DoAwake();
 
             this.TileLocations = new Dictionary<TileType, List<Int2D>>();
+            this.ConfigStore = new Dictionary<TileType, TileConfig>();
 
             this.EditorGrid = Instantiate(this.PrefabPool.EditorGrid);
             this.EditorGrid.transform.position = Vector3.zero;
@@ -204,27 +207,7 @@ namespace Editarrr.LevelEditor
                 }
             }
 
-            if (this.MouseLeftButton.WasPressed)
-            {
-
-
-                //if (state != null &&
-                //    state.Foreground == tileData &&
-                //    // state.ForegroundRotation == this.EditorTileSelection.Rotation && Might result in some weird and unclear situations...
-                //    state.Config != null)
-                //{
-                //    this.NotifyConfig(state.Config);
-                //}
-
-                //if (state != null &&
-                //    state.Foreground == tileData &&
-                //    state.Rotation == this.EditorTileSelection.Rotation)
-                //{
-                //    // Use same Rotation in if ???
-                //    // Change Options/Variations/Show Options Modify UI....
-                //}
-            }
-            else if (this.MouseLeftButton.IsPressed)
+            if (this.MouseLeftButton.IsPressed)
             {
                 if (tileData == null || this.IsExpanding)
                     return;
@@ -236,7 +219,7 @@ namespace Editarrr.LevelEditor
             {
                 if (this.MouseRightButton.WasPressed)
                 {
-                    this.NotifyConfig(null);
+                    this.NotifyConfig();
                 }
 
                 this.Unset(x, y, tileData);
@@ -392,7 +375,7 @@ namespace Editarrr.LevelEditor
                 tilemap = this.Tilemap_Foreground;
                 currentState.SetForeground(tileData);
                 currentState.SetForegroundRotation(tileRotation);
-                this.SetConfig(currentState, tileData.Config);
+                this.SetConfig(currentState, tileData);
             }
 
             if (tileData.Tile.CanRotate && tileRotation != Rotation.North)
@@ -409,7 +392,7 @@ namespace Editarrr.LevelEditor
                 tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
             }
 
-            this.NotifyConfig(null);
+            this.NotifyConfig();
         }
 
         private void SetConfig(int x, int y, TileConfig config)
@@ -424,9 +407,11 @@ namespace Editarrr.LevelEditor
             this.SetConfig(state, config);
         }
 
-        private void SetConfig(EditorTileState currentState, EditorTileConfigData editorTileConfigData)
+        private void SetConfig(EditorTileState currentState, EditorTileData editorTileData)
         {
-            this.SetConfig(currentState, editorTileConfigData?.CreateTileConfig());
+            var config = this.GetConfig(editorTileData);
+
+            this.SetConfig(currentState, config?.Clone());
         }
 
         private void SetConfig(EditorTileState currentState, TileConfig config)
@@ -614,12 +599,35 @@ namespace Editarrr.LevelEditor
         private void EditorTileSelectionManager_OnTileSelect()
         {
             // var editorTileData = this.EditorTileSelection.ActiveElement;
-            this.NotifyConfig(null);
+            this.NotifyConfig();
         }
 
         private void EditorTileSelectionManager_ActiveElementChanged(EditorTileData obj)
         {
-            this.NotifyConfig(null);
+            this.NotifyConfig(this.GetConfig(obj));
+        }
+
+        private TileConfig GetConfig(EditorTileData editorTileData)
+        {
+            if (editorTileData == null || editorTileData.Config == null)
+                return null;
+
+            TileConfig config = null;
+            TileType key = editorTileData.Tile.Type;
+
+            if (!this.ConfigStore.TryGetValue(key, out config))
+            {
+                config = this.ConfigStore[key] = editorTileData.Config.CreateTileConfig();
+            }
+
+            return config;
+        }
+
+        private void NotifyConfig()
+        {
+            var activeElement = this.EditorTileSelection.ActiveElement;
+
+            this.NotifyConfig(this.GetConfig(activeElement));
         }
 
         private void NotifyConfig(TileConfig config)

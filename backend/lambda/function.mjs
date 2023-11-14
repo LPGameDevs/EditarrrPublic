@@ -94,6 +94,7 @@ export const handler = async (event, context) => {
                 var levelData = requestJSON.data;
                 if (!levelData) throw new BadRequestException(`'data' must be provided in the request.`);
                 var labels = requestJSON.labels ?? [];
+                var version = requestJSON.version ?? 0;
 
                 var generatedLevelId = uuidv4();
                 var currentTimestamp = Date.now();
@@ -110,6 +111,7 @@ export const handler = async (event, context) => {
                             levelStatus: levelStatus,
                             levelCreatedAt: currentTimestamp,
                             levelUpdatedAt: currentTimestamp,
+                            version: version,
                             labels: labels,
                             levelData: levelData
                         },
@@ -145,6 +147,7 @@ export const handler = async (event, context) => {
                 var updatedStatus = requestJSON.status;
                 var updatedData = requestJSON.data;
                 var labels = requestJSON.labels ?? [];
+                var version = requestJSON.version ?? 0;
 
                 // TODO Validation of request
 
@@ -191,6 +194,7 @@ export const handler = async (event, context) => {
                             levelCreatedAt: dbLevel.levelCreatedAt,
                             levelUpdatedAt: dbLevel.levelUpdatedAt,
                             levelData: dbLevel.levelData,
+                            version: version,
                             labels: labels,
                         },
                     })
@@ -464,7 +468,12 @@ export const handler = async (event, context) => {
                         "status": dbLevel.levelStatus,
                         "updatedAt": dbLevel.levelUpdatedAt,
                         "createdAt": dbLevel.levelCreatedAt,
-                        "version": dbLevel.version,
+                        "version": dbLevel.version ?? 0,
+                        "labels": dbLevel.labels ?? [],
+                        "levelTotalRatings": dbLevel.levelTotalRatings ?? 0,
+                        "levelTotalScores": dbLevel.levelTotalScores ?? 0,
+                        "levelAvgRating": dbLevel.levelAvgRating ?? 0,
+                        "levelAvgScore": dbLevel.levelAvgScore ?? 0,
                     });
                 }
 

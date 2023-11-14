@@ -40,6 +40,12 @@
             this.Channel = value;
         }
 
+
+        public override TileConfig Clone()
+        {
+            return new LeverConfig(this.Channel);
+        }
+
         public override string ToString()
         {
             return $"Lever Config >> C = {this.Channel}";

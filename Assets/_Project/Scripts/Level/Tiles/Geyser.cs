@@ -15,7 +15,7 @@ namespace Editarrr.Level.Tiles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (!collision.TryGetComponent<PlayerForceReceiver>(out PlayerForceReceiver forceReceiver))
+            if (!collision.TryGetComponent<IExternalForceReceiver>(out IExternalForceReceiver forceReceiver))
                 return;
 
             forceReceiver.ReceiveImpulse(this.Force, this.transform.up);

@@ -4,13 +4,12 @@ using UnityEngine;
 
 namespace Editarrr.Level.Tiles
 {
-    public class MovingPlatform : MonoBehaviour, IConfigurable
+    public class MovingPlatform : MonoBehaviour, IConfigurable, IExternalMovementSource
     {
         [field: SerializeField] private float Speed { get; set; } = 100f;
         [field: SerializeField] private float Distance { get; set; } = 6f;
 
-        PlayerController Player { get; set; }
-        Transform EnterTransform { get; set; }
+        public Vector3 Delta { get; private set; }
 
         Vector3 Origin { get; set; }
         Vector3 Target { get; set; }
@@ -24,35 +23,22 @@ namespace Editarrr.Level.Tiles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (!collision.transform.TryGetComponent<IMoveOnPlatform>(out IMoveOnPlatform moveOnPlatform))
+            if (!collision.transform.TryGetComponent(out IMoveOnPlatform moveOnPlatform))
                 return;
 
-            moveOnPlatform.EnterPlatform(this.transform);
-
-            //if (!collision.transform.TryGetComponent<PlayerController>(out PlayerController playerController))
-            //    return;
-
-            //this.Player = playerController;
-            //this.EnterTransform = this.Player.transform.parent;
-            //this.Player.transform.SetParent(this.transform, true);
+            moveOnPlatform.EnterPlatform(this);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (!collision.transform.TryGetComponent<IMoveOnPlatform>(out IMoveOnPlatform moveOnPlatform))
+            if (!collision.transform.TryGetComponent(out IMoveOnPlatform moveOnPlatform))
                 return;
 
-            moveOnPlatform.ExitPlatform(this.transform);
-
-            //if (!collision.transform.TryGetComponent<PlayerController>(out PlayerController playerController))
-            //    return;
-
-            //this.Player.transform.SetParent(this.EnterTransform, true);
-            //this.Player = null;
-            //this.EnterTransform = null;
+            moveOnPlatform.ExitPlatform(this);
         }
 
-        private void LateUpdate()
+        
+        private void Update()
         {
             Vector3 target = this.Target;
 
@@ -61,7 +47,11 @@ namespace Editarrr.Level.Tiles
                 target = this.Origin;
             }
 
+            var transformPosition = this.transform.position;
+
             this.transform.position = Vector3.MoveTowards(this.transform.position, target, this.Speed * Time.deltaTime);
+
+            this.Delta = this.transform.position - transformPosition;
 
             if ((target - this.transform.position).sqrMagnitude <= float.Epsilon)
                 this.Direction = !this.Direction;
@@ -84,7 +74,12 @@ namespace Editarrr.Level.Tiles
 
     public interface IMoveOnPlatform
     {
-        void EnterPlatform(Transform transform);
-        void ExitPlatform(Transform transform);
+        void EnterPlatform(IExternalMovementSource externalMovementSource);
+        void ExitPlatform(IExternalMovementSource externalMovementSource);
+    }
+
+    public interface IExternalMovementSource
+    {
+        Vector3 Delta { get; }
     }
 }

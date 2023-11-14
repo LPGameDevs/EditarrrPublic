@@ -10,7 +10,7 @@ public class BindCameraToPlayer : MonoBehaviour
         if (!_playerFound)
         {
             // find the player object
-            Transform player = GameObject.FindGameObjectWithTag("Player")?.transform;
+            Transform player = GameObject.FindGameObjectWithTag("PlayerVisuals")?.transform;
             if (player != null)
             {
                 Camera.main.transform.position = player.position;

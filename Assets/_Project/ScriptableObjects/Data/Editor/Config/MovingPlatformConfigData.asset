@@ -11,6 +11,6 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 891bd67c2be13a544ae708d0922cc85b, type: 3}
   m_Name: MovingPlatformConfigData
-  m_EditorClassIdentifier: 
-  <Distance>k__BackingField: 0
+  m_EditorClassIdentifier:
+  <Distance>k__BackingField: 8
   <MoveRight>k__BackingField: 0

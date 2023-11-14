@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa90c4812ec91b25597e6d4a646d522a, type: 3}
-  m_Name: CompletedLevelsThirdThreshold
+  m_Script: {fileID: 11500000, guid: 2d88b97859793f045b4df2fdb1466ec4, type: 3}
+  m_Name: DeathPerLevelAchievementThresholds
   m_EditorClassIdentifier: 
-  Type: 22
-  TitleText: Field Guide Counselor - Complete Twenty Levels
+  _achievements: 1e0000001f0000002000000021000000
+  _thresholds: 050000000a0000001400000032000000
+  <SavePrefString>k__BackingField: PlayerDeathInLevelCount
