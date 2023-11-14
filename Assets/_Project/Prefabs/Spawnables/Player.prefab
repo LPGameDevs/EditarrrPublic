@@ -25893,10 +25893,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5390691737254147757}
   - component: {fileID: 123399669}
-  - component: {fileID: 123399668}
   - component: {fileID: 123399670}
   - component: {fileID: 5335767767192113699}
   - component: {fileID: 9167271973937418153}
+  - component: {fileID: 4715788225090088003}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -25941,24 +25941,8 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &123399668
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5390691737254147755}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.007265538, y: 0.055702507}
-  m_Size: {x: 0.47423738, y: 0.8520454}
-  m_Direction: 0
 --- !u!114 &123399670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25971,31 +25955,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f319f23f6a7a7785bc2ba5180944b57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidBody: {fileID: 123399669}
-  <MoveInput>k__BackingField: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
-  <JumpInput>k__BackingField: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}
-  _characterBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.24, y: 0.3, z: 0}
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _detectorCount: 3
-  _detectionRayLength: 0.1
-  _rayBuffer: 0.02
-  _acceleration: 50
-  _maxMoveSpeed: 9
-  _deAcceleration: 60
-  _apexBonus: 2
-  _fallClamp: -40
-  _minFallSpeed: 40
-  _maxFallSpeed: 80
-  _jumpHeight: 18
-  _jumpApexThreshold: 10
-  _coyoteTimeThreshold: 0.1
-  _jumpBuffer: 0.1
-  _jumpEndEarlyGravityModifier: 3
-  _freeColliderIterations: 20
+  <Rigidbody>k__BackingField: {fileID: 123399669}
+  <Visuals>k__BackingField: {fileID: 2401548298578535207}
+  <VisualLerp>k__BackingField: 70
+  <Collider>k__BackingField: {fileID: 4715788225090088003}
+  <GroundContactFilter>k__BackingField:
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 64
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  <CollisionCheckDistance>k__BackingField: 0.03125
+  <Collisions>k__BackingField:
+    <Up>k__BackingField: 0
+    <Down>k__BackingField: 0
+    <Left>k__BackingField: 0
+    <Right>k__BackingField: 0
+  <FPS>k__BackingField: 40
+  <IsDebugMode>k__BackingField: 0
+  <BreakOnFrame>k__BackingField: 0
+  <BreakOnStartFalling>k__BackingField: 0
+  <SetFPSOnStart>k__BackingField: 0
+  <FallClamp>k__BackingField: -30
+  <JumpCanceledGravityModifier>k__BackingField: 3
+  <InputMove>k__BackingField: {fileID: 11400000, guid: 0afc92765eb26314d9994ce979875053, type: 2}
+  <InputJump>k__BackingField: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}
+  <JumpForce>k__BackingField: 17.5
+  <CoyoteTime>k__BackingField: 0.1
+  <JumpBuffer>k__BackingField: 0.1
+  <FallSpeedMin>k__BackingField: 40
+  <FallSpeedMax>k__BackingField: 60
+  <JumpApexThreshold>k__BackingField: 0.5
+  <CollisionResolveIterations>k__BackingField: 20
+  <Acceleration>k__BackingField: 5
+  <DeAcceleration>k__BackingField: 8
+  <MaxMoveSpeed>k__BackingField: 9
+  <JumpApexBonus>k__BackingField: 2
 --- !u!114 &5335767767192113699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26026,6 +26029,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Duration>k__BackingField: 0.2
   <ForceMultiplier>k__BackingField: 1
+--- !u!61 &4715788225090088003
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5390691737254147755}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.4375, y: 0.75}
+  m_EdgeRadius: 0
 --- !u!1 &5609698595916000513
 GameObject:
   m_ObjectHideFlags: 0
@@ -26039,7 +26068,7 @@ GameObject:
   - component: {fileID: 8730480289402212308}
   m_Layer: 3
   m_Name: Visuals
-  m_TagString: Untagged
+  m_TagString: PlayerVisuals
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
