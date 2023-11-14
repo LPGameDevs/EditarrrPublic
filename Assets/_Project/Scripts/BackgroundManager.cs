@@ -32,10 +32,11 @@ public class BackgroundManager : MonoBehaviour
 
     private void MoveBackgroundElements()
     {
+        Vector2 delta = _currentCameraPosition - _previousCameraPosition;
         foreach(BackgroundElement element in elements)
         {
-            Vector2 delta = _currentCameraPosition - _previousCameraPosition;
-            element.transform.position += new Vector3(delta.x * element.ScrollingFactor.x, delta.y * element.ScrollingFactor.y);
+            element.Change(delta);
+            // element.transform.position += new Vector3(delta.x * element.ScrollingFactor.x, delta.y * element.ScrollingFactor.y);
         }
     }
 }

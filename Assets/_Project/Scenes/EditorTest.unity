@@ -2034,7 +2034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36f6381417d9bca44b111b9aa990ed50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ScrollingFactor>k__BackingField: {x: 0.9, y: 0.9}
+  <ScrollingFactor>k__BackingField: {x: 0.9, y: 0.5}
   <RandomInitializationX>k__BackingField: 160
   <RandomInitializationY>k__BackingField: 19
 --- !u!1 &578132773
