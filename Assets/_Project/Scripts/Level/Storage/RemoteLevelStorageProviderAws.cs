@@ -258,6 +258,12 @@ namespace Level.Storage
 
                     levelStub.SetTotalRatings(level.totalRatings);
                     levelStub.SetTotalScores(level.totalScores);
+
+                    foreach (var label in level.labels)
+                    {
+                        levelStub.SetLabel(label);
+                    }
+
                     levelStubs.Add(levelStub);
                 }
 

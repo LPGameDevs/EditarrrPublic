@@ -20,3 +20,4 @@ MonoBehaviour:
   <Config>k__BackingField: {fileID: 11400000, guid: 535676257938ea747b041e8ffa0eec26, type: 2}
   <LevelLimit>k__BackingField: 0
   <IsBackground>k__BackingField: 0
+  <IsQonfigurable>k__BackingField: 0

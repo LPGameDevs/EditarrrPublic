@@ -17,6 +17,7 @@ public class BrowserPager : MonoBehaviour
     private void Start()
     {
         UpdateGui();
+        OnBrowserPagerUpdated?.Invoke(0, NextRequestResult);
     }
 
     private void UpdateGui()

@@ -29,16 +29,16 @@ public class LevelBrowserManager : ManagerComponent
     public override void DoAwake()
     {
         LevelManager.DoAwake();
-    }
-
-    public override void DoStart()
-    {
         this.PreviousCursor = "";
         this.LevelQuery = new RemoteLevelLoadQuery()
         {
             limit = 20,
             cursor = "",
         };
+    }
+
+    public override void DoStart()
+    {
         LevelManager.DoStart();
         this.DestroyAndRefreshLevels();
     }

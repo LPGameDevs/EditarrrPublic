@@ -83,10 +83,18 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
         ScreenShakeEnabled = setActive;
     }
 
-
     public void ToggleScreenFlash(bool setActive)
     {
         PreferencesManager.Instance.SetBoolean(PreferencesManager.ScreenFlashKey, setActive);
         ScreenFlashEnabled = setActive;
+    }
+
+    public void ResetEverything()
+    {
+        PreferencesManager.Instance.ResetAll();
+        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.StartSceneName);
+
+        AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
+        _settingsOverlay.SetActive(false);
     }
 }

@@ -8,7 +8,9 @@ using UnityEngine;
  */
 public class UserNameForm : MonoBehaviour
 {
+    public TMP_Text TitleBox;
     public TMP_InputField UserNameInput;
+    public Transform NextStep;
 
     private void Awake()
     {
@@ -19,6 +21,9 @@ public class UserNameForm : MonoBehaviour
 
     private void Start()
     {
+        TitleBox.text = "Editarrr";
+        TitleBox.fontSize = 160;
+
         // If we already have saved a username then use that.
         string userName = PreferencesManager.Instance.GetUserName();
 
@@ -50,6 +55,14 @@ public class UserNameForm : MonoBehaviour
         string session = PreferencesManager.Instance.StartNewSession();
         AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.UserSessionStarted, session);
 
-        SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
+        bool isOnboarded = PreferencesManager.Instance.IsOnboarded();
+        if (isOnboarded)
+        {
+            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
+            return;
+        }
+
+        NextStep.gameObject.SetActive(true);
+        this.gameObject.SetActive(false);
     }
 }

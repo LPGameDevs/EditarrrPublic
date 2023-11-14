@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: LevelSubmitted
   m_EditorClassIdentifier: 
   Type: 1
-  TitleText: Level Uploaded!
+  TitleText: Submit - Upload A Level

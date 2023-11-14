@@ -16,19 +16,19 @@ namespace Singletons
         LevelCompleted = 3,
         LevelScoreSubmitted = 4,
         LevelLeaderboardTopped = 5,
-        DieFiveTimes = 10,
-        DieTenTimes = 11,
-        DieTwentyTimes = 12,
-        DieFiftyTimes = 13,
-        DieHundredTimes = 14,
-        CompleteFiveLevels = 20,
-        CompleteTenLevels = 21,
-        CompleteTwentyLevels = 22,
-        CompleteFiftyLevels = 23,
-        PlayLevelFiveTimes = 30,
-        PlayLevelTenTimes = 31,
-        PlayLevelTwentyTimes = 32,
-        PlayLevelFiftyTimes = 33,
+        DieFirstThreshold = 10,
+        DieSecondThreshold = 11,
+        DieThirdThreshold = 12,
+        DieFourthThreshold = 13,
+        DieFifthThreshold = 14, //not implemented atm
+        CompleteLevelsFirstThreshold = 20,
+        CompleteLevelsSecondThreshold = 21,
+        CompleteLevelsThirdThreshold = 22,
+        CompleteLevelsFourthThreshold = 23,
+        DieInLevelFirstThreshold = 30,
+        DieInLevelSecondThreshold = 31,
+        DieInLevelThirdThreshold = 32,
+        DieInLevelFourthThreshold = 33,
     }
 
     /**
@@ -43,7 +43,7 @@ namespace Singletons
         [SerializeField] AchievementPool AchievementPool;
         [SerializeField] ThresholdAchievement DeathAchievements;
         [SerializeField] ThresholdAchievement LevelCompletedAchievements;
-        [SerializeField] ThresholdAchievement LevelPlayedAchievements;
+        [SerializeField] ThresholdAchievement DiedInLevelAchievements;
 
         public void ProgressAchievement(GameAchievement achievement)
         {
@@ -92,17 +92,15 @@ namespace Singletons
         private void OnEnable()
         {
             HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(DeathAchievements);
-            HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(LevelPlayedAchievements, true);
+            HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(DiedInLevelAchievements, true);
             Chest.OnChestOpened += () => HandleAchievementProgress(LevelCompletedAchievements);
-            Chest.OnChestOpened += () => HandleAchievementProgress(LevelPlayedAchievements, true);
         }
 
         private void OnDisable()
         {
             HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(DeathAchievements);
-            HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(LevelPlayedAchievements, true);
+            HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(DiedInLevelAchievements, true);
             Chest.OnChestOpened -= () => HandleAchievementProgress(LevelCompletedAchievements);
-            Chest.OnChestOpened -= () => HandleAchievementProgress(LevelPlayedAchievements, true);
         }
 
         private void HandleAchievementProgress(ThresholdAchievement achievement, bool needsCode = false)
