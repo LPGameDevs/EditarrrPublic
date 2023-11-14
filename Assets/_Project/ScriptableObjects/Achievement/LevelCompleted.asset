@@ -13,7 +13,4 @@ MonoBehaviour:
   m_Name: LevelCompleted
   m_EditorClassIdentifier: 
   Type: 3
-  TitleText: Level Completed!
-  ContentText: 
-  CloseText: 
-  Prefab: {fileID: 0}
+  TitleText: First Voyage - Complete a level

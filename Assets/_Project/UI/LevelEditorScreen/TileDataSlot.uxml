@@ -6,5 +6,4 @@
             <ui:Label text="40" display-tooltip-when-elided="true" name="Value" class="text-medium" style="color: rgb(238, 238, 238); -unity-font: url(&apos;project://database/Assets/_Project/fonts/JumpandPlay.otf?fileID=12800000&amp;guid=9cb5fa0482db22642a555c94098baaa2&amp;type=3#JumpandPlay&apos;); -unity-font-definition: initial;" />
         </ui:VisualElement>
     </ui:Button>
-    <ui:Label text="A long string of text to test how this box will look later, why does this resize so much in game?" display-tooltip-when-elided="true" name="ToolTip" class="toolTip" style="right: 94px; top: 119px; left: 0; flex-wrap: nowrap; white-space: normal; font-size: 22px; -unity-background-scale-mode: scale-to-fit; width: 250px; height: auto; -unity-text-align: upper-center;" />
 </ui:UXML>

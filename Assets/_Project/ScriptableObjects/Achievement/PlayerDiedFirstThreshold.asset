@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerDiedFirstThreshold
   m_EditorClassIdentifier: 
   Type: 10
-  TitleText: You died a few times!
+  TitleText: Keelhauled - Die Five Times
