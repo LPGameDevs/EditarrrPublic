@@ -73,6 +73,9 @@ public class LevelBrowserLoader : MonoBehaviour
         level.SetTitle(levelStub.Code);
         level.SetCreator(levelStub.CreatorName);
         level.SetRemoteId(levelStub.RemoteId);
+        level.SetScores(levelStub.TotalScores);
+        level.SetRatings(levelStub.TotalRatings);
+        level.SetLables(levelStub.Labels);
 
         string screenshotPath = _levelManager.GetScreenshotPath(levelStub.Code);
         level.SetScreenshot(screenshotPath, true);
@@ -121,6 +124,8 @@ public class LevelBrowserLoader : MonoBehaviour
     public void SetLevels(LevelStub[] levels)
     {
         StopLoading();
+        levels = SortLevels(levels);
+
         foreach (var level in levels)
         {
             string filterLabel = GetFilterLabel();
@@ -143,6 +148,12 @@ public class LevelBrowserLoader : MonoBehaviour
         // 680 is roughly the height of the scroll view.
         var contentOffset = contentHeight > 680 ? (contentHeight - 680) / 2 : 0;
         currentTransform.anchoredPosition = new Vector2(currentTransform.anchoredPosition.x, -contentOffset);
+    }
+
+    private LevelStub[] SortLevels(LevelStub[] levels)
+    {
+        levels.OrderBy(x => x.CreatorName);
+        return levels;
     }
 
     public void ReloadScreenshot(string code)

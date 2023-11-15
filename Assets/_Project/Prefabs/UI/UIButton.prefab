@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6522958623997308128}
   - component: {fileID: 6522958623997308129}
   - component: {fileID: 6522958623997308134}
+  - component: {fileID: 567163044329505631}
   m_Layer: 5
   m_Name: UIButton
   m_TagString: Untagged
@@ -188,6 +189,25 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: -2, y: -8}
   m_UseGraphicAlpha: 1
+--- !u!114 &567163044329505631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6522958623997308132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 6522958623997308129}
+  _shadow2: {fileID: 6522958623997308134}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &6522958624150880169
 GameObject:
   m_ObjectHideFlags: 0

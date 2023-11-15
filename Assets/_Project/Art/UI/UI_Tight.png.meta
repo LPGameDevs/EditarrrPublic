@@ -4388,6 +4388,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: UI_Tight_204
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 181
+        width: 122
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20059379faf0ea44db7c639890f87273
+      internalID: -292850027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -4517,6 +4538,7 @@ TextureImporter:
       UI_Tight_201: 187693627
       UI_Tight_202: -1431091173
       UI_Tight_203: -2009610861
+      UI_Tight_204: -292850027
       UI_Tight_21: -818059564
       UI_Tight_22: 1339042395
       UI_Tight_23: -1871638328

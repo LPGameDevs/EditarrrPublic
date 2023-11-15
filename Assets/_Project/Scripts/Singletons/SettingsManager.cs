@@ -15,17 +15,21 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
     [SerializeField] Toggle _screenShakeToggle, _screenFlashToggle;
     [SerializeField] GameObject _settingsOverlay;
     [SerializeField] GameObject _settingsButton;
+    [SerializeField] GameObject _creditsDisplay;
     [SerializeField] TMP_InputField _streamerChannel;
     [SerializeField] TMP_InputField _targetFps;
+
+    const int FPS_LIMIT_MIN = 30;
+    const int FPS_LIMIT_MAX = 120;
 
     private void Start()
     {
         Application.targetFrameRate = PreferencesManager.Instance.GetFps();
-        QualitySettings.vSyncCount = 1;
+        //QualitySettings.vSyncCount = 1;
 
 
-        _musicSlider.Initialize();
-        _sfxSlider.Initialize();
+        _musicSlider.Start();
+        _sfxSlider.Start();
 
         _screenShakeToggle.isOn = ScreenShakeEnabled = PreferencesManager.Instance.GetBoolean(PreferencesManager.ScreenShakeKey);
         _screenFlashToggle.isOn = ScreenFlashEnabled = PreferencesManager.Instance.GetBoolean(PreferencesManager.ScreenFlashKey);
@@ -62,19 +66,21 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
             PreferencesManager.Instance.SetStreamerChannel(_streamerChannel.text);
         }
 
+        AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
+        _settingsOverlay.SetActive(false);
+    }
+
+    public void SetTargetFPS(string fps)
+    {
         int currentSavedFps = PreferencesManager.Instance.GetFps();
-        if (_targetFps.text != currentSavedFps.ToString())
+        if (fps != currentSavedFps.ToString())
         {
             int newFps = Int32.Parse(_targetFps.text);
-            newFps = Mathf.Min(120, newFps);
-            newFps = Mathf.Max(30, newFps);
+            newFps = Mathf.Clamp(newFps, FPS_LIMIT_MIN, FPS_LIMIT_MAX);
             _targetFps.text = newFps.ToString();
             PreferencesManager.Instance.SetFps(newFps);
             Application.targetFrameRate = newFps;
         }
-
-        AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
-        _settingsOverlay.SetActive(false);
     }
 
     public void ToggleScreenShake(bool setActive)
@@ -87,6 +93,18 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
     {
         PreferencesManager.Instance.SetBoolean(PreferencesManager.ScreenFlashKey, setActive);
         ScreenFlashEnabled = setActive;
+    }
+
+    public void OpenCredits()
+    {
+        _creditsDisplay.SetActive(true);
+        AudioManager.Instance.PlayAudioClip(AudioManager.YOHOHO_CLIP_NAME);
+    }
+
+    public void CloseCredits()
+    {
+        _creditsDisplay.SetActive(false);
+        AudioManager.Instance.PlayAudioClip(AudioManager.MEDIUM_CLICK_CLIP_NAME);
     }
 
     public void ResetEverything()

@@ -6,7 +6,10 @@ using Editarrr.Misc;
 using Editarrr.UI;
 using Level.Storage;
 using LevelEditor;
+using Models;
 using Singletons;
+using System.Collections;
+using System.Threading.Tasks;
 using UI;
 using UnityEngine;
 
@@ -98,8 +101,11 @@ public class LevelSelectionManager : ManagerComponent
         LevelManager.LoadAll(this.LevelStorage_AllLevelsLoadedCallback);
     }
 
-    private void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels, string cursor = "")
+    private async void LevelStorage_AllLevelsLoadedCallback(LevelStub[] levels, string cursor = "")
     {
+        //TODO: We may need to disable async for WebGL, additional testing necessary
+        _levelLoader.LoadingOverlay.SetActive(true);
+
         foreach (var level in levels)
         {
             if (!this._levelLoader.LevelFilterApplies(level))
@@ -109,7 +115,10 @@ public class LevelSelectionManager : ManagerComponent
 
             string screenshotPath = LevelManager.GetScreenshotPath(level.Code, level.IsDistro);
             _levelLoader.AddLevelPrefabFromData(level, screenshotPath);
+            await Task.Yield();
         }
+
+        _levelLoader.LoadingOverlay.SetActive(false);
     }
 
     private void OnSceneClosed(string sceneName)

@@ -247,7 +247,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 280, y: 60}
+  m_SizeDelta: {x: 270, y: 52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6344029126233027972
 GameObject:
@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 6344029126233025150}
   - component: {fileID: 6344029126233025151}
   - component: {fileID: 6344029126233025148}
+  - component: {fileID: 6361483328704417443}
   m_Layer: 5
   m_Name: Toggle
   m_TagString: Untagged
@@ -289,10 +290,10 @@ RectTransform:
   m_Father: {fileID: 6344029125951788667}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -106, y: 0}
-  m_SizeDelta: {x: 52, y: 48}
+  m_SizeDelta: {x: -228, y: -12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6344029126233027970
 MonoBehaviour:
@@ -414,14 +415,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.801, g: 0.42212114, b: 0.40370402, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 464712506, guid: 53cc67c92fd1bfb4abd11f589fa6fd10, type: 3}
+  m_Sprite: {fileID: 1931395949, guid: 53cc67c92fd1bfb4abd11f589fa6fd10, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -461,6 +462,25 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: -2, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &6361483328704417443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6344029126233027972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &6344029126898139913
 GameObject:
   m_ObjectHideFlags: 0

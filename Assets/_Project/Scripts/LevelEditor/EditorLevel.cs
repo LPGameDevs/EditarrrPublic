@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Editarrr.Audio;
 using Singletons;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,14 +17,17 @@ namespace LevelEditor
         public static event Action<string> OnEditorLevelDelete;
         public static event Action<string> OnLeaderboardRequest;
 
-        public Text Title;
-        public Text Creator;
-        public Text RemoteId;
+        public TMP_Text Title;
+        public TMP_Text Creator;
+        public TMP_Text RemoteId;
+        public TMP_Text Scores;
+        public TMP_Text Ratings;
         public RawImage ScreenshotImage;
         public Transform EditButton;
         public Transform UploadButton;
         public Transform DeleteButton;
         public string Code { get; protected set; } = "";
+        public List<string> Labels { get; set; } = new List<string>();
 
         public void DeleteLevel()
         {
@@ -40,6 +45,13 @@ namespace LevelEditor
 
         public void GoToEditorLevel()
         {
+            CheckCodePreferences();
+            SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.CreateLevelSceneName);
+        }
+
+        public void GoToEditorLevel(int type)
+        {
+            PreferencesManager.Instance.SetUserTypeTag((UserTagType)type);
             CheckCodePreferences();
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.CreateLevelSceneName);
         }
@@ -96,13 +108,29 @@ namespace LevelEditor
 
         public void SetTitle(string code)
         {
-            Title.text = "lvl: " + code.ToUpper();
+            Title.text = "Lvl: " + code;
             Code = code.ToLower();
         }
 
         public void SetCreator(string creator)
         {
-            Creator.text = "by: " + creator.ToUpper();
+            Creator.text = "By: " + creator;
+        }
+
+        public void SetScores(int totalScores)
+        {
+            if (Scores == null)
+                return;
+
+            Scores.text = $"Total scores: {totalScores}";
+        }
+
+        public void SetRatings(int totalRatings)
+        {
+            if (Ratings == null)
+                return;
+
+            Ratings.text = $"Total ratings: {totalRatings}";
         }
 
         public void SetRemoteId(string remoteId)
@@ -129,6 +157,11 @@ namespace LevelEditor
             //{
             //    ScreenshotImage.color = Color.black;
             //}
+        }
+
+        public void SetLables(List<string> incomingLabels)
+        {
+            Labels = incomingLabels;
         }
     }
 }
