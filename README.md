@@ -14,7 +14,11 @@ Very simple prototype for now, but will be added to soon.
 
 You can play the latest build of the game here:
 
- - [Play now](https://lpgamedevs.github.io/EditarrrPublic/)
+- [Play now](https://lpgamedevs.github.io/EditarrrPublic/)
+
+Formmal releases are deployed to:
+- [Itch.io](https://yanniboi.itch.io/editarrr-2)
+- [Steam](https://store.steampowered.com/app/2609410/Editarrr/)
 
 ## Collaboration
 
