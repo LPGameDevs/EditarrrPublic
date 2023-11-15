@@ -73,6 +73,9 @@ public class LevelBrowserLoader : MonoBehaviour
         level.SetTitle(levelStub.Code);
         level.SetCreator(levelStub.CreatorName);
         level.SetRemoteId(levelStub.RemoteId);
+        level.SetScores(levelStub.TotalScores);
+        level.SetRatings(levelStub.TotalRatings);
+        level.SetLables(levelStub.Labels);
 
         string screenshotPath = _levelManager.GetScreenshotPath(levelStub.Code);
         level.SetScreenshot(screenshotPath, true);

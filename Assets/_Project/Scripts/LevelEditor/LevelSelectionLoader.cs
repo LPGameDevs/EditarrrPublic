@@ -64,6 +64,9 @@ public class LevelSelectionLoader : MonoBehaviour
         level.SetTitle(levelData.Code);
         level.SetCreator(levelData.CreatorName);
         level.SetScreenshot(screenshotPath);
+        level.SetScores(levelData.TotalScores);
+        level.SetRatings(levelData.TotalRatings);
+        level.SetLables(levelData.Labels);
 
         // Dont allow someone to edit a level if they didnt create it.
         if (levelData.Creator.ToLower() != userId.ToLower())
