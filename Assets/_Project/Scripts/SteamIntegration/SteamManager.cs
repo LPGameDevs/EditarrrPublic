@@ -104,5 +104,13 @@ namespace SteamIntegration
             return success;
         }
 
+        public string GetUserName()
+        {
+            string username = "";
+#if !UNITY_WEBGL && !UNITY_EDITOR_OSX
+            username = Steamworks.SteamClient.Name;
+#endif
+            return username;
+        }
     }
 }
