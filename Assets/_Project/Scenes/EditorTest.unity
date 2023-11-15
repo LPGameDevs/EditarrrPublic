@@ -292,8 +292,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &49095120
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,8 +752,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!4 &128745900 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7929345714747916045, guid: 6a2db6e321682a046b943bd62f7bdf48, type: 3}
@@ -2555,8 +2565,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1001 &843081412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3125,8 +3140,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1001 &1041264799
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5813,8 +5833,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &2121278072
 GameObject:
   m_ObjectHideFlags: 0
@@ -6040,7 +6065,7 @@ MonoBehaviour:
   HomeButton: {fileID: 468777124346725386}
   BackEditorButton: {fileID: 468777125424424696}
   ReplayButton: {fileID: 468777125890140464}
-  SubmitButton: {fileID: 468777125363728550}
+  ShowLeaderboardButton: {fileID: 468777125363728550}
   IsReplay: 0
   _animator: {fileID: 468777124318979836}
   _leaderBoard: {fileID: 1614280975}
@@ -6376,8 +6401,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &468777124415517750
 GameObject:
   m_ObjectHideFlags: 0
@@ -7148,8 +7178,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &468777125406541297
 GameObject:
   m_ObjectHideFlags: 0
@@ -7467,8 +7502,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &468777125436960748
 GameObject:
   m_ObjectHideFlags: 0
@@ -8042,8 +8082,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &468777125920440206
 GameObject:
   m_ObjectHideFlags: 0
