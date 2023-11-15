@@ -1,4 +1,5 @@
 using System;
+using SteamIntegration;
 using UI;
 using UnityEngine;
 
@@ -44,12 +45,22 @@ namespace Singletons
         {
             var userName = PlayerPrefs.GetString(UserNameStorageKey, "");
 
-            // Set a new user id if one doesnt exist.
-            if (userName.Length == 0)
+            if (userName.Length > 0)
             {
-                this.SetUserName(DefaultUserName);
+                return userName;
             }
 
+            // Set a new user id if one doesnt exist.
+            if (SteamManager.Instance.IsInitialized)
+            {
+                userName = SteamManager.Instance.GetUserName();
+            }
+            else
+            {
+                userName = DefaultUserName;
+            }
+
+            this.SetUserName(userName);
             return userName;
         }
 
