@@ -51,7 +51,7 @@ MonoBehaviour:
   oauth: oauth:2q05l5whrkdsmhelc0pqydj0hevrv2
   nickName: editarrr
   channelName: zackavelli_
-  _debug: 0
+  _debug: 1
 --- !u!114 &942252053
 MonoBehaviour:
   m_ObjectHideFlags: 0

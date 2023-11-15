@@ -11,7 +11,7 @@ namespace Twitch
 
         protected override void DoExecute(string user, string message)
         {
-            OnTwitchJumpForever.Invoke();
+            OnTwitchJumpForever?.Invoke();
         }
 
     }

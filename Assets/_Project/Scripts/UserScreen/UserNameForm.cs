@@ -121,6 +121,10 @@ public class UserNameForm : MonoBehaviour
         AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.UserSessionStarted, session);
 
         bool isOnboarded = PreferencesManager.Instance.IsOnboarded();
+
+        // @todo Re-enable onboarding.
+        isOnboarded = true;
+
         if (isOnboarded)
         {
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.LevelSelectionSceneName);
