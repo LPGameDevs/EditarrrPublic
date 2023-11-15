@@ -12,8 +12,11 @@ export class ScoresApi {
     async postScore(levelId, requestJSON) {
         var score = requestJSON.score;
         if (!score) throw new BadRequestException(`'score' must be provided in the request.`);
-        score = score.replace(/,/g, '.');
-        if (isNaN(parseFloat(score))) throw new BadRequestException(`'score' must be a number`);
+        if (typeof score === "string") {
+            score = score.replace(/,/g, '.');
+            score = parseFloat(score);
+        } 
+        if (isNaN(score)) throw new BadRequestException(`'score' must be a number`);
         var scoreLevelName = requestJSON.code;
         if (!scoreLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
         var scoreCreatorId = requestJSON.creator;
@@ -41,7 +44,7 @@ export class ScoresApi {
             var dbScore = allScoresForLevel[i];
 
             totalNumberOfScores++;
-            sumOfAllScores += parseFloat(dbScore.score);
+            sumOfAllScores += dbScore.scoreNumber;
         }
         var avgScore = sumOfAllScores / allScoresForLevel.length;
         
@@ -128,7 +131,7 @@ export class ScoresApi {
             responseScores.push({
                 "scoreId": id,
                 "levelId": levelId,
-                "score": dbScore.score,
+                "score": dbScore.scoreNumber,
                 "code": dbScore.scoreLevelName,
                 "creator": {
                     "id": dbScore.scoreCreatorId,
