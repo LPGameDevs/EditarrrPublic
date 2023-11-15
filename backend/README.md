@@ -25,9 +25,13 @@ cd backend
 ### Deploy
 We deploy using Terraform, with separate S3, API Gatway, Lambdas, and DynamoDBs for `dev` and `prod` "environments". 
 
+The `dev` environment is in AWS account `456214601104` and the [Github Page](https://lpgamedevs.github.io/EditarrrPublic/) is pointed at it.
+
+The `prod` environment is in a separate AWS account that only @yanniboi has access to and he will manage promotion of changes from `dev` to `prod`.
+The Steam release and [Itch.io](https://yanniboi.itch.io/editarrr-2) build of the game are pointed at `prod`.
+
 You should develop and test changes with unit tests as much as possible, then test changes by deploying to the `dev` environment with Terraform. See how to deploy with Terraform [here](./terraform/README.md).
 
-@yanniboi will manage promotion of changes from `dev` to `prod`.
 
 ### Making Requests
 You can make requests using the scripts in the [requests](./requests/) directory:
