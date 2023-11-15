@@ -26,12 +26,17 @@ namespace Player
 
             this.RawInputMove = this.InputLocked ? 0 : this.InputMove.Read<Vector2>().x;
             this.IsMoving = this.InputMove.IsPressed && !this.InputLocked;
-            
+
             this.InputJumpPressed = this.InputJump.WasPressed && !this.InputLocked;
             this.InputJumpReleased = !this.InputJump.IsPressed && !this.InputLocked;
 
             if (this.InputJumpPressed)
             {
+                this.InputJumpTime = Time.time;
+            }
+            else if (_twitchJumpRequested)
+            {
+                this.InputJumpPressed = true;
                 this.InputJumpTime = Time.time;
             }
         }

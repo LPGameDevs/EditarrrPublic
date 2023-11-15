@@ -19,6 +19,8 @@ namespace Player
         private bool CoyoteTimeActive { get; set; }
         private bool CoyoteJumpFlag { get; set; }
         private bool JumpBufferActive { get; set; }
+        private bool _twitchJumpRequested = false;
+        private bool _twitchBouncy = false;
 
         private bool JumpCanceled { get; set; }
 
@@ -30,7 +32,7 @@ namespace Player
             this.UpdateJumpValues();
 
             if ((this.InputJumpPressed && this.CanJump) || this.JumpBufferActive)
-            {                
+            {
                 this.VerticalSpeed = this.JumpForce;
                 this.JumpCanceled = false;
                 this.CoyoteJumpFlag = false;
@@ -38,6 +40,11 @@ namespace Player
 
                 OnPlayerJumped?.Invoke();
                 Debug.Log($"Jump == VS: {this.VerticalSpeed}, CT: {this.CoyoteTimeActive}, JB: {this.JumpBufferActive}");
+
+                if (!_twitchBouncy)
+                {
+                    _twitchJumpRequested = false;
+                }
             }
 
             if (!this.Collisions.Down && this.InputJumpReleased && !this.JumpCanceled && this.Velocity.y > 0)
@@ -87,6 +94,17 @@ namespace Player
             {
                 this.JumpApexInfluence = 0;
             }
+        }
+
+        private void TwitchJump()
+        {
+            _twitchJumpRequested = true;
+        }
+
+        private void TwitchBouncy()
+        {
+            _twitchJumpRequested = true;
+            _twitchBouncy = true;
         }
 
         //[Header("JUMPING")] [SerializeField] private float _jumpHeight = 30;

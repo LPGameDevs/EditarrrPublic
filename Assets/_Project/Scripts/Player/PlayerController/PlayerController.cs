@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Twitch;
 using UnityEngine;
 
 namespace Player
@@ -64,6 +65,8 @@ namespace Player
         internal override void OnEnable()
         {
             base.OnEnable();
+            JumpCommand.OnTwitchJump += this.TwitchJump;
+            BouncyCommand.OnTwitchJumpForever += this.TwitchBouncy;
             HealthSystem.OnDeath += this.HealthSystem_OnDeath;
             HealthSystem.OnHitPointsChanged += this.HealthSystem_OnHitPointsChanged;
             this.OnEnableDebug();
@@ -72,6 +75,8 @@ namespace Player
         internal override void OnDisable()
         {
             base.OnDisable();
+            JumpCommand.OnTwitchJump -= this.TwitchJump;
+            BouncyCommand.OnTwitchJumpForever -= this.TwitchBouncy;
 
             HealthSystem.OnDeath -= this.HealthSystem_OnDeath;
             HealthSystem.OnHitPointsChanged -= this.HealthSystem_OnHitPointsChanged;
