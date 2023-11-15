@@ -8,11 +8,24 @@ public class BackgroundElement : MonoBehaviour
     [field: SerializeField] public float RandomInitializationX { get; private set; }
     [field: SerializeField] public float RandomInitializationY { get; private set; }
 
+    Vector3 TargetPosition { get; set; }
+
     private void Awake()
     {
         float newPositionX = Random.Range(-RandomInitializationX, RandomInitializationX);
         float newPositionY = Random.Range(-RandomInitializationY, RandomInitializationY);
 
-        transform.position = new Vector2(newPositionX, newPositionY);
+        this.TargetPosition = transform.position = new Vector2(newPositionX, newPositionY);
+    }
+
+    public void Change(Vector3 delta)
+    {
+        this.TargetPosition += new Vector3(delta.x * this.ScrollingFactor.x, delta.y * this.ScrollingFactor.y);
+        // element.transform.position += new Vector3(delta.x * element.ScrollingFactor.x, delta.y * element.ScrollingFactor.y);
+    }
+
+    private void LateUpdate()
+    {
+        this.transform.position = Vector3.Lerp(this.transform.position, this.TargetPosition, 1 - .2f * Time.deltaTime);
     }
 }
