@@ -66,7 +66,7 @@ namespace Player
             }
 
             this.CoyoteTimeActive = this.CoyoteJumpFlag && !this.Collisions.Down && this.LastGroundedTime + this.CoyoteTime > Time.time;
-            this.CanJump = this.Collisions.Down || this.CoyoteTimeActive;
+            this.CanJump = this.CollisionJump || this.CoyoteTimeActive;
 
             this.JumpBufferActive = this.CanJump && this.InputJumpTime + this.JumpBuffer >= Time.time;
         }
