@@ -6,7 +6,6 @@ using Level.Storage;
 using Singletons;
 using System.Linq;
 using UnityEngine;
-using static Cinemachine.DocumentationSortingAttribute;
 using static SortingSelector;
 
 [CreateAssetMenu(fileName = "LevelBrowserManager", menuName = "Managers/Level/new Level Browser Manager")]
@@ -24,6 +23,7 @@ public class LevelBrowserManager : ManagerComponent
 
     SortingState _currentSortingState = SortingState.Inactive;
     string _sortingCriterionName = "";
+    
 
     public void SetLevelLoader(LevelBrowserLoader levelLoader)
     {
@@ -151,12 +151,18 @@ public class LevelBrowserManager : ManagerComponent
         DestroyAndRefreshLevels();
     }
 
+    public void OnLabelFilterChanged(UserTagType userTag)
+    {
+        DestroyAndRefreshLevels();
+    }
+
     public override void DoOnEnable()
     {
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot += OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated += OnBrowserPagerUpdateRequested;
         SortingSelector.OnStateChanged += OnSortingCriteriaChanged;
+        LabelFilterHandler.OnLabelFilterChanged += OnLabelFilterChanged;
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete += OnSteamLevelDownloadComplete;
 #endif
@@ -170,6 +176,7 @@ public class LevelBrowserManager : ManagerComponent
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot -= OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated -= OnBrowserPagerUpdateRequested;
         SortingSelector.OnStateChanged -= OnSortingCriteriaChanged;
+        LabelFilterHandler.OnLabelFilterChanged -= OnLabelFilterChanged;
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
         RemoteLevelStorageProviderSteam.OnSteamLevelDownloadComplete -= OnSteamLevelDownloadComplete;
 #endif
