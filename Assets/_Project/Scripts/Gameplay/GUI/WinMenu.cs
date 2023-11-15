@@ -1,12 +1,12 @@
 using System;
 using Browser;
 using Editarrr.Audio;
+using Editarrr.Input;
 using Editarrr.Level;
 using Level.Storage;
 using Singletons;
 using TMPro;
 using UnityEngine;
-using Editarrr.Input;
 using UnityEngine.UI;
 
 namespace Gameplay.GUI
@@ -21,7 +21,8 @@ namespace Gameplay.GUI
 
         public TMP_Text LevelCode;
         public TMP_Text TimerText;
-        public Button HomeButton, BackEditorButton, ReplayButton, SubmitButton;
+        public Button HomeButton, BackEditorButton, ReplayButton;
+        public Button ShowLeaderboardButton;
         public bool IsReplay = false;
 
         [SerializeField] Animator _animator;
@@ -64,25 +65,25 @@ namespace Gameplay.GUI
             if (IsReplay)
             {
                 ReplayButton.interactable = true;
-                SubmitButton.interactable = false;
+                ShowLeaderboardButton.interactable = false;
             }
             else if (_levelData.Published)
             {
                 ReplayButton.interactable = true;
-                SubmitButton.interactable = true;
+                ShowLeaderboardButton.interactable = true;
             }
             else
             {
                 ReplayButton.interactable = true;
                 BackEditorButton.interactable = true;
-                SubmitButton.interactable = false;
+                ShowLeaderboardButton.interactable = false;
             }
         }
 
         private void DisableAllButtons()
         {
             ReplayButton.interactable = false;
-            SubmitButton.interactable = false;
+            ShowLeaderboardButton.interactable = false;
             HomeButton.interactable = false;
             BackEditorButton.interactable = false;
         }
@@ -123,6 +124,8 @@ namespace Gameplay.GUI
                 TimerText.text = timeText;
             }
 
+            SubmitScore();
+
             string currentUser = PreferencesManager.Instance.GetUserName();
             TwitchManager.Instance.SendNotification($"{currentUser} just finished level {_code} in {_timeText}.");
         }
@@ -131,12 +134,10 @@ namespace Gameplay.GUI
         {
             Debug.Log("Submitting score");
             OnScoreSubmit?.Invoke(_code, _time, OnSubmitScoreOpenDashboard);
-            SubmitButton.onClick.RemoveAllListeners();
-            SubmitButton.onClick.AddListener(OpenScoreboard);
 
             void OnSubmitScoreOpenDashboard()
             {
-                OpenScoreboard();
+                // We dont need this anymore.
             }
         }
 
@@ -177,10 +178,10 @@ namespace Gameplay.GUI
             SceneTransitionManager.Instance.GoToScene(SceneTransitionManager.TestLevelSceneName);
         }
 
-        public void OnClickSubmitScore()
+        public void OnClickShowLeaderboard()
         {
-            if(PreferencesManager.Instance.HasLevelRating(_code))
-                SubmitScore();
+            if (PreferencesManager.Instance.HasLevelRating(_code))
+                OpenScoreboard();
             else
                 OpenRatingMenu();
         }
@@ -205,13 +206,13 @@ namespace Gameplay.GUI
         protected void OnEnable()
         {
             Timer.OnTimeStop += SetTimeText;
-            SubmitButton.onClick.AddListener(OnClickSubmitScore);
+            ShowLeaderboardButton.onClick.AddListener(OnClickShowLeaderboard);
         }
 
         protected void OnDisable()
         {
             Timer.OnTimeStop -= SetTimeText;
-            SubmitButton.onClick.RemoveAllListeners();
+            ShowLeaderboardButton.onClick.RemoveAllListeners();
         }
 
         public void DeactivateWinMenuAnimator() => _animator.enabled = false;
