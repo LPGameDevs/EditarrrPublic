@@ -25974,6 +25974,7 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   <CollisionCheckDistance>k__BackingField: 0.03125
+  <CollisionJumpCheckDistance>k__BackingField: 0.078125
   <Collisions>k__BackingField:
     <Up>k__BackingField: 0
     <Down>k__BackingField: 0
@@ -25990,7 +25991,7 @@ MonoBehaviour:
   <InputJump>k__BackingField: {fileID: 11400000, guid: 8e8e88ba4d7a6894da0904f8d61a060e, type: 2}
   <JumpForce>k__BackingField: 18.5
   <CoyoteTime>k__BackingField: 0.15
-  <JumpBuffer>k__BackingField: 0.1
+  <JumpBuffer>k__BackingField: 0.15
   <FallSpeedMin>k__BackingField: 40
   <FallSpeedMax>k__BackingField: 60
   <JumpApexThreshold>k__BackingField: 0.5

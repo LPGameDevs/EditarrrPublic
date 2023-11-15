@@ -12,9 +12,11 @@ namespace Player
 
         [field: SerializeField, Header("COLLISION")] private Collider2D Collider { get; set; }
         [field: SerializeField] private ContactFilter2D GroundContactFilter { get; set; }
-        [field: SerializeField] private float CollisionCheckDistance { get; set; } = .3f;
+        [field: SerializeField] private float CollisionCheckDistance { get; set; } = 1f / 32f;
+        [field: SerializeField] private float CollisionJumpCheckDistance { get; set; } = 2f / 32f;
 
         [field: SerializeField] private Direction2D<bool> Collisions { get; set; }
+        private bool CollisionJump { get; set; }
 
         private LayerMask GroundLayer { get => this.GroundContactFilter.layerMask; }
 
@@ -42,6 +44,7 @@ namespace Player
                 this.AirTime = 0;
             }
 
+            this.CollisionJump = this.Collider.Cast(Vector2.down, this.GroundContactFilter, hit, this.CollisionJumpCheckDistance) > 0;
             this.Collisions.Down = groundCheck;
             this.Collisions.Left = this.Collider.Cast(Vector2.left, this.GroundContactFilter, hit, this.CollisionCheckDistance) > 0;
             this.Collisions.Up = this.Collider.Cast(Vector2.up, this.GroundContactFilter, hit, this.CollisionCheckDistance) > 0;
