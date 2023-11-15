@@ -6,7 +6,7 @@ import { uuidv4 } from "../utils.mjs";
 
 const tableName = "editarrr-score-storage";
 
-const indexScoreIdScore = "scoreLevelName-score-index"; // Note: I think the index was accidentally named this way - the index's pk is the main pk
+const indexScoreIdScore = "scoreLevelName-scoreNumber-index"; // Note: I think the index was accidentally named this way - the index's pk is the main pk
 
 // Because JS doesn't have enums...
 export class ScoresSortOptions {
@@ -31,7 +31,7 @@ const sortOptionToIndex = {
 }
 
 const sortOptionToAttributeName = {
-    [ScoresSortOptions.SCORE]: "score",
+    [ScoresSortOptions.SCORE]: "scoreNumber",
 }
 
 export class ScoresDbClient {
@@ -55,7 +55,7 @@ export class ScoresDbClient {
                 Item: {
                     pk: `LEVEL#${levelId}`,
                     sk: `SCORE#${generatedScoreId}`,
-                    score: score,
+                    scoreNumber: score,
                     scoreLevelName: scoreLevelName,
                     scoreCreatorId: scoreCreatorId,
                     scoreCreatorName: scoreCreatorName,
