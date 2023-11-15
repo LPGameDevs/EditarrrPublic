@@ -185,7 +185,7 @@ public class LevelSelectionLoader : MonoBehaviour
     {
         CurrentFilter = filter;
         foreach(var button in _filterButtons)
-            button.LockIn(button.NameTag.Equals(filter.HumanName()));
+            button.LockIn(button.NameTag.Equals(filter.ToString()));
 
         AudioManager.Instance.PlayAudioClip(AudioManager.SNAP_CLIP_NAME);
         OnFilterChanged?.Invoke();

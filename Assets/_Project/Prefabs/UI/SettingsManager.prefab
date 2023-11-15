@@ -6485,8 +6485,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &4889961686059898834
 GameObject:
   m_ObjectHideFlags: 0
@@ -7432,8 +7437,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &5601456858881167325
 GameObject:
   m_ObjectHideFlags: 0
@@ -12380,6 +12390,7 @@ GameObject:
   - component: {fileID: 5303966233841930584}
   - component: {fileID: 7429599088956637565}
   - component: {fileID: 8857313975556222136}
+  - component: {fileID: 2987682804348724028}
   m_Layer: 0
   m_Name: SettingsManager
   m_TagString: Untagged
@@ -12468,6 +12479,29 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2987682804348724028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980512155781308473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!1 &8002225299157344845
 GameObject:
   m_ObjectHideFlags: 0
@@ -13377,8 +13411,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectableComponent: {fileID: 0}
-  hoverClip: {fileID: 0}
+  _selectableComponent: {fileID: 0}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 0}
+  _shadow2: {fileID: 0}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &8582301511646432729
 GameObject:
   m_ObjectHideFlags: 0

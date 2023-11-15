@@ -3614,7 +3614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TitleBox: {fileID: 1979954606}
   UserNameInput: {fileID: 409365548}
-  NextStep: {fileID: 3301446540820603706}
+  NextStep: {fileID: 0}
   _neutralColor: {r: 1, g: 1, b: 1, a: 1}
   _errorColor: {r: 1, g: 0.4764151, b: 0.4764151, a: 1}
   _charLimitColor: {r: 1, g: 0.62877864, b: 0.4198113, a: 1}
