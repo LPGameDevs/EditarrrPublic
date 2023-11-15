@@ -8,6 +8,7 @@ import { ScoresApi } from './scores.mjs';
 import { LevelsDbClient } from '../db/levels.mjs';
 import { ScoresDbClient } from '../db/scores.mjs';
 import { expect } from 'chai';
+import { BadRequestException } from '../utils.mjs';
 
 var dynamoDbClient;
 var ddbClientSendStub;
@@ -30,7 +31,7 @@ describe('PostScore', function () {
         scoresApi = new ScoresApi(scoresDbClient, levelsDbClient);
     });
 
-    it('should check that the level exists, add the score, then calculate and store the avg & total number of scores."', async function () {
+    it('should check that the level exists, add the score, then calculate and store the avg & total number of scores.', async function () {
         // Arrange
         var levelId = "murphys-dads-level-id";
         var levelName = "Murphys Dads Level";
@@ -69,17 +70,17 @@ describe('PostScore', function () {
         })).returns({
             "Items": [
                 {
-                    score: 1.0
+                    score: "1.0"
                 },
                 {
-                    score: 3.0
+                    score: "3.0"
                 }
             ]
         });
         
         // Act
         await scoresApi.postScore(levelId, {
-            "score": 1.0, 
+            "score": "1.0", 
             "code": levelName,
             "creator": levelCreatorId,
             "creatorName": levelCreatorId,
@@ -90,7 +91,7 @@ describe('PostScore', function () {
             match.has("TableName", tableNameScores).and(
             match.has("Item", 
                 match.has("pk", `LEVEL#${levelId}`).and(
-                match.has("score", 1.0)),
+                match.has("score", "1.0")),
         ))));
         assert.calledWith(ddbClientSendStub, match.has("input", {
             TableName: tableNameLevels,
@@ -104,6 +105,107 @@ describe('PostScore', function () {
               ":totalScores": 2,
             },
         }));
+    });
+
+    it('should convert commas to decimals.', async function () {
+        // Arrange
+        var levelId = "murphys-dads-level-id";
+        var levelName = "Murphys Dads Level";
+        var levelCreatorId = "murphys-dads-id";
+        var levelCreatorName = "Murphys Dad";
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevels,
+            Key: {
+                pk: `LEVEL#${levelId}`,
+                sk: `LEVEL#${levelId}`,
+            }
+        })).returns({
+            "Item": {
+                "levelName": levelName,
+                "levelUpdatedAt": 1698515874383,
+                "levelCreatorId": levelCreatorId,
+                "levelData": {},
+                "levelStatus": "PUBLISHED",
+                "sk": `LEVEL#${levelId}`,
+                "levelCreatedAt": 1698514557729,
+                "pk": `LEVEL#${levelId}`,
+                "levelCreatorName": levelCreatorName,
+            }
+        });
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameScores,
+            IndexName: "scoreLevelName-score-index",
+            // TODO can we do a subset of attributes?
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            ScanIndexForward: true,
+            KeyConditionExpression: "pk = :levelId",
+            ExpressionAttributeValues: {
+                ":levelId": `LEVEL#${levelId}`,
+            }
+        })).returns({
+            "Items": [
+                {
+                    score: "1.0"
+                },
+                {
+                    score: "3.0"
+                }
+            ]
+        });
+        
+        // Act
+        await scoresApi.postScore(levelId, {
+            "score": "1,234", 
+            "code": levelName,
+            "creator": levelCreatorId,
+            "creatorName": levelCreatorId,
+        });
+
+        // Assert
+        assert.calledWith(ddbClientSendStub, match.has("input", 
+            match.has("TableName", tableNameScores).and(
+            match.has("Item", 
+                match.has("pk", `LEVEL#${levelId}`).and(
+                match.has("score", "1.234")),
+        ))));
+        assert.calledWith(ddbClientSendStub, match.has("input", {
+            TableName: tableNameLevels,
+            Key: {
+                pk: `LEVEL#${levelId}`,
+                sk: `LEVEL#${levelId}`
+            },
+            UpdateExpression: "SET levelAvgScore = :avgScore, levelTotalScores = :totalScores",
+            ExpressionAttributeValues: {
+              ":avgScore": 2.0,
+              ":totalScores": 2,
+            },
+        }));
+    });
+
+    it('should throw a BadRequestException if the score is not a number.', async function () {
+        // Arrange
+        var levelId = "murphys-dads-level-id";
+        var levelName = "Murphys Dads Level";
+        var levelCreatorId = "murphys-dads-id";
+        var levelCreatorName = "Murphys Dad";
+        
+        // Act / Assert
+        try {
+            await scoresApi.postScore(levelId, {
+            "score": "Hello, world", 
+            "code": levelName,
+            "creator": levelCreatorId,
+            "creatorName": levelCreatorId,
+            });
+
+            expect.fail('Expected to throw BadRequestException but did not throw any exception.');
+        } catch (error) {
+            // Assert that the caught error is an instance of BadRequestException
+            expect(error).to.be.an.instanceOf(BadRequestException);
+            // Optionally, assert the error message
+            expect(error.message).to.equal("error - Bad Request: 'score' must be a number");
+        }
     });
 });
 
