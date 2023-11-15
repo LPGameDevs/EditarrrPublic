@@ -208,6 +208,14 @@ namespace Editarrr.Level
 
                 LevelStub stub = new LevelStub(levelSave.Code, levelSave.Creator, levelSave.CreatorName, levelSave.RemoteId ?? "", levelSave.Published);
 
+                foreach (var label in levelSave.GetLabels())
+                {
+                    stub.SetLabel(label);
+                }
+
+                stub.SetTotalRatings(levelSave.TotalRatings);
+                stub.SetTotalScores(levelSave.TotalScores);
+
                 levelsStubs.Add(stub);
             }
 
@@ -263,6 +271,14 @@ namespace Editarrr.Level
 
                     LevelStub stub = new LevelStub(levelSave.Code, levelSave.Creator, levelSave.CreatorName, levelSave.RemoteId ?? "", levelSave.Published);
                     stub.SetDistro(true);
+
+                    foreach (var label in levelSave.GetLabels())
+                    {
+                        stub.SetLabel(label);
+                    }
+
+                    stub.SetTotalRatings(levelSave.TotalRatings);
+                    stub.SetTotalScores(levelSave.TotalScores);
 
                     levelsStubs.Add(stub);
                 }
