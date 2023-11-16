@@ -70,10 +70,10 @@ describe('PostScore', function () {
         })).returns({
             "Items": [
                 {
-                    score: 1.0
+                    scoreNumber: 1.0
                 },
                 {
-                    score: 3.0
+                    scoreNumber: 3.0
                 }
             ]
         });
@@ -91,7 +91,7 @@ describe('PostScore', function () {
             match.has("TableName", tableNameScores).and(
             match.has("Item", 
                 match.has("pk", `LEVEL#${levelId}`).and(
-                match.has("score", 1.0)),
+                match.has("scoreNumber", 1)),
         ))));
         assert.calledWith(ddbClientSendStub, match.has("input", {
             TableName: tableNameLevels,
@@ -146,10 +146,10 @@ describe('PostScore', function () {
         })).returns({
             "Items": [
                 {
-                    score: 1.0
+                    scoreNumber: 1.0
                 },
                 {
-                    score: 3.0
+                    scoreNumber: 3.0
                 }
             ]
         });
@@ -167,7 +167,7 @@ describe('PostScore', function () {
             match.has("TableName", tableNameScores).and(
             match.has("Item", 
                 match.has("pk", `LEVEL#${levelId}`).and(
-                match.has("score", 1.234)),
+                match.has("scoreNumber", 1.234)),
         ))));
         assert.calledWith(ddbClientSendStub, match.has("input", {
             TableName: tableNameLevels,
@@ -466,7 +466,7 @@ describe('GetPagedScores', function() {
             "Item": {
                 "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                 "sk": "SCORE#52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
-                "score": 0.6215752,
+                "scoreNumber": 0.6215752,
                 "scoreLevelName": "29995",
                 "scoreSubmittedAt": 1698964301163,
                 "scoreCreatorId": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",
@@ -487,7 +487,7 @@ describe('GetPagedScores', function() {
             ExclusiveStartKey: {
                 "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                 "sk": "SCORE#52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
-                "score": 0.6215752,
+                "scoreNumber": 0.6215752,
             },
         })).returns({
             "Items":[

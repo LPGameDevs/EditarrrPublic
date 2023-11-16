@@ -30,7 +30,7 @@ namespace Singletons
                 userId = Guid.NewGuid().ToString();
                 this.SetUserId(userId);
 
-                AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.NewUserRegistered);
+                // AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.NewUserRegistered);
             }
 
             return userId;

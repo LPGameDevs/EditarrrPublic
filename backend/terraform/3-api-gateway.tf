@@ -169,6 +169,13 @@ resource "aws_apigatewayv2_route" "get_all_ratings" {
   target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
 }
 
+resource "aws_apigatewayv2_route" "get_all_analytics" {
+  api_id = aws_apigatewayv2_api.main.id
+
+  route_key = "GET /all/analytics"
+  target    = "integrations/${aws_apigatewayv2_integration.editarrr_lambda_integration.id}"
+}
+
 resource "aws_lambda_permission" "api_gateway_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"

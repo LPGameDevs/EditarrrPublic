@@ -573,6 +573,54 @@ export const handler = async (event, context) => {
                 }
                 break;
 
+            case "GET /all/analytics":
+                // TODO Validation of request
+
+                // TODO Inclusion of request params in the query
+
+                var scanResponse = await dynamo.send(
+                    new ScanCommand({
+                        TableName: tableNameAnalytics,
+                        // ExpressionAttributeNames: {
+                        // "#AT": "AlbumTitle",
+                        // },
+                        // ProjectionExpression: "#ST, #AT",
+                    })
+                );
+
+                // TODO Validation of response
+
+                var dbAnalytics = scanResponse.Items;
+
+                var responseAnalytics = [];
+                var loopLimit = Math.min(1000, dbAnalytics.length); // Limit the loop to 100 items or the array length, whichever is smaller
+
+                for (let i = 0; i < loopLimit; i++) {
+                    var dbAnalytic = dbAnalytics[i];
+
+                    // TODO Validation
+
+                    var id = extractId(dbAnalytic.sk);
+                    var creatorId = extractId(dbAnalytic.pk);
+
+                    responseAnalytics.push({
+                        "analyticId": id,
+                        "type": dbAnalytic.type,
+                        "value": dbAnalytic.value ?? "",
+                        "creator": {
+                            "id": creatorId ?? "",
+                            "name": dbAnalytic.creatorName ?? ""
+                        },
+                        "submittedAt": dbAnalytic.analyticsSubmittedAt ?? 0
+                    });
+                }
+
+                responseBody = {
+                    "analytics": responseAnalytics,
+                    "total": dbAnalytics.length
+                }
+                break;
+
             default:
                 throw new Error(`Unsupported route: "${event.requestContext.resourceId}"`);
         }

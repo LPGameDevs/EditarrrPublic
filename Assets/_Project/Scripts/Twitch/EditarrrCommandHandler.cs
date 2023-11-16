@@ -12,6 +12,7 @@ namespace Twitch
             _enabledCommands.Add(new GameCommand());
             _enabledCommands.Add(new JumpCommand());
             _enabledCommands.Add(new BouncyCommand());
+            _enabledCommands.Add(new BarkCommand());
         }
 
         private void SendMessages(string messageName, string message) {
