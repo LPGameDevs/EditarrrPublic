@@ -1,4 +1,5 @@
-﻿using Editarrr.LevelEditor;
+﻿using Editarrr.Audio;
+using Editarrr.LevelEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -37,6 +38,8 @@ namespace Editarrr.UI.LevelEditor
                     this.EditorTileSelectionManager.PreviousGroup();
                 else
                     this.EditorTileSelectionManager.NextGroup();
+
+                AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
             }
         }
     }

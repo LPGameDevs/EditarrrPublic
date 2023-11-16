@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ClawdiaAnticipation
+  m_Name: PatrickWindUp
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,13 +20,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: adfcef6c2b040ce2283fb8d54d853b7f, type: 3}
-    - time: 0.2
-      value: {fileID: 21300000, guid: 29f0fc5a1bdf2fc3b86464c5df3eacdd, type: 3}
-    - time: 0.5
-      value: {fileID: 21300000, guid: 686977967490db74da5a924cc1a04a33, type: 3}
+      value: {fileID: 21300000, guid: 3c2288ce8fbe9a04ba3ea255bc7bb85c, type: 3}
+    - time: 0.06666667
+      value: {fileID: 21300000, guid: b05502ebf6a4b7b2380bd7ae3d0361dc, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: 72b784235fa98330c9222043360e6ad7, type: 3}
     attribute: m_Sprite
-    path: 
+    path: Visuals
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 60
@@ -37,27 +37,27 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 0
+      path: 1498428138
       attribute: 0
       script: {fileID: 0}
       typeID: 212
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: adfcef6c2b040ce2283fb8d54d853b7f, type: 3}
-    - {fileID: 21300000, guid: 29f0fc5a1bdf2fc3b86464c5df3eacdd, type: 3}
-    - {fileID: 21300000, guid: 686977967490db74da5a924cc1a04a33, type: 3}
+    - {fileID: 21300000, guid: 3c2288ce8fbe9a04ba3ea255bc7bb85c, type: 3}
+    - {fileID: 21300000, guid: b05502ebf6a4b7b2380bd7ae3d0361dc, type: 3}
+    - {fileID: 21300000, guid: 72b784235fa98330c9222043360e6ad7, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.51666665
+    m_StopTime: 0.18333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 1
+    m_LoopTime: 0
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0

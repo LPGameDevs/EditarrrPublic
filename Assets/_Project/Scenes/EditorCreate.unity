@@ -1772,7 +1772,6 @@ MonoBehaviour:
     <EditorTileSelectionManager>k__BackingField: {fileID: 11400000, guid: b10f562adc978bb468e22b320a6a39dd, type: 2}
     <EditorLevelManager>k__BackingField: {fileID: 11400000, guid: 523fc9c1fa79b0c4ea3bea3e8d1d4677, type: 2}
     <TileDataSlotTemplate>k__BackingField: {fileID: 9197481963319205126, guid: b48c3db677d7a8444a6c7b122c093bb9, type: 3}
-    <TiletipAsset>k__BackingField: {fileID: 9197481963319205126, guid: e02991873edd7ef41b7476b88544b17b, type: 3}
     <TileDataSlotContainerName>k__BackingField: TileSelectionContainer
     <TileDataSlotName>k__BackingField: TileDataSlot
     <TileDataSlotImageName>k__BackingField: Image
@@ -2372,7 +2371,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0
   far clip plane: 1000
   field of view: 60
   orthographic: 1
