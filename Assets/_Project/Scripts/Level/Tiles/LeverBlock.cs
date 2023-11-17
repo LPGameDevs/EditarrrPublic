@@ -1,5 +1,6 @@
 ﻿using Editarrr.LevelEditor;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Editarrr.Level.Tiles
@@ -12,6 +13,11 @@ namespace Editarrr.Level.Tiles
 
         [field: SerializeField] private int Channel { get; set; }
         [field: SerializeField] private bool Inverted { get; set; }
+
+        private List<string> _channelColors = new() 
+        { 
+            "#ffffff", "#639d6d", "#eed878", "#f18770", "#e39bba", "#505db3", "#de9970"
+        };
 
         bool State { get; set; }
 
@@ -65,6 +71,22 @@ namespace Editarrr.Level.Tiles
 
             this.Channel = config.Channel;
             this.Inverted = config.Inverted;
+
+            SetChannelColor();
+        }
+
+        private void SetChannelColor()
+        {
+            var index = this.Channel;
+            
+            if (index >= _channelColors.Count)
+                index -= _channelColors.Count;
+
+            var colorString = _channelColors[index];
+
+            ColorUtility.TryParseHtmlString(colorString, out Color outlineColor);
+
+            SpriteRenderer.material.color = outlineColor;
         }
     }
 }
