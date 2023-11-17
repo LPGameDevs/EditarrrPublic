@@ -8,8 +8,8 @@ namespace Editarrr.Level
     [Serializable]
     public class LevelState
     {
-        public string Creator { get; private set; } = "";
-        public string CreatorName { get; private set; } = "";
+        public string Creator { get; private set; } = ""; //guid
+        public string CreatorName { get; private set; } = ""; //chosen user name
         public bool Published { get; private set; }
 
         public string Code { get; private set; }
