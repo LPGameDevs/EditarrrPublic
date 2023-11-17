@@ -4,10 +4,11 @@ using UnityEngine;
 
 public enum EnemyType
 {
-    chase,
+    dashAttack,
     sentry,
     flying,
-    lunging
+    lunging,
+    anticipator
 }
 
 [CreateAssetMenu(fileName = "EnemyAI", menuName = "EnemyAIData")]
@@ -19,5 +20,5 @@ public class EnemyAIDataSO : ScriptableObject
     public float lungeToPlayerDistance = 0.5f;
     public float pauseTime = 2f;
     public float alertTime = 1f;
-    public EnemyType enemyType = EnemyType.chase;
+    public EnemyType enemyType = EnemyType.dashAttack;
 }

@@ -1455,6 +1455,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4318917341212615922}
     m_Modifications:
+    - target: {fileID: 278635096356356481, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138547908182245263, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3124189786846601556, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -1462,6 +1470,42 @@ PrefabInstance:
     - target: {fileID: 3124189786846601556, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3183695204275624183, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750349070882911889, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342931061420602425, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511227744302457388, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511227744480486446, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511227745131151755, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511227745167546582, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511227745594377216, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5511227745918318410, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5511227745930802508, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
       propertyPath: m_RootOrder
@@ -1510,6 +1554,14 @@ PrefabInstance:
     - target: {fileID: 5511227745930802510, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
       propertyPath: m_Name
       value: AudioManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8411917505519570978, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8862827364233081840, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58af224f7c0d82d4dbd72017bcab4b31, type: 3}

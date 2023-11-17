@@ -5166,7 +5166,7 @@ MonoBehaviour:
   DebugActive: 0
   Sfx: {fileID: 8300000, guid: bda50d1e794260143896766c60390f11, type: 3}
   RandomSfx: []
-  PlayMethod: 1
+  PlayMethod: 0
   MinVolume: 0.4
   MaxVolume: 0.6
   MinPitch: 0.8
@@ -10502,12 +10502,12 @@ MonoBehaviour:
   DebugActive: 0
   Sfx: {fileID: 8300000, guid: 7a3749ccdde7de24ca51fa42c584fcc0, type: 3}
   RandomSfx: []
-  PlayMethod: 1
+  PlayMethod: 0
   MinVolume: 1
   MaxVolume: 1
   MinPitch: 1
   MaxPitch: 1
-  SfxAudioMixerGroup: {fileID: 0}
+  SfxAudioMixerGroup: {fileID: -5282791370902551564, guid: ab21718944d4b7c4388cecbb60b17c06, type: 2}
 --- !u!114 &2012264292147950543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20841,12 +20841,12 @@ MonoBehaviour:
   DebugActive: 0
   Sfx: {fileID: 8300000, guid: 712cd3f7c16f80c408437b71b1b5e664, type: 3}
   RandomSfx: []
-  PlayMethod: 1
+  PlayMethod: 0
   MinVolume: 1
   MaxVolume: 1
   MinPitch: 1
   MaxPitch: 1
-  SfxAudioMixerGroup: {fileID: 0}
+  SfxAudioMixerGroup: {fileID: -5282791370902551564, guid: ab21718944d4b7c4388cecbb60b17c06, type: 2}
 --- !u!114 &9100786096586421920
 MonoBehaviour:
   m_ObjectHideFlags: 0
