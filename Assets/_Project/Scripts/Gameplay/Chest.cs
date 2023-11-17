@@ -1,3 +1,4 @@
+using Player;
 using System;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
@@ -38,7 +39,7 @@ namespace Gameplay
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (_isWon || !_isOpen)
+            if (_isWon || !_isOpen || !other.TryGetComponent<PlayerController>(out PlayerController player))
             {
                 return;
             }

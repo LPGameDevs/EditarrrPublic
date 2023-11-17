@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 5735911789909314014}
   - component: {fileID: 4839205160328424272}
   m_Layer: 10
-  m_Name: FlyingTotem
+  m_Name: Woody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
