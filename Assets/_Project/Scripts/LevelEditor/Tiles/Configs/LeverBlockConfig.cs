@@ -16,7 +16,7 @@
         public LeverBlockConfig(int[] data)
         {
             this.Channel = data[0];
-            this.Inverted = data[1] == 1 ? true : false;
+            this.Inverted = data[1] == 1;
         }
 
         protected override int[] GetJSONData()
@@ -35,7 +35,7 @@
             var channelElement = getElement("Channel", this.Channel);
             channelElement.RegisterCallback<UnityEngine.UIElements.ChangeEvent<string>>(this.SetChannel_Callback);
 
-            var invertedElement = getElement("Start as inactive", this.Inverted);
+            var invertedElement = getElement("Start as active", this.Inverted);
             invertedElement.RegisterCallback<UnityEngine.UIElements.ChangeEvent<bool>>(this.SetInverted_Callback);
 
         }
