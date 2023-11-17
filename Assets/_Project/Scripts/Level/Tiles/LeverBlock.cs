@@ -14,7 +14,7 @@ namespace Editarrr.Level.Tiles
         [field: SerializeField] private int Channel { get; set; }
         [field: SerializeField] private bool Inverted { get; set; }
 
-        private List<string> _channelColors = new() 
+        private readonly List<string> _channelColors = new() 
         { 
             "#ffffff", "#639d6d", "#eed878", "#f18770", "#e39bba", "#505db3", "#de9970"
         };
