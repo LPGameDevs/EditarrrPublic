@@ -82,13 +82,13 @@ namespace Level.Storage
 
             RestClient.Get<AwsLevel>($"{AwsLevelUrl}/levels/{levelSave.RemoteId}").Then(res =>
             {
-                Debug.Log("UPLOAD - Existing level found for " + res.name);
+                Debug.Log("INSERT - Existing level found for " + res.name);
 
                 // Existing level found.
                 this.Update(request, callback);
             }).Catch(_ =>
             {
-                Debug.Log("UPLOAD - No level found for " + request.name);
+                Debug.Log("UPDATE - No existing level found for " + request.name);
                 // No level found.
                 this.Insert(request, callback);
             });
@@ -99,10 +99,10 @@ namespace Level.Storage
             RestClient.Post<AwsUploadResponse>($"{AwsLevelUrl}/levels", JsonUtility.ToJson(request)).Then(res =>
             {
                 callback?.Invoke(request.name, res.id);
-                this.LogMessage("Levels", JsonUtility.ToJson(res, true));
+                Debug.Log(JsonUtility.ToJson(res, true));
 
                 UploadScreenshot(request.name);
-            }).Catch(err => { this.LogMessage("Error", err.Message); });
+            }).Catch(err => { Debug.LogError( err.Message); });
         }
 
         private void Update(AwsLevel request, RemoteLevelStorage_LevelUploadedCallback callback)
@@ -111,7 +111,7 @@ namespace Level.Storage
                 .Then(res =>
                 {
                     callback?.Invoke(request.name, request.id);
-                    this.LogMessage("Levels", JsonUtility.ToJson(res, true));
+                    Debug.Log(JsonUtility.ToJson(res, true));
                 })
                 .Finally(() =>
                 {
@@ -119,7 +119,7 @@ namespace Level.Storage
                 })
                 .Catch(err =>
                 {
-                    this.LogMessage("Error", err.Message);
+                    Debug.LogError( err.Message);
                     throw err;
                 });
         }
@@ -156,11 +156,11 @@ namespace Level.Storage
                 this.DoDownloadScreenshot(res.name);
 
                 // @todo return level data.
-                this.LogMessage(res.id, JsonUtility.ToJson(res, true));
+                Debug.Log(JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
                 callback?.Invoke(null);
-                this.LogMessage("Error", err.Message);
+                Debug.LogError( err.Message);
             });
         }
 
@@ -268,11 +268,11 @@ namespace Level.Storage
                 }
 
                 callback?.Invoke(levelStubs.ToArray(), res.cursor);
-                this.LogMessage("Levels", JsonUtility.ToJson(res, true));
+                Debug.Log(JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
                 callback?.Invoke(null);
-                this.LogMessage("Error", err.Message);
+                Debug.Log( err.Message);
             });
         }
 
@@ -298,7 +298,10 @@ namespace Level.Storage
             {
                 Debug.Log("Score uploaded for level: " + levelSave.Code);
                 callback?.Invoke(levelSave.Code, res.id);
-            }).Catch(err => { this.LogMessage("Error", err.Message); });
+            }).Catch(err =>
+            {
+                Debug.LogError( $"Error submitting score: {err.Message}");
+            });
         }
 
         public void GetScoresForLevel(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
@@ -316,12 +319,12 @@ namespace Level.Storage
                 }
 
                 callback?.Invoke(scoreStubs.ToArray());
-                this.LogMessage("Scores URL", JsonUtility.ToJson(res, true));
-                this.LogMessage("Scores", url);
+                Debug.Log( url);
+                Debug.Log(JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
                 callback?.Invoke(null);
-                this.LogMessage("Error", err.Message);
+                Debug.LogError(err.Message);
             });
         }
 
@@ -342,7 +345,7 @@ namespace Level.Storage
             {
                 Debug.Log("Rating uploaded for level: " + levelSave.Code);
                 callback?.Invoke(levelSave.Code, res.id);
-            }).Catch(err => { this.LogMessage("Error", err.Message); });
+            }).Catch(err => { Debug.LogError(err.Message); });
         }
 
         public void GetRatingsForLevel(string code, RemoteRatingStorage_AllRatingsLoadedCallback callback)
@@ -358,11 +361,11 @@ namespace Level.Storage
                 }
 
                 callback?.Invoke(ratingStubs.ToArray());
-                this.LogMessage("Ratings", JsonUtility.ToJson(res, true));
+                Debug.Log(JsonUtility.ToJson(res, true));
             }).Catch(err =>
             {
                 callback?.Invoke(null);
-                this.LogMessage("Error", err.Message);
+                Debug.LogError(err.Message);
             });
         }
 

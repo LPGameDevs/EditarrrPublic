@@ -69,7 +69,7 @@ namespace Player
         private void OnLand(float verticalSpeed)
         {
             float newAmplitude = 0f;
-            Debug.Log(verticalSpeed);
+            // Debug.Log(verticalSpeed);
             if (verticalSpeed <= -28f)
             {
                 //newAmplitude = Mathf.Pow(_fallTime, _landingCamShakeExponent);

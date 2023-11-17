@@ -15,7 +15,7 @@ export class ScoresApi {
         if (typeof score === "string") {
             score = score.replace(/,/g, '.');
             score = parseFloat(score);
-        } 
+        }
         if (isNaN(score)) throw new BadRequestException(`'score' must be a number`);
         var scoreLevelName = requestJSON.code;
         if (!scoreLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
@@ -29,16 +29,20 @@ export class ScoresApi {
             throw new BadRequestException(`level ${levelId} does not exist`)
         }
 
+        if (level.levelStatus != "PUBLISHED") {
+            throw new BadRequestException(`level ${levelId} is not published.`)
+        }
+
         var generatedScoreId = await this.scoresDbClient.putScore(
-            score, 
+            score,
             levelId,
             scoreLevelName,
             scoreCreatorId,
             scoreCreatorName);
 
         var allScoresForLevel = await this.scoresDbClient.getAllScoresForLevel(levelId);
-        
-        var totalNumberOfScores = 0; 
+
+        var totalNumberOfScores = 0;
         var sumOfAllScores = 0.0;
         for (let i = 0; i < allScoresForLevel.length; i++) {
             var dbScore = allScoresForLevel[i];
@@ -47,7 +51,7 @@ export class ScoresApi {
             sumOfAllScores += dbScore.scoreNumber;
         }
         var avgScore = sumOfAllScores / allScoresForLevel.length;
-        
+
         await this.levelsDbClient.updateLevelScoreData(levelId, avgScore, totalNumberOfScores);
 
         return {
