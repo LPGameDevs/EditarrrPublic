@@ -5,6 +5,7 @@ using Editarrr.Misc;
 using Gameplay;
 using Gameplay.GUI;
 using LevelEditor;
+using Player;
 using Singletons;
 using UI;
 using UnityEngine;
@@ -253,6 +254,7 @@ namespace Editarrr.Level
 
         public override void DoOnEnable()
         {
+            HealthSystem.OnDeath += this.OnPlayerDeath;
             WinMenu.OnScoreSubmit += this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit += this.OnRatingSubmitRequested;
             Chest.OnChestOpened += this.OnLevelCompleted;
@@ -261,10 +263,17 @@ namespace Editarrr.Level
 
         public override void DoOnDisable()
         {
+            HealthSystem.OnDeath -= this.OnPlayerDeath;
             WinMenu.OnScoreSubmit -= this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit -= this.OnRatingSubmitRequested;
             Chest.OnChestOpened -= this.OnLevelCompleted;
             AchievementManager.OnShowAchievement -= OnShowAchievement;
+        }
+
+        private void OnPlayerDeath(object sender, EventArgs e)
+        {
+            string currentUser = PreferencesManager.Instance.GetUserName();
+            TwitchManager.Instance.SendNotification($"{currentUser} just died again in level {_code}.");
         }
     }
 }

@@ -209,5 +209,15 @@ namespace Singletons
             this.SetUserId(id);
             this.StartNewSession();
         }
+
+        public float GetBestLevelTime(string code)
+        {
+            return PlayerPrefs.GetFloat($"BestLevelScore-{code}", 0);
+        }
+
+        public void SetBestLevelTime(string code, float time)
+        {
+            PlayerPrefs.SetFloat($"BestLevelScore-{code}", time);
+        }
     }
 }

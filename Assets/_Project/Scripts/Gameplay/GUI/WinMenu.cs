@@ -126,6 +126,14 @@ namespace Gameplay.GUI
 
             SubmitScore();
 
+            float bestTime = PreferencesManager.Instance.GetBestLevelTime(_code);
+
+            if (bestTime >= time)
+            {
+                return;
+            }
+
+            PreferencesManager.Instance.SetBestLevelTime(_code, _time);
             string currentUser = PreferencesManager.Instance.GetUserName();
             TwitchManager.Instance.SendNotification($"{currentUser} just finished level {_code} in {_timeText}.");
         }
