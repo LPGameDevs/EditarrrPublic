@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Anticipator
   m_EditorClassIdentifier: 
   normalMoveSpeed: 2
-  sawPlayerMoveSpeed: 5
+  sawPlayerMoveSpeed: 6
   detectionRange: 10
   lungeToPlayerDistance: 0.5
   pauseTime: 2

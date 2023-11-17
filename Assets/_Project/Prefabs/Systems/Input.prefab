@@ -106,8 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d187d42a86574544bdc51193c219f71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultTexture: {fileID: 2800000, guid: 4ce3025244c9dcc439df50fe9ad0d5e9, type: 3}
-  _pressedTexture: {fileID: 2800000, guid: 4ce3025244c9dcc439df50fe9ad0d5e9, type: 3}
+  _defaultTexture: {fileID: 2800000, guid: 20ba1daf922595d48a68f7f086ba49b7, type: 3}
+  _pressedTexture: {fileID: 2800000, guid: 58e7b53dfd5ab884e8891dae7d767217, type: 3}
   _uiHoverTexture: {fileID: 2800000, guid: f1553624cf2c34443af959256f7aa79c, type: 3}
   _uiPressedTexture: {fileID: 2800000, guid: 81a5582053478d24bb16db15a4ed9f21, type: 3}
   _clickEffectPrefab: {fileID: 5303451221633855281, guid: 70aa0e590d4ea324fa501260e25ae2e6, type: 3}

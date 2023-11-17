@@ -113,6 +113,7 @@ public class EnemyAIController : PausableCharacter
     {
         if (!IsGrounded(footTransform))
         {
+            _moveSpeed = enemyAIData.sawPlayerMoveSpeed;
             ApplyGravity();
             return;
         }
@@ -137,6 +138,10 @@ public class EnemyAIController : PausableCharacter
                 break;
 
             case AIState.moving:
+                if (!CanMove())
+                {
+                    ChangeActiveState(AIState.pausing);
+                }
                 if (CanSeePlayer())
                 {
                     _timer = 0;
@@ -150,10 +155,10 @@ public class EnemyAIController : PausableCharacter
                     TurnAround();
                     _timer = 0;
                     _moveSpeed = 0;
-                    ChangeActiveState(AIState.pausing);
+                    ChangeActiveState(AIState.idle);
                     return;
                 }
-                Move(_moveSpeed, GetCurrentDirection());
+                Move(enemyAIData.normalMoveSpeed, GetCurrentDirection());
                 break;
 
             case AIState.pausing:
@@ -162,6 +167,9 @@ public class EnemyAIController : PausableCharacter
                 _timer += Time.deltaTime;
                 if (_timer >= enemyAIData.pauseTime)
                 {
+                    if(!CanMove())
+                        TurnAround();
+
                     _timer = 0;
                     ChangeActiveState(AIState.moving);
                 }
@@ -181,7 +189,7 @@ public class EnemyAIController : PausableCharacter
                 if(_timer >= enemyAIData.pauseTime)
                 {
                     _timer = 0;
-                    ChangeActiveState(AIState.idle);
+                    ChangeActiveState(AIState.pausing);
                     return;
                 }
                 break;

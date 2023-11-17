@@ -72,10 +72,10 @@ public class FieldOfView : MonoBehaviour
 
     private void FindVisibleTargets3D()
     {
+        visibleTargets.Clear();
         var targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
         foreach (var t in targetsInViewRadius)
         {
-            visibleTargets.Clear();
             var target = t.transform;
             var dirToTarget = (target.position - transform.position).normalized;
             if (!(Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)) continue;
@@ -89,10 +89,10 @@ public class FieldOfView : MonoBehaviour
 
     private void FindVisibleTargets2D()
     {
+        visibleTargets.Clear();
         var targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, viewRadius, targetMask);
         foreach (var t in targetsInViewRadius)
         {
-            visibleTargets.Clear();
             var target = t.transform;
             var dirToTarget = (target.position - transform.position).normalized;
             float angleFromDirectionFacingToTarget = Vector2.Angle(_directionFacing, dirToTarget);
