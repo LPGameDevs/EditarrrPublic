@@ -9,6 +9,8 @@ namespace Browser
 {
     public class LeaderboardForm : MonoBehaviour
     {
+        public static event Action<string, RemoteScoreStorage_AllScoresLoadedCallback> OnLeaderboardRefreshRequested;
+
         public Transform Rows;
         public LeaderboardRow RowPrefab;
         public GameObject LoadingOverlay;
@@ -58,6 +60,20 @@ namespace Browser
             gameObject.SetActive(false);
             LoadingOverlay.SetActive(true);
             AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
+        }
+
+        public void RefreshButtonPressed()
+        {
+            LoadingOverlay.SetActive(true);
+            OnLeaderboardRefreshRequested?.Invoke(this._code, LeaderboardScoresLoaded);
+            AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
+
+
+            void LeaderboardScoresLoaded(ScoreStub[] scoreStubs)
+            {
+                this.SetScores(scoreStubs);
+                LoadingOverlay.SetActive(false);
+            }
         }
     }
 }
