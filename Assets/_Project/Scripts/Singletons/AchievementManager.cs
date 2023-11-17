@@ -1,8 +1,10 @@
 using System;
+using Editarrr.Level;
 using Editarrr.LevelEditor;
 using Gameplay;
 using Player;
 using SteamIntegration;
+using Systems;
 using UI;
 using UnityEngine;
 
@@ -105,9 +107,11 @@ namespace Singletons
 
         private void HandleAchievementProgress(ThresholdAchievement achievement, bool needsCode = false)
         {
+            var level = FindObjectOfType<LevelPlaySystem>().Manager.Level;
             var saveString = needsCode ? achievement.SavePrefString + _code : achievement.SavePrefString;
+            var currentPlayerID = PreferencesManager.Instance.GetUserId();
 
-            if (saveString != "")
+            if (saveString != "" && level.Creator != currentPlayerID && level.Published)
             {
                 if (!PlayerPrefs.HasKey(saveString))
                 {
