@@ -47,23 +47,33 @@ namespace Singletons
         [SerializeField] ThresholdAchievement LevelCompletedAchievements;
         [SerializeField] ThresholdAchievement DiedInLevelAchievements;
 
-        public void ProgressAchievement(GameAchievement achievement)
+        private void OnEnable()
         {
-            // For achievements that have thresholds we increment the count with every step.
+            HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(DeathAchievements);
+            HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(DiedInLevelAchievements, true);
+            Chest.OnChestOpened += () => HandleAchievementProgress(LevelCompletedAchievements);
+        }
 
-            // Get current count.
-            // Add one.
-            // Check if new threshold is reached.
-            bool thresholdReached = true;
-            if (thresholdReached)
-            {
-                UnlockAchievement(achievement);
-            }
+        private void OnDisable()
+        {
+            HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(DeathAchievements);
+            HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(DiedInLevelAchievements, true);
+            Chest.OnChestOpened -= () => HandleAchievementProgress(LevelCompletedAchievements);
+        }
+
+        public void SetLevelCode(string code)
+        {
+            _code = code;
+        }
+
+        public void Initialize()
+        {
+            // Nothing needed here.
         }
 
         public void UnlockAchievement(GameAchievement achievement)
         {
-            if (!PreferencesManager.Instance.IsAchievementUnlocked(achievement))
+            if (!PreferencesManager.Instance.IsAchievementUnlocked(achievement) && CheckAchievementEgligibility())
             {
                 PreferencesManager.Instance.SetAchievementUnlocked(achievement);
 
@@ -81,37 +91,11 @@ namespace Singletons
             }
         }
 
-        public void SetLevelCode(string code)
-        {
-            _code = code;
-        }
-
-        public void Initialize()
-        {
-            // Nothing needed here.
-        }
-
-        private void OnEnable()
-        {
-            HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(DeathAchievements);
-            HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(DiedInLevelAchievements, true);
-            Chest.OnChestOpened += () => HandleAchievementProgress(LevelCompletedAchievements);
-        }
-
-        private void OnDisable()
-        {
-            HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(DeathAchievements);
-            HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(DiedInLevelAchievements, true);
-            Chest.OnChestOpened -= () => HandleAchievementProgress(LevelCompletedAchievements);
-        }
-
         private void HandleAchievementProgress(ThresholdAchievement achievement, bool needsCode = false)
         {
-            var level = FindObjectOfType<LevelPlaySystem>().Manager.Level;
             var saveString = needsCode ? achievement.SavePrefString + _code : achievement.SavePrefString;
-            var currentPlayerID = PreferencesManager.Instance.GetUserId();
 
-            if (saveString != "" && level.Creator != currentPlayerID && level.Published)
+            if (saveString != "" && CheckAchievementEgligibility())
             {
                 if (!PlayerPrefs.HasKey(saveString))
                 {
@@ -134,6 +118,14 @@ namespace Singletons
                     PlayerPrefs.SetInt(saveString, currentProgress);
                 }
             }
+        }
+
+        private bool CheckAchievementEgligibility()
+        {
+            var level = FindObjectOfType<LevelPlaySystem>().Manager.Level;
+            var currentPlayerID = PreferencesManager.Instance.GetUserId();
+
+            return (level.Creator != currentPlayerID && level.Published);
         }
     }
 }
