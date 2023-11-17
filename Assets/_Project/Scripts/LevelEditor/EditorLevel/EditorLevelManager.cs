@@ -734,7 +734,7 @@ namespace Editarrr.LevelEditor
             this.ScaleX = x;
             this.ScaleY = y;
 
-            Debug.Log($"{this.ScaleX}/{this.ScaleY}");
+            // Debug.Log($"{this.ScaleX}/{this.ScaleY}");
 
             this.EditorGrid.size = new Vector2(this.ScaleX, this.ScaleY);
             this.Tilemap_Foreground.transform.localPosition = new Vector3(

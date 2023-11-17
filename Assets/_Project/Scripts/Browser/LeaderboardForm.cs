@@ -40,7 +40,7 @@ namespace Browser
                 i++;
                 if (i > 5) break;
 
-                if (i == 0 && scoreStub.Creator == PreferencesManager.Instance.GetUserId() /*&& ToDo: not level creator*/)
+                if (i == 1 && scoreStub.Creator == PreferencesManager.Instance.GetUserId() /*&& ToDo: not level creator*/)
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelLeaderboardTopped);
 
                 LeaderboardRow row = Instantiate(RowPrefab, Rows);

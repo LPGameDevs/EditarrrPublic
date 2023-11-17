@@ -125,9 +125,9 @@ public class LevelSelectionLoader : MonoBehaviour
 
         if (filterApplies)
         {
-            Debug.Log(level.Code);
-            Debug.Log(currentUserId);
-            Debug.Log(level.Creator);
+            // Debug.Log(level.Code);
+            // Debug.Log(currentUserId);
+            // Debug.Log(level.Creator);
         }
 
         return filterApplies;

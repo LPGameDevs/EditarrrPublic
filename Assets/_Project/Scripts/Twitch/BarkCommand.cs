@@ -17,11 +17,25 @@ namespace Twitch
                 AudioManager.Instance.PlayAudioClip("Booty01");
             }
 
+            if (message.Contains("arrr"))
+            {
+                AudioManager.Instance.PlayAudioClip("Arrr01");
+            }
+
+            if (message.Contains("yohoho"))
+            {
+                AudioManager.Instance.PlayAudioClip("YoHoHo01");
+            }
+
+            if (message.Contains("yarr"))
+            {
+                AudioManager.Instance.PlayAudioClip("Yarr01");
+            }
+
             if (message.Contains("stupid"))
             {
                 AudioManager.Instance.PlayAudioClip("stupid");
             }
-            Debug.Log(message);
         }
 
     }

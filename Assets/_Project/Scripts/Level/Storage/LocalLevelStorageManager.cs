@@ -90,8 +90,6 @@ namespace Editarrr.Level
             code = code.ToLower();
             string path = this.GetCreateLevelPath(code) + "level.json";
 
-            Debug.Log($"Local Save: {path}");
-
             // Write to local storage
             File.WriteAllText(path, data);
         }
@@ -99,8 +97,6 @@ namespace Editarrr.Level
         public override void SaveScreenshot(string code, byte[] screenshot)
         {
             string path = this.GetCreateLevelPath(code) + "screenshot.png";
-
-            Debug.Log($"Local Save Screenshot: {path}");
 
             // Write to local storage
             File.WriteAllBytes(path, screenshot);
