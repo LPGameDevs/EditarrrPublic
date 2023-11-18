@@ -17,45 +17,22 @@ namespace Editarrr.Level.Tiles
 
         private readonly List<string> _channelColors = new() 
         { 
-            "#ffffff", "#639d6d", "#eed878", "#f18770", "#e39bba", "#505db3", "#de9970"
+            "#ffffff", //white
+            "#639d6d", //light green
+            "#b43b6a", //dark red-violet
+            "#f18770", //orange
+            "#e39bba", //pink
+            "#505db3", //blue
+            "#82bbca", //light blue
         };
 
         bool State { get; set; }
-
-        public int SurroundingLeverBoxes { get; private set; } = 0;
-
-        private List<LeverBlock> _surroundingBlocks = new();
-        private float _hitBoxIndex = 1.5f;
 
         private void Start()
         {
             this.State = this.Inverted;
 
             this.SetState(this.State);
-            
-            //GetSourroundingBoxCount();
-            //SetSortingOrder(SurroundingLeverBoxes);
-        }
-
-        private void GetSourroundingBoxCount()
-        {
-            var hitBoxes = Physics2D.OverlapBoxAll(transform.position, SpriteRenderer.bounds.size * _hitBoxIndex, 0f);
-            _surroundingBlocks.Clear();
-            SurroundingLeverBoxes = 0;
-
-            foreach (var box in hitBoxes)
-            {
-                var parent = box.gameObject.transform.parent;
-                var topParent = parent == null ? null : parent.parent;
-
-                if (topParent != null && topParent.TryGetComponent(out LeverBlock _))
-                    SurroundingLeverBoxes++;
-            }
-
-            _hitBoxIndex++;
-
-            while (SurroundingLeverBoxes % 9 == 0 && _hitBoxIndex < 200)
-                GetSourroundingBoxCount();
         }
         
         private void OnEnable()
@@ -119,17 +96,6 @@ namespace Editarrr.Level.Tiles
             ColorUtility.TryParseHtmlString(colorString, out Color outlineColor);
 
             OutlineRenderer.material.color = outlineColor;
-        }
-
-        private void SetSortingOrder(int increase)
-        {
-            SpriteRenderer.sortingOrder = increase + 1;
-            OutlineRenderer.sortingOrder = increase;
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.DrawCube(transform.position, SpriteRenderer.bounds.size * 1.5f);
         }
     }
 }

@@ -26,6 +26,26 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_0d0e617f4edb4cb8b4e9a33a068f31fa_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_11b61894e91142afa729e7bd0bf49a16_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_3ab960229cd4423ea47d27ec6642a7ec_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 7c4d744720c7f1745aab48035f2f47d3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_4cf0df11904c45249731137d86acbce9_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_f91bfdae95d145559a220fb37d695f35_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BUILTIN_AlphaClip: 0
@@ -40,7 +60,7 @@ Material:
     - _BUILTIN_ZWrite: 1
     - _BUILTIN_ZWriteControl: 1
     - _MaxOverlap: 1
-    - _Thickness: 0.05
+    - _Thickness: 0.03
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _OverlapColor: {r: 1, g: 0, b: 0, a: 1}
