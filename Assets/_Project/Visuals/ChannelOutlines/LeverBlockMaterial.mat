@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ChannelOutleinMaterial
+  m_Name: LeverBlockMaterial
   m_Shader: {fileID: -6465566751694194690, guid: 3e01c6c11091bde419ff351b57c57178, type: 3}
   m_ValidKeywords:
   - _BUILTIN_SURFACE_TYPE_TRANSPARENT
@@ -34,11 +34,27 @@ Material:
         m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_1797efcba76941d39e16c655cede4663_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_3ab960229cd4423ea47d27ec6642a7ec_Texture_1:
         m_Texture: {fileID: 2800000, guid: 7c4d744720c7f1745aab48035f2f47d3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_4cf0df11904c45249731137d86acbce9_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_a56d17080a414d2db5080b640e43b5d0_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_c45c3ce912f14562856b93a9b7e063a2_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_e4f9f593539045129f6ee140d15f12ab_Texture_1:
         m_Texture: {fileID: 2800000, guid: 356ada4cc78fd50469b889ec00d64f70, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -56,9 +72,10 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _BUILTIN_SrcBlend: 5
     - _BUILTIN_Surface: 1
-    - _BUILTIN_ZTest: 8
-    - _BUILTIN_ZWrite: 1
-    - _BUILTIN_ZWriteControl: 1
+    - _BUILTIN_ZTest: 2
+    - _BUILTIN_ZWrite: 0
+    - _BUILTIN_ZWriteControl: 0
+    - _IsLever: 0
     - _MaxOverlap: 1
     - _Thickness: 0.03
     m_Colors:

@@ -16,6 +16,7 @@ namespace Editarrr.Level.Tiles
         [SerializeField] Animator _animator;
         [SerializeField] AudioSource _audioSource;
         [SerializeField] AudioClip _activateClip, _deactivateClip;
+        [SerializeField] SpriteRenderer _outlineRenderer;
 
         const string ANIMATOR_ACTIVATE_NAME = "Activate";
         const string ANIMATOR_DEACTIVATE_NAME = "Deactivate";
@@ -53,6 +54,22 @@ namespace Editarrr.Level.Tiles
                 return;
 
             this.Channel = config.Channel;
+            SetChannelColor();
+        }
+
+        private void SetChannelColor()
+        {
+            var index = this.Channel;
+            var channelColors = ChannelOutlineColors.ChannelColors;
+
+            if (index >= channelColors.Count)
+                index -= channelColors.Count;
+
+            var colorString = channelColors[index];
+
+            ColorUtility.TryParseHtmlString(colorString, out Color outlineColor);
+
+            _outlineRenderer.material.color = outlineColor;
         }
     }
 }

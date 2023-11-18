@@ -15,17 +15,6 @@ namespace Editarrr.Level.Tiles
         [field: SerializeField] private int Channel { get; set; }
         [field: SerializeField] private bool Inverted { get; set; }
 
-        private readonly List<string> _channelColors = new() 
-        { 
-            "#ffffff", //white
-            "#639d6d", //light green
-            "#b43b6a", //dark red-violet
-            "#f18770", //orange
-            "#e39bba", //pink
-            "#505db3", //blue
-            "#82bbca", //light blue
-        };
-
         bool State { get; set; }
 
         private void Start()
@@ -67,7 +56,6 @@ namespace Editarrr.Level.Tiles
             this.OutlineRenderer.color = this.State ? outlineColor : outlineColor * .5f;
         }
 
-
         public void Configure(TileConfig config)
         {
             this.Configure(config as LeverBlockConfig);
@@ -87,15 +75,30 @@ namespace Editarrr.Level.Tiles
         private void SetChannelColor()
         {
             var index = this.Channel;
+            var channelColors = ChannelOutlineColors.ChannelColors;
             
-            if (index >= _channelColors.Count)
-                index -= _channelColors.Count;
+            if (index >= channelColors.Count)
+                index -= channelColors.Count;
 
-            var colorString = _channelColors[index];
+            var colorString = channelColors[index];
 
             ColorUtility.TryParseHtmlString(colorString, out Color outlineColor);
 
             OutlineRenderer.material.color = outlineColor;
         }
+    }
+
+    public class ChannelOutlineColors
+    {
+        public static List<string> ChannelColors { get; private set; } = new()
+        { 
+            "#ffffff", //white
+            "#639d6d", //light green
+            "#b43b6a", //dark red-violet
+            "#f18770", //orange
+            "#e39bba", //pink
+            "#505db3", //blue
+            "#82bbca", //light blue
+        };
     }
 }

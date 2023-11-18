@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1dfe1f8365a2e1a4ea898412e9ff6ba8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -245,11 +245,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Channel>k__BackingField: 0
-  <IsActive>k__BackingField: 0
+  <IsActivated>k__BackingField: 0
   _animator: {fileID: 6120981550509930999}
   _audioSource: {fileID: 8643792342970903424}
   _activateClip: {fileID: 8300000, guid: a4003e29c7455444f8a421901921222d, type: 3}
   _deactivateClip: {fileID: 8300000, guid: a5a07dbea2adced4ab2769426d28376e, type: 3}
+  _outlineRenderer: {fileID: 2692961679778758021}
 --- !u!95 &6120981550509930999
 Animator:
   serializedVersion: 5
