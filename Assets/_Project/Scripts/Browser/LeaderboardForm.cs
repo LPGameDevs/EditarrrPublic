@@ -9,6 +9,8 @@ namespace Browser
 {
     public class LeaderboardForm : MonoBehaviour
     {
+        public static event Action<string, RemoteScoreStorage_AllScoresLoadedCallback> OnLeaderboardRefreshRequested;
+
         public Transform Rows;
         public LeaderboardRow RowPrefab;
         public GameObject LoadingOverlay;
@@ -40,7 +42,7 @@ namespace Browser
                 i++;
                 if (i > 5) break;
 
-                if (i == 0 && scoreStub.Creator == PreferencesManager.Instance.GetUserId() /*&& ToDo: not level creator*/)
+                if (i == 1 && scoreStub.Creator == PreferencesManager.Instance.GetUserId() /*&& ToDo: not level creator*/)
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelLeaderboardTopped);
 
                 LeaderboardRow row = Instantiate(RowPrefab, Rows);
@@ -58,6 +60,20 @@ namespace Browser
             gameObject.SetActive(false);
             LoadingOverlay.SetActive(true);
             AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
+        }
+
+        public void RefreshButtonPressed()
+        {
+            LoadingOverlay.SetActive(true);
+            OnLeaderboardRefreshRequested?.Invoke(this._code, LeaderboardScoresLoaded);
+            AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
+
+
+            void LeaderboardScoresLoaded(ScoreStub[] scoreStubs)
+            {
+                this.SetScores(scoreStubs);
+                LoadingOverlay.SetActive(false);
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using Player;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -46,12 +47,15 @@ public class EnemyAIController : PausableCharacter
 
     private Vector3 _spawnLocation;
 
+    private float _originalFOVRadius;
+
     private void Start()
     {
+        _originalFOVRadius = fieldOfView.viewRadius;
         _spawnLocation = transform.position;
         switch (enemyAIData.enemyType)
         {
-            case EnemyType.chase:
+            case EnemyType.dashAttack:
                 _moveSpeed = enemyAIData.normalMoveSpeed;
                 ChangeActiveState(AIState.pausing);
                 break;
@@ -71,6 +75,10 @@ public class EnemyAIController : PausableCharacter
                 ChangeActiveState(AIState.idle);
                 break;
 
+            case EnemyType.anticipator:
+                _moveSpeed = 0;
+                ChangeActiveState(AIState.idle);
+                break;
         }
     }
 
@@ -79,8 +87,8 @@ public class EnemyAIController : PausableCharacter
         if (!_active) return;
         switch (enemyAIData.enemyType)
         {
-            case EnemyType.chase:
-                EnemyChase();
+            case EnemyType.dashAttack:
+                EnemyDashAttack();
                 break;
 
             case EnemyType.sentry:
@@ -93,6 +101,108 @@ public class EnemyAIController : PausableCharacter
 
             case EnemyType.flying:
                 EnemyFlying();
+                break;
+
+            case EnemyType.anticipator:
+                EnemyAnticipator();
+                break;
+        }
+    }
+
+    private void EnemyAnticipator()
+    {
+        if (!IsGrounded(footTransform))
+        {
+            _moveSpeed = enemyAIData.sawPlayerMoveSpeed;
+            ApplyGravity();
+            return;
+        }
+
+        switch (_aiState)
+        {
+            case AIState.idle:
+                if (CanSeePlayer())
+                {
+                    _timer = 0;
+                    _moveSpeed = 0;
+                    ChangeActiveState(AIState.alerting);
+                    return;
+                }
+                _timer += Time.deltaTime;
+                if (_timer >= enemyAIData.pauseTime)
+                {
+                    TurnAround();
+                    _timer = 0;
+                    _moveSpeed = 0;
+                }
+                break;
+
+            case AIState.moving:
+                if (!CanMove())
+                {
+                    ChangeActiveState(AIState.pausing);
+                }
+                if (CanSeePlayer())
+                {
+                    _timer = 0;
+                    _moveSpeed = 0;
+                    ChangeActiveState(AIState.alerting);
+                    return;
+                }
+
+                if (_timer >= enemyAIData.pauseTime)
+                {
+                    TurnAround();
+                    _timer = 0;
+                    _moveSpeed = 0;
+                    ChangeActiveState(AIState.idle);
+                    return;
+                }
+                Move(enemyAIData.normalMoveSpeed, GetCurrentDirection());
+                break;
+
+            case AIState.pausing:
+                fieldOfView.viewRadius = _originalFOVRadius;
+                //Drops enemy onto ground
+                _timer += Time.deltaTime;
+                if (_timer >= enemyAIData.pauseTime)
+                {
+                    if(!CanMove())
+                        TurnAround();
+
+                    _timer = 0;
+                    ChangeActiveState(AIState.moving);
+                }
+                break;
+
+            case AIState.alerting:
+                fieldOfView.viewRadius = 2;
+                _timer += Time.deltaTime;
+                if (_timer >= enemyAIData.alertTime)
+                {
+                    if(CanSeePlayer())
+                    {
+                        _timer = 0;
+                        ChangeActiveState(AIState.attacking);
+                    }
+                }
+                if(_timer >= enemyAIData.pauseTime)
+                {
+                    _timer = 0;
+                    ChangeActiveState(AIState.pausing);
+                    return;
+                }
+                break;
+
+            case AIState.attacking:
+                _timer += Time.deltaTime;
+                if (_timer >= enemyAIData.alertTime)
+                {
+                    _timer = 0;
+                    _moveSpeed = 0;
+                    ChangeActiveState(AIState.pausing);
+                    return;
+                }
                 break;
         }
     }
@@ -282,7 +392,7 @@ public class EnemyAIController : PausableCharacter
         }
     }
 
-    private void EnemyChase()
+    private void EnemyDashAttack()
     {
         switch (_aiState)
         {
@@ -310,10 +420,7 @@ public class EnemyAIController : PausableCharacter
                 _timer += Time.deltaTime;
                 if (_timer >= enemyAIData.alertTime)
                 {
-                    if (CanSeePlayer())
-                    {
-                        ChangeActiveState(AIState.attacking);
-                    }
+                    ChangeActiveState(AIState.attacking);
                     _timer = 0;
                     _moveSpeed = 0;
                 }
@@ -325,7 +432,6 @@ public class EnemyAIController : PausableCharacter
                     _timer += Time.deltaTime;
                     if (_timer >= enemyAIData.pauseTime)
                     {
-                        TurnAround();
                         _timer = 0;
                         _moveSpeed = 0;
                         print("Can't see player, pausing");

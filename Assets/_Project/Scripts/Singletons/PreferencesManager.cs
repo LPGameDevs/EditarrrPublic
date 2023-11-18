@@ -30,7 +30,7 @@ namespace Singletons
                 userId = Guid.NewGuid().ToString();
                 this.SetUserId(userId);
 
-                AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.NewUserRegistered);
+                // AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.NewUserRegistered);
             }
 
             return userId;
@@ -208,6 +208,16 @@ namespace Singletons
             PlayerPrefs.DeleteAll();
             this.SetUserId(id);
             this.StartNewSession();
+        }
+
+        public float GetBestLevelTime(string code)
+        {
+            return PlayerPrefs.GetFloat($"BestLevelScore-{code}", 0);
+        }
+
+        public void SetBestLevelTime(string code, float time)
+        {
+            PlayerPrefs.SetFloat($"BestLevelScore-{code}", time);
         }
     }
 }

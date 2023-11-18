@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Editarrr.Audio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,11 +41,13 @@ namespace Editarrr.UI.LevelEditor
         protected static void PointerEnter(PointerEnterEvent pointerEnterEvent)
         {
             LevelEditorScreen.OnPointerEnter?.Invoke();
+            AudioManager.Instance.PlayAudioClip(AudioManager.MINOR_CLICK_CLIP_NAME);
         }
 
         protected static void PointerLeave(PointerLeaveEvent pointerLeaveEvent)
         {
             LevelEditorScreen.OnPointerLeave?.Invoke();
+            AudioManager.Instance.PlayAudioClip(AudioManager.MINOR_CLICK_CLIP_NAME);
         }
 
         protected static void InputFocus(FocusEvent focusEvent)

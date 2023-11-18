@@ -39,7 +39,7 @@ namespace Player
                 this.InputJumpTime = float.MinValue;
 
                 OnPlayerJumped?.Invoke();
-                Debug.Log($"Jump == VS: {this.VerticalSpeed}, CT: {this.CoyoteTimeActive}, JB: {this.JumpBufferActive}");
+                // Debug.Log($"Jump == VS: {this.VerticalSpeed}, CT: {this.CoyoteTimeActive}, JB: {this.JumpBufferActive}");
 
                 if (!_twitchBouncy)
                 {

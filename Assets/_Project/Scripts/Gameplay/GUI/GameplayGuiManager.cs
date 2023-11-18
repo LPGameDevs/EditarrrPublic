@@ -1,3 +1,4 @@
+using Browser;
 using Editarrr.Audio;
 using Editarrr.Input;
 using Editarrr.Level;
@@ -174,12 +175,14 @@ namespace Gameplay.GUI
         {
             Chest.OnChestOpened += ShowWinMenu;
             WinMenu.OnLeaderboardRequested += GetLeaderboardScores;
+            LeaderboardForm.OnLeaderboardRefreshRequested += GetLeaderboardScores;
         }
 
         private void OnDisable()
         {
             Chest.OnChestOpened -= ShowWinMenu;
             WinMenu.OnLeaderboardRequested -= GetLeaderboardScores;
+            LeaderboardForm.OnLeaderboardRefreshRequested -= GetLeaderboardScores;
         }
     }
 }

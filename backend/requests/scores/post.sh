@@ -10,7 +10,7 @@ fi
 
 curl -X "POST" -H "Content-Type: application/json" -d \
     '{
-        "score": "7.0", 
+        "score": "10,11", 
         "code": "29995",
         "creator": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
         "creatorName": "Murphys dad"

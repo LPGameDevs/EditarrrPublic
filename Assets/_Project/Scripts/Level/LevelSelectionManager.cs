@@ -247,6 +247,15 @@ public class LevelSelectionManager : ManagerComponent
 
     }
 
+    private void GetLeaderboardScores(string code, RemoteScoreStorage_AllScoresLoadedCallback callback)
+    {
+        this.LevelManager.LevelStorage.LoadLevelData(code, LeaderboardLevelDataLoaded);
+        void LeaderboardLevelDataLoaded(LevelSave levelSave)
+        {
+            this.LevelManager.GetScoresForLevel(levelSave.RemoteId, callback);
+        }
+    }
+
     public override void DoOnEnable()
     {
         EditorLevel.OnEditorLevelSelected += OnLevelSelected;
@@ -256,6 +265,7 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnLeaderboardRequest += OnLeaderboardRequested;
         LevelSelectionLoader.OnFilterChanged += OnFilterLevels;
         AchievementManager.OnShowAchievement += OnShowAchievement;
+        LeaderboardForm.OnLeaderboardRefreshRequested += GetLeaderboardScores;
     }
 
     public override void DoOnDisable()
@@ -267,5 +277,6 @@ public class LevelSelectionManager : ManagerComponent
         EditorLevel.OnLeaderboardRequest -= OnLeaderboardRequested;
         LevelSelectionLoader.OnFilterChanged -= OnFilterLevels;
         AchievementManager.OnShowAchievement -= OnShowAchievement;
+        LeaderboardForm.OnLeaderboardRefreshRequested -= GetLeaderboardScores;
     }
 }

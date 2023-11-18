@@ -5399,6 +5399,7 @@ GameObject:
   - component: {fileID: 4408700941482092516}
   - component: {fileID: 7047749452674007512}
   - component: {fileID: 347201138724952191}
+  - component: {fileID: 1957823201609385484}
   m_Layer: 5
   m_Name: StreamSetting
   m_TagString: Untagged
@@ -5594,6 +5595,25 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: -2, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!114 &1957823201609385484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4031585934234407149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectableComponent: {fileID: 4408700941482092516}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 7047749452674007512}
+  _shadow2: {fileID: 347201138724952191}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &4206668450350542761
 GameObject:
   m_ObjectHideFlags: 0
@@ -7986,6 +8006,7 @@ GameObject:
   - component: {fileID: 5947838098814844898}
   - component: {fileID: 231139588800515082}
   - component: {fileID: 4694139946397635266}
+  - component: {fileID: 9188125631586940948}
   m_Layer: 5
   m_Name: FPSSetting
   m_TagString: Untagged
@@ -8193,6 +8214,25 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: -2, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!114 &9188125631586940948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5737311141929607227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c07dac61a176fd948a7bd29251b9a1c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectableComponent: {fileID: 5947838098814844898}
+  _hoverClip: {fileID: 0}
+  _shadow1: {fileID: 231139588800515082}
+  _shadow2: {fileID: 4694139946397635266}
+  _outline1: {fileID: 0}
+  _outline2: {fileID: 0}
+  _nameTag: 
 --- !u!1 &5774571498753237475
 GameObject:
   m_ObjectHideFlags: 0
@@ -9762,7 +9802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

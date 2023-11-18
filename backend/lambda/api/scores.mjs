@@ -12,8 +12,11 @@ export class ScoresApi {
     async postScore(levelId, requestJSON) {
         var score = requestJSON.score;
         if (!score) throw new BadRequestException(`'score' must be provided in the request.`);
-        score = score.replace(/,/g, '.');
-        if (isNaN(parseFloat(score))) throw new BadRequestException(`'score' must be a number`);
+        if (typeof score === "string") {
+            score = score.replace(/,/g, '.');
+            score = parseFloat(score);
+        }
+        if (isNaN(score)) throw new BadRequestException(`'score' must be a number`);
         var scoreLevelName = requestJSON.code;
         if (!scoreLevelName) throw new BadRequestException(`'code' must be provided in the request.`);
         var scoreCreatorId = requestJSON.creator;
@@ -26,25 +29,29 @@ export class ScoresApi {
             throw new BadRequestException(`level ${levelId} does not exist`)
         }
 
+        if (level.levelStatus != "PUBLISHED") {
+            throw new BadRequestException(`level ${levelId} is not published.`)
+        }
+
         var generatedScoreId = await this.scoresDbClient.putScore(
-            score, 
+            score,
             levelId,
             scoreLevelName,
             scoreCreatorId,
             scoreCreatorName);
 
         var allScoresForLevel = await this.scoresDbClient.getAllScoresForLevel(levelId);
-        
-        var totalNumberOfScores = 0; 
+
+        var totalNumberOfScores = 0;
         var sumOfAllScores = 0.0;
         for (let i = 0; i < allScoresForLevel.length; i++) {
             var dbScore = allScoresForLevel[i];
 
             totalNumberOfScores++;
-            sumOfAllScores += parseFloat(dbScore.score);
+            sumOfAllScores += dbScore.scoreNumber;
         }
         var avgScore = sumOfAllScores / allScoresForLevel.length;
-        
+
         await this.levelsDbClient.updateLevelScoreData(levelId, avgScore, totalNumberOfScores);
 
         return {
@@ -128,7 +135,7 @@ export class ScoresApi {
             responseScores.push({
                 "scoreId": id,
                 "levelId": levelId,
-                "score": dbScore.score,
+                "score": dbScore.scoreNumber,
                 "code": dbScore.scoreLevelName,
                 "creator": {
                     "id": dbScore.scoreCreatorId,

@@ -19,7 +19,7 @@ var scoresApi;
 var tableNameScores = "editarrr-score-storage";
 var tableNameLevels = "editarrr-level-storage";
 
-var indexLevelNameScore = "scoreLevelName-score-index";
+var indexLevelNameScore = "scoreLevelName-scoreNumber-index";
 
 describe('PostScore', function () {
     
@@ -59,7 +59,7 @@ describe('PostScore', function () {
 
         ddbClientSendStub.withArgs(match.has("input", {
             TableName: tableNameScores,
-            IndexName: "scoreLevelName-score-index",
+            IndexName: "scoreLevelName-scoreNumber-index",
             // TODO can we do a subset of attributes?
             Select: "ALL_PROJECTED_ATTRIBUTES",
             ScanIndexForward: true,
@@ -70,10 +70,10 @@ describe('PostScore', function () {
         })).returns({
             "Items": [
                 {
-                    score: "1.0"
+                    scoreNumber: 1.0
                 },
                 {
-                    score: "3.0"
+                    scoreNumber: 3.0
                 }
             ]
         });
@@ -91,7 +91,7 @@ describe('PostScore', function () {
             match.has("TableName", tableNameScores).and(
             match.has("Item", 
                 match.has("pk", `LEVEL#${levelId}`).and(
-                match.has("score", "1.0")),
+                match.has("scoreNumber", 1)),
         ))));
         assert.calledWith(ddbClientSendStub, match.has("input", {
             TableName: tableNameLevels,
@@ -135,7 +135,7 @@ describe('PostScore', function () {
 
         ddbClientSendStub.withArgs(match.has("input", {
             TableName: tableNameScores,
-            IndexName: "scoreLevelName-score-index",
+            IndexName: "scoreLevelName-scoreNumber-index",
             // TODO can we do a subset of attributes?
             Select: "ALL_PROJECTED_ATTRIBUTES",
             ScanIndexForward: true,
@@ -146,10 +146,10 @@ describe('PostScore', function () {
         })).returns({
             "Items": [
                 {
-                    score: "1.0"
+                    scoreNumber: 1.0
                 },
                 {
-                    score: "3.0"
+                    scoreNumber: 3.0
                 }
             ]
         });
@@ -167,7 +167,7 @@ describe('PostScore', function () {
             match.has("TableName", tableNameScores).and(
             match.has("Item", 
                 match.has("pk", `LEVEL#${levelId}`).and(
-                match.has("score", "1.234")),
+                match.has("scoreNumber", 1.234)),
         ))));
         assert.calledWith(ddbClientSendStub, match.has("input", {
             TableName: tableNameLevels,
@@ -242,7 +242,7 @@ describe('GetPagedScores', function() {
                 {
                     "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                     "sk": "SCORE#52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
-                    "score": "0.6215752",
+                    "scoreNumber": 0.6215752,
                     "scoreLevelName": "29995",
                     "scoreSubmittedAt": 1698964301163,
                     "scoreCreatorId": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",
@@ -251,7 +251,7 @@ describe('GetPagedScores', function() {
                 {
                     "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                     "sk": "SCORE#6580188b-eec0-44a9-9e56-2de2e5b9a937",
-                    "score": "1.0",
+                    "scoreNumber": 1.0,
                     "scoreLevelName": "29995",
                     "scoreSubmittedAt": 1698938196593,
                     "scoreCreatorId": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
@@ -276,7 +276,7 @@ describe('GetPagedScores', function() {
                 {
                     "scoreId": "52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
                     "levelId": "5246cf90-7f7f-4074-aea1-ba543d27ed63",
-                    "score": "0.6215752",
+                    "score": 0.6215752,
                     "code": "29995",
                     "creator": {
                         "id": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",
@@ -287,7 +287,7 @@ describe('GetPagedScores', function() {
                 {
                     "scoreId": "6580188b-eec0-44a9-9e56-2de2e5b9a937",
                     "levelId": "5246cf90-7f7f-4074-aea1-ba543d27ed63",
-                    "score": "1.0",
+                    "score": 1.0,
                     "code": "29995",
                     "creator": {
                         "id": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
@@ -323,7 +323,7 @@ describe('GetPagedScores', function() {
                 {
                     "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                     "sk": "SCORE#6580188b-eec0-44a9-9e56-2de2e5b9a937",
-                    "score": "1.0",
+                    "scoreNumber": 1.0,
                     "scoreLevelName": "29995",
                     "scoreSubmittedAt": 1698938196593,
                     "scoreCreatorId": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
@@ -332,7 +332,7 @@ describe('GetPagedScores', function() {
                 {
                     "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                     "sk": "SCORE#52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
-                    "score": "0.6215752",
+                    "scoreNumber": 0.6215752,
                     "scoreLevelName": "29995",
                     "scoreSubmittedAt": 1698964301163,
                     "scoreCreatorId": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",
@@ -357,7 +357,7 @@ describe('GetPagedScores', function() {
                 {
                     "scoreId": "6580188b-eec0-44a9-9e56-2de2e5b9a937",
                     "levelId": "5246cf90-7f7f-4074-aea1-ba543d27ed63",
-                    "score": "1.0",
+                    "score": 1.0,
                     "code": "29995",
                     "creator": {
                         "id": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
@@ -368,7 +368,7 @@ describe('GetPagedScores', function() {
                 {
                     "scoreId": "52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
                     "levelId": "5246cf90-7f7f-4074-aea1-ba543d27ed63",
-                    "score": "0.6215752",
+                    "score": 0.6215752,
                     "code": "29995",
                     "creator": {
                         "id": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",
@@ -404,7 +404,7 @@ describe('GetPagedScores', function() {
                 {
                     "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                     "sk": "SCORE#52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
-                    "score": "0.6215752",
+                    "scoreNumber": 0.6215752,
                     "scoreLevelName": "29995",
                     "scoreSubmittedAt": 1698964301163,
                     "scoreCreatorId": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",
@@ -414,7 +414,7 @@ describe('GetPagedScores', function() {
             "LastEvaluatedKey": {
                 "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                 "sk": "SCORE#52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
-                "score": "0.6215752",
+                "scoreNumber": 0.6215752,
             },
         });
 
@@ -434,7 +434,7 @@ describe('GetPagedScores', function() {
                 {
                     "scoreId": "52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
                     "levelId": "5246cf90-7f7f-4074-aea1-ba543d27ed63",
-                    "score": "0.6215752",
+                    "score": 0.6215752,
                     "code": "29995",
                     "creator": {
                         "id": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",
@@ -466,7 +466,7 @@ describe('GetPagedScores', function() {
             "Item": {
                 "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                 "sk": "SCORE#52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
-                "score": "0.6215752",
+                "scoreNumber": 0.6215752,
                 "scoreLevelName": "29995",
                 "scoreSubmittedAt": 1698964301163,
                 "scoreCreatorId": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",
@@ -487,14 +487,14 @@ describe('GetPagedScores', function() {
             ExclusiveStartKey: {
                 "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                 "sk": "SCORE#52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
-                "score": "0.6215752",
+                "scoreNumber": 0.6215752,
             },
         })).returns({
             "Items":[
                 {
                     "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                     "sk": "SCORE#6580188b-eec0-44a9-9e56-2de2e5b9a937",
-                    "score": "1.0",
+                    "scoreNumber": 1.0,
                     "scoreLevelName": "29995",
                     "scoreSubmittedAt": 1698938196593,
                     "scoreCreatorId": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
@@ -519,7 +519,7 @@ describe('GetPagedScores', function() {
                 {
                     "scoreId": "6580188b-eec0-44a9-9e56-2de2e5b9a937",
                     "levelId": "5246cf90-7f7f-4074-aea1-ba543d27ed63",
-                    "score": "1.0",
+                    "score": 1.0,
                     "code": "29995",
                     "creator": {
                         "id": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
@@ -554,7 +554,7 @@ describe('GetPagedScores', function() {
                 {
                     "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                     "sk": "SCORE#52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
-                    "score": "0.6215752",
+                    "scoreNumber": 0.6215752,
                     "scoreLevelName": "29995",
                     "scoreSubmittedAt": 1698964301163,
                     "scoreCreatorId": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",
@@ -563,7 +563,7 @@ describe('GetPagedScores', function() {
                 {
                     "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                     "sk": "SCORE#6580188b-eec0-44a9-9e56-2de2e5b9a937",
-                    "score": "1.0",
+                    "scoreNumber": 1.0,
                     "scoreLevelName": "29995",
                     "scoreSubmittedAt": 1698938196593,
                     "scoreCreatorId": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
@@ -572,7 +572,7 @@ describe('GetPagedScores', function() {
                 {
                     "pk": "LEVEL#5246cf90-7f7f-4074-aea1-ba543d27ed63",
                     "sk": "SCORE#6580188b-eec0-44a9-9e56-2de2e5b9a937",
-                    "score": "1.0",
+                    "scoreNumber": 1.0,
                     "scoreLevelName": "29995",
                     "scoreSubmittedAt": 1698938196593,
                     "scoreCreatorId": "2cbe4992-950e-43bc-9fec-4e6138b5ce74",
@@ -597,7 +597,7 @@ describe('GetPagedScores', function() {
                 {
                     "scoreId": "52dff6ed-eb42-4ec1-81d6-d36db8d048d6",
                     "levelId": "5246cf90-7f7f-4074-aea1-ba543d27ed63",
-                    "score": "0.6215752",
+                    "score": 0.6215752,
                     "code": "29995",
                     "creator": {
                         "id": "e0f86b03-7a0f-45d8-a66d-322c4e1196e5",

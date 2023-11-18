@@ -19,7 +19,7 @@ namespace Player
         {
             if (this.SetFPSOnStart)
                 Application.targetFrameRate = this.FPS;
-            
+
         }
 
         private void OnEnableDebug()
@@ -37,7 +37,7 @@ namespace Player
             if (this.IsDebugMode && this.BreakOnStartFalling)
                 Debug.Break();
 
-            Debug.Log(this.transform.position);
+            // Debug.Log(this.transform.position);
         }
     }
 }

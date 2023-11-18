@@ -5,6 +5,7 @@ using Editarrr.Misc;
 using Gameplay;
 using Gameplay.GUI;
 using LevelEditor;
+using Player;
 using Singletons;
 using UI;
 using UnityEngine;
@@ -202,12 +203,6 @@ namespace Editarrr.Level
 
         private void OnScoreSubmitRequested(string code, float time, WinMenu.WinMenu_OnScoreSubmit callback)
         {
-#if YAN_DEBUG
-            Debug.Log("yan");
-#else
-            Debug.Log("not yan");
-#endif
-
             this.LevelManager.LevelStorage.LoadLevelData(code, ScoreLevelLoaded);
 
             void ScoreLevelLoaded(LevelSave levelSave)
@@ -253,6 +248,7 @@ namespace Editarrr.Level
 
         public override void DoOnEnable()
         {
+            HealthSystem.OnDeath += this.OnPlayerDeath;
             WinMenu.OnScoreSubmit += this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit += this.OnRatingSubmitRequested;
             Chest.OnChestOpened += this.OnLevelCompleted;
@@ -261,10 +257,17 @@ namespace Editarrr.Level
 
         public override void DoOnDisable()
         {
+            HealthSystem.OnDeath -= this.OnPlayerDeath;
             WinMenu.OnScoreSubmit -= this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit -= this.OnRatingSubmitRequested;
             Chest.OnChestOpened -= this.OnLevelCompleted;
             AchievementManager.OnShowAchievement -= OnShowAchievement;
+        }
+
+        private void OnPlayerDeath(object sender, EventArgs e)
+        {
+            string currentUser = PreferencesManager.Instance.GetUserName();
+            TwitchManager.Instance.SendNotification($"{currentUser} just died again in level {_code}.");
         }
     }
 }
