@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6312013294940060308}
   - component: {fileID: 3211891653727027258}
+  - component: {fileID: 5620700893199202927}
   m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
@@ -58,6 +59,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6875, y: 0.8}
   m_EdgeRadius: 0
+--- !u!114 &5620700893199202927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478357153136413645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69aca26f4f2961147a7a3dfafff370b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Proxy>k__BackingField: {fileID: 7473419508375476561}
 --- !u!1 &4138670320869765843
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,6 +130,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.25}
   m_EdgeRadius: 0
+--- !u!1 &5206206366979230425
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4563386823856725699}
+  m_Layer: 0
+  m_Name: LaunchOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4563386823856725699
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5206206366979230425}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5084967042737932458}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6266981674208020171
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +337,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Force>k__BackingField: 100
+  <LaunchOrigin>k__BackingField: {fileID: 4563386823856725699}
+  <TriggerProxy>k__BackingField: {fileID: 5620700893199202927}
   geyserAnimator: {fileID: 4812281457630501642}
   fountainEffectAnimator: {fileID: 5937347581525709447}
   _audioSource: {fileID: 6536636437211757908}
@@ -445,6 +492,7 @@ Transform:
   - {fileID: 6548259176017923320}
   - {fileID: 7709947099445243676}
   - {fileID: 6312013294940060308}
+  - {fileID: 4563386823856725699}
   m_Father: {fileID: 7473419508375476561}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

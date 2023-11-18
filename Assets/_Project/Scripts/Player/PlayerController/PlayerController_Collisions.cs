@@ -12,6 +12,7 @@ namespace Player
 
         [field: SerializeField, Header("COLLISION")] private Collider2D Collider { get; set; }
         [field: SerializeField] private ContactFilter2D GroundContactFilter { get; set; }
+        [field: SerializeField] private ContactFilter2D SpecialContactFilter { get; set; }
         [field: SerializeField] private float CollisionCheckDistance { get; set; } = 1f / 32f;
         [field: SerializeField] private float CollisionJumpCheckDistance { get; set; } = 2f / 32f;
 
