@@ -14,3 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Channel>k__BackingField: 0
   <Inverted>k__BackingField: 0
+  _overlayTiles:
+  - {fileID: 11400000, guid: a098908e8be1d6441b3c39787cb0140a, type: 2}
+  - {fileID: 11400000, guid: 19fefecc0a2d0894789ea27852bc9cb2, type: 2}
+  - {fileID: 11400000, guid: 1e4c6de8eacecf942bec9f5cb3aad8da, type: 2}
+  - {fileID: 11400000, guid: 4128aa43aa7d3b04eacc6805bc0b2ee2, type: 2}
+  - {fileID: 11400000, guid: 335937ee42e27064db21268efd23fbde, type: 2}
+  - {fileID: 11400000, guid: 6c678f2f7175b874bb112060c795545e, type: 2}
+  - {fileID: 11400000, guid: 656c6e99003edd842aa0ba1f99e1d574, type: 2}
+  - {fileID: 11400000, guid: ac8109d734671b34ea2fc469fa891c5d, type: 2}
+  - {fileID: 11400000, guid: 1430bcdd42a15804289c5b124a42f510, type: 2}

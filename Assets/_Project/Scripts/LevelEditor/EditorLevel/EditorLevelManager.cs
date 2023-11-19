@@ -77,6 +77,7 @@ namespace Editarrr.LevelEditor
         private Camera ScreenshotCamera { get; set; }
         private Tilemap Tilemap_Foreground { get; set; }
         private Tilemap Tilemap_Background { get; set; }
+        private Tilemap Tilemap_InfoOverlay { get; set; }
         private Canvas ModalCanvas { get; set; }
         private ModalPopup StartModal { get; set; }
         private ModalPopup InvalidModal { get; set; }
@@ -106,6 +107,11 @@ namespace Editarrr.LevelEditor
         public void SetTilemap_Background(Tilemap tilemap)
         {
             this.Tilemap_Background = tilemap;
+        }
+
+        public void SetTilemap_InfoOverlay(Tilemap tilemap)
+        {
+            this.Tilemap_InfoOverlay = tilemap;
         }
 
         public void SetCanvas(Canvas modalCanvas)
@@ -390,6 +396,24 @@ namespace Editarrr.LevelEditor
             else
             {
                 tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
+            }
+
+            Debug.Log("has overlay config: " + tileData.HasOverlayConfig);
+
+            if (tileData.HasOverlayConfig)
+            {
+                tilemap = this.Tilemap_InfoOverlay;
+
+                var config = this.GetConfig(tileData);
+
+                Debug.Log("Interface works: " + config is IOverlayTile);
+
+                if (tileData.Config is IOverlayTile)
+                {
+                    var overlayInfo = tileData.Tile as IOverlayTile;
+                    var overlayTile = overlayInfo.OverlayTile;
+                    tilemap.SetTile(new Vector3Int(x, y, 0), overlayTile);
+                }
             }
 
             this.NotifyConfig();

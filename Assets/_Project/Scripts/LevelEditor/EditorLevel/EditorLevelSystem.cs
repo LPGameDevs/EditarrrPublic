@@ -17,6 +17,7 @@ namespace Editarrr.LevelEditor
         [field: SerializeField] public Camera Camera { get; private set; }
         [field: SerializeField] public Tilemap Tilemap_Foreground { get; private set; }
         [field: SerializeField] public Tilemap Tilemap_Background { get; private set; }
+        [field: SerializeField] public Tilemap Tilemap_InfoOverlay { get; private set; }
         [field: SerializeField] public Canvas ModalCanvas { get; private set; }
         [field: SerializeField] public ModalPopup StartModal { get; private set; }
         [field: SerializeField] public ModalPopup InvalidModal { get; private set; }
@@ -28,6 +29,7 @@ namespace Editarrr.LevelEditor
             this.Manager.SetSceneCamera(this.Camera);
             this.Manager.SetTilemap_Foreground(this.Tilemap_Foreground);
             this.Manager.SetTilemap_Background(this.Tilemap_Background);
+            this.Manager.SetTilemap_InfoOverlay(this.Tilemap_InfoOverlay);
             this.Manager.SetCanvas(this.ModalCanvas);
             this.Manager.SetStartModal(this.StartModal);
             this.Manager.SetInvalidModal(this.InvalidModal);
