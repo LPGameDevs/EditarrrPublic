@@ -1,5 +1,6 @@
 ﻿using Editarrr.LevelEditor;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Editarrr.Level.Tiles
@@ -8,6 +9,7 @@ namespace Editarrr.Level.Tiles
     {
         [field: SerializeField] private Collider2D Collider { get; set; }
         [field: SerializeField] private SpriteRenderer SpriteRenderer { get; set; }
+        [field: SerializeField] private SpriteRenderer OutlineRenderer { get; set; }
 
 
         [field: SerializeField] private int Channel { get; set; }
@@ -21,7 +23,7 @@ namespace Editarrr.Level.Tiles
 
             this.SetState(this.State);
         }
-
+        
         private void OnEnable()
         {
             Lever.OnLeverSignal += this.Lever_OnLeverSignal;
@@ -50,8 +52,9 @@ namespace Editarrr.Level.Tiles
             this.State = state;
             this.Collider.enabled = this.State;
             this.SpriteRenderer.color = this.State ? Color.white : Color.white * .5f;
+            var outlineColor = OutlineRenderer.color;
+            this.OutlineRenderer.color = this.State ? outlineColor : outlineColor * .5f;
         }
-
 
         public void Configure(TileConfig config)
         {
@@ -65,6 +68,37 @@ namespace Editarrr.Level.Tiles
 
             this.Channel = config.Channel;
             this.Inverted = config.Inverted;
+
+            SetChannelColor();
         }
+
+        private void SetChannelColor()
+        {
+            var index = this.Channel;
+            var channelColors = ChannelOutlineColors.ChannelColors;
+            
+            if (index >= channelColors.Count)
+                index -= channelColors.Count;
+
+            var colorString = channelColors[index];
+
+            ColorUtility.TryParseHtmlString(colorString, out Color outlineColor);
+
+            OutlineRenderer.material.color = outlineColor;
+        }
+    }
+
+    public class ChannelOutlineColors
+    {
+        public static List<string> ChannelColors { get; private set; } = new()
+        { 
+            "#ffffff", //white
+            "#639d6d", //light green
+            "#b43b6a", //dark red-violet
+            "#f18770", //orange
+            "#e39bba", //pink
+            "#505db3", //blue
+            "#82bbca", //light blue
+        };
     }
 }
