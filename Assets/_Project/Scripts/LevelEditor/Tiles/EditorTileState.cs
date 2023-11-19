@@ -1,4 +1,7 @@
 ﻿using Editarrr.Misc;
+using System.Diagnostics;
+using System;
+using UnityEngine;
 
 namespace Editarrr.LevelEditor
 {
@@ -6,7 +9,6 @@ namespace Editarrr.LevelEditor
     {
         public EditorTileData Foreground { get; private set; }
         public EditorTileData Background { get; private set; }
-        public EditorTileData InfoOverlay { get; private set; }
         public Rotation ForegroundRotation { get; private set; }
         public Rotation BackgroundRotation { get; private set; }
         public TileConfig Config { get; private set; }

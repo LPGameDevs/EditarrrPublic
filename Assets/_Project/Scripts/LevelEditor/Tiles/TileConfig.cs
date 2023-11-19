@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Editarrr.LevelEditor
 {
@@ -26,6 +27,10 @@ namespace Editarrr.LevelEditor
     {
         // public abstract void CreateGUIElements(Func<object, UnityEngine.UIElements.VisualElement> getElement);
         public abstract void CreateGUIElements(GetElement getElement);
+        public virtual void CreateGUIElements(GetElement getElement, Vector2 tilePosition)
+        {
+            //nothing to do here -> only in possible overrides
+        }
 
         public int[] CreateJSONData()
         {

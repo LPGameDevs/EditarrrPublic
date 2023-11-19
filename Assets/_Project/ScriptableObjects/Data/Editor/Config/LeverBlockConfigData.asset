@@ -15,6 +15,7 @@ MonoBehaviour:
   <Channel>k__BackingField: 0
   <Inverted>k__BackingField: 0
   _overlayTiles:
+  - {fileID: 11400000, guid: c251fa48dec95e041a8cc63576d69b19, type: 2}
   - {fileID: 11400000, guid: a098908e8be1d6441b3c39787cb0140a, type: 2}
   - {fileID: 11400000, guid: 19fefecc0a2d0894789ea27852bc9cb2, type: 2}
   - {fileID: 11400000, guid: 1e4c6de8eacecf942bec9f5cb3aad8da, type: 2}

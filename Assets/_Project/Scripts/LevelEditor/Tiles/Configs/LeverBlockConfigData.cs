@@ -10,7 +10,7 @@ namespace Editarrr.LevelEditor
         [field: SerializeField] public int Channel { get; private set; }
         [field: SerializeField] public bool Inverted { get; private set; }
         [SerializeField] private List<TileBase> _overlayTiles = new();
-        public static List<TileBase> OverlayTiles { get; private set; } = new();
+        public static List<TileBase> LeverOverlayTiles { get; private set; } = new();
 
         public override LeverBlockConfig CreateConfig()
         {
@@ -19,12 +19,12 @@ namespace Editarrr.LevelEditor
 
         private void OnValidate()
         {
-            OverlayTiles = _overlayTiles;
+            LeverOverlayTiles = _overlayTiles;
         }
 
         private void Awake()
         {
-            OverlayTiles = _overlayTiles;
+            LeverOverlayTiles = _overlayTiles;
         }
     }
 }

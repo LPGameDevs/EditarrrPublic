@@ -27,7 +27,7 @@ namespace Editarrr.UI.LevelEditor
                 EditorLevelManager.OnEditorConfigSelected += this.EditorLevelManager_OnEditorConfigSelected;
             }
 
-            private void EditorLevelManager_OnEditorConfigSelected(TileConfig tileConfig)
+            private void EditorLevelManager_OnEditorConfigSelected(TileConfig tileConfig, Vector2 tilePosition)
             {
                 this.ContainerElement.Clear();
 
@@ -39,7 +39,12 @@ namespace Editarrr.UI.LevelEditor
 
                 this.SetDisplayContainer(true);
 
-                tileConfig.CreateGUIElements(this.Create);
+                var overlayEnabledConfig = tileConfig as TileConfigOverlayEnabled;
+                
+                if (overlayEnabledConfig != null)
+                    tileConfig.CreateGUIElements(this.Create, tilePosition);
+                else
+                    tileConfig.CreateGUIElements(this.Create);
             }
 
             private VisualElement Create<T>(string title, T t)
@@ -49,7 +54,7 @@ namespace Editarrr.UI.LevelEditor
 
                 if (t is bool boolValue)
                 {
-                    Debug.Log(" as bool");
+                    //Debug.Log(" as bool");
                     template = this.BoolValueTemplate.Instantiate();
                     var element = template.Q<Toggle>(this.ValueName);
                     element.value = boolValue;
@@ -59,7 +64,7 @@ namespace Editarrr.UI.LevelEditor
                 }
                 else if (t is int intValue)
                 {
-                    Debug.Log(" as int");
+                    //Debug.Log(" as int");
                     template = this.IntValueTemplate.Instantiate();
                     var inputElement = template.Q<TextField>(this.ValueName);
                     inputElement.RegisterCallback<FocusEvent>(LevelEditorScreen.InputFocus);
