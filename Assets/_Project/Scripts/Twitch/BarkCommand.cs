@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Editarrr.Audio;
 using UnityEngine;
 using Yanniboi.Twitch;
@@ -7,34 +8,49 @@ namespace Twitch
 {
     public class BarkCommand : CommandBase
     {
+        private Dictionary<string, string> _registeredBarks = new Dictionary<string, string>();
+
+        public BarkCommand()
+        {
+            _registeredBarks.Add("booty", "Booty01");
+            _registeredBarks.Add("arrr", "Arrr01");
+            _registeredBarks.Add("yohoho", "YoHoHo01");
+            _registeredBarks.Add("yarr", "Yarr01");
+            _registeredBarks.Add("stupid", "stupid");
+        }
 
         public override string CommandName => "!bark";
 
+
+
         protected override void DoExecute(string user, string message)
         {
-            if (message.Contains("booty"))
+            if (message == "!bark")
             {
-                AudioManager.Instance.PlayAudioClip("Booty01");
+                // Send list of barks.
+                // Maybe hide "stupid" as secret bark.
+                string response = "The list of available barks is: ";
+                foreach (var bark in this._registeredBarks)
+                {
+                    if (bark.Key == "stupid")
+                    {
+                        continue;
+                    }
+
+                    response += bark.Key + " ";
+                }
+
+                this.SendMessage(new TwitchMessage("Bark help", response));
+                return;
             }
 
-            if (message.Contains("arrr"))
+            foreach (var bark in _registeredBarks)
             {
-                AudioManager.Instance.PlayAudioClip("Arrr01");
-            }
-
-            if (message.Contains("yohoho"))
-            {
-                AudioManager.Instance.PlayAudioClip("YoHoHo01");
-            }
-
-            if (message.Contains("yarr"))
-            {
-                AudioManager.Instance.PlayAudioClip("Yarr01");
-            }
-
-            if (message.Contains("stupid"))
-            {
-                AudioManager.Instance.PlayAudioClip("stupid");
+                if (message.Contains(bark.Key))
+                {
+                    AudioManager.Instance.PlayAudioClip(bark.Value);
+                    return;
+                }
             }
         }
 

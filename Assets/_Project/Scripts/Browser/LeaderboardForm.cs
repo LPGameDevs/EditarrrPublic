@@ -3,6 +3,7 @@ using Editarrr.Input;
 using Level.Storage;
 using Singletons;
 using System;
+using TMPro;
 using UnityEngine;
 
 namespace Browser
@@ -16,6 +17,7 @@ namespace Browser
         public GameObject LoadingOverlay;
 
         [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
+        [field: SerializeField] private TMP_Text Code { get; set; }
 
         private string _code;
 
@@ -28,6 +30,7 @@ namespace Browser
         public void SetCode(string code)
         {
             _code = code;
+            Code.text = code;
         }
 
         public void SetScores(ScoreStub[] scoreStubs)
