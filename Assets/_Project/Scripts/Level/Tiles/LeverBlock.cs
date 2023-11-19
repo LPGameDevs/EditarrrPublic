@@ -99,6 +99,9 @@ namespace Editarrr.Level.Tiles
             "#e39bba", //pink
             "#505db3", //blue
             "#82bbca", //light blue
+            "#407769", //dark green
+            "#dc4949", //red
+            "#dd8f61", //standard ui orange
         };
     }
 }
