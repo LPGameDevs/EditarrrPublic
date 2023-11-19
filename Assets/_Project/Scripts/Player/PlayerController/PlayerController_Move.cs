@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Editarrr.Misc;
+using System.Linq;
+using UnityEngine;
 
 namespace Player
 {
@@ -37,6 +39,12 @@ namespace Player
             var hits = new RaycastHit2D[1];
             if (this.Collider.Cast(this.Movement.normalized, this.GroundContactFilter, hits, this.Movement.magnitude) == 0)
             {
+                if (this.CollideSpecial())
+                {
+                    this.NextPosition = this.transform.position;
+                    return;
+                }
+
                 var targetPosition = this.transform.position + this.Movement;
                 this.NextPosition = targetPosition;
                 // this.transform.position = targetPosition;
@@ -83,6 +91,35 @@ namespace Player
 
                 // this.Rigidbody.MovePosition(resolvePosition);
             }
+        }
+
+        private bool CollideSpecial()
+        {
+            Collider2D[] ignore = new Collider2D[10];
+            this.Collider.OverlapCollider(this.SpecialContactFilter, ignore);
+
+            RaycastHit2D[] hits = new RaycastHit2D[10];
+            if (this.Collider.Cast(this.Movement.normalized, this.SpecialContactFilter, hits, this.Movement.magnitude) > 0)
+            {
+                foreach (var hit in hits)
+                {
+                    if (hit.transform == null)
+                        return false;
+
+                    if (ignore.Any(col => hit.collider == col))
+                        continue;
+
+                    var special = hit.transform.GetProxyComponent<ISpecialTrigger>();
+
+                    if (special == null)
+                        continue;
+
+                    special.Trigger(this.transform);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void UpdateMoveConstraints()

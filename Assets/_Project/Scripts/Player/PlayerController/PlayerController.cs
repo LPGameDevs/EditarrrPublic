@@ -198,7 +198,6 @@ namespace Player
             this.UpdateSpriteDirection();
         }
 
-
         private void UpdateSpriteDirection()
         {
             if (this.RawInputMove != 0)
