@@ -27,8 +27,9 @@ namespace Editarrr.LevelEditor
         public delegate void EditorLevelScaleChanged(int x, int y);
 
         public static EditorConfigSelected OnEditorConfigSelected { get; set; }
-        public delegate void EditorConfigSelected(TileConfig tileConfig);
+        public delegate void EditorConfigSelected(TileConfig tileConfig, Vector2 tilePosition);
 
+        private readonly Vector2 _impossibleVector = new() { x = -11000, y = -11000 };
 
         private const string Documentation =
             "This component manages input, placement and storage of the level editor.\r\n" +
@@ -77,6 +78,7 @@ namespace Editarrr.LevelEditor
         private Camera ScreenshotCamera { get; set; }
         private Tilemap Tilemap_Foreground { get; set; }
         private Tilemap Tilemap_Background { get; set; }
+        private Tilemap Tilemap_InfoOverlay { get; set; }
         private Canvas ModalCanvas { get; set; }
         private ModalPopup StartModal { get; set; }
         private ModalPopup InvalidModal { get; set; }
@@ -106,6 +108,11 @@ namespace Editarrr.LevelEditor
         public void SetTilemap_Background(Tilemap tilemap)
         {
             this.Tilemap_Background = tilemap;
+        }
+
+        public void SetTilemap_InfoOverlay(Tilemap tilemap)
+        {
+            this.Tilemap_InfoOverlay = tilemap;
         }
 
         public void SetCanvas(Canvas modalCanvas)
@@ -154,13 +161,14 @@ namespace Editarrr.LevelEditor
                 this.CreateLevelState();
             }
 
-
             EditorTileSelectionManager.OnTileSelect += this.EditorTileSelectionManager_OnTileSelect;
             EditorTileSelectionManager.ActiveElementChanged += this.EditorTileSelectionManager_ActiveElementChanged;
         }
 
         public override void DoUpdate()
         {
+            this.Tilemap_InfoOverlay.transform.position = this.Tilemap_Foreground.transform.position;
+
             if (this.EditorTileSelection.IsUIHover || this.EditorTileSelection.IsInputFocus)
             {
                 this.DisableHoverTile();
@@ -203,7 +211,7 @@ namespace Editarrr.LevelEditor
                 EditorTileState state = this.Get(x, y);
                 if (state != null && state.Config != null)
                 {
-                    this.NotifyConfig(state.Config);
+                    this.NotifyConfig(state.Config, new Vector2(x, y));
                 }
             }
 
@@ -219,7 +227,7 @@ namespace Editarrr.LevelEditor
             {
                 if (this.MouseRightButton.WasPressed)
                 {
-                    this.NotifyConfig();
+                    this.NotifyConfig(new Vector2(x, y));
                 }
 
                 this.Unset(x, y, tileData);
@@ -237,6 +245,13 @@ namespace Editarrr.LevelEditor
         }
 
         #region Tile Operations
+
+        private void ChangeOverlayTile(TileBase overlayTile, Vector2 tilePosition)
+        {
+            var overlayMap = this.Tilemap_InfoOverlay;
+            if (tilePosition != _impossibleVector)
+                overlayMap.SetTile(new Vector3Int((int)tilePosition.x, (int)tilePosition.y), overlayTile);
+        }
 
         private void EnableHoverTile()
         {
@@ -392,7 +407,18 @@ namespace Editarrr.LevelEditor
                 tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
             }
 
-            this.NotifyConfig();
+            if (tileData.HasOverlayConfig)
+            {
+                tilemap = this.Tilemap_InfoOverlay;
+                tilemap.transform.position = this.Tilemap_Foreground.transform.position;
+
+                var config = this.GetConfig(tileData) as TileConfigOverlayEnabled;
+                var overlayTile = config.OverlayTile;
+
+                tilemap.SetTile(new Vector3Int(x, y, 0), overlayTile);
+            }
+
+            this.NotifyConfig(new Vector2(x, y));
         }
 
         private void SetConfig(int x, int y, TileConfig config)
@@ -567,6 +593,10 @@ namespace Editarrr.LevelEditor
 
             tilemap.SetTile(new Vector3Int(x, y, 0), null);
 
+            tilemap = this.Tilemap_InfoOverlay;
+            tilemap.transform.position = this.Tilemap_Foreground.transform.position;
+            tilemap.SetTile(new Vector3Int(x, y, 0), null);
+
             if (setNull)
             {
                 this.Tiles[x, y] = null;
@@ -599,12 +629,12 @@ namespace Editarrr.LevelEditor
         private void EditorTileSelectionManager_OnTileSelect()
         {
             // var editorTileData = this.EditorTileSelection.ActiveElement;
-            this.NotifyConfig();
+            this.NotifyConfig(_impossibleVector);
         }
 
         private void EditorTileSelectionManager_ActiveElementChanged(EditorTileData obj)
         {
-            this.NotifyConfig(this.GetConfig(obj));
+            this.NotifyConfig(this.GetConfig(obj), _impossibleVector);
         }
 
         private TileConfig GetConfig(EditorTileData editorTileData)
@@ -623,16 +653,16 @@ namespace Editarrr.LevelEditor
             return config;
         }
 
-        private void NotifyConfig()
+        private void NotifyConfig(Vector2 tilePosition)
         {
             var activeElement = this.EditorTileSelection.ActiveElement;
 
-            this.NotifyConfig(this.GetConfig(activeElement));
+            this.NotifyConfig(this.GetConfig(activeElement), tilePosition);
         }
 
-        private void NotifyConfig(TileConfig config)
+        private void NotifyConfig(TileConfig config, Vector2 tilePosition)
         {
-            OnEditorConfigSelected?.Invoke(config);
+            OnEditorConfigSelected?.Invoke(config, tilePosition);
         }
 
         #endregion
@@ -766,12 +796,14 @@ namespace Editarrr.LevelEditor
         {
             LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest += ShowInvalidLevelModal;
             AchievementManager.OnShowAchievement += OnShowAchievement;
+            TileConfigOverlayEnabled.OnOverlayValueChanged += ChangeOverlayTile;
         }
 
         public override void DoOnDisable()
         {
             LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest -= ShowInvalidLevelModal;
             AchievementManager.OnShowAchievement -= OnShowAchievement;
+            TileConfigOverlayEnabled.OnOverlayValueChanged -= ChangeOverlayTile;
         }
     }
 }
