@@ -167,6 +167,8 @@ namespace Editarrr.LevelEditor
 
         public override void DoUpdate()
         {
+            this.Tilemap_InfoOverlay.transform.position = this.Tilemap_Foreground.transform.position;
+
             if (this.EditorTileSelection.IsUIHover || this.EditorTileSelection.IsInputFocus)
             {
                 this.DisableHoverTile();
