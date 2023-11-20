@@ -45,4 +45,10 @@ namespace Editarrr.LevelEditor
     }
 
     public delegate UnityEngine.UIElements.VisualElement GetElement(string title, object obj);
+
+    public interface IChannelUser
+    {
+        int Channel { get; }
+        Action<int> OnChannelChanged { get; set; }
+    }
 }
