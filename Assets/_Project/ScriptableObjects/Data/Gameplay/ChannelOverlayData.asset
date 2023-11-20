@@ -14,22 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ChannelInfos>k__BackingField:
   - <Color>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: 8467881307643911425, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
   - <Color>k__BackingField: {r: 0.3882353, g: 0.6156863, b: 0.42745098, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: -7057366798396762782, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
   - <Color>k__BackingField: {r: 0.7058824, g: 0.23137255, b: 0.41568628, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: 7927988164710364965, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
   - <Color>k__BackingField: {r: 0.94509804, g: 0.5294118, b: 0.4392157, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: 8279094701369950919, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
   - <Color>k__BackingField: {r: 0.8901961, g: 0.60784316, b: 0.7294118, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: -235056928524647191, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
   - <Color>k__BackingField: {r: 0.3137255, g: 0.3647059, b: 0.7019608, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: 2615535957950092470, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
   - <Color>k__BackingField: {r: 0.50980395, g: 0.73333335, b: 0.7921569, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: -5677917702885247910, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
   - <Color>k__BackingField: {r: 0.2509804, g: 0.46666667, b: 0.4117647, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: 1907718693105340963, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
   - <Color>k__BackingField: {r: 0.8627451, g: 0.28627452, b: 0.28627452, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: 3133320887600598904, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
   - <Color>k__BackingField: {r: 0.8666667, g: 0.56078434, b: 0.38039216, a: 1}
-    <Sprite>k__BackingField: {fileID: 0}
+    <Sprite>k__BackingField: {fileID: 2831855784982112732, guid: aaa4b9d2976ecae4da556c749525ce15, type: 3}
