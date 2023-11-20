@@ -1,6 +1,7 @@
 ﻿using Editarrr.Audio;
 using Editarrr.LevelEditor;
 using Player;
+using System;
 using UnityEngine;
 
 namespace Editarrr.Level.Tiles
@@ -21,10 +22,14 @@ namespace Editarrr.Level.Tiles
         const string ANIMATOR_ACTIVATE_NAME = "Activate";
         const string ANIMATOR_DEACTIVATE_NAME = "Deactivate";
 
+        const float _bufferDuration = 1.2f;
+        float _bufferTimer;
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             // Only triggers for player, We can add other conditions though (i.e. Enemies etc.)
-            if (!collision.transform.TryGetComponent<PlayerController>(out PlayerController playerController))
+            if (!collision.transform.TryGetComponent<PlayerController>(out PlayerController playerController)
+                || Time.time < _bufferTimer)
                 return;
 
             if(IsActivated)
@@ -38,6 +43,7 @@ namespace Editarrr.Level.Tiles
                 _animator.SetTrigger(ANIMATOR_ACTIVATE_NAME);
             }
 
+            _bufferTimer = Time.time + _bufferDuration;
             IsActivated = !IsActivated;
             Lever.OnLeverSignal?.Invoke(this.Channel);
         }
