@@ -78,7 +78,6 @@ namespace Editarrr.LevelEditor
         private Camera ScreenshotCamera { get; set; }
         private Tilemap Tilemap_Foreground { get; set; }
         private Tilemap Tilemap_Background { get; set; }
-        private Tilemap Tilemap_InfoOverlay { get; set; }
         private Canvas ModalCanvas { get; set; }
         private ModalPopup StartModal { get; set; }
         private ModalPopup InvalidModal { get; set; }
@@ -108,11 +107,6 @@ namespace Editarrr.LevelEditor
         public void SetTilemap_Background(Tilemap tilemap)
         {
             this.Tilemap_Background = tilemap;
-        }
-
-        public void SetTilemap_InfoOverlay(Tilemap tilemap)
-        {
-            this.Tilemap_InfoOverlay = tilemap;
         }
 
         public void SetCanvas(Canvas modalCanvas)
@@ -167,8 +161,6 @@ namespace Editarrr.LevelEditor
 
         public override void DoUpdate()
         {
-            this.Tilemap_InfoOverlay.transform.position = this.Tilemap_Foreground.transform.position;
-
             if (this.EditorTileSelection.IsUIHover || this.EditorTileSelection.IsInputFocus)
             {
                 this.DisableHoverTile();
@@ -597,10 +589,6 @@ namespace Editarrr.LevelEditor
                 }
             }
 
-            tilemap.SetTile(new Vector3Int(x, y, 0), null);
-
-            tilemap = this.Tilemap_InfoOverlay;
-            tilemap.transform.position = this.Tilemap_Foreground.transform.position;
             tilemap.SetTile(new Vector3Int(x, y, 0), null);
 
             if (setNull)
