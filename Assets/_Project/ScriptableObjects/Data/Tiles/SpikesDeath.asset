@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0f3e631f2b700344bba75b4c00b7afe, type: 3}
   m_Name: SpikesDeath
   m_EditorClassIdentifier: 
-  <GameObject>k__BackingField: {fileID: 1182490266025708483, guid: fa2aa5d09294312a1a40aa47e6e4c5d6, type: 3}
+  <GameObject>k__BackingField: {fileID: 7846195673169006903, guid: d4d496b801540084cbdf7f28c838fb39, type: 3}
   <TileMapTileBase>k__BackingField: {fileID: 0}
   <Type>k__BackingField: 10
   <CanRotate>k__BackingField: 1
