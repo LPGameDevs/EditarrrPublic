@@ -424,7 +424,11 @@ namespace Editarrr.LevelEditor
         private void SetConfig(int x, int y, EditorTileState state, TileConfig config)
         {
             if (this.Overlays[x, y] != null)
+            {
                 GameObject.Destroy(this.Overlays[x, y].Transform.gameObject);
+                this.Overlays[x, y] = null;
+            }
+
 
             if (this.OverlayManager.Create(config, out IOverlay overlay))
             {
