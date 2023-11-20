@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace Editarrr.Level
 {
+
     [CreateAssetMenu(fileName = "Level Manager", menuName = "Managers/Level/new Level Manager")]
     public class LevelManager : ManagerComponent
     {

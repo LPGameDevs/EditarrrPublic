@@ -1,23 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Editarrr.LevelEditor
 {
     [System.Serializable]
-    public class LeverConfig : TileConfigOverlayEnabled
+    public class LeverConfig : TileConfig, IChannelUser
     {
+        public Action<int> OnChannelChanged { get; set; }
+
         public int Channel { get; private set; }
-        private Vector2 _tilePosition = new();
         
         public LeverConfig(int channel)
         {
             this.Channel = Mathf.Clamp(channel, 0, 9);
-            this.OverlayTile = LeverBlockConfigData.LeverOverlayTiles[this.Channel];
         }
 
         public LeverConfig(int[] data)
         {
             this.Channel = Mathf.Clamp(data[0], 0, 9);
-            this.OverlayTile = LeverBlockConfigData.LeverOverlayTiles[this.Channel];
         }
 
         protected override int[] GetJSONData()
@@ -30,12 +30,10 @@ namespace Editarrr.LevelEditor
             return toReturn;
         }
 
-        public override void CreateGUIElements(GetElement getElement, Vector2 tilePosition)
+        public override void CreateGUIElements(GetElement getElement)
         {
             var channelElement = getElement("Channel", this.Channel);
-            _tilePosition = tilePosition;
             channelElement.RegisterCallback<UnityEngine.UIElements.ChangeEvent<string>>(this.SetChannel_Callback);
-            channelElement.RegisterCallback<UnityEngine.UIElements.ChangeEvent<string>>(this.OverlayValueChanged);
         }
 
         private void SetChannel_Callback(UnityEngine.UIElements.ChangeEvent<string> evt)
@@ -44,7 +42,7 @@ namespace Editarrr.LevelEditor
                 return;
 
             this.Channel = value;
-            this.OverlayTile = LeverBlockConfigData.LeverOverlayTiles[this.Channel];
+            this.OnChannelChanged?.Invoke(this.Channel);
         }
 
         public override TileConfig Clone()
@@ -55,11 +53,6 @@ namespace Editarrr.LevelEditor
         public override string ToString()
         {
             return $"Lever Config >> C = {this.Channel}";
-        }
-
-        private void OverlayValueChanged(UnityEngine.UIElements.ChangeEvent<string> evt)
-        {
-            TileConfigOverlayEnabled.RaiseOverlayValueChanged(this.OverlayTile, _tilePosition);
         }
     }
 }

@@ -27,9 +27,7 @@ namespace Editarrr.LevelEditor
         public delegate void EditorLevelScaleChanged(int x, int y);
 
         public static EditorConfigSelected OnEditorConfigSelected { get; set; }
-        public delegate void EditorConfigSelected(TileConfig tileConfig, Vector2 tilePosition);
-
-        private readonly Vector2 _impossibleVector = new() { x = -11000, y = -11000 };
+        public delegate void EditorConfigSelected(TileConfig tileConfig);
 
         private const string Documentation =
             "This component manages input, placement and storage of the level editor.\r\n" +
@@ -48,6 +46,7 @@ namespace Editarrr.LevelEditor
 
         [field: SerializeField, Header("Managers")] private EditorTileSelectionManager EditorTileSelection { get; set; }
         [field: SerializeField] private LevelManager LevelManager { get; set; }
+        [field: SerializeField] private OverlayManager OverlayManager { get; set; }
 
         private AchievementPopupBlock AchievementBlock { get; set; }
 
@@ -63,6 +62,7 @@ namespace Editarrr.LevelEditor
 
         private LevelState LevelState { get; set; }
         private EditorTileState[,] Tiles { get; set; }
+        private IOverlay[,] Overlays { get; set; }
 
         private int ScaleX { get; set; }
         private int ScaleY { get; set; }
@@ -191,6 +191,9 @@ namespace Editarrr.LevelEditor
                     Rotation rotation = background ? atCursor.BackgroundRotation : atCursor.ForegroundRotation;
 
                     this.EditorTileSelection.SetActiveElement(toClone, rotation);
+                    var configClone = atCursor.Config;
+                    this.NotifyConfig(configClone);
+                    this.SetConfigStore(toClone, configClone);
                 }
             }
 
@@ -211,7 +214,7 @@ namespace Editarrr.LevelEditor
                 EditorTileState state = this.Get(x, y);
                 if (state != null && state.Config != null)
                 {
-                    this.NotifyConfig(state.Config, new Vector2(x, y));
+                    this.NotifyConfig(state.Config);
                 }
             }
 
@@ -227,7 +230,7 @@ namespace Editarrr.LevelEditor
             {
                 if (this.MouseRightButton.WasPressed)
                 {
-                    this.NotifyConfig(new Vector2(x, y));
+                    this.NotifyConfig();
                 }
 
                 this.Unset(x, y, tileData);
@@ -244,15 +247,12 @@ namespace Editarrr.LevelEditor
             this.EditorHoverTile.Set(this.EditorTileSelection.ActiveElement, this.EditorTileSelection.Rotation);
         }
 
-        #region Tile Operations
-
-        private void ChangeOverlayTile(TileBase overlayTile, Vector2 tilePosition)
+        private void SetConfigStore(EditorTileData toClone, TileConfig tileConfig)
         {
-            var overlayMap = this.Tilemap_InfoOverlay;
-            if (tilePosition != _impossibleVector)
-                overlayMap.SetTile(new Vector3Int((int)tilePosition.x, (int)tilePosition.y), overlayTile);
+            this.ConfigStore[toClone.Tile.Type] = tileConfig;
         }
 
+        #region Tile Operations
         private void EnableHoverTile()
         {
             this.EditorHoverTile.SetActive(true);
@@ -390,7 +390,7 @@ namespace Editarrr.LevelEditor
                 tilemap = this.Tilemap_Foreground;
                 currentState.SetForeground(tileData);
                 currentState.SetForegroundRotation(tileRotation);
-                this.SetConfig(currentState, tileData);
+                this.SetConfig(x, y, currentState, tileData);
             }
 
             if (tileData.Tile.CanRotate && tileRotation != Rotation.North)
@@ -407,18 +407,7 @@ namespace Editarrr.LevelEditor
                 tilemap.SetTile(new Vector3Int(x, y, 0), tileData.EditorGridTile);
             }
 
-            if (tileData.HasOverlayConfig)
-            {
-                tilemap = this.Tilemap_InfoOverlay;
-                tilemap.transform.position = this.Tilemap_Foreground.transform.position;
-
-                var config = this.GetConfig(tileData) as TileConfigOverlayEnabled;
-                var overlayTile = config.OverlayTile;
-
-                tilemap.SetTile(new Vector3Int(x, y, 0), overlayTile);
-            }
-
-            this.NotifyConfig(new Vector2(x, y));
+            this.NotifyConfig();
         }
 
         private void SetConfig(int x, int y, TileConfig config)
@@ -430,19 +419,32 @@ namespace Editarrr.LevelEditor
                 return;
 
             EditorTileState state = this.Tiles[x, y];
-            this.SetConfig(state, config);
+            this.SetConfig(x, y, state, config);
         }
 
-        private void SetConfig(EditorTileState currentState, EditorTileData editorTileData)
+        private void SetConfig(int x, int y, EditorTileState currentState, EditorTileData editorTileData)
         {
             var config = this.GetConfig(editorTileData);
 
-            this.SetConfig(currentState, config?.Clone());
+            this.SetConfig(x, y, currentState, config?.Clone());
         }
 
-        private void SetConfig(EditorTileState currentState, TileConfig config)
+        private void SetConfig(int x, int y, EditorTileState state, TileConfig config)
         {
-            currentState.SetConfig(config);
+            if (this.Overlays[x, y] != null)
+                GameObject.Destroy(this.Overlays[x, y].Transform.gameObject);
+
+            if (this.OverlayManager.Create(config, out IOverlay overlay))
+            {
+                this.Overlays[x, y] = overlay;
+                if (overlay != null)
+                {
+                    Vector3 position = this.Tilemap_Foreground.CellToWorld(new Vector3Int(x, y, 0)) + new Vector3(0.5f, 0.5f, 0);
+                    overlay.Transform.position = position;
+                }
+            }
+
+            state.SetConfig(config);
         }
 
         private void TryExpandSize(int x, int y)
@@ -524,6 +526,7 @@ namespace Editarrr.LevelEditor
 
                 // Create a new larger array
                 EditorTileState[,] tileStates = new EditorTileState[newWidth, newHeight];
+                IOverlay[,] overlays = new IOverlay[newWidth, newHeight];
 
                 // Copy the elements from the old array to the new one
                 for (int i = 0; i < currentWidth; i++)
@@ -532,12 +535,14 @@ namespace Editarrr.LevelEditor
                     {
                         //tileStates[i + (expandLeft ? expandBy : 0), j + (expandBottom ? expandBy : 0)] = this.Tiles[i, j];
                         tileStates[i, j] = this.Tiles[i, j];
+                        overlays[i, j] = this.Overlays[i, j];
                     }
                 }
 
                 Debug.Log("Expand Tiles");
 
                 this.Tiles = tileStates;
+                this.Overlays = overlays;
 
                 this.SetScale(newWidth, newHeight);
             }
@@ -570,7 +575,8 @@ namespace Editarrr.LevelEditor
 
                 current.SetForeground(null);
                 current.SetForegroundRotation(Rotation.North);
-                current.SetConfig(null);
+                this.SetConfig(x, y, current, (TileConfig)null);
+                // current.SetConfig(null);
             }
 
             // No tile data at spot, return
@@ -629,12 +635,12 @@ namespace Editarrr.LevelEditor
         private void EditorTileSelectionManager_OnTileSelect()
         {
             // var editorTileData = this.EditorTileSelection.ActiveElement;
-            this.NotifyConfig(_impossibleVector);
+            this.NotifyConfig();
         }
 
         private void EditorTileSelectionManager_ActiveElementChanged(EditorTileData obj)
         {
-            this.NotifyConfig(this.GetConfig(obj), _impossibleVector);
+            this.NotifyConfig(this.GetConfig(obj));
         }
 
         private TileConfig GetConfig(EditorTileData editorTileData)
@@ -653,16 +659,16 @@ namespace Editarrr.LevelEditor
             return config;
         }
 
-        private void NotifyConfig(Vector2 tilePosition)
+        private void NotifyConfig()
         {
             var activeElement = this.EditorTileSelection.ActiveElement;
 
-            this.NotifyConfig(this.GetConfig(activeElement), tilePosition);
+            this.NotifyConfig(this.GetConfig(activeElement));
         }
 
-        private void NotifyConfig(TileConfig config, Vector2 tilePosition)
+        private void NotifyConfig(TileConfig config)
         {
-            OnEditorConfigSelected?.Invoke(config, tilePosition);
+            OnEditorConfigSelected?.Invoke(config);
         }
 
         #endregion
@@ -752,6 +758,7 @@ namespace Editarrr.LevelEditor
             this.SetScale(this.LevelState.ScaleX, this.LevelState.ScaleY);
 
             this.Tiles = new EditorTileState[this.ScaleX, this.ScaleY];
+            this.Overlays = new IOverlay[this.ScaleX, this.ScaleY];
         }
 
         public bool IsLevelValid()
@@ -796,14 +803,12 @@ namespace Editarrr.LevelEditor
         {
             LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest += ShowInvalidLevelModal;
             AchievementManager.OnShowAchievement += OnShowAchievement;
-            TileConfigOverlayEnabled.OnOverlayValueChanged += ChangeOverlayTile;
         }
 
         public override void DoOnDisable()
         {
             LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest -= ShowInvalidLevelModal;
             AchievementManager.OnShowAchievement -= OnShowAchievement;
-            TileConfigOverlayEnabled.OnOverlayValueChanged -= ChangeOverlayTile;
         }
     }
 }

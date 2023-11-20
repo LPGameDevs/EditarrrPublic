@@ -27,7 +27,7 @@ namespace Editarrr.UI.LevelEditor
                 EditorLevelManager.OnEditorConfigSelected += this.EditorLevelManager_OnEditorConfigSelected;
             }
 
-            private void EditorLevelManager_OnEditorConfigSelected(TileConfig tileConfig, Vector2 tilePosition)
+            private void EditorLevelManager_OnEditorConfigSelected(TileConfig tileConfig)
             {
                 this.ContainerElement.Clear();
 
@@ -38,13 +38,8 @@ namespace Editarrr.UI.LevelEditor
                 }
 
                 this.SetDisplayContainer(true);
-
-                var overlayEnabledConfig = tileConfig as TileConfigOverlayEnabled;
                 
-                if (overlayEnabledConfig != null)
-                    tileConfig.CreateGUIElements(this.Create, tilePosition);
-                else
-                    tileConfig.CreateGUIElements(this.Create);
+                tileConfig.CreateGUIElements(this.Create);
             }
 
             private VisualElement Create<T>(string title, T t)
