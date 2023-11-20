@@ -27,6 +27,7 @@ namespace Editarrr.Level
         [field: SerializeField, Info(Documentation)] private EditorLevelExchange Exchange { get; set; }
 
         [field: SerializeField, Header("Managers")] public LevelManager LevelManager { get; private set; }
+        [field: SerializeField] public OverlayManager OverlayManager { get; private set; }
 
         [field: SerializeField, Header("Settings")] public EditorLevelSettings Settings { get; private set; }
 
@@ -147,6 +148,12 @@ namespace Editarrr.Level
                     Rotation backgroundRotation = tileState.BackgroundRotation;
 
                     TileConfig tileConfig = tileState.Config;
+#warning TODO, Add Option to hide them in Play Mode
+                    bool showInPlayMode = true;
+                    if (showInPlayMode && this.OverlayManager.Create(tileConfig, out IOverlay overlay))
+                    {
+                        overlay.Transform.position = this.Tilemap_Foreground.CellToWorld(position) + new Vector3(.5f, .5f, 0);
+                    }
 
                     this.PlaceTile(foreground, background, position);
                     this.InstantiateTile(foreground, foregroundRotation, background, backgroundRotation, position, tileConfig);
