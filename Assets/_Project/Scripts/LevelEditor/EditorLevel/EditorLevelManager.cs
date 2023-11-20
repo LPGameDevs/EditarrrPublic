@@ -541,6 +541,7 @@ namespace Editarrr.LevelEditor
                 this.Overlays = overlays;
 
                 this.SetScale(newWidth, newHeight);
+                this.TranslateOverlays(expandByX, expandByY); 
             }
         }
 
@@ -756,6 +757,17 @@ namespace Editarrr.LevelEditor
         public bool IsLevelValid()
         {
             return this.LevelState.IsLevelValid();
+        }
+
+        private void TranslateOverlays(float xMove, float yMove)
+        {
+            if (Overlays == null)
+                return;
+
+            foreach (IOverlay overlay in Overlays) if (overlay != null)
+            {
+                overlay.Transform.Translate(new Vector2(xMove / -2, yMove / -2));
+            }
         }
 
         private void SetScale(int x, int y)
