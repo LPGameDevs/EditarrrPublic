@@ -1,3 +1,4 @@
+using Editarrr.Misc;
 using Player;
 using System;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class Chest : MonoBehaviour
+    public class Chest : MonoBehaviour, ISpecialTrigger
     {
         public static event Action OnChestOpened;
 
@@ -37,17 +38,13 @@ namespace Gameplay
                 SetOpen();
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        public void Trigger(Transform transform)
         {
-            if (_isWon || !_isOpen || !other.TryGetComponent<PlayerController>(out PlayerController player))
+            if (_isWon || !_isOpen || !transform.TryGetComponent<PlayerController>(out PlayerController player))
             {
                 return;
             }
 
-            // The Chest should be on the Chest layer and the Player should be on the player layer.
-            // The Chest should ONLY be allowed to collide with the Player and so no further checks
-            // are required.
-            // @todo Check this by (for example) letting an Enemy run into the Chest.
             _isWon = true;
             Editarrr.Audio.AudioManager.Instance.PlayAudioClip(winSound);
             OnChestOpened?.Invoke();
