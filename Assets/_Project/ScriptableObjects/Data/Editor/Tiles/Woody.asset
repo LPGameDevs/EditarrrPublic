@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: Woody
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: FlyingTotem
+  <Name>k__BackingField: Woody
   <Description>k__BackingField: Flying Attacker
   <UISprite>k__BackingField: {fileID: 21300000, guid: 9994c68543c994b1ba47b56e7ed21c21, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: bda62707e9310433d9ff9d5ce3f8c96e, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 181118e35fb1a4d5384a9ada2fe7a03e, type: 2}
+  <Config>k__BackingField: {fileID: 0}
   <LevelLimit>k__BackingField: 5
   <IsBackground>k__BackingField: 0
+  <IsQonfigurable>k__BackingField: 0
