@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Editarrr.Audio;
 using Editarrr.LevelEditor;
 using Editarrr.Managers;
@@ -33,6 +34,8 @@ namespace Editarrr.Level
         [SerializeField] private bool RemoteStorageEnabled = false;
         [SerializeField] private bool UploadsAllowed = false;
         public static bool DistributionStorageEnabled = true;
+
+        private Dictionary<string, LevelMetaCache> LevelMetaCaches = new Dictionary<string, LevelMetaCache>();
 
         #endregion
 
@@ -92,6 +95,9 @@ namespace Editarrr.Level
                     return;
                 }
 
+                // Cache the level Metadata.
+                this.CacheLevelMeta(levelSave);
+
                 LevelState levelState = new LevelState(levelSave);
 
                 this.LevelLoadedCallback?.Invoke(levelState);
@@ -124,12 +130,46 @@ namespace Editarrr.Level
                 foreach (var levelStub in levelStubs)
                 {
                     levels.Add(levelStub);
+
+                    // We dont want to add remote level data to our cache.
+                    if (!RemoteStorageEnabled)
+                    {
+                        // Cache the level Metadata.
+                        this.CacheLevelMeta(levelStub);
+                    }
                 }
 
                 this.LevelsLoadedCallback?.Invoke(levels.ToArray(), cursor);
                 this.LevelsLoadedCallback = null;
             }
 
+        }
+
+        private void CacheLevelMeta(LevelSave levelSave)
+        {
+            if (this.LevelMetaCaches.ContainsKey(levelSave.Code))
+            {
+                this.LevelMetaCaches.Remove(levelSave.Code);
+            }
+            this.LevelMetaCaches.Add(levelSave.Code, new LevelMetaCache()
+            {
+                TotalRatings = levelSave.TotalRatings,
+                TotalScores = levelSave.TotalScores,
+            });
+        }
+
+        private void CacheLevelMeta(LevelStub levelStub)
+        {
+            // Cache the level Metadata.
+            if (this.LevelMetaCaches.ContainsKey(levelStub.Code))
+            {
+                this.LevelMetaCaches.Remove(levelStub.Code);
+            }
+            this.LevelMetaCaches.Add(levelStub.Code, new LevelMetaCache()
+            {
+                TotalRatings = levelStub.TotalRatings,
+                TotalScores = levelStub.TotalScores,
+            });
         }
 
         public void Delete(string code)
@@ -166,7 +206,29 @@ namespace Editarrr.Level
 
             // Store state to filesystem.
             string data = JsonUtility.ToJson(levelSave);
-            this.LevelStorage.Save(levelSave.Code, data);
+            this.LevelStorage.Save(levelSave.Code, data, levelSave.IsDistro());
+        }
+
+        public void TrackNewScore(LevelSave levelSave)
+        {
+            int scores = levelSave.TotalScores;
+            scores++;
+            levelSave.SetTotalScores(scores);
+
+            // Store state to filesystem.
+            string data = JsonUtility.ToJson(levelSave);
+            this.LevelStorage.Save(levelSave.Code, data, levelSave.IsDistro());
+        }
+
+        public void TrackNewRating(LevelSave levelSave)
+        {
+            int ratings = levelSave.TotalRatings;
+            ratings++;
+            levelSave.SetTotalRatings(ratings);
+
+            // Store state to filesystem.
+            string data = JsonUtility.ToJson(levelSave);
+            this.LevelStorage.Save(levelSave.Code, data, levelSave.IsDistro());
         }
 
         private void Save(LevelSave levelSave, bool uploadToRemote = false)
@@ -176,7 +238,7 @@ namespace Editarrr.Level
 
             // Store state to filesystem.
             string data = JsonUtility.ToJson(levelSave);
-            this.LevelStorage.Save(levelSave.Code, data);
+            this.LevelStorage.Save(levelSave.Code, data, levelSave.IsDistro());
 
             if (uploadToRemote && this.UploadsAllowed)
             {
@@ -219,7 +281,7 @@ namespace Editarrr.Level
             {
                 levelSave.SetRemoteId(remoteId);
                 string data = JsonUtility.ToJson(levelSave);
-                this.LevelStorage.Save(levelSave.Code, data);
+                this.LevelStorage.Save(levelSave.Code, data, levelSave.IsDistro());
             }
         }
 
@@ -231,7 +293,7 @@ namespace Editarrr.Level
             {
                 levelSave.SetSteamId(steamId);
                 string data = JsonUtility.ToJson(levelSave);
-                this.LevelStorage.Save(levelSave.Code, data);
+                this.LevelStorage.Save(levelSave.Code, data, levelSave.IsDistro());
             }
         }
 
@@ -336,6 +398,62 @@ namespace Editarrr.Level
             }
             return this.LevelStorage.LevelExists(levelCode);
         }
+
+        private void UpdateLevelMetadataFromServer(LevelStub[] levels)
+        {
+            // We do not want create caches on remote level storage.
+            if (this.RemoteStorageEnabled)
+            {
+                return;
+            }
+
+            foreach (LevelStub level in levels)
+            {
+                if (!this.LevelStorage.LevelExists(level.Code))
+                {
+                    continue;
+                }
+
+                if (!this.LevelMetaCaches.ContainsKey(level.Code))
+                {
+                    continue;
+                }
+
+                LevelMetaCache cache = this.LevelMetaCaches[level.Code];
+                if (level.TotalRatings == cache.TotalRatings && level.TotalScores == cache.TotalScores)
+                {
+                    continue;
+                }
+
+                this.LevelStorage.LoadLevelData(level.Code, LevelLoadedForMetaUpdate);
+
+                void LevelLoadedForMetaUpdate(LevelSave levelSave)
+                {
+                    levelSave.SetTotalRatings(level.TotalRatings);
+                    levelSave.SetTotalScores(level.TotalScores);
+
+                    // Store state to filesystem.
+                    string data = JsonUtility.ToJson(levelSave);
+                    this.LevelStorage.Save(levelSave.Code, data, levelSave.IsDistro());
+
+                    this.CacheLevelMeta(level);
+                }
+            }
+        }
+
+        public override void DoOnEnable()
+        {
+            base.DoOnEnable();
+
+            LevelBrowserManager.OnRemoteLevelsLoaded += UpdateLevelMetadataFromServer;
+        }
+
+        public override void DoOnDisable()
+        {
+            base.DoOnDisable();
+
+            LevelBrowserManager.OnRemoteLevelsLoaded -= UpdateLevelMetadataFromServer;
+        }
     }
 
     public delegate void LevelManager_LevelLoadedCallback(LevelState levelState);
@@ -347,5 +465,11 @@ namespace Editarrr.Level
     {
         public int limit;
         public string cursor;
+    }
+
+    public struct LevelMetaCache
+    {
+        public int TotalRatings;
+        public int TotalScores;
     }
 }

@@ -541,7 +541,7 @@ namespace Editarrr.LevelEditor
                 this.Overlays = overlays;
 
                 this.SetScale(newWidth, newHeight);
-                this.TranslateOverlays(expandByX, expandByY); 
+                this.TranslateOverlays(expandByX, expandByY);
             }
         }
 
@@ -805,12 +805,16 @@ namespace Editarrr.LevelEditor
 
         public override void DoOnEnable()
         {
+            this.LevelManager.DoOnEnable();
+
             LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest += ShowInvalidLevelModal;
             AchievementManager.OnShowAchievement += OnShowAchievement;
         }
 
         public override void DoOnDisable()
         {
+            this.LevelManager.DoOnDisable();
+
             LevelEditorScreen.SaveAndPlayComponent.OnInvalidLevelRequest -= ShowInvalidLevelModal;
             AchievementManager.OnShowAchievement -= OnShowAchievement;
         }

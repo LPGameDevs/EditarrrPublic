@@ -15,8 +15,7 @@ namespace Gameplay.GUI
     {
         public static event Action<string, RemoteScoreStorage_AllScoresLoadedCallback> OnLeaderboardRequested;
 
-        public delegate void WinMenu_OnScoreSubmit();
-        public static event Action<string, float, WinMenu_OnScoreSubmit> OnScoreSubmit;
+        public static event Action<string, float> OnScoreSubmit;
         public static event Action<string, int> OnRatingSubmit;
 
         public TMP_Text LevelCode;
@@ -141,12 +140,7 @@ namespace Gameplay.GUI
         public void SubmitScore()
         {
             Debug.Log("Submitting score");
-            OnScoreSubmit?.Invoke(_code, _time, OnSubmitScoreOpenDashboard);
-
-            void OnSubmitScoreOpenDashboard()
-            {
-                // We dont need this anymore.
-            }
+            OnScoreSubmit?.Invoke(_code, _time);
         }
 
         public void OpenScoreboard()

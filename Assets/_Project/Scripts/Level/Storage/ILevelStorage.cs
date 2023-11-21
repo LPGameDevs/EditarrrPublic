@@ -8,7 +8,7 @@ namespace Level.Storage
          * Optional setup tasks for the storage mechanism.
          */
         public void Initialize();
-        public void Save(string code, string data);
+        public void Save(string code, string data, bool isDistro = false);
         public void SaveScreenshot(string code, byte[] screenshot);
         public string GetUniqueCode();
         public void LoadLevelData(string code, LevelStorage_LevelLoadedCallback callback);

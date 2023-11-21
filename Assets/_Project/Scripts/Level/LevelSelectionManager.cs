@@ -258,6 +258,8 @@ public class LevelSelectionManager : ManagerComponent
 
     public override void DoOnEnable()
     {
+        this.LevelManager.DoOnEnable();
+
         EditorLevel.OnEditorLevelSelected += OnLevelSelected;
         EditorLevel.OnEditorLevelPlayRequest += OnLevelPlayRequested;
         EditorLevel.OnEditorLevelDelete += OnLevelDeleted;
@@ -270,6 +272,8 @@ public class LevelSelectionManager : ManagerComponent
 
     public override void DoOnDisable()
     {
+        this.LevelManager.DoOnDisable();
+
         EditorLevel.OnEditorLevelSelected -= OnLevelSelected;
         EditorLevel.OnEditorLevelPlayRequest -= OnLevelPlayRequested;
         EditorLevel.OnEditorLevelDelete -= OnLevelDeleted;
