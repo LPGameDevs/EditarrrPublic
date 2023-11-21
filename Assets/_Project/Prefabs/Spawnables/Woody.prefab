@@ -299,7 +299,7 @@ MonoBehaviour:
     m_Bits: 8
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 2384
+    m_Bits: 2128
   otherEnemyLayer:
     serializedVersion: 2
     m_Bits: 1024

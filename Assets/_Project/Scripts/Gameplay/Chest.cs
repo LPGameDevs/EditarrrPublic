@@ -8,9 +8,10 @@ namespace Gameplay
 {
     public class Chest : MonoBehaviour, ISpecialTrigger
     {
-        public static event Action OnChestOpened;
+        public static event Action OnChestReached;
 
-        [SerializeField] AudioClip winSound;
+        [SerializeField] AudioClip _winSound;
+        [SerializeField] Collider2D _collider;
 
         private Animator _animator;
 
@@ -46,8 +47,8 @@ namespace Gameplay
             }
 
             _isWon = true;
-            Editarrr.Audio.AudioManager.Instance.PlayAudioClip(winSound);
-            OnChestOpened?.Invoke();
+            Editarrr.Audio.AudioManager.Instance.PlayAudioClip(_winSound);
+            OnChestReached?.Invoke();
         }
 
         public void SetOpen()
@@ -57,6 +58,7 @@ namespace Gameplay
                 return;
             }
 
+            _collider.enabled = true;
             _animator.SetTrigger(Open);
             _isOpen = true;
         }

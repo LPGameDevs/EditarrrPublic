@@ -173,14 +173,14 @@ namespace Gameplay.GUI
 
         private void OnEnable()
         {
-            Chest.OnChestOpened += ShowWinMenu;
+            Chest.OnChestReached += ShowWinMenu;
             WinMenu.OnLeaderboardRequested += GetLeaderboardScores;
             LeaderboardForm.OnLeaderboardRefreshRequested += GetLeaderboardScores;
         }
 
         private void OnDisable()
         {
-            Chest.OnChestOpened -= ShowWinMenu;
+            Chest.OnChestReached -= ShowWinMenu;
             WinMenu.OnLeaderboardRequested -= GetLeaderboardScores;
             LeaderboardForm.OnLeaderboardRefreshRequested -= GetLeaderboardScores;
         }

@@ -256,7 +256,7 @@ namespace Editarrr.Level
             HealthSystem.OnDeath += this.OnPlayerDeath;
             WinMenu.OnScoreSubmit += this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit += this.OnRatingSubmitRequested;
-            Chest.OnChestOpened += this.OnLevelCompleted;
+            Chest.OnChestReached += this.OnLevelCompleted;
             AchievementManager.OnShowAchievement += OnShowAchievement;
         }
 
@@ -265,7 +265,7 @@ namespace Editarrr.Level
             HealthSystem.OnDeath -= this.OnPlayerDeath;
             WinMenu.OnScoreSubmit -= this.OnScoreSubmitRequested;
             WinMenu.OnRatingSubmit -= this.OnRatingSubmitRequested;
-            Chest.OnChestOpened -= this.OnLevelCompleted;
+            Chest.OnChestReached -= this.OnLevelCompleted;
             AchievementManager.OnShowAchievement -= OnShowAchievement;
         }
 

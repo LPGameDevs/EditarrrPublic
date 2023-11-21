@@ -40,7 +40,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1544087374983774000}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -196,7 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2e8437b2bb08ca918d50c4a9a7cbef0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winSound: {fileID: 8300000, guid: 22fc9133b74c2ed4f8e7106e5362e54b, type: 3}
+  _winSound: {fileID: 8300000, guid: 22fc9133b74c2ed4f8e7106e5362e54b, type: 3}
+  _collider: {fileID: 988250772580351342}
 --- !u!95 &4484809461029209814
 Animator:
   serializedVersion: 5

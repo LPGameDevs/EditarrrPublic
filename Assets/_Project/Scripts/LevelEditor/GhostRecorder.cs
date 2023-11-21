@@ -206,12 +206,12 @@ namespace LevelEditor
 
     protected void OnEnable()
     {
-      Chest.OnChestOpened += SaveGhostRun;
+      Chest.OnChestReached += SaveGhostRun;
     }
 
     protected void OnDisable()
     {
-      Chest.OnChestOpened -= SaveGhostRun;
+      Chest.OnChestReached -= SaveGhostRun;
     }
 
     private struct TransformData

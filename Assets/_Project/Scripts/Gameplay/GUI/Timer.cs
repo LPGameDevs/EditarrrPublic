@@ -92,12 +92,12 @@ namespace Gameplay.GUI
 
         private void OnEnable()
         {
-            Chest.OnChestOpened += HideTimer;
+            Chest.OnChestReached += HideTimer;
         }
 
         private void OnDisable()
         {
-            Chest.OnChestOpened -= HideTimer;
+            Chest.OnChestReached -= HideTimer;
         }
     }
 }

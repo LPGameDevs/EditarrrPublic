@@ -51,14 +51,14 @@ namespace Singletons
         {
             HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(DeathAchievements);
             HealthSystem.OnDeath += (s, e) => HandleAchievementProgress(DiedInLevelAchievements, true);
-            Chest.OnChestOpened += () => HandleAchievementProgress(LevelCompletedAchievements);
+            Chest.OnChestReached += () => HandleAchievementProgress(LevelCompletedAchievements);
         }
 
         private void OnDisable()
         {
             HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(DeathAchievements);
             HealthSystem.OnDeath -= (s, e) => HandleAchievementProgress(DiedInLevelAchievements, true);
-            Chest.OnChestOpened -= () => HandleAchievementProgress(LevelCompletedAchievements);
+            Chest.OnChestReached -= () => HandleAchievementProgress(LevelCompletedAchievements);
         }
 
         public void SetLevelCode(string code)
