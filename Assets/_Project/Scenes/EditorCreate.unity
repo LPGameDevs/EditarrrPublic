@@ -584,7 +584,6 @@ MonoBehaviour:
   <Camera>k__BackingField: {fileID: 1824080161}
   <Tilemap_Foreground>k__BackingField: {fileID: 2124640300}
   <Tilemap_Background>k__BackingField: {fileID: 585236748}
-  <Tilemap_InfoOverlay>k__BackingField: {fileID: 923294405}
   <ModalCanvas>k__BackingField: {fileID: 1705024224}
   <StartModal>k__BackingField: {fileID: 11400000, guid: db92f3fe960704fbaae89f1abff61873, type: 2}
   <InvalidModal>k__BackingField: {fileID: 11400000, guid: ec2c9e6e90372bdfda4e89d7876bf483, type: 2}

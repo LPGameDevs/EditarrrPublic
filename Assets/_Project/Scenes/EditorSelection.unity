@@ -4971,6 +4971,7 @@ MonoBehaviour:
   - {fileID: 2022935167}
   - {fileID: 1895287147}
   - {fileID: 1771852580}
+  <PauseInput>k__BackingField: {fileID: 11400000, guid: ff4dcd1715d1d3749abc905aba2a3ef5, type: 2}
 --- !u!222 &2119754423
 CanvasRenderer:
   m_ObjectHideFlags: 0
