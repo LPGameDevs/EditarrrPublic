@@ -85,10 +85,19 @@ namespace Editarrr.Level
             }
         }
 
-        public override void Save(string code, string data)
+        public override void Save(string code, string data, bool isDistro = false)
         {
             code = code.ToLower();
-            string path = this.GetCreateLevelPath(code) + "level.json";
+            string path = "";
+
+            if (isDistro)
+            {
+                path = this.GetDistroLevelPath(code) + "level.json";
+            }
+            else
+            {
+                path = this.GetCreateLevelPath(code) + "level.json";
+            }
 
             // Write to local storage
             File.WriteAllText(path, data);

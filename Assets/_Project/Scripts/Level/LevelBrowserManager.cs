@@ -1,3 +1,4 @@
+using System;
 using Browser;
 using Editarrr.Level;
 using Editarrr.Managers;
@@ -13,6 +14,8 @@ public class LevelBrowserManager : ManagerComponent
 {
     private const string Documentation = "This handles loading levels for level browser.";
 
+    public static event Action<LevelStub[]> OnRemoteLevelsLoaded;
+
     [field: SerializeField, Info(Documentation), Header("Managers")] private LevelManager LevelManager { get; set; }
 
     // From system
@@ -23,7 +26,7 @@ public class LevelBrowserManager : ManagerComponent
 
     SortingState _currentSortingState = SortingState.Inactive;
     string _sortingCriterionName = "";
-    
+
 
     public void SetLevelLoader(LevelBrowserLoader levelLoader)
     {
@@ -64,10 +67,12 @@ public class LevelBrowserManager : ManagerComponent
             else
                 orderedlevels = levels.OrderBy(x => x.Code);
 
-           _levelLoader.SetLevels(orderedlevels.ToArray());
+            this._levelLoader.SetLevels(orderedlevels.ToArray());
             this.NextCursor = cursor;
             this.PagerRequestResultHasMoreCallback?.Invoke(levels.Length == this.LevelQuery.limit);
             this.PagerRequestResultHasMoreCallback = null;
+
+            OnRemoteLevelsLoaded?.Invoke(levels);
         }
     }
 
@@ -158,6 +163,8 @@ public class LevelBrowserManager : ManagerComponent
 
     public override void DoOnEnable()
     {
+        this.LevelManager.DoOnEnable();
+
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot += OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated += OnBrowserPagerUpdateRequested;
@@ -172,6 +179,8 @@ public class LevelBrowserManager : ManagerComponent
 
     public override void DoOnDisable()
     {
+        this.LevelManager.DoOnDisable();
+
         LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot -= OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated -= OnBrowserPagerUpdateRequested;

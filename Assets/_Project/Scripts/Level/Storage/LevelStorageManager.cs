@@ -4,7 +4,7 @@ namespace Level.Storage
 {
     public abstract class LevelStorageManager : ScriptableObject, ILevelStorage
     {
-        public abstract void Save(string code, string data);
+        public abstract void Save(string code, string data, bool isDistro = false);
         public abstract void SaveScreenshot(string code, byte[] screenshot);
         public abstract string GetScreenshotPath(string code, bool isDistro = false);
         public abstract bool LevelExists(string code);

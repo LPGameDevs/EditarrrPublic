@@ -208,22 +208,19 @@ namespace Editarrr.Level
         #endregion
 
 
-        private void OnScoreSubmitRequested(string code, float time, WinMenu.WinMenu_OnScoreSubmit callback)
+        private void OnScoreSubmitRequested(string code, float time)
         {
             this.LevelManager.LevelStorage.LoadLevelData(code, ScoreLevelLoaded);
 
             void ScoreLevelLoaded(LevelSave levelSave)
             {
                 this.LevelManager.SubmitScore(time, levelSave, ScoreSubmitted);
+                this.LevelManager.TrackNewScore(levelSave);
 
                 void ScoreSubmitted(string code, string remoteId, bool isSteam)
                 {
-                    // @todo do we need this?
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelScoreSubmitted);
                     AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelScoreSubmitted, $"{code}-{time}");
-
-                    // Update leaderboard.
-                    callback.Invoke();
                 }
             }
         }
@@ -234,7 +231,8 @@ namespace Editarrr.Level
 
             void RatingLevelLoaded(LevelSave levelSave)
             {
-                LevelManager.SubmitRating(rating, levelSave, RatingSubmitted);
+                this.LevelManager.SubmitRating(rating, levelSave, RatingSubmitted);
+                this.LevelManager.TrackNewRating(levelSave);
 
                 void RatingSubmitted(string code, string remoteId, bool isSteam)
                 {

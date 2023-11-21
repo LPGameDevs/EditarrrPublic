@@ -93,6 +93,12 @@ namespace Editarrr.Level
             this.Tiles = tiles.ToArray();
         }
 
+        public bool IsDistro()
+        {
+            // @todo Should we store this property properly?
+            return this.Code.ToLower().Contains("demo");
+        }
+
         public string[] GetLabels()
         {
             return this.Labels.ToArray();
