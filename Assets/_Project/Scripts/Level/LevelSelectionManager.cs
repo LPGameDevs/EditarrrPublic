@@ -85,10 +85,6 @@ public class LevelSelectionManager : ManagerComponent
         this.DestroyAndRefreshLevels();
     }
 
-    private void OnEnable() => SceneTransitionManager.OnSceneRemoved += OnSceneClosed;
-
-    private void OnDisable() => SceneTransitionManager.OnSceneRemoved -= OnSceneClosed;
-
     private void OnFilterLevels()
     {
         DestroyAndRefreshLevels();
@@ -119,14 +115,6 @@ public class LevelSelectionManager : ManagerComponent
         }
 
         _levelLoader.LoadingOverlay.SetActive(false);
-    }
-
-    private void OnSceneClosed(string sceneName)
-    {
-        if (sceneName != SceneTransitionManager.BrowserSceneName)
-            return;
-
-        DestroyAndRefreshLevels();
     }
 
     private void OnLevelDeleted(string code)
