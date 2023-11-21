@@ -236,10 +236,10 @@ MonoBehaviour:
     m_Bits: 8
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 2128
+    m_Bits: 64
   otherEnemyLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -278,7 +278,7 @@ MonoBehaviour:
     m_Bits: 8
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 3392
+    m_Bits: 64
   visibleTargets: []
 --- !u!95 &2705281091064234187
 Animator:
