@@ -1,9 +1,11 @@
 using System;
 using Editarrr.Audio;
+using Editarrr.Input;
 using Misc;
 using Singletons;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SettingsManager : UnityPersistentSingleton<SettingsManager>
@@ -18,7 +20,7 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
     [SerializeField] GameObject _creditsDisplay;
     [SerializeField] TMP_InputField _streamerChannel;
     [SerializeField] TMP_InputField _targetFps;
-
+    [field: SerializeField, Tooltip("Pause input")] private InputValue PauseInput { get; set; }
     const int FPS_LIMIT_MIN = 30;
     const int FPS_LIMIT_MAX = 120;
 
@@ -47,6 +49,20 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
         SceneTransitionManager.OnSceneChanged -= ToggleSettingsButton;
     }
 
+    private void Update()
+    {
+        if (PauseInput.WasPressed && _settingsButton.activeInHierarchy)
+            ToggleSettingsMenu();
+    }
+
+    private void ToggleSettingsMenu()
+    {
+        if(!_settingsOverlay.activeInHierarchy)
+            OpenSettingsMenu();
+        else
+            CloseSettingsMenu();
+    }
+
     private void ToggleSettingsButton(string sceneName)
     {
         _settingsButton.SetActive(!sceneName.Equals(SceneTransitionManager.TestLevelSceneName));
@@ -54,12 +70,18 @@ public class SettingsManager : UnityPersistentSingleton<SettingsManager>
 
     public void OpenSettingsMenu()
     {
+        if (_settingsOverlay.activeInHierarchy)
+            return;
+
         AudioManager.Instance.PlayAudioClip(AudioManager.BUTTONCLICK_CLIP_NAME);
         _settingsOverlay.SetActive(true);
     }
 
     public void CloseSettingsMenu()
     {
+        if (!_settingsOverlay.activeInHierarchy)
+            return;
+
         string currentSavedChannel = PreferencesManager.Instance.GetStreamerChannel();
         if (_streamerChannel.text != currentSavedChannel)
         {
