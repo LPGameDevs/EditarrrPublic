@@ -29,6 +29,9 @@ namespace LevelEditor
         public string Code { get; protected set; } = "";
         public List<string> Labels { get; set; } = new List<string>();
 
+        public void HideLevel() => gameObject.SetActive(false);
+        public void ShowLevel() => gameObject.SetActive(true);
+
         public void DeleteLevel()
         {
             // @todo Remove this
