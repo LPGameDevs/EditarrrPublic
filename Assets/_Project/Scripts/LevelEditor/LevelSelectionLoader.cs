@@ -30,7 +30,7 @@ public class LevelSelectionLoader : MonoBehaviour
 
     [SerializeField] UISelectableAugment[] _filterButtons;
 
-    private List<Transform> _loadedLevels = new List<Transform>();
+    private List<EditorLevel> _loadedLevels = new List<EditorLevel>();
     private LevelFilterMetric CurrentFilter = LevelFilterMetric.None;
 
     public void DestroyLevels()
@@ -40,7 +40,7 @@ public class LevelSelectionLoader : MonoBehaviour
         {
             Destroy(level.gameObject);
         }
-        _loadedLevels = new List<Transform>();
+        _loadedLevels = new List<EditorLevel>();
     }
 
     /**
@@ -79,7 +79,8 @@ public class LevelSelectionLoader : MonoBehaviour
             level.HideDeleteButton();
         }
 
-        _loadedLevels.Add(level.transform);
+        level.HideLevel();
+        _loadedLevels.Add(level);
     }
 
     public bool LevelFilterApplies(LevelStub level)
@@ -210,5 +211,13 @@ public class LevelSelectionLoader : MonoBehaviour
     private void OnDisable()
     {
         LevelBrowserLoader.OnLevelBrowserClosed -= OnCloseBrowser;
+    }
+
+    internal void FinishLoadingProcess()
+    {
+        foreach (EditorLevel level in _loadedLevels)
+            level.gameObject.SetActive(true);
+
+        LoadingOverlay.SetActive(false);
     }
 }

@@ -114,7 +114,7 @@ public class LevelSelectionManager : ManagerComponent
             await Task.Yield();
         }
 
-        _levelLoader.LoadingOverlay.SetActive(false);
+        _levelLoader.FinishLoadingProcess();
     }
 
     private void OnLevelDeleted(string code)
