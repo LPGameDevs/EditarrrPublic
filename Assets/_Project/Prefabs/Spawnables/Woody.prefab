@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 10
-  <KnockbackForce>k__BackingField: 40
+  <KnockbackForce>k__BackingField: 30
   <DamageCooldown>k__BackingField: 1
   <StunDuration>k__BackingField: 0
   <ForceOrigin>k__BackingField: {fileID: 1279904994308610896}
@@ -307,6 +307,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   fieldOfView: {fileID: 5926081874967404987}
+  hazard: {fileID: 891147759834081877}
 --- !u!114 &5926081874967404987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,7 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fecfea92aad94f219f1b6ddcea98d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 8
+  viewRadius: 7
   viewAngle: 160
   isTopDown: 0
   targetMask:
@@ -395,6 +396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 5735911789909314014}
   _aiController: {fileID: -8463723315205456912}
+  attackParticlesPrefab: {fileID: 7227797530050351386, guid: 3ed599d37ebac3044a7a935d91f27fcd, type: 3}
 --- !u!1 &8201787337066556226
 GameObject:
   m_ObjectHideFlags: 0

@@ -234,8 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73db6d5f057532a4fbb2006b90d4e137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 10
-  <KnockbackForce>k__BackingField: 40
+  _damage: 5
+  <KnockbackForce>k__BackingField: 10
   <DamageCooldown>k__BackingField: 1
   <StunDuration>k__BackingField: 0
   <ForceOrigin>k__BackingField: {fileID: 1279904994308610896}
@@ -253,7 +253,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0072078644, y: -0.12}
+  m_Offset: {x: 0.07, y: -0.08}
   m_Size: {x: 1.0190927, y: 0.70000166}
   m_Direction: 1
 --- !u!70 &3109622261555172090
@@ -269,7 +269,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0072078644, y: -0.12}
+  m_Offset: {x: 0.07, y: -0.08}
   m_Size: {x: 1.0190927, y: 0.70000166}
   m_Direction: 1
 --- !u!50 &7418034618229315574
@@ -322,6 +322,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   fieldOfView: {fileID: 9210449732474747992}
+  hazard: {fileID: 891147759834081877}
 --- !u!114 &9210449732474747992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,7 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fecfea92aad94f219f1b6ddcea98d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 8
+  viewRadius: 5
   viewAngle: 360
   isTopDown: 0
   targetMask:
@@ -394,6 +395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 2643010217331495158}
   _aiController: {fileID: -405603246075902776}
+  attackParticlesPrefab: {fileID: 7227797530050351386, guid: ffc99382f16950a48bdf5a233d7a9507, type: 3}
 --- !u!1001 &458494967242032748
 PrefabInstance:
   m_ObjectHideFlags: 0

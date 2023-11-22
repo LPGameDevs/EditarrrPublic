@@ -1,6 +1,7 @@
 using Player;
 using System;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyAIController : PausableCharacter
@@ -8,8 +9,8 @@ public class EnemyAIController : PausableCharacter
     public enum AIState
     {
         idle,
-        moving,
         pausing,
+        moving,
         alerting,
         attacking,
         reseting
@@ -34,6 +35,8 @@ public class EnemyAIController : PausableCharacter
     [SerializeField] private LayerMask groundLayer;
 
     [SerializeField] private FieldOfView fieldOfView;
+
+    [SerializeField] private Hazard hazard;
 
     private AIState _aiState;
 
@@ -85,6 +88,10 @@ public class EnemyAIController : PausableCharacter
     private void FixedUpdate()
     {
         if (!_active) return;
+
+        if (!IsGrounded(footTransform))
+            ApplyGravity();
+
         switch (enemyAIData.enemyType)
         {
             case EnemyType.dashAttack:
@@ -195,12 +202,16 @@ public class EnemyAIController : PausableCharacter
                 break;
 
             case AIState.attacking:
+                hazard.AdjustDamage(10);
+                hazard.AdjustKnockback(60);
                 _timer += Time.deltaTime;
                 if (_timer >= enemyAIData.alertTime)
                 {
                     _timer = 0;
                     _moveSpeed = 0;
                     ChangeActiveState(AIState.pausing);
+                    hazard.AdjustDamage(5);
+                    hazard.AdjustKnockback(10);
                     return;
                 }
                 break;
@@ -421,6 +432,8 @@ public class EnemyAIController : PausableCharacter
                 if (_timer >= enemyAIData.alertTime)
                 {
                     ChangeActiveState(AIState.attacking);
+                    hazard.AdjustDamage(10);
+                    hazard.AdjustKnockback(40);
                     _timer = 0;
                     _moveSpeed = 0;
                 }
@@ -436,6 +449,8 @@ public class EnemyAIController : PausableCharacter
                         _moveSpeed = 0;
                         print("Can't see player, pausing");
                         ChangeActiveState(AIState.pausing);
+                        hazard.AdjustDamage(5);
+                        hazard.AdjustKnockback(10);
                         return;
                     }
                 }
@@ -451,6 +466,8 @@ public class EnemyAIController : PausableCharacter
                         _timer = 0;
                         print("Can't move, pausing");
                         ChangeActiveState(AIState.pausing);
+                        hazard.AdjustDamage(5);
+                        hazard.AdjustKnockback(10);
                         return;
                     }
                 }
@@ -534,6 +551,9 @@ public class EnemyAIController : PausableCharacter
 
     private void ApplyGravity()
     {
+        if (enemyAIData.enemyType == EnemyType.flying)
+            return;
+
         Vector2 currentPosition = transform.position;
         Vector2 targetPosition = currentPosition + Vector2.down * enemyAIData.detectionRange;
         transform.position = Vector2.MoveTowards(currentPosition, targetPosition, _moveSpeed * Time.deltaTime);

@@ -72,14 +72,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2066908769515113949}
   - component: {fileID: 2066908769515113948}
-  - component: {fileID: -5167158551013896713}
+  - component: {fileID: 4056213485840879095}
   - component: {fileID: 3485918219516444826}
-  - component: {fileID: -2006380436427431046}
+  - component: {fileID: 7216991600427344762}
   - component: {fileID: 3721442503812338518}
   - component: {fileID: 3890498848708461715}
   - component: {fileID: 6284010025752538964}
   - component: {fileID: 2705281091064234187}
-  - component: {fileID: -2907120723481559828}
+  - component: {fileID: 6316251313373215980}
   - component: {fileID: 3777077031930075018}
   m_Layer: 10
   m_Name: Sharcus
@@ -96,7 +96,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2066908769515113955}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.104429, y: -3.1295476, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -160,7 +160,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &-5167158551013896713
+--- !u!70 &4056213485840879095
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,7 +174,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.026250627, y: -0.059178364}
-  m_Size: {x: 0.7000102, y: 0.7000102}
+  m_Size: {x: 0.7000102, y: 0.7}
   m_Direction: 1
 --- !u!114 &3485918219516444826
 MonoBehaviour:
@@ -189,12 +189,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 10
-  <KnockbackForce>k__BackingField: 40
+  <KnockbackForce>k__BackingField: 30
   <DamageCooldown>k__BackingField: 1
   <StunDuration>k__BackingField: 0
   <ForceOrigin>k__BackingField: {fileID: 3110954995715635811}
   <useStaticForce>k__BackingField: 0
---- !u!50 &-2006380436427431046
+--- !u!50 &7216991600427344762
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -244,6 +244,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   fieldOfView: {fileID: 6284010025752538964}
+  hazard: {fileID: 3485918219516444826}
 --- !u!114 &3890498848708461715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,6 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 2705281091064234187}
   _aiController: {fileID: 3721442503812338518}
+  attackParticlesPrefab: {fileID: 7227797530050351386, guid: 11805fc077e0ee74a9fb5041726a8244, type: 3}
 --- !u!114 &6284010025752538964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,7 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewRadius: 10
-  viewAngle: 90
+  viewAngle: 30
   isTopDown: 0
   targetMask:
     serializedVersion: 2
@@ -301,7 +303,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-2907120723481559828
+--- !u!114 &6316251313373215980
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -329,8 +331,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.026250627, y: -0.059178364}
-  m_Size: {x: 0.7000102, y: 0.7000102}
+  m_Offset: {x: -0.1, y: -0.05}
+  m_Size: {x: 1, y: 0.7}
   m_Direction: 1
 --- !u!1 &7191387649853998569
 GameObject:

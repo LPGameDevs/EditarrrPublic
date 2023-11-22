@@ -49,4 +49,7 @@ public class Hazard : MonoBehaviour
 		Gizmos.color = Color.magenta;
 		Gizmos.DrawLine(ForceOrigin.position, this.transform.position);
     }
+
+	public void AdjustDamage(int newDamage) => _damage = newDamage;
+	public void AdjustKnockback(int newKnockback) => KnockbackForce = newKnockback;
 }
