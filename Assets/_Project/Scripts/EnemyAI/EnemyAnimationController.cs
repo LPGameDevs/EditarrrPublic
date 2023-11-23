@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using Player;
 using System;
 using System.Collections;
@@ -6,46 +7,45 @@ using UnityEngine;
 
 public class EnemyAnimationController : MonoBehaviour
 {
-    public event Action OnAttack;
-
-    [SerializeField] Animator _animator;
+    [SerializeField] Animator _characterAnimator;
     [SerializeField] EnemyAIController _aiController;
-    [SerializeField] GameObject attackParticlesPrefab;
+    [SerializeField] GameObject _attackParticlesPrefab;
+    [SerializeField] EnemyFeedback _enemyFeedback;
 
     private void OnEnable()
     {
         _aiController.OnStateChanged += ChangeAnimationState;
+        _aiController.OnPlayerCollision += OnAttack;
     }
 
     private void OnDisable()
     {
+        _aiController.OnPlayerCollision -= OnAttack;
         _aiController.OnStateChanged -= ChangeAnimationState;
     }
 
     private void ChangeAnimationState(EnemyAIController.AIState newState)
     {
-        _animator.SetInteger("StateEnum", (int)newState);
-        _animator.ResetTrigger("Attack");
+        _characterAnimator.SetInteger("StateEnum", (int)newState);
+        _characterAnimator.ResetTrigger("Attack");
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnAttack()
     {
-        if (!collision.TryGetComponent<PlayerController>(out PlayerController playerController) || playerController.Health.IsInvincible())
-            return;
-
-        _animator.SetTrigger("Attack");
-        OnAttack?.Invoke();
+        _characterAnimator.SetTrigger("Attack");
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) => OnTriggerEnter2D(collision.collider);
-
+    #region Animation Events
     public void SpawnAttackParticles(int spawnInWorldSpace)
     {
 
         GameObject particleInstance = (spawnInWorldSpace == 0 ?
-                        Instantiate(attackParticlesPrefab, transform):
-                        Instantiate(attackParticlesPrefab, transform.position, Quaternion.identity)); 
+                        Instantiate(_attackParticlesPrefab, transform):
+                        Instantiate(_attackParticlesPrefab, transform.position, Quaternion.identity)); 
 
         Destroy(particleInstance, 1f);
     }
+
+    public void PlayAudioClip(AudioClip audioClip) => _enemyFeedback.PlayAudioClip(audioClip);
+    #endregion
 }

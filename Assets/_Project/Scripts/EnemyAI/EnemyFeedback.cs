@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
@@ -13,12 +14,15 @@ using Random = UnityEngine.Random;
 public class EnemyFeedback : MonoBehaviour
 {
     [SerializeField] EnemyAIController _aiController;
-    [SerializeField] EnemyAnimationController _animationController;
-    [SerializeField] MMFeedbacks _move, _attack;
+    [SerializeField] Animator _dialogueAnimator;
+    [Space(15)]
+    [SerializeField] MMFeedbacks _move, _attack, _altAttack, alert, confusion;
     [Space(15)]
     [SerializeField] AudioSource _generalAudioSource;
     [SerializeField] AudioSource _moveAudioSource;
     [Range(0, 2)][SerializeField] float _minMovePitch, _maxMovePitch, _minMoveVolume, _maxMoveVolume;
+
+    bool _isAttacking;
 
     private void OnMove(bool movingOnGround)
     {
@@ -49,20 +53,56 @@ public class EnemyFeedback : MonoBehaviour
         Debug.Log("OnMove");
     }
 
-    private void OnAttack()
+    private void OnPlayerCollision()
     {
-        _attack.PlayFeedbacks();
+        if(_isAttacking && _altAttack != null)
+            _altAttack.PlayFeedbacks();
+        else
+            _attack.PlayFeedbacks();
+    }
+
+    private void OnPlayerSpotted()
+    {
+        alert.PlayFeedbacks();
+        _dialogueAnimator.SetTrigger("Exclamation");
+    }
+
+    private void OnLostSightOfPlayer()
+    {
+        confusion.PlayFeedbacks();
+        _dialogueAnimator.SetTrigger("Confusion");
+    }
+
+    public void OnAttackStateChanged(bool isAttacking)
+    {
+        if (_altAttack == null)
+            return;
+
+        _isAttacking = isAttacking;
+    }
+
+    public void PlayAudioClip(AudioClip clip)
+    {
+        _generalAudioSource.PlayOneShot(clip);
     }
 
     private void OnEnable()
     {
         _aiController.OnMove += OnMove;
-        _animationController.OnAttack += OnAttack;
+        _aiController.OnPlayerCollision += OnPlayerCollision;
+        _aiController.OnAttackStateChanged += OnAttackStateChanged;
+        _aiController.OnPlayerSpotted += OnPlayerSpotted;
+        _aiController.OnLostSightOfPlayer += OnLostSightOfPlayer;
+
     }
 
     private void OnDisable()
     {
         _aiController.OnMove -= OnMove;
-        _animationController.OnAttack -= OnAttack;
+        _aiController.OnPlayerCollision -= OnPlayerCollision;
+        _aiController.OnAttackStateChanged -= OnAttackStateChanged;
+        _aiController.OnPlayerSpotted -= OnPlayerSpotted;
+        _aiController.OnLostSightOfPlayer -= OnLostSightOfPlayer;
     }
+
 }

@@ -18,40 +18,31 @@ public class EnemyAIController : PausableCharacter
 
     public event Action<AIState> OnStateChanged;
     public event Action<bool> OnMove;
+    public event Action<bool> OnAttackStateChanged;
+    public event Action OnPlayerCollision;
+    public event Action OnPlayerSpotted;
+    public event Action OnLostSightOfPlayer;
 
     [SerializeField] private EnemyAIDataSO enemyAIData;
-
     [SerializeField] private Transform eyeTransform;
-
     [SerializeField] private Transform footTransform;
-
     [SerializeField] private Transform groundDetector;
-
     [SerializeField] private LayerMask playerLayer;
-
     [SerializeField] private LayerMask obstacleLayer;
-
     [SerializeField] private LayerMask otherEnemyLayer;
-
     [SerializeField] private LayerMask groundLayer;
-
     [SerializeField] private FieldOfView fieldOfView;
-
     [SerializeField] private Hazard hazard;
+    [SerializeField] private SpriteRenderer dialoguePopupRenderer;
 
     private AIState _aiState;
-
     private float _timer = 0f;
-
     private float _distanceToObstacle = 1f;
-
     private float _distanceToGround = -0.5f;
-
     private float _moveSpeed;
-
     private Vector3 _spawnLocation;
-
     private float _originalFOVRadius;
+    private bool _playerInSight;
 
     private void Start()
     {
@@ -115,6 +106,11 @@ public class EnemyAIController : PausableCharacter
                 EnemyAnticipator();
                 break;
         }
+    }
+
+    private void Update()
+    {
+        dialoguePopupRenderer.flipX = transform.localScale.x == -1 ? true : false;
     }
 
     private void EnemyAnticipator()
@@ -203,6 +199,7 @@ public class EnemyAIController : PausableCharacter
                 break;
 
             case AIState.attacking:
+                OnAttackStateChanged(true);
                 hazard.AdjustDamage(10);
                 hazard.AdjustKnockback(60);
                 _timer += Time.deltaTime;
@@ -211,6 +208,7 @@ public class EnemyAIController : PausableCharacter
                     _timer = 0;
                     _moveSpeed = 0;
                     ChangeActiveState(AIState.pausing);
+                    OnAttackStateChanged(false);
                     hazard.AdjustDamage(5);
                     hazard.AdjustKnockback(10);
                     return;
@@ -433,6 +431,7 @@ public class EnemyAIController : PausableCharacter
                 if (_timer >= enemyAIData.alertTime)
                 {
                     ChangeActiveState(AIState.attacking);
+                    OnAttackStateChanged(true);
                     hazard.AdjustDamage(10);
                     hazard.AdjustKnockback(40);
                     _timer = 0;
@@ -450,6 +449,7 @@ public class EnemyAIController : PausableCharacter
                         _moveSpeed = 0;
                         print("Can't see player, pausing");
                         ChangeActiveState(AIState.pausing);
+                        OnAttackStateChanged(false);
                         hazard.AdjustDamage(5);
                         hazard.AdjustKnockback(10);
                         return;
@@ -467,6 +467,7 @@ public class EnemyAIController : PausableCharacter
                         _timer = 0;
                         print("Can't move, pausing");
                         ChangeActiveState(AIState.pausing);
+                        OnAttackStateChanged?.Invoke(false);
                         hazard.AdjustDamage(5);
                         hazard.AdjustKnockback(10);
                         return;
@@ -565,9 +566,19 @@ public class EnemyAIController : PausableCharacter
     {
         if (fieldOfView.visibleTargets.Count > 0)
         {
+            if(!_playerInSight)
+            {
+                OnPlayerSpotted?.Invoke();
+                _playerInSight = true;
+            }
             return true;
         }
 
+        if (_playerInSight)
+        {
+            OnLostSightOfPlayer?.Invoke();
+            _playerInSight = false;
+        }
         return false;
     }
 
@@ -612,4 +623,13 @@ public class EnemyAIController : PausableCharacter
         _aiState = newState;
         OnStateChanged?.Invoke(_aiState);
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent<PlayerController>(out PlayerController playerController) || playerController.Health.IsInvincible())
+            return;
+
+        OnPlayerCollision?.Invoke();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) => OnTriggerEnter2D(collision.collider);
 }
