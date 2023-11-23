@@ -20,7 +20,7 @@ namespace Player
 
         [field: SerializeField] private Rigidbody2D Rigidbody { get; set; }
 
-        private HealthSystem Health { get; set; }
+        public HealthSystem Health { get; private set; }
 
         [field: SerializeField] private SpriteRenderer Visuals { get; set; }
         private Transform VisualRoot { get; set; }

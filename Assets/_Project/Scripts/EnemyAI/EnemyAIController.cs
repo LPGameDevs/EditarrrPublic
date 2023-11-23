@@ -17,6 +17,7 @@ public class EnemyAIController : PausableCharacter
     }
 
     public event Action<AIState> OnStateChanged;
+    public event Action<bool> OnMove;
 
     [SerializeField] private EnemyAIDataSO enemyAIData;
 
@@ -503,6 +504,7 @@ public class EnemyAIController : PausableCharacter
         Vector2 currentPosition = transform.position;
         Vector2 targetPosition = currentPosition + forward * _distanceToGround;
         transform.position = Vector2.MoveTowards(currentPosition, targetPosition, _moveSpeed * Time.deltaTime);
+        OnMove?.Invoke(CanMove() && IsGrounded(footTransform));
         //FaceTowardsMovement(targetPosition);
     }
 

@@ -10326,6 +10326,10 @@ MonoBehaviour:
   _damageCamShakeMultiplier: 2
   _damageCamShakeMin: 1
   _damageCamShakeMax: 5
+  _minMovePitch: 0.9
+  _maxMovePitch: 1.1
+  _minMoveVolume: 0.95
+  _maxMoveVolume: 1.05
 --- !u!82 &4782475389400933541
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10344,7 +10348,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 50
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
