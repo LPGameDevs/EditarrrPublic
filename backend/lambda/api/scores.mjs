@@ -29,7 +29,8 @@ export class ScoresApi {
             throw new BadRequestException(`level ${levelId} does not exist`)
         }
 
-        if (level.levelStatus != "PUBLISHED") {
+        // We want to exclude drafts, but keep demo and published.
+        if (level.levelStatus == "DRAFT") {
             throw new BadRequestException(`level ${levelId} is not published.`)
         }
 
