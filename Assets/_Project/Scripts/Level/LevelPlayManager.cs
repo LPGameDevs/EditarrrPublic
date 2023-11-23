@@ -214,6 +214,12 @@ namespace Editarrr.Level
 
             void ScoreLevelLoaded(LevelSave levelSave)
             {
+                // Cannot submit scores for levels that are not published.
+                if (!levelSave.Published)
+                {
+                    return;
+                }
+
                 this.LevelManager.SubmitScore(time, levelSave, ScoreSubmitted);
                 this.LevelManager.TrackNewScore(levelSave);
 
