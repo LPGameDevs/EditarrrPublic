@@ -31,6 +31,10 @@ If you've configured SSO before on this machine:
 - `export AWS_PROFILE=editarrr-dev`
 - Run `aws sso login`
 
+### Pull analytics data
+
+-  `AWS_PROFILE=editarrr-dev aws dynamodb scan --table-name editarrr-analytics-storage > export.json`
+
 ### Resources
 
 - [Terraform](https://www.terraform.io/)

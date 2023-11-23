@@ -73,7 +73,7 @@ namespace Singletons
 
         public void UnlockAchievement(GameAchievement achievement)
         {
-            if (!PreferencesManager.Instance.IsAchievementUnlocked(achievement) && CheckAchievementEgligibility())
+            if (!PreferencesManager.Instance.IsAchievementUnlocked(achievement) && CheckAchievementEligibility())
             {
                 PreferencesManager.Instance.SetAchievementUnlocked(achievement);
 
@@ -95,7 +95,7 @@ namespace Singletons
         {
             var saveString = needsCode ? achievement.SavePrefString + _code : achievement.SavePrefString;
 
-            if (saveString != "" && CheckAchievementEgligibility())
+            if (saveString != "" && CheckAchievementEligibility())
             {
                 if (!PlayerPrefs.HasKey(saveString))
                 {
@@ -120,12 +120,22 @@ namespace Singletons
             }
         }
 
-        private bool CheckAchievementEgligibility()
+        private bool CheckAchievementEligibility()
         {
-            var level = FindObjectOfType<LevelPlaySystem>().Manager.Level;
-            var currentPlayerID = PreferencesManager.Instance.GetUserId();
+            bool outcome = true;
 
-            return (level.Creator != currentPlayerID && level.Published);
+            try
+            {
+                var level = FindObjectOfType<LevelPlaySystem>().Manager.Level;
+                var currentPlayerID = PreferencesManager.Instance.GetUserId();
+                outcome = level.Creator != currentPlayerID && level.Published;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error happened while trying to check achievement eligibility");
+            }
+
+            return outcome;
         }
     }
 }
