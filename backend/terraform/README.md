@@ -9,6 +9,8 @@ Terraform is a tool for managing server infrastructure.
 
 ### Usage
 
+**IMPORTANT: _Only_ @yanniboi should deploy to `production` - manual changes to the terraform configs must be made before `production` deploys
+
 - `cd` into the `terraform` directory
 - Run `terraform init` to initialize the Terraform configuration
 - Run `terraform apply` to apply the Terraform configuration
@@ -22,8 +24,8 @@ Terraform is a tool for managing server infrastructure.
 Terraform uses the AWS CLI to authenticate with AWS. The AWS CLI must be configured with a profile that has the necessary permissions to create the resources defined in the Terraform configuration.
 
 If you are running this for the first time:
-- Run `aws configure sso --profile editarrr-dev` to configure the AWS CLI with SSO
-- Start url is `https://d-c36717c02f.awsapps.com/start`
+- Run `aws configure sso --profile editarrr-dev` to configure the AWS CLI with SSO (or `editarrr-prod`)
+- Start url is `https://d-c36717c02f.awsapps.com/start` (or `https://d-c3671cbce7.awsapps.com/start/` for `prod`)
 - Region is `eu-north-1`
 - Run `export AWS_PROFILE=editarrr-dev` to set the profile for the current shell session
 
