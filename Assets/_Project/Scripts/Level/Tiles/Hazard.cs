@@ -8,7 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Hazard : MonoBehaviour
 {
-	public event Action OnCollision;
+	public event Action<Transform> OnCollision;
 
 	[SerializeField] int _damage;
 	/// <summary>
@@ -56,7 +56,7 @@ public class Hazard : MonoBehaviour
         forceReceiver.ReceiveImpulse(this.KnockbackForce, forceDirection);
 		
 		contactFeedback?.Play(transform.position);
-		OnCollision?.Invoke();
+		OnCollision?.Invoke(other.transform);
     }
 
     private void OnDrawGizmos()

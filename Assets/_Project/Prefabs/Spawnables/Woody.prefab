@@ -828,11 +828,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 4b917b667d852d347b626a7f617936bc, type: 3}
     - target: {fileID: 2247860659270213782, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MaxVolume
-      value: 0.5
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 2247860659270213782, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MinVolume
-      value: 0.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2419768879126008277, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: m_audioClip
@@ -856,11 +856,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: a271418cda9c62c49806f8cff71219f4, type: 3}
     - target: {fileID: 6500813044645833859, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MaxVolume
-      value: 0.5
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 6500813044645833859, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MinVolume
-      value: 0.3
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 7892034424657397053, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: m_RootOrder

@@ -86,6 +86,7 @@ namespace MoreMountains.Feedbacks
                 temporaryAudioHost.transform.SetParent(owner.transform);
                 // we add an audio source to that host
                 _cachedAudioSource = temporaryAudioHost.AddComponent<AudioSource>() as AudioSource;
+                _cachedAudioSource.outputAudioMixerGroup = SfxAudioMixerGroup;
             }
         }
 

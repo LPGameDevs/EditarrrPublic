@@ -487,7 +487,7 @@ public class EnemyAIController : PausableCharacter
     {
         _moveSpeed = Mathf.Lerp(_moveSpeed, finalSpeed, Time.deltaTime);
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * _moveSpeed);
-        FaceTowardsMovement(targetPosition);
+        FaceTowardsTarget(targetPosition);
     }
 
     private void Move(float finalSpeed, float direction)
@@ -580,19 +580,15 @@ public class EnemyAIController : PausableCharacter
     private float GetDirectionTowards(Vector2 targetPosition)
     {
         float directionX = transform.position.x - targetPosition.x;
-        return directionX;
+        return directionX == 0 ? 1 : Mathf.Clamp(directionX * Mathf.Infinity, -1, 1);
     }
 
-    private void FaceTowardsMovement(Vector2 directionTowardsTarget)
+    private void FaceTowardsTarget(Vector2 target)
     {
-        if (GetDirectionTowards(directionTowardsTarget) < 0)
-        {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-        }
-        else
-        {
-            transform.localScale = Vector3.one;
-        }
+        Vector3 newScale = new Vector3(GetDirectionTowards(target), 1, 1);
+        Debug.Log(newScale);
+
+        transform.localScale = newScale;
     }
 
     private void TurnAround()
@@ -614,8 +610,9 @@ public class EnemyAIController : PausableCharacter
         OnStateChanged?.Invoke(_aiState);
     }
     
-    private void OnCollision()
+    private void OnCollision(Transform playerTransform)
     {
+        FaceTowardsTarget(playerTransform.position);
         OnPlayerCollision?.Invoke();
     }
 

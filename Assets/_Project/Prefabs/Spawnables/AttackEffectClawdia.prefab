@@ -142,7 +142,7 @@ MonoBehaviour:
   _damage: 10
   <KnockbackForce>k__BackingField: 60
   <DamageCooldown>k__BackingField: 2
-  <StunDuration>k__BackingField: 1
+  <StunDuration>k__BackingField: 0.5
   <ForceOrigin>k__BackingField: {fileID: 5084967042737932458}
   <useStaticForce>k__BackingField: 0
   <contactFeedback>k__BackingField: {fileID: 2778558856624546058}

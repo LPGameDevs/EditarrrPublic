@@ -519,11 +519,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 0e8190b2bccf8c04f870a265d98bc8d6, type: 3}
     - target: {fileID: 2247860659270213782, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MaxVolume
-      value: 0.6
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 2247860659270213782, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MinVolume
-      value: 0.4
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 2419768879126008277, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: m_Pitch
@@ -555,11 +555,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2466461609689809847, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: _maxMoveVolume
-      value: 2
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 2466461609689809847, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: _minMoveVolume
-      value: 1.8
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 2466461609689809847, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: _animationController
@@ -583,11 +583,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 9c2c46002ae908640a64bd33933e02ea, type: 3}
     - target: {fileID: 6500813044645833859, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MaxVolume
-      value: 0.6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6500813044645833859, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MinVolume
-      value: 0.4
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7892034424657397053, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: m_RootOrder

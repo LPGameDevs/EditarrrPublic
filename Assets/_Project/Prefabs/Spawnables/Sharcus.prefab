@@ -73,13 +73,13 @@ GameObject:
   - component: {fileID: 2066908769515113949}
   - component: {fileID: 2066908769515113948}
   - component: {fileID: 4056213485840879095}
+  - component: {fileID: 3777077031930075018}
   - component: {fileID: 7216991600427344762}
   - component: {fileID: 3485918219516444826}
   - component: {fileID: 3721442503812338518}
   - component: {fileID: 3890498848708461715}
   - component: {fileID: 6284010025752538964}
   - component: {fileID: 2705281091064234187}
-  - component: {fileID: 3777077031930075018}
   m_Layer: 10
   m_Name: Sharcus
   m_TagString: Untagged
@@ -175,6 +175,22 @@ CapsuleCollider2D:
   m_Offset: {x: 0.026250627, y: -0.059178364}
   m_Size: {x: 0.7000102, y: 0.7}
   m_Direction: 1
+--- !u!70 &3777077031930075018
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066908769515113955}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.05}
+  m_Size: {x: 1.5, y: 0.7}
+  m_Direction: 1
 --- !u!50 &7216991600427344762
 Rigidbody2D:
   serializedVersion: 4
@@ -216,7 +232,7 @@ MonoBehaviour:
   <useStaticForce>k__BackingField: 0
   <contactFeedback>k__BackingField: {fileID: 7707224876876442846}
   _useTrigger: 1
-  _useCollider: 0
+  _useCollider: 1
 --- !u!114 &3721442503812338518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,22 +324,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!70 &3777077031930075018
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066908769515113955}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.1, y: -0.05}
-  m_Size: {x: 1, y: 0.7}
-  m_Direction: 1
 --- !u!1 &7191387649853998569
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,11 +407,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: ff1c0d6c481f36a468b6518ff1a20e74, type: 3}
     - target: {fileID: 2247860659270213782, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MaxVolume
-      value: 0.6
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 2247860659270213782, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: MinVolume
-      value: 0.4
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 2419768879126008277, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: m_Volume
@@ -457,6 +457,14 @@ PrefabInstance:
       propertyPath: Sfx
       value: 
       objectReference: {fileID: 8300000, guid: 897426e08f5927644aede46a1fc2ed8a, type: 3}
+    - target: {fileID: 6500813044645833859, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
+      propertyPath: MaxVolume
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500813044645833859, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
+      propertyPath: MinVolume
+      value: 1.6
+      objectReference: {fileID: 0}
     - target: {fileID: 7892034424657397053, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
       propertyPath: m_RootOrder
       value: 4

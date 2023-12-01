@@ -233,8 +233,8 @@ MonoBehaviour:
   Sfx: {fileID: 8300000, guid: 19390ecf8465728448d91451d1e6970d, type: 3}
   RandomSfx: []
   PlayMethod: 1
-  MinVolume: 0.2
-  MaxVolume: 0.4
+  MinVolume: 0.9
+  MaxVolume: 1.1
   MinPitch: 0.8
   MaxPitch: 1.2
   SfxAudioMixerGroup: {fileID: -5282791370902551564, guid: ab21718944d4b7c4388cecbb60b17c06, type: 2}
@@ -311,8 +311,8 @@ MonoBehaviour:
   Sfx: {fileID: 8300000, guid: 5167b30a16d4d5d4c96cb5dadde16ef8, type: 3}
   RandomSfx: []
   PlayMethod: 1
-  MinVolume: 0.8
-  MaxVolume: 1
+  MinVolume: 1.2
+  MaxVolume: 1.4
   MinPitch: 0.9
   MaxPitch: 1.1
   SfxAudioMixerGroup: {fileID: -5282791370902551564, guid: ab21718944d4b7c4388cecbb60b17c06, type: 2}
@@ -5400,8 +5400,8 @@ MonoBehaviour:
   Sfx: {fileID: 8300000, guid: 19390ecf8465728448d91451d1e6970d, type: 3}
   RandomSfx: []
   PlayMethod: 1
-  MinVolume: 0.2
-  MaxVolume: 0.4
+  MinVolume: 1
+  MaxVolume: 1.2
   MinPitch: 0.8
   MaxPitch: 1.2
   SfxAudioMixerGroup: {fileID: -5282791370902551564, guid: ab21718944d4b7c4388cecbb60b17c06, type: 2}
@@ -5478,8 +5478,8 @@ MonoBehaviour:
   Sfx: {fileID: 8300000, guid: bf8bab9462973dc4dbcc7b71d8bc9c0f, type: 3}
   RandomSfx: []
   PlayMethod: 1
-  MinVolume: 0.6
-  MaxVolume: 0.8
+  MinVolume: 0.8
+  MaxVolume: 1
   MinPitch: 0.9
   MaxPitch: 1.11
   SfxAudioMixerGroup: {fileID: -5282791370902551564, guid: ab21718944d4b7c4388cecbb60b17c06, type: 2}
