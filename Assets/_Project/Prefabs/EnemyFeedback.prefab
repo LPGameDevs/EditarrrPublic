@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7892034424657397053}
   - component: {fileID: 2466461609689809847}
   - component: {fileID: 5980128128954793751}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: EnemyFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,8 +171,8 @@ GameObject:
   - component: {fileID: 3345464414891354997}
   - component: {fileID: 3242008671728409776}
   - component: {fileID: 1366702320049357229}
-  m_Layer: 3
-  m_Name: Attack
+  m_Layer: 10
+  m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 1712964755627874095}
   - component: {fileID: 836458287110713362}
   - component: {fileID: 6500813044645833859}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Alert
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 2048408939904946355}
   - component: {fileID: 1648826083813823207}
   - component: {fileID: 4312275027734093131}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Move
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5338,8 +5338,8 @@ GameObject:
   - component: {fileID: 1594245140154260623}
   - component: {fileID: 2068301536129810549}
   - component: {fileID: 338715205633413714}
-  m_Layer: 3
-  m_Name: AltAttack
+  m_Layer: 10
+  m_Name: Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5416,7 +5416,7 @@ GameObject:
   - component: {fileID: 5149401203875001127}
   - component: {fileID: 6555780628631587750}
   - component: {fileID: 2247860659270213782}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Confusion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

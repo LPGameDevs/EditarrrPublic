@@ -193,7 +193,6 @@ GameObject:
   - component: {fileID: 7418034618229315574}
   - component: {fileID: -8463723315205456912}
   - component: {fileID: 5926081874967404987}
-  - component: {fileID: 4672444065728389626}
   - component: {fileID: 5735911789909314014}
   - component: {fileID: 4839205160328424272}
   m_Layer: 10
@@ -242,6 +241,9 @@ MonoBehaviour:
   <StunDuration>k__BackingField: 0
   <ForceOrigin>k__BackingField: {fileID: 1279904994308610896}
   <useStaticForce>k__BackingField: 0
+  <contactFeedback>k__BackingField: {fileID: 0}
+  _useTrigger: 0
+  _useCollider: 1
 --- !u!70 &4371097168700525393
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -255,7 +257,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0072078644, y: -0.05917836}
+  m_Offset: {x: -0.12, y: -0.12}
   m_Size: {x: 1.0190927, y: 0.70000166}
   m_Direction: 1
 --- !u!50 &7418034618229315574
@@ -308,8 +310,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   fieldOfView: {fileID: 5926081874967404987}
-  hazard: {fileID: 891147759834081877}
   dialoguePopupRenderer: {fileID: 4360634834246530548}
+  _collisionHazard: {fileID: 891147759834081877}
+  _attackRangeCollider: {fileID: 0}
 --- !u!114 &5926081874967404987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,7 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewRadius: 8
-  viewAngle: 130
+  viewAngle: 150
   isTopDown: 0
   targetMask:
     serializedVersion: 2
@@ -332,22 +335,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   visibleTargets: []
---- !u!70 &4672444065728389626
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7756266340693203146}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.0072078644, y: -0.05917836}
-  m_Size: {x: 1.0190927, y: 0.70000166}
-  m_Direction: 1
 --- !u!95 &5735911789909314014
 Animator:
   serializedVersion: 5

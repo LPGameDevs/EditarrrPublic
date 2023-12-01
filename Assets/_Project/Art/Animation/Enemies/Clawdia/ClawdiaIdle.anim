@@ -19,6 +19,8 @@ AnimationClip:
   m_FloatCurves: []
   m_PPtrCurves:
   - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: 9ef129865620d417cb91d8b3dc238bf1, type: 3}
     - time: 0.05
       value: {fileID: 21300000, guid: 9ef129865620d417cb91d8b3dc238bf1, type: 3}
     - time: 0.18333334
@@ -40,7 +42,7 @@ AnimationClip:
     - time: 0.96666664
       value: {fileID: 21300000, guid: 07496fd575a2200ef93f600dc4cb3394, type: 3}
     attribute: m_Sprite
-    path: 
+    path: Visuals
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 60
@@ -51,13 +53,14 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 0
+      path: 1498428138
       attribute: 0
       script: {fileID: 0}
       typeID: 212
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
+    - {fileID: 21300000, guid: 9ef129865620d417cb91d8b3dc238bf1, type: 3}
     - {fileID: 21300000, guid: 9ef129865620d417cb91d8b3dc238bf1, type: 3}
     - {fileID: 21300000, guid: 0c4f37cf37b8da151940a921c8bd90c0, type: 3}
     - {fileID: 21300000, guid: 0ef433a81fdd2ce2493f82f01f8ced79, type: 3}

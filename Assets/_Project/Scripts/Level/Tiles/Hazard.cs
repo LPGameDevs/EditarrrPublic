@@ -1,10 +1,14 @@
+using Editarrr.Audio;
 using Editarrr.Misc;
+using MoreMountains.Feedbacks;
 using Player;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class Hazard : MonoBehaviour
 {
+	public event Action OnCollision;
 
 	[SerializeField] int _damage;
 	/// <summary>
@@ -23,24 +27,36 @@ public class Hazard : MonoBehaviour
     [field: SerializeField] private Transform ForceOrigin { get; set; }
 
 	[field: SerializeField] private bool useStaticForce { get; set; }
+    [field: SerializeField] private MMFeedback contactFeedback { get; set; }
 
-	private void OnTriggerStay2D(Collider2D other)
+	[SerializeField] bool _useTrigger = true, _useCollider = false;
+
+    private void OnTriggerStay2D(Collider2D other)
 	{
-		Vector3 forcePoint = useStaticForce ? this.transform.position : other.transform.position;
-		Vector3 forceDirection = (forcePoint - this.ForceOrigin.position).normalized;
-
-		this.KnockBackPlayer(other.gameObject, forceDirection);
+		if(_useTrigger)
+			HandleCollision(other.gameObject);
 	}
 
-    public void KnockBackPlayer(GameObject other, Vector3 normal)
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if(_useCollider)
+			HandleCollision(collision.gameObject);
+    }
+    public void HandleCollision(GameObject other)
 	{
 		if (!other.TryGetComponent<HealthSystem>(out HealthSystem healthSystem) || healthSystem.IsInvincible())
 			return;
 		if (!other.TryGetComponent<IExternalForceReceiver>(out IExternalForceReceiver forceReceiver))
 			return;
 
-		healthSystem.TakeDamage(_damage, this.StunDuration, this.DamageCooldown);
-        forceReceiver.ReceiveImpulse(this.KnockbackForce, normal);
+        Vector3 forcePoint = useStaticForce ? this.transform.position : other.transform.position;
+        Vector3 forceDirection = (forcePoint - this.ForceOrigin.position).normalized;
+
+        healthSystem.TakeDamage(_damage, this.StunDuration, this.DamageCooldown);
+        forceReceiver.ReceiveImpulse(this.KnockbackForce, forceDirection);
+		
+		contactFeedback?.Play(transform.position);
+		OnCollision?.Invoke();
     }
 
     private void OnDrawGizmos()

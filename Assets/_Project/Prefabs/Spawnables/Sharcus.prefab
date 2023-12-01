@@ -73,8 +73,8 @@ GameObject:
   - component: {fileID: 2066908769515113949}
   - component: {fileID: 2066908769515113948}
   - component: {fileID: 4056213485840879095}
-  - component: {fileID: 3485918219516444826}
   - component: {fileID: 7216991600427344762}
+  - component: {fileID: 3485918219516444826}
   - component: {fileID: 3721442503812338518}
   - component: {fileID: 3890498848708461715}
   - component: {fileID: 6284010025752538964}
@@ -175,24 +175,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.026250627, y: -0.059178364}
   m_Size: {x: 0.7000102, y: 0.7}
   m_Direction: 1
---- !u!114 &3485918219516444826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066908769515113955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73db6d5f057532a4fbb2006b90d4e137, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _damage: 10
-  <KnockbackForce>k__BackingField: 30
-  <DamageCooldown>k__BackingField: 1
-  <StunDuration>k__BackingField: 0
-  <ForceOrigin>k__BackingField: {fileID: 3110954995715635811}
-  <useStaticForce>k__BackingField: 0
 --- !u!50 &7216991600427344762
 Rigidbody2D:
   serializedVersion: 4
@@ -214,6 +196,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &3485918219516444826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066908769515113955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73db6d5f057532a4fbb2006b90d4e137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 10
+  <KnockbackForce>k__BackingField: 30
+  <DamageCooldown>k__BackingField: 1
+  <StunDuration>k__BackingField: 0
+  <ForceOrigin>k__BackingField: {fileID: 3110954995715635811}
+  <useStaticForce>k__BackingField: 0
+  <contactFeedback>k__BackingField: {fileID: 7707224876876442846}
+  _useTrigger: 1
+  _useCollider: 0
 --- !u!114 &3721442503812338518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,8 +246,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   fieldOfView: {fileID: 6284010025752538964}
-  hazard: {fileID: 3485918219516444826}
   dialoguePopupRenderer: {fileID: 6041035277212382788}
+  _collisionHazard: {fileID: 3485918219516444826}
+  _attackRangeCollider: {fileID: 0}
 --- !u!114 &3890498848708461715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,8 +277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fecfea92aad94f219f1b6ddcea98d77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 10
-  viewAngle: 30
+  viewRadius: 4
+  viewAngle: 120
   isTopDown: 0
   targetMask:
     serializedVersion: 2
@@ -518,5 +522,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf9a2dd79f184774eb23902df498ca68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7707224876876442846 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1366702320049357229, guid: 609d78c363a0f5b4ab4984fe442e889d, type: 3}
+  m_PrefabInstance: {fileID: 8647492599826394483}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c2ce51367856bd49b72678cc4263225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

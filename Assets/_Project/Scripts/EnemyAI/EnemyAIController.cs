@@ -16,6 +16,7 @@ public class EnemyAIController : PausableCharacter
         reseting
     }
 
+    #region fields
     public event Action<AIState> OnStateChanged;
     public event Action<bool> OnMove;
     public event Action<bool> OnAttackStateChanged;
@@ -32,8 +33,9 @@ public class EnemyAIController : PausableCharacter
     [SerializeField] private LayerMask otherEnemyLayer;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private FieldOfView fieldOfView;
-    [SerializeField] private Hazard hazard;
     [SerializeField] private SpriteRenderer dialoguePopupRenderer;
+    [SerializeField] private Hazard _collisionHazard;
+    [SerializeField] private Collider2D _attackRangeCollider;
 
     private AIState _aiState;
     private float _timer = 0f;
@@ -41,12 +43,11 @@ public class EnemyAIController : PausableCharacter
     private float _distanceToGround = -0.5f;
     private float _moveSpeed;
     private Vector3 _spawnLocation;
-    private float _originalFOVRadius;
     private bool _playerInSight;
+    #endregion
 
     private void Start()
     {
-        _originalFOVRadius = fieldOfView.viewRadius;
         _spawnLocation = transform.position;
         switch (enemyAIData.enemyType)
         {
@@ -115,6 +116,7 @@ public class EnemyAIController : PausableCharacter
 
     private void EnemyAnticipator()
     {
+        Debug.Log("Clawdia state: " + _aiState.ToString());
         if (!IsGrounded(footTransform))
         {
             _moveSpeed = enemyAIData.sawPlayerMoveSpeed;
@@ -135,17 +137,15 @@ public class EnemyAIController : PausableCharacter
                 _timer += Time.deltaTime;
                 if (_timer >= enemyAIData.pauseTime)
                 {
-                    TurnAround();
                     _timer = 0;
                     _moveSpeed = 0;
+                    TurnAround();
+                    ChangeActiveState(AIState.moving);
                 }
                 break;
 
             case AIState.moving:
-                if (!CanMove())
-                {
-                    ChangeActiveState(AIState.pausing);
-                }
+                _timer += Time.deltaTime;
                 if (CanSeePlayer())
                 {
                     _timer = 0;
@@ -154,9 +154,15 @@ public class EnemyAIController : PausableCharacter
                     return;
                 }
 
-                if (_timer >= enemyAIData.pauseTime)
+                if (!CanMove())
                 {
-                    TurnAround();
+                    _timer = 0;
+                    ChangeActiveState(AIState.pausing);
+                    return;
+                }
+
+                if (_timer >= enemyAIData.pauseTime * 1.5f)
+                {
                     _timer = 0;
                     _moveSpeed = 0;
                     ChangeActiveState(AIState.idle);
@@ -166,31 +172,29 @@ public class EnemyAIController : PausableCharacter
                 break;
 
             case AIState.pausing:
-                fieldOfView.viewRadius = _originalFOVRadius;
-                //Drops enemy onto ground
                 _timer += Time.deltaTime;
-                if (_timer >= enemyAIData.pauseTime)
+                if (_timer >= enemyAIData.pauseTime * 0.5f)
                 {
-                    if(!CanMove())
+                    _timer = 0;
+                    if (!CanMove())
                         TurnAround();
 
-                    _timer = 0;
                     ChangeActiveState(AIState.moving);
                 }
                 break;
 
             case AIState.alerting:
-                fieldOfView.viewRadius = 2;
                 _timer += Time.deltaTime;
                 if (_timer >= enemyAIData.alertTime)
                 {
-                    if(CanSeePlayer())
+                    if (_attackRangeCollider.IsTouchingLayers(playerLayer))
                     {
                         _timer = 0;
                         ChangeActiveState(AIState.attacking);
+                        OnAttackStateChanged(true);
                     }
                 }
-                if(_timer >= enemyAIData.pauseTime)
+                if(!CanSeePlayer())
                 {
                     _timer = 0;
                     ChangeActiveState(AIState.pausing);
@@ -199,9 +203,6 @@ public class EnemyAIController : PausableCharacter
                 break;
 
             case AIState.attacking:
-                OnAttackStateChanged(true);
-                hazard.AdjustDamage(10);
-                hazard.AdjustKnockback(60);
                 _timer += Time.deltaTime;
                 if (_timer >= enemyAIData.alertTime)
                 {
@@ -209,8 +210,6 @@ public class EnemyAIController : PausableCharacter
                     _moveSpeed = 0;
                     ChangeActiveState(AIState.pausing);
                     OnAttackStateChanged(false);
-                    hazard.AdjustDamage(5);
-                    hazard.AdjustKnockback(10);
                     return;
                 }
                 break;
@@ -415,6 +414,7 @@ public class EnemyAIController : PausableCharacter
                 }
                 if (CanSeePlayer())
                 {
+                    _timer = 0;
                     ChangeActiveState(AIState.alerting);
                 }
                 _timer += Time.deltaTime;
@@ -432,47 +432,39 @@ public class EnemyAIController : PausableCharacter
                 {
                     ChangeActiveState(AIState.attacking);
                     OnAttackStateChanged(true);
-                    hazard.AdjustDamage(10);
-                    hazard.AdjustKnockback(40);
                     _timer = 0;
                     _moveSpeed = 0;
                 }
                 break;
 
             case AIState.attacking:
+                _timer += Time.deltaTime;
+
                 if (!CanSeePlayer())
                 {
-                    _timer += Time.deltaTime;
-                    if (_timer >= enemyAIData.pauseTime)
+                    if (_timer >= enemyAIData.alertTime * 2f)
                     {
                         _timer = 0;
                         _moveSpeed = 0;
-                        print("Can't see player, pausing");
                         ChangeActiveState(AIState.pausing);
                         OnAttackStateChanged(false);
-                        hazard.AdjustDamage(5);
-                        hazard.AdjustKnockback(10);
                         return;
                     }
                 }
 
                 if (!CanMove())
                 {
-                    print("Can't move, pausing");
                     _moveSpeed = 0;
-                    _timer += Time.deltaTime;
                     if (_timer >= enemyAIData.pauseTime)
                     {
-                        TurnAround();
                         _timer = 0;
-                        print("Can't move, pausing");
+                        _moveSpeed = 0;
                         ChangeActiveState(AIState.pausing);
                         OnAttackStateChanged?.Invoke(false);
-                        hazard.AdjustDamage(5);
-                        hazard.AdjustKnockback(10);
                         return;
                     }
                 }
+
                 Move(enemyAIData.sawPlayerMoveSpeed, GetCurrentDirection());
                 break;
         }
@@ -526,7 +518,6 @@ public class EnemyAIController : PausableCharacter
     {
         RaycastHit2D hit = Physics2D.Raycast(eyeTransform.position, direction, distanceToObstacle, otherEnemyLayer);
         //Debug.DrawRay(eyeTransform.position, direction, Color.red, 0.1f);
-        if (hit.collider != null && IsNotThisEnemy(hit)) print(hit.collider);
         return hit.collider != null && IsNotThisEnemy(hit);
     }
 
@@ -534,7 +525,6 @@ public class EnemyAIController : PausableCharacter
     {
         RaycastHit2D hit = Physics2D.Raycast(eyeTransform.position, direction, distanceToObstacle, obstacleLayer);
         Debug.DrawRay(eyeTransform.position, direction, Color.black, 0.1f);
-        if (hit.collider != null) print(hit.collider);
         return hit.collider != null;
     }
 
@@ -623,13 +613,21 @@ public class EnemyAIController : PausableCharacter
         _aiState = newState;
         OnStateChanged?.Invoke(_aiState);
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    
+    private void OnCollision()
     {
-        if (!collision.TryGetComponent<PlayerController>(out PlayerController playerController) || playerController.Health.IsInvincible())
-            return;
-
         OnPlayerCollision?.Invoke();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) => OnTriggerEnter2D(collision.collider);
+    internal override void OnEnable()
+    {
+        base.OnEnable();
+        _collisionHazard.OnCollision += OnCollision;
+    }
+
+    internal override void OnDisable()
+    {
+        base.OnDisable();
+        _collisionHazard.OnCollision -= OnCollision;
+    }
 }

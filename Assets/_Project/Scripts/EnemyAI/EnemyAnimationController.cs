@@ -12,27 +12,29 @@ public class EnemyAnimationController : MonoBehaviour
     [SerializeField] GameObject _attackParticlesPrefab;
     [SerializeField] EnemyFeedback _enemyFeedback;
 
+    public const string COLLISION_TRIGGER_NAME = "Collision";
+
     private void OnEnable()
     {
+        _aiController.OnPlayerCollision += OnCollision;
         _aiController.OnStateChanged += ChangeAnimationState;
-        _aiController.OnPlayerCollision += OnAttack;
     }
 
     private void OnDisable()
     {
-        _aiController.OnPlayerCollision -= OnAttack;
+        _aiController.OnPlayerCollision -= OnCollision;
         _aiController.OnStateChanged -= ChangeAnimationState;
     }
 
     private void ChangeAnimationState(EnemyAIController.AIState newState)
     {
         _characterAnimator.SetInteger("StateEnum", (int)newState);
-        _characterAnimator.ResetTrigger("Attack");
+        _characterAnimator.ResetTrigger(COLLISION_TRIGGER_NAME);
     }
 
-    private void OnAttack()
+    private void OnCollision()
     {
-        _characterAnimator.SetTrigger("Attack");
+        _characterAnimator.SetTrigger(COLLISION_TRIGGER_NAME);
     }
 
     #region Animation Events

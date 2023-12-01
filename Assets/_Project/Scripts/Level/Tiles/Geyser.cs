@@ -21,8 +21,6 @@ namespace Editarrr.Level.Tiles
             if (!transform.TryGetComponent<IExternalForceReceiver>(out IExternalForceReceiver externalForceReceiver))
                 return;
 
-            Debug.Log("Special Trigger!");
-
             this.Activate(externalForceReceiver);
         }
 
