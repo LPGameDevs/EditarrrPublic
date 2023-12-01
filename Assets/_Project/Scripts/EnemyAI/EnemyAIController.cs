@@ -442,7 +442,7 @@ public class EnemyAIController : PausableCharacter
 
                 if (!CanSeePlayer())
                 {
-                    if (_timer >= enemyAIData.alertTime * 2f)
+                    if (_timer >= enemyAIData.alertTime * 3f)
                     {
                         _timer = 0;
                         _moveSpeed = 0;
