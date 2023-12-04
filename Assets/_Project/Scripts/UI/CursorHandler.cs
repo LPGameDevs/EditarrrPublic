@@ -19,11 +19,11 @@ public class CursorHandler : UnityPersistentSingleton<CursorHandler>
     private void Start()
     {
         Initialize();
-        _mode = CursorMode.Auto;
+//        _mode = CursorMode.Auto;
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         _mode = CursorMode.ForceSoftware;
-#endif
+//#endif
 
         Cursor.SetCursor(_defaultTexture, Vector2.zero, _mode);
     }
