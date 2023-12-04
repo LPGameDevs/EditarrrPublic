@@ -225,6 +225,7 @@ public class EnemyAIController : PausableCharacter
                 {
                     _timer = 0;
                     _moveSpeed = 0;
+                    fieldOfView.AdjustFOV(-1f, 360f);
                     ChangeActiveState(AIState.alerting);
                     return;
                 }
@@ -238,7 +239,7 @@ public class EnemyAIController : PausableCharacter
                 break;
             case AIState.alerting:
                 _timer += Time.deltaTime;
-                if (_timer >= enemyAIData.alertTime)
+                if (_timer >= enemyAIData.alertTime || !CanSeePlayer())
                 {
                     ChangeActiveState(AIState.attacking);
                     _timer = 0;
@@ -249,27 +250,27 @@ public class EnemyAIController : PausableCharacter
             case AIState.attacking:
                 if (!CanFly() || !CanSeePlayer())
                 {
-                    print("Can't fly towards player OR can't see player");
                     _timer = 0;
                     _moveSpeed = 0;
+                    fieldOfView.RevertFOV();
                     ChangeActiveState(AIState.reseting);
                     return;
                 }
-                print("see player");
                 Fly(enemyAIData.sawPlayerMoveSpeed, GetPlayerPosition());
                 break;
 
             case AIState.reseting:
                 _timer += Time.deltaTime;
+                if (CanSeePlayer())
+                {
+                    _timer = 0;
+                    _moveSpeed = 0;
+                    fieldOfView.AdjustFOV(-1f, 360f);
+                    ChangeActiveState(AIState.attacking);
+                    return;
+                }
                 if (_timer >= enemyAIData.pauseTime)
                 {
-                    if (CanSeePlayer())
-                    {
-                        _timer = 0;
-                        _moveSpeed = 0;
-                        ChangeActiveState(AIState.attacking);
-                        return;
-                    }
                     Fly(enemyAIData.normalMoveSpeed, _spawnLocation);
                     if (Vector3.Distance(transform.position, _spawnLocation) <= 0.2f)
                     {
@@ -580,7 +581,10 @@ public class EnemyAIController : PausableCharacter
     private float GetDirectionTowards(Vector2 targetPosition)
     {
         float directionX = transform.position.x - targetPosition.x;
-        return directionX == 0 ? 1 : Mathf.Clamp(directionX * Mathf.Infinity, -1, 1);
+        if (directionX.Sign() != transform.localScale.x.Sign())
+            _moveSpeed *= 0.5f;
+
+        return directionX.Sign();
     }
 
     private void FaceTowardsTarget(Vector2 target)
@@ -612,6 +616,7 @@ public class EnemyAIController : PausableCharacter
     
     private void OnCollision(Transform playerTransform)
     {
+        _moveSpeed = 0f;
         FaceTowardsTarget(playerTransform.position);
         OnPlayerCollision?.Invoke();
     }

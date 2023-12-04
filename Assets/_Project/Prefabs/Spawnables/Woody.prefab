@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73db6d5f057532a4fbb2006b90d4e137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 10
+  _damage: 5
   <KnockbackForce>k__BackingField: 30
   <DamageCooldown>k__BackingField: 1
   <StunDuration>k__BackingField: 0
