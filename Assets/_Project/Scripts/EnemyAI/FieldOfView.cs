@@ -18,11 +18,14 @@ public class FieldOfView : MonoBehaviour
 
     private float _correctionAngle = -90f;
     private float _directionEnemyIsFacing = 1f;
-
+    private float baseRadius, baseAngle;
     private Vector3 _directionFacing;
+
 
     private void Start()
     {
+        baseRadius = viewRadius; 
+        baseAngle = viewAngle;
         StartCoroutine(FindTargetsWithDelay(0.2f));
     }
 
@@ -134,5 +137,23 @@ public class FieldOfView : MonoBehaviour
             angleInDegrees -= transform.eulerAngles.z;
         }
         return new Vector2(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+    }
+
+    /// <summary>
+    /// Change the FOV until it is reverted using RevertFOV. <br></br>
+    /// Paramters are not adjusted if left out of the method call or set negative.
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <param name="angle"></param>
+    public void AdjustFOV(float radius = -1, float angle = -1)
+    {
+        viewRadius = radius < 0 ? viewRadius : radius;
+        viewAngle = angle < 0 ?  viewAngle : angle;
+    }
+
+    public void RevertFOV()
+    {
+        viewRadius = baseRadius;
+        viewAngle = baseAngle;
     }
 }
