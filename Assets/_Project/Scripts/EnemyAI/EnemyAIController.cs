@@ -1,6 +1,7 @@
 using Player;
 using System;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyAIController : PausableCharacter
@@ -8,50 +9,45 @@ public class EnemyAIController : PausableCharacter
     public enum AIState
     {
         idle,
-        moving,
         pausing,
+        moving,
         alerting,
         attacking,
         reseting
     }
 
+    #region fields
     public event Action<AIState> OnStateChanged;
+    public event Action<bool> OnMove;
+    public event Action<bool> OnAttackStateChanged;
+    public event Action OnPlayerCollision;
+    public event Action OnPlayerSpotted;
+    public event Action OnLostSightOfPlayer;
 
     [SerializeField] private EnemyAIDataSO enemyAIData;
-
     [SerializeField] private Transform eyeTransform;
-
     [SerializeField] private Transform footTransform;
-
     [SerializeField] private Transform groundDetector;
-
     [SerializeField] private LayerMask playerLayer;
-
     [SerializeField] private LayerMask obstacleLayer;
-
     [SerializeField] private LayerMask otherEnemyLayer;
-
     [SerializeField] private LayerMask groundLayer;
-
     [SerializeField] private FieldOfView fieldOfView;
+    [SerializeField] private SpriteRenderer dialoguePopupRenderer;
+    [SerializeField] private Hazard _collisionHazard;
+    [SerializeField] private Collider2D _attackRangeCollider;
 
     private AIState _aiState;
-
     private float _timer = 0f;
-
     private float _distanceToObstacle = 1f;
-
     private float _distanceToGround = -0.5f;
-
     private float _moveSpeed;
-
     private Vector3 _spawnLocation;
-
-    private float _originalFOVRadius;
+    private bool _playerInSight;
+    #endregion
 
     private void Start()
     {
-        _originalFOVRadius = fieldOfView.viewRadius;
         _spawnLocation = transform.position;
         switch (enemyAIData.enemyType)
         {
@@ -85,6 +81,10 @@ public class EnemyAIController : PausableCharacter
     private void FixedUpdate()
     {
         if (!_active) return;
+
+        if (!IsGrounded(footTransform))
+            ApplyGravity();
+
         switch (enemyAIData.enemyType)
         {
             case EnemyType.dashAttack:
@@ -109,8 +109,14 @@ public class EnemyAIController : PausableCharacter
         }
     }
 
+    private void Update()
+    {
+        dialoguePopupRenderer.flipX = transform.localScale.x == -1 ? true : false;
+    }
+
     private void EnemyAnticipator()
     {
+        Debug.Log("Clawdia state: " + _aiState.ToString());
         if (!IsGrounded(footTransform))
         {
             _moveSpeed = enemyAIData.sawPlayerMoveSpeed;
@@ -131,17 +137,15 @@ public class EnemyAIController : PausableCharacter
                 _timer += Time.deltaTime;
                 if (_timer >= enemyAIData.pauseTime)
                 {
-                    TurnAround();
                     _timer = 0;
                     _moveSpeed = 0;
+                    TurnAround();
+                    ChangeActiveState(AIState.moving);
                 }
                 break;
 
             case AIState.moving:
-                if (!CanMove())
-                {
-                    ChangeActiveState(AIState.pausing);
-                }
+                _timer += Time.deltaTime;
                 if (CanSeePlayer())
                 {
                     _timer = 0;
@@ -150,9 +154,15 @@ public class EnemyAIController : PausableCharacter
                     return;
                 }
 
-                if (_timer >= enemyAIData.pauseTime)
+                if (!CanMove())
                 {
-                    TurnAround();
+                    _timer = 0;
+                    ChangeActiveState(AIState.pausing);
+                    return;
+                }
+
+                if (_timer >= enemyAIData.pauseTime * 1.5f)
+                {
                     _timer = 0;
                     _moveSpeed = 0;
                     ChangeActiveState(AIState.idle);
@@ -162,31 +172,29 @@ public class EnemyAIController : PausableCharacter
                 break;
 
             case AIState.pausing:
-                fieldOfView.viewRadius = _originalFOVRadius;
-                //Drops enemy onto ground
                 _timer += Time.deltaTime;
-                if (_timer >= enemyAIData.pauseTime)
+                if (_timer >= enemyAIData.pauseTime * 0.5f)
                 {
-                    if(!CanMove())
+                    _timer = 0;
+                    if (!CanMove())
                         TurnAround();
 
-                    _timer = 0;
                     ChangeActiveState(AIState.moving);
                 }
                 break;
 
             case AIState.alerting:
-                fieldOfView.viewRadius = 2;
                 _timer += Time.deltaTime;
                 if (_timer >= enemyAIData.alertTime)
                 {
-                    if(CanSeePlayer())
+                    if (_attackRangeCollider.IsTouchingLayers(playerLayer))
                     {
                         _timer = 0;
                         ChangeActiveState(AIState.attacking);
+                        OnAttackStateChanged(true);
                     }
                 }
-                if(_timer >= enemyAIData.pauseTime)
+                if(!CanSeePlayer())
                 {
                     _timer = 0;
                     ChangeActiveState(AIState.pausing);
@@ -201,6 +209,7 @@ public class EnemyAIController : PausableCharacter
                     _timer = 0;
                     _moveSpeed = 0;
                     ChangeActiveState(AIState.pausing);
+                    OnAttackStateChanged(false);
                     return;
                 }
                 break;
@@ -405,6 +414,7 @@ public class EnemyAIController : PausableCharacter
                 }
                 if (CanSeePlayer())
                 {
+                    _timer = 0;
                     ChangeActiveState(AIState.alerting);
                 }
                 _timer += Time.deltaTime;
@@ -421,39 +431,40 @@ public class EnemyAIController : PausableCharacter
                 if (_timer >= enemyAIData.alertTime)
                 {
                     ChangeActiveState(AIState.attacking);
+                    OnAttackStateChanged(true);
                     _timer = 0;
                     _moveSpeed = 0;
                 }
                 break;
 
             case AIState.attacking:
+                _timer += Time.deltaTime;
+
                 if (!CanSeePlayer())
                 {
-                    _timer += Time.deltaTime;
-                    if (_timer >= enemyAIData.pauseTime)
+                    if (_timer >= enemyAIData.alertTime * 3f)
                     {
                         _timer = 0;
                         _moveSpeed = 0;
-                        print("Can't see player, pausing");
                         ChangeActiveState(AIState.pausing);
+                        OnAttackStateChanged(false);
                         return;
                     }
                 }
 
                 if (!CanMove())
                 {
-                    print("Can't move, pausing");
                     _moveSpeed = 0;
-                    _timer += Time.deltaTime;
                     if (_timer >= enemyAIData.pauseTime)
                     {
-                        TurnAround();
                         _timer = 0;
-                        print("Can't move, pausing");
+                        _moveSpeed = 0;
                         ChangeActiveState(AIState.pausing);
+                        OnAttackStateChanged?.Invoke(false);
                         return;
                     }
                 }
+
                 Move(enemyAIData.sawPlayerMoveSpeed, GetCurrentDirection());
                 break;
         }
@@ -476,7 +487,7 @@ public class EnemyAIController : PausableCharacter
     {
         _moveSpeed = Mathf.Lerp(_moveSpeed, finalSpeed, Time.deltaTime);
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * _moveSpeed);
-        FaceTowardsMovement(targetPosition);
+        FaceTowardsTarget(targetPosition);
     }
 
     private void Move(float finalSpeed, float direction)
@@ -486,6 +497,7 @@ public class EnemyAIController : PausableCharacter
         Vector2 currentPosition = transform.position;
         Vector2 targetPosition = currentPosition + forward * _distanceToGround;
         transform.position = Vector2.MoveTowards(currentPosition, targetPosition, _moveSpeed * Time.deltaTime);
+        OnMove?.Invoke(CanMove() && IsGrounded(footTransform));
         //FaceTowardsMovement(targetPosition);
     }
 
@@ -506,7 +518,6 @@ public class EnemyAIController : PausableCharacter
     {
         RaycastHit2D hit = Physics2D.Raycast(eyeTransform.position, direction, distanceToObstacle, otherEnemyLayer);
         //Debug.DrawRay(eyeTransform.position, direction, Color.red, 0.1f);
-        if (hit.collider != null && IsNotThisEnemy(hit)) print(hit.collider);
         return hit.collider != null && IsNotThisEnemy(hit);
     }
 
@@ -514,7 +525,6 @@ public class EnemyAIController : PausableCharacter
     {
         RaycastHit2D hit = Physics2D.Raycast(eyeTransform.position, direction, distanceToObstacle, obstacleLayer);
         Debug.DrawRay(eyeTransform.position, direction, Color.black, 0.1f);
-        if (hit.collider != null) print(hit.collider);
         return hit.collider != null;
     }
 
@@ -534,6 +544,9 @@ public class EnemyAIController : PausableCharacter
 
     private void ApplyGravity()
     {
+        if (enemyAIData.enemyType == EnemyType.flying)
+            return;
+
         Vector2 currentPosition = transform.position;
         Vector2 targetPosition = currentPosition + Vector2.down * enemyAIData.detectionRange;
         transform.position = Vector2.MoveTowards(currentPosition, targetPosition, _moveSpeed * Time.deltaTime);
@@ -543,9 +556,19 @@ public class EnemyAIController : PausableCharacter
     {
         if (fieldOfView.visibleTargets.Count > 0)
         {
+            if(!_playerInSight)
+            {
+                OnPlayerSpotted?.Invoke();
+                _playerInSight = true;
+            }
             return true;
         }
 
+        if (_playerInSight)
+        {
+            OnLostSightOfPlayer?.Invoke();
+            _playerInSight = false;
+        }
         return false;
     }
 
@@ -557,19 +580,15 @@ public class EnemyAIController : PausableCharacter
     private float GetDirectionTowards(Vector2 targetPosition)
     {
         float directionX = transform.position.x - targetPosition.x;
-        return directionX;
+        return directionX == 0 ? 1 : Mathf.Clamp(directionX * Mathf.Infinity, -1, 1);
     }
 
-    private void FaceTowardsMovement(Vector2 directionTowardsTarget)
+    private void FaceTowardsTarget(Vector2 target)
     {
-        if (GetDirectionTowards(directionTowardsTarget) < 0)
-        {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-        }
-        else
-        {
-            transform.localScale = Vector3.one;
-        }
+        Vector3 newScale = new Vector3(GetDirectionTowards(target), 1, 1);
+        Debug.Log(newScale);
+
+        transform.localScale = newScale;
     }
 
     private void TurnAround()
@@ -589,5 +608,23 @@ public class EnemyAIController : PausableCharacter
     {
         _aiState = newState;
         OnStateChanged?.Invoke(_aiState);
+    }
+    
+    private void OnCollision(Transform playerTransform)
+    {
+        FaceTowardsTarget(playerTransform.position);
+        OnPlayerCollision?.Invoke();
+    }
+
+    internal override void OnEnable()
+    {
+        base.OnEnable();
+        _collisionHazard.OnCollision += OnCollision;
+    }
+
+    internal override void OnDisable()
+    {
+        base.OnDisable();
+        _collisionHazard.OnCollision -= OnCollision;
     }
 }

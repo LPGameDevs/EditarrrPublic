@@ -18,6 +18,5 @@ MonoBehaviour:
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: bda62707e9310433d9ff9d5ce3f8c96e, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 181118e35fb1a4d5384a9ada2fe7a03e, type: 2}
   <Config>k__BackingField: {fileID: 0}
-  <LevelLimit>k__BackingField: 5
+  <LevelLimit>k__BackingField: 9
   <IsBackground>k__BackingField: 0
-  <IsQonfigurable>k__BackingField: 0

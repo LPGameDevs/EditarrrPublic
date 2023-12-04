@@ -17,5 +17,5 @@ MonoBehaviour:
   detectionRange: 10
   lungeToPlayerDistance: 0.5
   pauseTime: 2
-  alertTime: 1
+  alertTime: 0.5
   enemyType: 4

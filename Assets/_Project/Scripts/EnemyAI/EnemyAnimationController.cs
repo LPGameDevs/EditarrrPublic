@@ -1,33 +1,53 @@
+using MoreMountains.Feedbacks;
 using Player;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyAnimationController : MonoBehaviour
 {
-    [SerializeField] Animator _animator;
+    [SerializeField] Animator _characterAnimator;
     [SerializeField] EnemyAIController _aiController;
+    [SerializeField] GameObject _attackParticlesPrefab;
+    [SerializeField] EnemyFeedback _enemyFeedback;
+
+    public const string COLLISION_TRIGGER_NAME = "Collision";
 
     private void OnEnable()
     {
+        _aiController.OnPlayerCollision += OnCollision;
         _aiController.OnStateChanged += ChangeAnimationState;
     }
 
     private void OnDisable()
     {
+        _aiController.OnPlayerCollision -= OnCollision;
         _aiController.OnStateChanged -= ChangeAnimationState;
     }
 
     private void ChangeAnimationState(EnemyAIController.AIState newState)
     {
-        _animator.SetInteger("StateEnum", (int)newState);
+        _characterAnimator.SetInteger("StateEnum", (int)newState);
+        _characterAnimator.ResetTrigger(COLLISION_TRIGGER_NAME);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollision()
     {
-        if (collision.TryGetComponent<PlayerController>(out PlayerController playerController))
-            _animator.SetTrigger("Attack");
+        _characterAnimator.SetTrigger(COLLISION_TRIGGER_NAME);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) => OnTriggerEnter2D(collision.collider);
+    #region Animation Events
+    public void SpawnAttackParticles(int spawnInWorldSpace)
+    {
+
+        GameObject particleInstance = (spawnInWorldSpace == 0 ?
+                        Instantiate(_attackParticlesPrefab, transform):
+                        Instantiate(_attackParticlesPrefab, transform.position, Quaternion.identity)); 
+
+        Destroy(particleInstance, 1f);
+    }
+
+    public void PlayAudioClip(AudioClip audioClip) => _enemyFeedback.PlayAudioClip(audioClip);
+    #endregion
 }

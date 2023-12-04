@@ -15,5 +15,7 @@ MonoBehaviour:
   normalMoveSpeed: 2
   sawPlayerMoveSpeed: 10
   detectionRange: 10
-  waitToMove: 2
+  lungeToPlayerDistance: 0.5
+  pauseTime: 2
+  alertTime: 1
   enemyType: 2

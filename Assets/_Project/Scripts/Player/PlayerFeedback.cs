@@ -1,6 +1,7 @@
 using System;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using UnityEngine.Audio;
 
 namespace Player
@@ -18,10 +19,8 @@ namespace Player
         [SerializeField] float _landingCamShakeExponent, _landingCamShakeMin, _landingCamShakeMax;
         [Space(15)]
         [SerializeField] float _damageCamShakeMultiplier, _damageCamShakeMin, _damageCamShakeMax;
+        [Range(0, 2)][SerializeField] float _minMovePitch, _maxMovePitch, _minMoveVolume, _maxMoveVolume;
 
-
-        MMFeedbackSound _soundFeedback;
-        MMFeedbackCameraShake _landingCameraShake;
         MMFeedbackCameraShake _damageCameraShake;
         MMSfxEvent.Delegate SoundDelegate => PlaySound;
 
@@ -43,8 +42,11 @@ namespace Player
             if(movingOnGround)
             {
                 if (!_moveAudioSource.isPlaying)
+                {
+                    _moveAudioSource.volume = Random.Range(_minMoveVolume, _maxMoveVolume);
+                    _moveAudioSource.pitch = Random.Range(_minMovePitch, _maxMovePitch);
                     _moveAudioSource.Play();
-
+                }
                 _move.PlayFeedbacks();
             }
             else
@@ -55,6 +57,8 @@ namespace Player
                 _move.StopFeedbacks();
             }
         }
+
+
 
         private void OnJump()
         {
@@ -124,7 +128,6 @@ namespace Player
 
         private void Awake()
         {
-            _landingCameraShake = (MMFeedbackCameraShake)_hardLanding.Feedbacks.Find(x => x.GetType() == typeof(MMFeedbackCameraShake));
             _damageCameraShake = (MMFeedbackCameraShake)_damage.Feedbacks.Find(x => x.GetType() == typeof(MMFeedbackCameraShake));
             OnSpawn();
         }
