@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
+  m_Name: PackedIce
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Packed Ice
+  <Description>k__BackingField: Slip and Slide or take the ride
+  <UISprite>k__BackingField: {fileID: 21300000, guid: 483f7195221cb4e48a8c825aa9ab9f22, type: 3}
+  <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 6e30cc03cc9d7a3498ab6a9511977556, type: 2}
+  <Tile>k__BackingField: {fileID: 11400000, guid: 635d395548acbc045b133aa7d07bfb36, type: 2}
+  <Config>k__BackingField: {fileID: 0}
+  <LevelLimit>k__BackingField: 0
+  <IsBackground>k__BackingField: 0
