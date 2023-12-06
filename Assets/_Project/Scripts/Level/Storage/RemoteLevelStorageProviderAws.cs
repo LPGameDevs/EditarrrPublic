@@ -318,13 +318,13 @@ namespace Level.Storage
                     scoreStubs.Add(levelStub);
                 }
 
-                callback?.Invoke(scoreStubs.ToArray());
                 Debug.Log( url);
                 Debug.Log(JsonUtility.ToJson(res, true));
+                callback?.Invoke(scoreStubs.ToArray());
             }).Catch(err =>
             {
-                callback?.Invoke(null);
-                Debug.LogError(err.Message);
+                Debug.LogError( $"Error getting leaderboard for {code}: {err.Message}");
+                callback?.Invoke(new ScoreStub[]{});
             });
         }
 
