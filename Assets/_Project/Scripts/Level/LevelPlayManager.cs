@@ -251,10 +251,8 @@ namespace Editarrr.Level
 
         private void OnShowAchievement(PopupAchievement achievement)
         {
-
             var popup = Instantiate(this.AchievementBlock, this.ModalCanvas.transform);
             popup.Setup(achievement);
-
         }
 
         public override void DoOnEnable()
