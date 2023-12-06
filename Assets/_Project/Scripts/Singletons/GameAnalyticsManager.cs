@@ -39,14 +39,20 @@ namespace Singletons
             // GameAnalytics.NewProgressionEvent (GA_Progression.GAProgressionStatus progressionStatus, string progression01, string progression02);
         }
 
-        public void CustomEvent()
+        public void CustomEvent(string eventName, string eventValue)
         {
-            // GameAnalytics.NewDesignEvent (string eventName, float eventValue);
+            string newValue = eventName + ':' + eventValue;
+            this.CustomEvent(newValue, 1);
+        }
+
+        public void CustomEvent(string eventName, float eventValue)
+        {
+            GameAnalytics.NewDesignEvent(eventName, eventValue);
         }
 
         public void LogError(string message)
         {
-            GameAnalytics.NewErrorEvent (GAErrorSeverity.Critical, message);
+            GameAnalytics.NewErrorEvent(GAErrorSeverity.Debug, message);
         }
 
         public void CustomDimension()
