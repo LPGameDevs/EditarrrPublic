@@ -323,7 +323,9 @@ namespace Level.Storage
                 callback?.Invoke(scoreStubs.ToArray());
             }).Catch(err =>
             {
+                Debug.Log(url);
                 Debug.LogError( $"Error getting leaderboard for {code}: {err.Message}");
+                Debug.Log(JsonUtility.ToJson(err, true));
                 callback?.Invoke(new ScoreStub[]{});
             });
         }
