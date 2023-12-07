@@ -166,6 +166,7 @@ public class LevelBrowserManager : ManagerComponent
         this.LevelManager.DoOnEnable();
 
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
+        DownloadByCode.OnDownloadLevelByCodeRequested += OnLevelDownloadRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot += OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated += OnBrowserPagerUpdateRequested;
         SortingSelector.OnStateChanged += OnSortingCriteriaChanged;
@@ -182,6 +183,7 @@ public class LevelBrowserManager : ManagerComponent
         this.LevelManager.DoOnDisable();
 
         LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
+        DownloadByCode.OnDownloadLevelByCodeRequested -= OnLevelDownloadRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot -= OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated -= OnBrowserPagerUpdateRequested;
         SortingSelector.OnStateChanged -= OnSortingCriteriaChanged;

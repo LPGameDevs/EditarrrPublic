@@ -3667,6 +3667,7 @@ GameObject:
   - component: {fileID: 1197186157}
   - component: {fileID: 1197186156}
   - component: {fileID: 1197186155}
+  - component: {fileID: 1197186161}
   m_Layer: 5
   m_Name: SearchBoard
   m_TagString: Untagged
@@ -3803,6 +3804,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197186153}
   m_CullTransparentMesh: 1
+--- !u!114 &1197186161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197186153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddee60e9800db2855902b7f2f70076b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  codeInput: {fileID: 1145589246}
+  downloadButton: {fileID: 1160756092719458332}
 --- !u!1 &1234285873
 GameObject:
   m_ObjectHideFlags: 0
@@ -5520,9 +5535,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: OpenCredits
+      - m_Target: {fileID: 1197186161}
+        m_TargetAssemblyTypeName: DownloadByCode, Assembly-CSharp
+        m_MethodName: OnDownloadButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5664,7 +5679,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Credits
+  m_text: Download
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d986a0510bde7e33e9e8d40ad0a93d83, type: 2}
   m_sharedMaterial: {fileID: -5468633486567898783, guid: d986a0510bde7e33e9e8d40ad0a93d83, type: 2}

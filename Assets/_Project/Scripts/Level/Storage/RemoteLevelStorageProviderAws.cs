@@ -133,7 +133,45 @@ namespace Level.Storage
                 });
         }
 
+        /**
+         * Download level either by code or by remote id.
+         */
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
+        {
+            if (code.Length == 5)
+            {
+                DownloadByCode(code, callback, DownloadByRemoteId);
+            }
+            else
+            {
+                DownloadByRemoteId(code, callback);
+            }
+        }
+        public delegate void Aws_CodeFoundCallback(string code, RemoteLevelStorage_LevelLoadedCallback callback);
+
+
+        /**
+         * If we dont know the remote id we try to get that first and then pass on to the download callback.
+         */
+        private void DownloadByCode(string code, RemoteLevelStorage_LevelLoadedCallback nextCallback, Aws_CodeFoundCallback callback)
+        {
+            string url = $"{AwsLevelUrl}/levels?code={code}";
+            RestClient.Get<AwsLevels>(url).Then(res =>
+            {
+                Debug.Log(JsonUtility.ToJson(res, true));
+
+                if (res.levels.Length > 0)
+                {
+                    callback.Invoke(res.levels[0].id, nextCallback);
+                }
+            }).Catch(err =>
+            {
+                Debug.Log(url);
+                Debug.Log(err.Message);
+            });
+        }
+        
+        public void DownloadByRemoteId(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
             string url = $"{AwsLevelUrl}/levels/{code}";
             RestClient.Get<AwsLevel>(url).Then(res =>
