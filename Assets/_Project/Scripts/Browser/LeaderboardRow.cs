@@ -14,14 +14,14 @@ public class LeaderboardRow : MonoBehaviour
     private string _replayData;
     private string _code;
 
-    public void SetRow(string code, string place, float time, string name, string replayData = "")
+    public void SetRow(string code, string place, string time, string name, string replayData = "")
     {
         _replayData = replayData;
         _code = code;
         bool isReplay = replayData.Length > 0;
 
         Place.text = place;
-        Time.text = time.ToString();
+        Time.text = time;
         Name.text = name;
         Replay.gameObject.SetActive(isReplay);
     }

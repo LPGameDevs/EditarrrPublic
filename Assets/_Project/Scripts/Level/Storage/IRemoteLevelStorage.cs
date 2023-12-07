@@ -91,9 +91,9 @@ namespace Level.Storage
         public string Code { get; private set; }
         public string Creator { get; private set; }
         public string CreatorName { get; private set; }
-        public float Score { get; private set; }
+        public string Score { get; private set; }
 
-        public ScoreStub(string code, string creator, string creatorName, float score)
+        public ScoreStub(string code, string creator, string creatorName, string score)
         {
             this.Code = code;
             this.Creator = creator;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using Editarrr.Level;
@@ -289,7 +290,7 @@ namespace Level.Storage
             var request = new AwsScoreRequest
             {
                 code = levelSave.Code,
-                score = score.ToString(),
+                score = score.ToString(CultureInfo.InvariantCulture),
                 creator = userId,
                 creatorName = userName
             };
@@ -310,11 +311,13 @@ namespace Level.Storage
             // Get request to /levels/{id}/scores
             RestClient.Get<AwsScores>(url).Then(res =>
             {
+                Debug.Log(JsonUtility.ToJson(res, true));
+
                 var scoreStubs = new List<ScoreStub>();
                 foreach (var score in res.scores)
                 {
-                    float scoreValue = float.Parse(score.score);
-                    var levelStub = new ScoreStub(score.code, score.creator.id, score.creator.name, scoreValue);
+                    // float scoreValue = float.Parse(score.score, CultureInfo.InvariantCulture);
+                    var levelStub = new ScoreStub(score.code, score.creator.id, score.creator.name, score.score);
                     scoreStubs.Add(levelStub);
                 }
 
