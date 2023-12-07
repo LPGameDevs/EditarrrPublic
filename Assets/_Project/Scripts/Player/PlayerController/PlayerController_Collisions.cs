@@ -38,20 +38,11 @@ namespace Player
 
             if (groundCheck && hit[0].transform.GetProxyComponent<IGroundFriction>() is IGroundFriction groundFriction)
             {
-                this.Friction = groundFriction.Friction;
-                Debug.Log($"Friction: {this.Friction}");
+                this.Ground = groundFriction;
             }
-            // else if (groundCheck)
-            // {
-            //     this.Friction = 1f;
-            // }
-            // else
-            // {
-            //     this.Friction.Lerp(1, this.TimeScale);
-            // }
             else
             {
-                this.Friction = 1f;
+                this.Ground = null;
             }
 
             this.OnGroundCheck?.Invoke(groundCheck);

@@ -191,6 +191,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Friction>k__BackingField: 0.01
+  <Grip>k__BackingField: 0.1
+  <MaxSpeedBoost>k__BackingField: 5
 --- !u!1 &8880188652851955650
 GameObject:
   m_ObjectHideFlags: 0

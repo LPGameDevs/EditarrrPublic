@@ -40,8 +40,6 @@ namespace Player
         float FrameRate { get; set; } = 50;
         float FrameRateStep { get; set; }
 
-        float Friction { get; set; } = 1f;
-
         void Awake()
         {
             this.Health = this.GetComponent<HealthSystem>();
@@ -111,6 +109,7 @@ namespace Player
                 this.ResetValues();
 
                 this.UpdateCollision();
+                this.UpdateFriction();
 
                 while (this.FrameTime >= this.FrameRateStep)
                 {
