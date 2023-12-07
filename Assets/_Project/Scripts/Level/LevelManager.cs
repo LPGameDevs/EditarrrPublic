@@ -247,7 +247,7 @@ namespace Editarrr.Level
                 this.RemoteLevelStorage.Upload(levelSave, UploadCompleted);
             }
 
-            AnalyticsManager.Instance.TrackEventWithValue(AnalyticsEvent.LevelSave, levelSave.Code, levelSave.Version);
+            AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelSave, $"{levelSave.Code}-{levelSave.Version}");
 
             void UploadCompleted(string code, string remoteId, bool isSteam = false)
             {
