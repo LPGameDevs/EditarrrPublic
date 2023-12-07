@@ -226,7 +226,7 @@ namespace Editarrr.Level
                 void ScoreSubmitted(string code, string remoteId, bool isSteam)
                 {
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelScoreSubmitted);
-                    AnalyticsManager.Instance.TrackEventWithValue(AnalyticsEvent.LevelSave, code, time);
+                    AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelScoreSubmitted, $"{code}-{time}");
                 }
             }
         }
@@ -244,8 +244,7 @@ namespace Editarrr.Level
                 {
                     PreferencesManager.Instance.SetLevelRating(code, rating);
                     AchievementManager.Instance.UnlockAchievement(GameAchievement.LevelRated);
-                    AnalyticsManager.Instance.TrackEventWithValue(AnalyticsEvent.LevelSave, code, rating);
-
+                    AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelRatingSubmitted, $"{code}-{rating.ToString()}");
                 }
             }
         }
