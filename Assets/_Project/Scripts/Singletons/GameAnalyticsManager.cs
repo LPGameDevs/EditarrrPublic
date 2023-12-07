@@ -15,6 +15,7 @@ namespace Singletons
 
         public void Initialize()
         {
+            return;
             Configure();
             GameAnalytics.Initialize();
 
@@ -41,17 +42,20 @@ namespace Singletons
 
         public void CustomEvent(string eventName, string eventValue)
         {
+            return;
             string newValue = eventName + ':' + eventValue;
             this.CustomEvent(newValue, 1);
         }
 
         public void CustomEvent(string eventName, float eventValue)
         {
+            return;
             GameAnalytics.NewDesignEvent(eventName, eventValue);
         }
 
         public void LogError(string message)
         {
+            return;
             GameAnalytics.NewErrorEvent(GAErrorSeverity.Debug, message);
         }
 
