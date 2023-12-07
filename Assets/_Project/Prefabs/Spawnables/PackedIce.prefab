@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab403e6524d635d47b91c7a78a522494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Friction>k__BackingField: 0.3
+  <Friction>k__BackingField: 0.01
 --- !u!1 &8880188652851955650
 GameObject:
   m_ObjectHideFlags: 0

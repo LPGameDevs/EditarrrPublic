@@ -41,13 +41,17 @@ namespace Player
                 this.Friction = groundFriction.Friction;
                 Debug.Log($"Friction: {this.Friction}");
             }
-            else if (groundCheck)
-            {
-                this.Friction = 1f;
-            }
+            // else if (groundCheck)
+            // {
+            //     this.Friction = 1f;
+            // }
+            // else
+            // {
+            //     this.Friction.Lerp(1, this.TimeScale);
+            // }
             else
             {
-                this.Friction.Lerp(1, this.TimeScale);
+                this.Friction = 1f;
             }
 
             this.OnGroundCheck?.Invoke(groundCheck);
