@@ -55,7 +55,7 @@ namespace Singletons
             }
 
             DoSubmitRequest(trackedEvent.ToString(), value);
-            GameAnalyticsManager.Instance.CustomEvent(trackedEvent.ToString(), value);
+            // GameAnalyticsManager.Instance.CustomEvent(trackedEvent.ToString(), value);
         }
 
         public void TrackEventWithValue(AnalyticsEvent trackedEvent, string code = "", float value = 1)
@@ -67,7 +67,7 @@ namespace Singletons
 
             string trackvalue = code + "-" + value.ToString();
             DoSubmitRequest(trackedEvent.ToString(), trackvalue);
-            GameAnalyticsManager.Instance.CustomEvent(trackedEvent.ToString() + ":" + code, value);
+            // GameAnalyticsManager.Instance.CustomEvent(trackedEvent.ToString() + ":" + code, value);
         }
 
         private void DoSubmitRequest(string type, string value)

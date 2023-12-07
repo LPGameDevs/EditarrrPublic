@@ -100,8 +100,8 @@ public class UserNameForm : MonoBehaviour
 
     public void SubmitForm()
     {
-        GameAnalyticsManager.Instance.Debug();
-        GameAnalyticsManager.Instance.LogError("Something went horribly wrong!");
+        // GameAnalyticsManager.Instance.Debug();
+        // GameAnalyticsManager.Instance.LogError("Something went horribly wrong!");
 
         string oldUserName = PreferencesManager.Instance.GetUserName();
         //Clean input when submitting to block manual registry edits
