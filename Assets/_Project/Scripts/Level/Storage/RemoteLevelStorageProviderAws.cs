@@ -170,7 +170,7 @@ namespace Level.Storage
                 Debug.Log(err.Message);
             });
         }
-        
+
         public void DownloadByRemoteId(string code, RemoteLevelStorage_LevelLoadedCallback callback)
         {
             string url = $"{AwsLevelUrl}/levels/{code}";
@@ -286,14 +286,17 @@ namespace Level.Storage
         {
             string limit = "10";
             string cursor = "";
+            string code = "";
             if (query != null)
             {
                 limit = query.Value.limit.ToString();
                 cursor = query.Value.cursor;
+                code = query.Value.code;
             }
 
             string queryParams = $"?limit={limit}";
             queryParams += cursor.Length > 0 ? $"&cursor={cursor}" : "";
+            queryParams += code.Length > 0 ? $"&code={code}" : "";
 
             string url = $"{AwsLevelUrl}/levels{queryParams}";
             // Get request to /levels
@@ -316,6 +319,7 @@ namespace Level.Storage
                     levelStubs.Add(levelStub);
                 }
 
+                Debug.Log(url);
                 Debug.Log(JsonUtility.ToJson(res, true));
                 callback?.Invoke(levelStubs.ToArray(), res.cursor);
             }).Catch(err =>

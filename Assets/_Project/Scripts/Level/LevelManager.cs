@@ -465,6 +465,7 @@ namespace Editarrr.Level
     {
         public int limit;
         public string cursor;
+        public string code;
     }
 
     public struct LevelMetaCache

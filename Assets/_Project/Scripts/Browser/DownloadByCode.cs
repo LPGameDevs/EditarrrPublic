@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class DownloadByCode : MonoBehaviour
 {
+    public static event Action<string> OnSearchLevelByCodeRequested;
     public static event Action<string> OnDownloadLevelByCodeRequested;
-    
+
     [SerializeField] private TMP_Text codeInput;
     [SerializeField] private Button downloadButton;
+    [SerializeField] private Button searchButton;
 
     public void OnDownloadButtonPressed()
     {
@@ -16,9 +18,20 @@ public class DownloadByCode : MonoBehaviour
         if (code.Length != 5)
         {
             return;
-        } 
-        
+        }
+
         OnDownloadLevelByCodeRequested?.Invoke(code);
-        
+    }
+
+    public void OnSearchButtonPressed()
+    {
+        string code = codeInput.text;
+        if (code.Length != 5)
+        {
+            return;
+        }
+
+        OnSearchLevelByCodeRequested?.Invoke(code);
+
     }
 }

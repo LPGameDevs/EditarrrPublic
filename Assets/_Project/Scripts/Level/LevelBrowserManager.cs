@@ -42,6 +42,7 @@ public class LevelBrowserManager : ManagerComponent
         {
             limit = 50,
             cursor = "",
+            code = "",
         };
     }
 
@@ -84,6 +85,14 @@ public class LevelBrowserManager : ManagerComponent
         // Update display - this is only necessary with long downloads.
         // DestroyAndRefreshLevels();
         AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelDownload, code);
+    }
+
+    private void OnLevelSearchRequested(string code)
+    {
+        var remoteLevelLoadQuery = this.LevelQuery;
+        remoteLevelLoadQuery.code = code;
+        this.LevelQuery = remoteLevelLoadQuery;
+        DestroyAndRefreshLevels();
     }
 
     private void OnLevelScreenshotDownloadRequested(string code)
@@ -167,6 +176,7 @@ public class LevelBrowserManager : ManagerComponent
 
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
         DownloadByCode.OnDownloadLevelByCodeRequested += OnLevelDownloadRequested;
+        DownloadByCode.OnSearchLevelByCodeRequested += OnLevelSearchRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot += OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated += OnBrowserPagerUpdateRequested;
         SortingSelector.OnStateChanged += OnSortingCriteriaChanged;
@@ -184,6 +194,7 @@ public class LevelBrowserManager : ManagerComponent
 
         LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
         DownloadByCode.OnDownloadLevelByCodeRequested -= OnLevelDownloadRequested;
+        DownloadByCode.OnSearchLevelByCodeRequested -= OnLevelSearchRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot -= OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated -= OnBrowserPagerUpdateRequested;
         SortingSelector.OnStateChanged -= OnSortingCriteriaChanged;
