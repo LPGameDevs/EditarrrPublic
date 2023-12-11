@@ -201,9 +201,7 @@ describe('PostScore', function () {
 
             expect.fail('Expected to throw BadRequestException but did not throw any exception.');
         } catch (error) {
-            // Assert that the caught error is an instance of BadRequestException
             expect(error).to.be.an.instanceOf(BadRequestException);
-            // Optionally, assert the error message
             expect(error.message).to.equal("error - Bad Request: 'score' must be a number");
         }
     });

@@ -1,7 +1,7 @@
 import {
     GetCommand, UpdateCommand, QueryCommand
 } from "@aws-sdk/lib-dynamodb";
-import { BadRequestException, isArrayOfStrings } from "../utils.mjs";
+import { andExpression } from "../utils.mjs";
 
 const tableNameLevel = "editarrr-level-storage";
 
@@ -110,17 +110,20 @@ export class LevelsDbClient {
             };
         }
 
-        if (filters?.anyOfLabels !== undefined) {
-            if (!isArrayOfStrings) throw new BadRequestException(`'anyOfLabels' must be a comma-separated list of strings. E.g. 'anyOfLabels=test,GDFG'`);
+        var anyOfLabels = filters?.anyOfLabels;
+        if (anyOfLabels !== undefined && anyOfLabels.length > 0) {
+            var containsAnyOfLabelsFilterExpression = anyOfLabels.map((label, index) => `contains(labels, :label${index})`).join(" OR ");
+            query.FilterExpression = andExpression(query.FilterExpression, containsAnyOfLabelsFilterExpression);
+            query.ExpressionAttributeValues = anyOfLabels.reduce((values, label, index) => {
+                values[`:label${index}`] = label;
+                return values;
+            }, query.ExpressionAttributeValues);
+        }
 
-            var anyOfLabels = filters?.anyOfLabels;
-            if (anyOfLabels.length > 0) {
-                query.FilterExpression = anyOfLabels.map((label, index) => `contains(labels, :label${index})`).join(" OR ");
-                query.ExpressionAttributeValues = anyOfLabels.reduce((values, label, index) => {
-                    values[`:label${index}`] = label;
-                    return values;
-                }, query.ExpressionAttributeValues);
-            }
+        var nameContains = filters?.nameContains;
+        if (nameContains !== undefined) {
+            query.FilterExpression = andExpression(query.FilterExpression, 'contains(levelName, :nameSubstring)')
+            query.ExpressionAttributeValues[':nameSubstring'] = nameContains;
         }
 
         var queryResponse = await this.dynamoDbClient.send(new QueryCommand(query));

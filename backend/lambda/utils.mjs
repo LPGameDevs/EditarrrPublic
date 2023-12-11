@@ -36,9 +36,23 @@ export function uuidv4() {
     );
 }
 
+export function isString(x) {
+    return typeof x === 'string'
+}
+
 export function isArrayOfStrings(x) {
     if (!Array.isArray(x)) {
         return false;
     }
-    return x.every(item => typeof item === 'string');
+    return x.every(item => isString(item));
+}
+
+export function andExpression(s1, s2) {
+    if (s1 === undefined) {
+        return s2;
+    }
+    if (s2 === undefined) {
+        return s1;
+    }
+    return `(${s1}) AND (${s2})`
 }

@@ -6,6 +6,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 import { LevelsApi } from './levels.mjs';
 import { LevelsDbClient } from '../db/levels.mjs';
+import { BadRequestException } from "../utils.mjs";
 
 var dynamoDbClient;
 var ddbClientSendStub;
@@ -82,6 +83,66 @@ describe('GetPagedLevels', function () {
         ddbClientSendStub = stub(dynamoDbClient, 'send');
         levelsDbClient = new LevelsDbClient(dynamoDbClient);
         levelsApi = new LevelsApi(levelsDbClient);
+    });
+
+    it('should throw a BadRequestException if arrayOfLabels is NOT a list of strings.', async function () {
+        // Arrange
+        var sortOptionQueryParam = undefined;
+        var sortAscQueryParam = undefined;
+        var limitQueryParam = undefined;
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = undefined;
+        var filters = {
+            anyOfLabels: "foobar",
+        }
+
+        try {
+            // Act
+            await levelsApi.getPagedLevels(
+                sortOptionQueryParam,
+                sortAscQueryParam,
+                limitQueryParam,
+                cursorQueryParam,
+                useDraftsQueryParam,
+                filters,
+            );
+
+            expect.fail('Expected to throw BadRequestException but did not throw any exception.');
+        } catch (error) {
+            // Assert
+            expect(error).to.be.an.instanceOf(BadRequestException);
+            expect(error.message).to.equal("error - Bad Request: 'anyOfLabels' must be a comma-separated list of strings. E.g. 'anyOfLabels=test,GDFG'");
+        }
+    });
+
+    it('should throw a BadRequestException if nameContains is NOT a string.', async function () {
+        // Arrange
+        var sortOptionQueryParam = undefined;
+        var sortAscQueryParam = undefined;
+        var limitQueryParam = undefined;
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = undefined;
+        var filters = {
+            nameContains: 123,
+        }
+
+        try {
+            // Act
+            await levelsApi.getPagedLevels(
+                sortOptionQueryParam,
+                sortAscQueryParam,
+                limitQueryParam,
+                cursorQueryParam,
+                useDraftsQueryParam,
+                filters,
+            );
+            
+            expect.fail('Expected to throw BadRequestException but did not throw any exception.');
+        } catch (error) {
+            // Assert
+            expect(error).to.be.an.instanceOf(BadRequestException);
+            expect(error.message).to.equal("error - Bad Request: 'nameContains' must be a string");
+        }
     });
 
     it('should fetch the first page of levels sorted by last updated.', async function () {
@@ -875,7 +936,7 @@ describe('GetPagedLevels', function () {
         });
     });
 
-    it('should fetch the first page of levels sorted by total number of ratings.', async function () {
+    it('should fetch levels filtered by labels if anyOfLabels is set.', async function () {
         // Arrange
         var sortOptionQueryParam = undefined;
         var sortAscQueryParam = undefined;
@@ -983,6 +1044,200 @@ describe('GetPagedLevels', function () {
                     "avgRating": 1,
                     "totalRatings": 2,
                     "labels": [ "GDFG" ],
+                }
+            ]    
+        });
+    });
+
+    it('should fetch levels filtered by names with matching substrings if nameContains is set.', async function () {
+        // Arrange
+        var sortOptionQueryParam = undefined;
+        var sortAscQueryParam = undefined;
+        var limitQueryParam = undefined;
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = undefined;
+        var filters = {
+            nameContains: "2",
+        }
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelUpdatedAt-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 10,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            FilterExpression: "contains(levelName, :nameSubstring)",
+            ExpressionAttributeValues: { 
+                ":status": "PUBLISHED",
+                ":nameSubstring": "2",
+             },
+        })).returns({
+            "Items":[
+                {
+                    "levelName": "Level 234",
+                    "levelUpdatedAt": 2,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                    "labels": [ "test" ],
+                },
+                {
+                    "levelName": "Level 123",
+                    "levelUpdatedAt": 1,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#1-1-1-1-1",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#1-1-1-1-1",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                    "labels": [ "GDFG" ],
+                },
+            ] 
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+            filters,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 234",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 2,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                    "labels": [ "test" ],
+                },
+                {
+                    "id": "1-1-1-1-1",
+                    "name": "Level 123",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 1,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                    "labels": [ "GDFG" ],
+                }
+            ]    
+        });
+    });
+
+    it('should fetch levels filtered by labels if anyOfLabels is set AND filtered by names with matching substrings if nameContains is set.', async function () {
+        // Arrange
+        var sortOptionQueryParam = undefined;
+        var sortAscQueryParam = undefined;
+        var limitQueryParam = undefined;
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = undefined;
+        var filters = {
+            anyOfLabels: [ "test", "GDFG" ],
+            nameContains: "2",
+        }
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelUpdatedAt-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            Limit: 10,
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            FilterExpression: "(contains(labels, :label0) OR contains(labels, :label1)) AND (contains(levelName, :nameSubstring))",
+            ExpressionAttributeValues: { 
+                ":status": "PUBLISHED",
+                ":label0": "test",
+                ":label1": "GDFG",
+                ":nameSubstring": "2",
+             },
+        })).returns({
+            "Items":[
+                {
+                    "levelName": "Level 2",
+                    "levelUpdatedAt": 2,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                    "labels": [ "test" ],
+                }
+            ] 
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+            filters,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 2",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 2,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                    "labels": [ "test" ],
                 }
             ]    
         });

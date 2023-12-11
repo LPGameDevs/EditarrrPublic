@@ -1,5 +1,5 @@
 import { LevelsSortOptions } from "../db/levels.mjs";
-import { BadRequestException, asBool, extractId } from "../utils.mjs";
+import { BadRequestException, asBool, extractId, isArrayOfStrings, isString } from "../utils.mjs";
 
 const defaultPageLimit = 10;
 
@@ -38,6 +38,14 @@ export class LevelsApi {
         if (requestUseDrafts !== undefined) {
             useDrafts = asBool(requestUseDrafts);
             if (useDrafts === undefined) throw new BadRequestException(`'draft' must be either 'true' or 'false'`);
+        }
+
+        if (requestFilters?.anyOfLabels !== undefined) {
+            if (!isArrayOfStrings(requestFilters?.anyOfLabels)) throw new BadRequestException(`'anyOfLabels' must be a comma-separated list of strings. E.g. 'anyOfLabels=test,GDFG'`);
+        }
+
+        if (requestFilters?.nameContains !== undefined) {
+            if (!isString(requestFilters?.nameContains)) throw new BadRequestException(`'nameContains' must be a string`);
         }
 
         var queryResponse = await this.levelsDbClient.getPagedLevels(
