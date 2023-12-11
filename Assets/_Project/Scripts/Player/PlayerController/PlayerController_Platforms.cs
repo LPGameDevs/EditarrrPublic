@@ -35,18 +35,18 @@ namespace Player
 
         public void EnterPlatform(IExternalMovementSource externalMovementSource)
         {
-            Debug.Log("Enter Platform");
+            // Debug.Log("Enter Platform");
             this.PlatformQueue.Add(externalMovementSource);
         }
 
         public void ExitPlatform(IExternalMovementSource externalMovementSource)
         {
-            Debug.Log("Exit Platform");
+            // Debug.Log("Exit Platform");
             this.PlatformQueue.Remove(externalMovementSource);
 
             if (this.CurrentPlatform == externalMovementSource)
             {
-                Debug.Log("Clear Parent");
+                // Debug.Log("Clear Parent");
                 this.CurrentPlatform = null;
             }
         }

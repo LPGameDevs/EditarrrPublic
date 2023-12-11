@@ -42,7 +42,7 @@ namespace Player
         private void UpdateHorizontalSpeed(float targetValue, float rate, float clampBonus)
         {
             // Debug.Log($"HZ: {this.HorizontalSpeed}, T: {targetValue}, R: {rate}, C: {clampBonus}");
-            Debug.Log($"{this.HorizontalSpeed} >>>> {targetValue}");
+            // Debug.Log($"{this.HorizontalSpeed} >>>> {targetValue}");
             // Debug.Log($"T: {targetValue}");
 
             this.HorizontalSpeed = this.HorizontalSpeed.Lerp(targetValue, rate);

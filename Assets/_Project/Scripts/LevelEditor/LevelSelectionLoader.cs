@@ -142,7 +142,7 @@ public class LevelSelectionLoader : MonoBehaviour
             return;
         }
 
-        Debug.Log("Filter by Demos");
+        // Debug.Log("Filter by Demos");
         SetLevelFilter(LevelFilterMetric.Demo);
     }
 
@@ -154,7 +154,7 @@ public class LevelSelectionLoader : MonoBehaviour
             return;
         }
 
-        Debug.Log("Filter by Drafts");
+        // Debug.Log("Filter by Drafts");
         SetLevelFilter(LevelFilterMetric.Draft);
     }
 
@@ -166,7 +166,7 @@ public class LevelSelectionLoader : MonoBehaviour
             return;
         }
 
-        Debug.Log("Filter by Published");
+        // Debug.Log("Filter by Published");
         SetLevelFilter(LevelFilterMetric.Published);
     }
 
@@ -178,7 +178,7 @@ public class LevelSelectionLoader : MonoBehaviour
             return;
         }
 
-        Debug.Log("Filter by Downloaded");
+        // Debug.Log("Filter by Downloaded");
         SetLevelFilter(LevelFilterMetric.Downloaded);
     }
 

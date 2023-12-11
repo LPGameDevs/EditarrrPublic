@@ -116,7 +116,7 @@ public class EnemyAIController : PausableCharacter
 
     private void EnemyAnticipator()
     {
-        Debug.Log("Clawdia state: " + _aiState.ToString());
+        // Debug.Log("Clawdia state: " + _aiState.ToString());
         if (!IsGrounded(footTransform))
         {
             _moveSpeed = enemyAIData.sawPlayerMoveSpeed;
@@ -590,7 +590,7 @@ public class EnemyAIController : PausableCharacter
     private void FaceTowardsTarget(Vector2 target)
     {
         Vector3 newScale = new Vector3(GetDirectionTowards(target), 1, 1);
-        Debug.Log(newScale);
+        // Debug.Log(newScale);
 
         transform.localScale = newScale;
     }
@@ -613,7 +613,7 @@ public class EnemyAIController : PausableCharacter
         _aiState = newState;
         OnStateChanged?.Invoke(_aiState);
     }
-    
+
     private void OnCollision(Transform playerTransform)
     {
         _moveSpeed = 0f;
