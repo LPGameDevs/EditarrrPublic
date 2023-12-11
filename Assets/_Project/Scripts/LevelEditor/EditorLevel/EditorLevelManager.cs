@@ -535,7 +535,7 @@ namespace Editarrr.LevelEditor
                     }
                 }
 
-                Debug.Log("Expand Tiles");
+                // Debug.Log("Expand Tiles");
 
                 this.Tiles = tileStates;
                 this.Overlays = overlays;

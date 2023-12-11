@@ -21,6 +21,7 @@ namespace Editarrr.LevelEditor
         BoxBounce = 30,
         Geyser = 40,
         CrackedPlank = 50,
+        PackedIce = 51,
         MovingPlatform = 60,
         MovingPlatformDeath = 61,
         PowerSword = 70,
