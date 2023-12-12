@@ -70,6 +70,31 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 29dc60948f0d0e64f82267cbc672286b, type: 3}
   - {fileID: 21300000, guid: 4aef29454e0b8a1459e7ab69ac2d2a75, type: 3}
   - {fileID: 21300000, guid: 92b6b465878e8dee2893fb142c2842d0, type: 3}
+  - {fileID: -1972555272, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1977512899, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -742282266, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1288182005, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -72769093, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: 1742664275, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1987234541, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -763253885, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: 1746281474, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: 1484618673, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1802715908, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1180904722, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1270884775, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: 348100879, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -346410042, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1680088125, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1825906306, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1190288875, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -108602911, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1235092084, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: 1272620182, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -473506504, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -1816389931, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: -138488831, guid: 540167b5dad4c77478254f45474386de, type: 3}
+  - {fileID: 1931107489, guid: 540167b5dad4c77478254f45474386de, type: 3}
   - {fileID: 21300000, guid: aa0b69b5bfc333742a000c1d4dd0aa6f, type: 3}
   - {fileID: 21300000, guid: 907c2bb50546ed84e81174fbb318fb7a, type: 3}
   - {fileID: 21300000, guid: 98f856c5bccdeb45bb56c7992db04508, type: 3}
@@ -139,6 +164,31 @@ SpriteAtlas:
   - Idle 03
   - Idle 02
   - Jump Sword 01
+  - Captain Christmas_13
+  - Captain Christmas_12
+  - Captain Christmas_11
+  - Captain Christmas_10
+  - Captain Christmas_17
+  - Captain Christmas_16
+  - Captain Christmas_24
+  - Captain Christmas_15
+  - Captain Christmas_14
+  - Captain Christmas_22
+  - Captain Christmas_23
+  - Captain Christmas_20
+  - Captain Christmas_19
+  - Captain Christmas_21
+  - Captain Christmas_18
+  - Captain Christmas_0
+  - Captain Christmas_1
+  - Captain Christmas_2
+  - Captain Christmas_3
+  - Captain Christmas_4
+  - Captain Christmas_5
+  - Captain Christmas_6
+  - Captain Christmas_7
+  - Captain Christmas_8
+  - Captain Christmas_9
   - Dead Ground 03
   - Hit 04
   - Attack 2 02

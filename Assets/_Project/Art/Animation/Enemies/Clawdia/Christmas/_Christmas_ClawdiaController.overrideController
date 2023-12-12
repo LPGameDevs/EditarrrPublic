@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: _Christmas_ClawdiaController
+  m_Controller: {fileID: 9100000, guid: d6b392574ccdf0c4f983c563334c905b, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 3c13fb8d3f311034bbe5ae650dbf7ca6, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c6ebc4c0546dc004a82759bf2ddc0e7a, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 82b5d17594ea7c141be011ad9d802240, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c23be07c5979cc44d9577516e90a9602, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 5d0ec3271aae32c438cfaf0fdd75f7c3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: adc4c906386087a418cb92b8f6cc47a1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b11d8dd9baad44a4d98141fad7b41c18, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4fd1c2aad812eb148bacf66d36f24586, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: eb4cae5a3fdda3a40928e17d7f123ef5, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 72f1a7105576ffc418784a1c3222a36b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ba7657e145c1cc54a8c027ac17ab1833, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 390457c82081f4b4cb926e9c89d344f5, type: 2}

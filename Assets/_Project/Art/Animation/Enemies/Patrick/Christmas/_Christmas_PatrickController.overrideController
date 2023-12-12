@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: _Christmas_PatrickController
+  m_Controller: {fileID: 9100000, guid: 0feb24d9520e2f64e897ee74322fe515, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 666b421ce363f5a46ad7f6a2cceebb5d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4c900e4c185e4cd4a808f991996752d4, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 9a183a9f59688d0429ee128c93085ae9, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d837144e8376bb44bb4ac704afcd685d, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 0ae286d91180f7e40ac4b2324d5601ec, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 76b5b13f84c28d943b7597d24c40d3e1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d3d9cb3501155614eb8685a91ae41659, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b982f5c325c22324f9a64ea2dd628377, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 09d4338181b34644eb96483713687a7c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 56a5f0a82cec915428fd1c9c123df1c8, type: 2}
