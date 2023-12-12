@@ -12,7 +12,7 @@ namespace Player
         [field: SerializeField] private float JumpApexBonus { get; set; } = 2f;
 
 
-
+        private float ClampMoveSpeed { get; set; }
         private float HorizontalSpeed { get; set; }
 
         private void UpdateWalk()
@@ -23,24 +23,33 @@ namespace Player
 
             if (this.IsMoving)
             {
-                targetValue = this.RawInputMove * this.MaxMoveSpeed;
-                rate = this.Acceleration * this.TimeScale;
+                targetValue = this.RawInputMove * (this.MaxMoveSpeed + this.CurrentSpeedBoost.Abs());
+                rate = this.Acceleration * this.TimeScale * this.AccelerationBoost;
                 clampBonus = Mathf.Sign(this.RawInputMove) * this.JumpApexInfluence * this.JumpApexBonus;
             }
             else
             {
                 targetValue = 0;
-                rate = this.DeAcceleration * this.TimeScale;
+                rate = this.DeAcceleration * this.TimeScale * this.DeAccelerationBoost;
                 clampBonus = 0;
             }
+
+            this.ClampMoveSpeed = this.MaxMoveSpeed.Max(targetValue.Abs());
 
             this.UpdateHorizontalSpeed(targetValue, rate, clampBonus);
         }
 
         private void UpdateHorizontalSpeed(float targetValue, float rate, float clampBonus)
         {
-            this.HorizontalSpeed = Mathf.Lerp(this.HorizontalSpeed, targetValue, rate);
-            this.HorizontalSpeed = this.HorizontalSpeed.Clamp(-this.MaxMoveSpeed + clampBonus, this.MaxMoveSpeed + clampBonus);
+            // Debug.Log($"HZ: {this.HorizontalSpeed}, T: {targetValue}, R: {rate}, C: {clampBonus}");
+            // Debug.Log($"{this.HorizontalSpeed} >>>> {targetValue}");
+            // Debug.Log($"T: {targetValue}");
+
+            this.HorizontalSpeed = this.HorizontalSpeed.Lerp(targetValue, rate);
+
+            float clampSum = this.ClampMoveSpeed + clampBonus.Abs();
+
+            this.HorizontalSpeed = this.HorizontalSpeed.Clamp(-clampSum, clampSum);
         }
 
         //[Header("WALKING")][SerializeField] private float _acceleration = 90;

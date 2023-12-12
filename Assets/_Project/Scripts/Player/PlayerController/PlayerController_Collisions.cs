@@ -36,6 +36,15 @@ namespace Player
 
             bool groundCheck = this.Collider.Cast(Vector2.down, this.GroundContactFilter, hit, this.CollisionCheckDistance) > 0;
 
+            if (groundCheck && hit[0].transform.GetProxyComponent<IGroundFriction>() is IGroundFriction groundFriction)
+            {
+                this.Ground = groundFriction;
+            }
+            else
+            {
+                this.Ground = null;
+            }
+
             this.OnGroundCheck?.Invoke(groundCheck);
 
             this.IsLanding = !this.Collisions.Down && groundCheck;

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using SteamIntegration;
 using UI;
 using UnityEngine;
@@ -20,12 +21,50 @@ namespace Singletons
         public const string ScreenFlashKey = "screenFlash";
         public const string StreamerKey = "userIsStreamer";
 
-        public string GetUserId()
+        public string SyncFilePath => Application.persistentDataPath + "/preferences-sync.json";
+        private SyncSaveFile _syncSave;
+
+        public void Initialize()
+        {
+            if (!File.Exists(SyncFilePath))
+            {
+                File.WriteAllText(SyncFilePath, "{}");
+            }
+
+            string data = File.ReadAllText(SyncFilePath);
+            _syncSave = JsonUtility.FromJson<SyncSaveFile>(data);
+
+            // If we have a user id check if it needs to override the preference.
+            if (_syncSave.uuid.Length > 0)
+            {
+                if (_syncSave.uuid != GetUserId(true))
+                {
+                    SetUserId(_syncSave.uuid);
+                }
+            }
+            else
+            {
+                // If no user id in the sync, set whatever is the current value.
+                SetUserId(GetUserId());
+            }
+        }
+
+        private void UpdateSaveFile()
+        {
+            string dataString = JsonUtility.ToJson(_syncSave);
+            File.WriteAllText(SyncFilePath, dataString);
+        }
+
+        /**
+         * @param bool readOnly
+         *   If true will not generate a default value.
+         */
+        public string GetUserId(bool readOnly = false)
         {
             var userId = PlayerPrefs.GetString(UserIdStorageKey, "");
 
             // Set a new user id if one doesnt exist.
-            if (userId.Length == 0)
+            if (!readOnly && userId.Length == 0)
             {
                 userId = Guid.NewGuid().ToString();
                 this.SetUserId(userId);
@@ -39,6 +78,10 @@ namespace Singletons
         private void SetUserId(string userId)
         {
             PlayerPrefs.SetString(UserIdStorageKey, userId);
+
+            // Update sync file.
+            _syncSave.uuid = userId;
+            UpdateSaveFile();
         }
 
         public string GetUserName()
@@ -129,11 +172,6 @@ namespace Singletons
             return PlayerPrefs.GetInt($"LevelRating-{code}", 0);
         }
 
-        public void Initialize()
-        {
-            // Nothing needed here.
-        }
-
         public void SetBoolean(string key, bool value)
         {
             int storedValue = value ? 1 : 0;
@@ -218,6 +256,12 @@ namespace Singletons
         public void SetBestLevelTime(string code, float time)
         {
             PlayerPrefs.SetFloat($"BestLevelScore-{code}", time);
+        }
+
+        [Serializable]
+        public class SyncSaveFile
+        {
+            public string uuid = "";
         }
     }
 }
