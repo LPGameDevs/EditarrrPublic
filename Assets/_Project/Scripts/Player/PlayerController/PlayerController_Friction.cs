@@ -51,17 +51,18 @@ namespace Player
                     this.AccelerationBoost = this.LastGroundGrip * this.AirControlRate;
                     this.DeAccelerationBoost = this.LastGroundFriction * this.AirControlRate;
                 }
-
-                int direction = this.RawInputMove.SignInt();
-                int currentSpeedBoostDirection = this.CurrentSpeedBoost.SignInt();
-
-                if (direction != currentSpeedBoostDirection)
-                {
-                    this.CurrentSpeedBoost = 0;
-                }
-
-                this.CurrentSpeedBoost = this.CurrentSpeedBoost.Lerp(this.MaxSpeedBoost * direction, this.TimeScale);
             }
+
+            int direction = this.RawInputMove.SignInt();
+            int currentSpeedBoostDirection = this.CurrentSpeedBoost.SignInt();
+
+            if (direction != currentSpeedBoostDirection)
+            {
+                this.CurrentSpeedBoost = 0;
+            }
+
+            // this.CurrentSpeedBoost = this.CurrentSpeedBoost.Lerp(this.MaxSpeedBoost * direction, this.TimeScale);
+            this.CurrentSpeedBoost = this.MaxSpeedBoost;
         }
     }
 }
