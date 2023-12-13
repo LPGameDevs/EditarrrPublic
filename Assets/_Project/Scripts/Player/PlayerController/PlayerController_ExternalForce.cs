@@ -13,13 +13,27 @@ namespace Player
         private Vector3 KnockbackForce { get; set; }
 
         bool IsKnockback { get; set; }
-
+        bool IsExternalForce { get; set; }
 
         private void AwakeExternalForce()
         {
             this.ForceReceiver = this.GetComponent<PlayerForceReceiver>();
             this.ForceReceiver.OnPositionRequest += this.ForceReceiver_OnPositionRequest;
             this.ForceReceiver.OnCancelMovementRequest += this.ForceReceiver_OnCancelMovementRequest;
+            this.ForceReceiver.OnForceStarted += this.ForceReceiver_OnForceStarted;
+            this.ForceReceiver.OnForceEnded += this.ForceReceiver_OnForceEnded;
+        }
+
+        private void ForceReceiver_OnForceStarted(Vector3 force)
+        {
+            if (this.IsExternalForce) return;
+
+            this.IsExternalForce = true;
+        }
+
+        private void ForceReceiver_OnForceEnded()
+        {
+            this.IsExternalForce = false;
         }
 
         private void UpdateExternalForce()
@@ -35,11 +49,6 @@ namespace Player
             {
                 this.HorizontalSpeed = this.HorizontalSpeed + this.KnockbackForce.x;
                 this.IsKnockback = true;
-
-                if (this.KnockbackForce.x > 0 && this.HorizontalSpeed > this.KnockbackForce.x)
-                    this.HorizontalSpeed = this.KnockbackForce.x;
-                else if (this.KnockbackForce.x < 0 && this.HorizontalSpeed < -this.KnockbackForce.x)
-                    this.HorizontalSpeed = this.KnockbackForce.x;
             }
 
             if (this.KnockbackForce.y.Abs() > float.Epsilon)
