@@ -9,6 +9,8 @@ public class PlayerForceReceiver : MonoBehaviour, IExternalForceReceiver
     #region Events
     public Func<Vector3, bool> OnPositionRequest { get; set; }
     public Action OnCancelMovementRequest { get; set; }
+    public Action<Vector3> OnForceStarted { get; set; }
+    public Action OnForceEnded { get; set; }
     #endregion
 
 	public Vector2? ForcedMove { get; private set; }
@@ -25,6 +27,8 @@ public class PlayerForceReceiver : MonoBehaviour, IExternalForceReceiver
 		this.Force = direction * force * this.ForceMultiplier;
 		this.ImpulseTime = 1;
 
+        this.OnForceStarted?.Invoke(this.Force);
+
 		this.CalculateForceMove();
 	}
 
@@ -37,13 +41,17 @@ public class PlayerForceReceiver : MonoBehaviour, IExternalForceReceiver
     {
         if (this.ImpulseTime <= 0)
         {
-            this.ForcedMove = null;
+            if (this.ForcedMove.HasValue)
+            {
+                this.ForcedMove = null;
+                this.OnForceEnded?.Invoke();
+            }
             return;
         }
 
-        this.ImpulseTime -= Time.deltaTime * (1f / this.Duration);
+        this.ImpulseTime -= Time.fixedDeltaTime * (1f / this.Duration);
 
-        this.ForcedMove = this.Force * this.ImpulseTime;
+        this.ForcedMove = this.Force * this.ImpulseTime.ClampMin(0);
     }
 
     public bool SetPosition(Vector3 position)
