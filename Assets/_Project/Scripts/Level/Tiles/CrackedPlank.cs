@@ -27,6 +27,8 @@ namespace Editarrr.Level.Tiles
         int SpriteIndex { get; set; }
         bool CanRespawn { get; set; }
 
+
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             // Only triggers for player, We can add other conditions though (i.e. Enemies etc.)

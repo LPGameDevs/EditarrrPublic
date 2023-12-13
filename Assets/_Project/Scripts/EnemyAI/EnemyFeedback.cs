@@ -49,8 +49,6 @@ public class EnemyFeedback : MonoBehaviour
 
             _move.StopFeedbacks();
         }
-
-        Debug.Log("OnMove");
     }
 
     private void OnPlayerCollision()

@@ -101,7 +101,7 @@ namespace Player
 
         private void Die()
         {
-            Debug.Log(gameObject.name + "has died");
+            // Debug.Log(gameObject.name + "has died");
             OnDeath?.Invoke(this, EventArgs.Empty);
         }
     }

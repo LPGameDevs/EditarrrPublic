@@ -109,6 +109,7 @@ namespace Player
                 this.ResetValues();
 
                 this.UpdateCollision();
+                this.UpdateFriction();
 
                 while (this.FrameTime >= this.FrameRateStep)
                 {

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BindCameraToPlayer : MonoBehaviour
 {
+    [SerializeField] ParticleSystem[] weatherParticleSystems;
     bool _playerFound = false;
 
     void Update()
@@ -19,6 +20,10 @@ public class BindCameraToPlayer : MonoBehaviour
                 Transform cameraFollowTarget = transform.parent;
                 cameraFollowTarget.transform.SetParent(player);
                 cameraFollowTarget.localPosition = Vector3.zero;
+
+                foreach (var system in weatherParticleSystems)
+                    system.Play();
+
                 // clean up this object/script
                 Destroy(gameObject);
             }

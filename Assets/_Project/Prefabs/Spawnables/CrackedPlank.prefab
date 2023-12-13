@@ -258,6 +258,7 @@ MonoBehaviour:
   <Collider>k__BackingField: {fileID: 8880188651554932569}
   <Duration>k__BackingField: 1
   <RespawnDuration>k__BackingField: 2
+  <Friction>k__BackingField: 0.2
   <RespawnFilter>k__BackingField:
     useTriggers: 1
     useLayerMask: 1

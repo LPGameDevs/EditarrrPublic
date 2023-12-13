@@ -26,7 +26,7 @@ namespace Editarrr.Level
 
         private void ChannelUser_OnChannelChanged(int channel)
         {
-            Debug.Log($"Channel changed {channel}");
+            // Debug.Log($"Channel changed {channel}");
             this.UpdateSprite(channel);
         }
 
