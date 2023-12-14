@@ -287,16 +287,22 @@ namespace Level.Storage
             string limit = "10";
             string cursor = "";
             string code = "";
+            string sort = "";
+            SortDirection direction = SortDirection.Ascending;
             if (query != null)
             {
                 limit = query.Value.limit.ToString();
                 cursor = query.Value.cursor;
                 code = query.Value.code;
+                sort = query.Value.sort;
+                direction = query.Value.direction;
             }
 
             string queryParams = $"?limit={limit}";
             queryParams += cursor.Length > 0 ? $"&cursor={cursor}" : "";
             queryParams += code.Length > 0 ? $"&code={code}" : "";
+            queryParams += sort.Length > 0 ? $"&sortKey={sort}" : "";
+            queryParams += direction == SortDirection.Ascending ? "&sortOrder=ASC" : "&sortOrder=DESC";
 
             string url = $"{AwsLevelUrl}/levels{queryParams}";
             // Get request to /levels
