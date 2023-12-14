@@ -154,7 +154,7 @@ namespace Level.Storage
             }
             else
             {
-                DownloadByRemoteId(code, callback, true);
+                DownloadByRemoteId(code, callback);
             }
         }
         public delegate void Aws_CodeFoundCallback(string code, RemoteLevelStorage_LevelLoadedCallback callback, bool updateUIOnSuccess = false);
