@@ -154,10 +154,10 @@ namespace Level.Storage
             }
             else
             {
-                DownloadByRemoteId(code, callback);
+                DownloadByRemoteId(code, callback, true);
             }
         }
-        public delegate void Aws_CodeFoundCallback(string code, RemoteLevelStorage_LevelLoadedCallback callback);
+        public delegate void Aws_CodeFoundCallback(string code, RemoteLevelStorage_LevelLoadedCallback callback, bool updateUIOnSuccess = false);
 
 
         /**
@@ -173,7 +173,7 @@ namespace Level.Storage
 
                 if (res.levels.Length > 0)
                 {
-                    callback.Invoke(res.levels[0].id, nextCallback);
+                    callback.Invoke(res.levels[0].id, nextCallback, true);
                 }
             }).Catch(err =>
             {
@@ -182,7 +182,7 @@ namespace Level.Storage
             });
         }
 
-        public void DownloadByRemoteId(string code, RemoteLevelStorage_LevelLoadedCallback callback)
+        public void DownloadByRemoteId(string code, RemoteLevelStorage_LevelLoadedCallback callback, bool updateUIOnSuccess = false)
         {
             string url = $"{AwsLevelUrl}/levels/{code}";
             RestClient.Get<AwsLevel>(url).Then(res =>
@@ -210,7 +210,7 @@ namespace Level.Storage
                     save.SetLabel(label);
                 }
                 save.SetPublished(res.status == "PUBLISHED");
-                callback?.Invoke(save);
+                callback?.Invoke(save, updateUIOnSuccess);
 
                 this.DoDownloadScreenshot(res.name);
 

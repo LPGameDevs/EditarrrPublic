@@ -126,7 +126,7 @@ public class LevelBrowserManager : ManagerComponent
         // DestroyAndRefreshLevels();
     }
 
-    private void OnLevelDownloadComplete(LevelSave level)
+    private void OnLevelDownloadComplete(LevelSave level, bool updateBrowserLevels = false)
     {
         // save level to local storage.
         LevelManager.SaveDownloadedLevel(level);
@@ -134,7 +134,10 @@ public class LevelBrowserManager : ManagerComponent
         Debug.Log("Download finished for level " + level.Code + ".");
 
         // Update display.
-        //DestroyAndRefreshLevels();
+        if (updateBrowserLevels)
+        {
+            DestroyAndRefreshLevels();
+        }
     }
 
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
