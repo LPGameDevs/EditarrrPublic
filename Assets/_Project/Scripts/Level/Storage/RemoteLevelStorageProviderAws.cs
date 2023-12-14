@@ -297,6 +297,7 @@ namespace Level.Storage
             string limit = "10";
             string cursor = "";
             string code = "";
+            string labels = "";
             SortOption sort = SortOption.None;
             SortDirection direction = SortDirection.Ascending;
             if (query != null)
@@ -306,15 +307,17 @@ namespace Level.Storage
                 code = query.Value.code;
                 sort = query.Value.sort;
                 direction = query.Value.direction;
+                labels = query.Value.labels.Count > 0 ? String.Join(",", query.Value.labels) : "";
             }
 
             string queryParams = $"?limit={limit}";
             queryParams += cursor.Length > 0 ? $"&cursor={cursor}" : "";
-            queryParams += code.Length > 0 ? $"&code={code}" : "";
+            queryParams += labels.Length > 0 ? $"&any-of-labels={labels}" : "";
+            queryParams += code.Length > 0 ? $"&nameContains={code}" : "";
 
-            if (SortOptionMap.ContainsKey(sort))
+            if (SortOptionMap.TryGetValue(sort, out string sortString))
             {
-                queryParams += $"&sort-option={SortOptionMap[sort]}";
+                queryParams += $"&sort-option={sortString}";
             }
             queryParams += direction == SortDirection.Ascending ? "&sort-asc=true" : "&sort-asc=false";
 

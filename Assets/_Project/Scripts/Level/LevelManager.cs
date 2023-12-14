@@ -481,6 +481,7 @@ namespace Editarrr.Level
         public int limit;
         public string cursor;
         public string code;
+        public List<string> labels;
         public SortOption sort;
         public SortDirection direction;
     }

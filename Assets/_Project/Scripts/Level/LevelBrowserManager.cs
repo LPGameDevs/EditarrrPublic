@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Browser;
 using Editarrr.Level;
 using Editarrr.Managers;
@@ -43,6 +44,7 @@ public class LevelBrowserManager : ManagerComponent
             limit = 50,
             cursor = "",
             code = "",
+            labels = new List<string>(),
             sort = SortOption.None,
             direction = SortDirection.Ascending,
         };
@@ -173,6 +175,34 @@ public class LevelBrowserManager : ManagerComponent
     {
         _currentSortingState = newSelector.CurrentState;
         _sortingCriterionName = newSelector.SortingCriterionName;
+        DestroyAndRefreshLevels();
+    }
+
+    private void OnBrowserLabelAddRequested(string label)
+    {
+        // No need to add if its already there.
+        if (this.LevelQuery.labels.Contains(label))
+        {
+            return;
+        }
+
+        var remoteLevelLoadQuery = this.LevelQuery;
+        remoteLevelLoadQuery.labels.Remove(label);
+        this.LevelQuery = remoteLevelLoadQuery;
+        DestroyAndRefreshLevels();
+    }
+
+    private void OnBrowserLabelRemoveRequested(string label)
+    {
+        // No need to re,pve if its not there.
+        if (!this.LevelQuery.labels.Contains(label))
+        {
+            return;
+        }
+
+        var remoteLevelLoadQuery = this.LevelQuery;
+        remoteLevelLoadQuery.labels.Add(label);
+        this.LevelQuery = remoteLevelLoadQuery;
         DestroyAndRefreshLevels();
     }
 
