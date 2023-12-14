@@ -9,7 +9,7 @@ public class DownloadByCode : MonoBehaviour
     public static event Action<string> OnSearchLevelByCodeRequested;
     public static event Action<string> OnDownloadLevelByCodeRequested;
 
-    [SerializeField] private TMP_Text codeInput;
+    [SerializeField] private TMP_InputField codeInput;
     [SerializeField] private Button downloadButton;
     [SerializeField] private Button searchButton;
 
