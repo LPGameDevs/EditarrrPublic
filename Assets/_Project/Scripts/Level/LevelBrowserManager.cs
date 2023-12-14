@@ -64,15 +64,15 @@ public class LevelBrowserManager : ManagerComponent
 
         void SetLevelsAfterLoad(LevelStub[] levels, string cursor = "")
         {
-            IOrderedEnumerable<LevelStub> orderedlevels = null;
-            if (SortingState.Ascending == _currentSortingState)
-                orderedlevels = levels.OrderBy(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
-            else if (SortingState.Descending == _currentSortingState)
-                orderedlevels = levels.OrderByDescending(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
-            else
-                orderedlevels = levels.OrderBy(x => x.Code);
+            // IOrderedEnumerable<LevelStub> orderedlevels = null;
+            // if (SortingState.Ascending == _currentSortingState)
+            //     orderedlevels = levels.OrderBy(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
+            // else if (SortingState.Descending == _currentSortingState)
+            //     orderedlevels = levels.OrderByDescending(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
+            // else
+            //     orderedlevels = levels.OrderBy(x => x.Code);
 
-            this._levelLoader.SetLevels(orderedlevels.ToArray());
+            this._levelLoader.SetLevels(levels);
             this.NextCursor = cursor;
             this.PagerRequestResultHasMoreCallback?.Invoke(levels.Length == this.LevelQuery.limit);
             this.PagerRequestResultHasMoreCallback = null;
@@ -176,9 +176,35 @@ public class LevelBrowserManager : ManagerComponent
 
     private void OnSortingCriteriaChanged(SortingState doNotUse, SortingSelector newSelector)
     {
-        _currentSortingState = newSelector.CurrentState;
-        _sortingCriterionName = newSelector.SortingCriterionName;
-        DestroyAndRefreshLevels();
+        SortOption sort = SortOption.None;
+        SortDirection direction = SortDirection.Ascending;
+        if (newSelector.CurrentState == SortingState.Descending)
+        {
+            direction = SortDirection.Descending;
+        }
+
+        switch (newSelector.SortingCriterionName)
+        {
+            case "Code":
+                sort = SortOption.Code;
+                break;
+            case "CreatorName":
+                sort = SortOption.CreatorName;
+                break;
+            case "TotalScores":
+                sort = SortOption.TotalScores;
+                break;
+            case "TotalRatings":
+                sort = SortOption.TotalRatings;
+                break;
+        }
+
+        this.OnLevelSortRequested(sort, direction);
+
+
+        // _currentSortingState = newSelector.CurrentState;
+        // _sortingCriterionName = newSelector.SortingCriterionName;
+        // DestroyAndRefreshLevels();
     }
 
     private void OnBrowserLabelAddRequested(string label)

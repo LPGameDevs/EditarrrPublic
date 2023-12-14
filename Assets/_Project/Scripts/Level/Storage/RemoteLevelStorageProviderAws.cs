@@ -29,9 +29,9 @@ namespace Level.Storage
             {SortOption.UpdatedAt, "updated-at"},
             {SortOption.CreatedAt, "created-at"},
             {SortOption.AvgScore, "avg-score"},
-            {SortOption.TotalScores, "total-score"},
+            {SortOption.TotalScores, "total-scores"},
             {SortOption.AvgRating, "avg-rating"},
-            {SortOption.TotalRatings, "total-rating"},
+            {SortOption.TotalRatings, "total-ratings"},
         };
 
         public void Initialize()
