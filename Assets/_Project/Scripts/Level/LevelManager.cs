@@ -466,12 +466,22 @@ namespace Editarrr.Level
         Ascending,
         Descending
     }
+    public enum SortOption
+    {
+        None = 0,
+        UpdatedAt = 1,
+        CreatedAt = 2,
+        AvgScore = 3,
+        TotalScores = 4,
+        AvgRating = 5,
+        TotalRatings = 6
+    }
     public struct RemoteLevelLoadQuery
     {
         public int limit;
         public string cursor;
         public string code;
-        public string sort;
+        public SortOption sort;
         public SortDirection direction;
     }
 

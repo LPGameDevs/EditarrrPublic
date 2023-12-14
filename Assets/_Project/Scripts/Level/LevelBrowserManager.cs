@@ -43,7 +43,7 @@ public class LevelBrowserManager : ManagerComponent
             limit = 50,
             cursor = "",
             code = "",
-            sort = "",
+            sort = SortOption.None,
             direction = SortDirection.Ascending,
         };
     }
@@ -97,7 +97,7 @@ public class LevelBrowserManager : ManagerComponent
         DestroyAndRefreshLevels();
     }
 
-    private void OnLevelSortRequested(string sort, SortDirection direction = SortDirection.Ascending)
+    private void OnLevelSortRequested(SortOption sort = SortOption.None, SortDirection direction = SortDirection.Ascending)
     {
         var remoteLevelLoadQuery = this.LevelQuery;
         remoteLevelLoadQuery.sort = sort;

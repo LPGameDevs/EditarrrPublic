@@ -24,6 +24,16 @@ namespace Level.Storage
         public static string AwsLevelUrl => GetLevelUrl();
         public static string AwsScreenshotUrl => GetScreenshotUrl();
 
+        public static Dictionary<SortOption, string> SortOptionMap = new Dictionary<SortOption, string>()
+        {
+            {SortOption.UpdatedAt, "updated-at"},
+            {SortOption.CreatedAt, "created-at"},
+            {SortOption.AvgScore, "avg-score"},
+            {SortOption.TotalScores, "total-score"},
+            {SortOption.AvgRating, "avg-rating"},
+            {SortOption.TotalRatings, "total-rating"},
+        };
+
         public void Initialize()
         {
             // Nothing needed here.
@@ -287,7 +297,7 @@ namespace Level.Storage
             string limit = "10";
             string cursor = "";
             string code = "";
-            string sort = "";
+            SortOption sort = SortOption.None;
             SortDirection direction = SortDirection.Ascending;
             if (query != null)
             {
@@ -301,8 +311,12 @@ namespace Level.Storage
             string queryParams = $"?limit={limit}";
             queryParams += cursor.Length > 0 ? $"&cursor={cursor}" : "";
             queryParams += code.Length > 0 ? $"&code={code}" : "";
-            queryParams += sort.Length > 0 ? $"&sortKey={sort}" : "";
-            queryParams += direction == SortDirection.Ascending ? "&sortOrder=ASC" : "&sortOrder=DESC";
+
+            if (SortOptionMap.ContainsKey(sort))
+            {
+                queryParams += $"&sort-option={SortOptionMap[sort]}";
+            }
+            queryParams += direction == SortDirection.Ascending ? "&sort-asc=true" : "&sort-asc=false";
 
             string url = $"{AwsLevelUrl}/levels{queryParams}";
             // Get request to /levels
