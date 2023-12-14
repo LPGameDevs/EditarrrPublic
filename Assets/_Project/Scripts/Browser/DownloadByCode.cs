@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class DownloadByCode : MonoBehaviour
     public void OnDownloadButtonPressed()
     {
         string code = codeInput.text;
+        code = Regex.Replace(code, "[^0-9]", "");
         if (code.Length != 5)
         {
             return;
@@ -26,8 +28,10 @@ public class DownloadByCode : MonoBehaviour
     public void OnSearchButtonPressed()
     {
         string code = codeInput.text;
-        if (code.Length != 5)
+        code = Regex.Replace(code, "[^0-9]", "");
+        if (code.Length == 0 || code.Length > 5)
         {
+            OnSearchLevelByCodeRequested?.Invoke("");
             return;
         }
 

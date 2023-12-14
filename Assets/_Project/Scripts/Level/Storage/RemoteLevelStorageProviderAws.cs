@@ -165,9 +165,10 @@ namespace Level.Storage
          */
         private void DownloadByCode(string code, RemoteLevelStorage_LevelLoadedCallback nextCallback, Aws_CodeFoundCallback callback)
         {
-            string url = $"{AwsLevelUrl}/levels?code={code}";
+            string url = $"{AwsLevelUrl}/levels?nameContains={code}&limit=1000";
             RestClient.Get<AwsLevels>(url).Then(res =>
             {
+                Debug.Log(url);
                 Debug.Log(JsonUtility.ToJson(res, true));
 
                 if (res.levels.Length > 0)
