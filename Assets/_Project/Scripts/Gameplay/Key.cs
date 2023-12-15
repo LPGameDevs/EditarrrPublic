@@ -38,7 +38,7 @@ namespace Gameplay
 
         public void Trigger(Transform transform)
         {
-            if (!transform.TryGetComponent<PlayerController>(out PlayerController player))
+            if (!transform.TryGetComponent<PlayerController>(out PlayerController player) || _isCollected)
                 return;
 
             PickUp();
