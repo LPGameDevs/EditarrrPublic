@@ -54,6 +54,7 @@ TABLE=editarrr-level-storage
 #     --update-expression "SET levelAvgScore = :avgScore, levelTotalScores = :totalScores" \
 #     --expression-attribute-values '{":avgScore": {"N": "1.5"}, ":totalScores": {"N": "1"}}'
 
+# https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html
 # Get Levels with at least one of the queried labels
 # aws dynamodb query \
 #   --table-name $TABLE \
@@ -64,3 +65,15 @@ TABLE=editarrr-level-storage
 #   --key-condition-expression "levelStatus = :status" \
 #   --filter-expression "contains(labels, :label1) OR contains(labels, :label2)" \
 #   --expression-attribute-values '{ ":status": { "S": "PUBLISHED" }, ":label1": { "S": "test" }, ":label2": { "S": "GDFG" } }'
+
+# https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html
+# Get Levels with at least one of the queried labels AND the levelName is a substring match
+# aws dynamodb query \
+#   --table-name $TABLE \
+#   --index-name "levelStatus-levelUpdatedAt-index" \
+#   --select "ALL_PROJECTED_ATTRIBUTES" \
+#   --limit 10 \
+#   --no-scan-index-forward \
+#   --key-condition-expression "levelStatus = :status" \
+#   --filter-expression "(contains(labels, :label1) OR contains(labels, :label2)) AND contains(levelName, :nameSubstring)" \
+#   --expression-attribute-values '{ ":status": { "S": "PUBLISHED" }, ":label1": { "S": "test" }, ":label2": { "S": "GDFG" }, ":nameSubstring": { "S": "2" } }'
