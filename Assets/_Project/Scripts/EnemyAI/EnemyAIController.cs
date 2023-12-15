@@ -592,7 +592,7 @@ public class EnemyAIController : PausableCharacter
         Vector3 newScale = new Vector3(GetDirectionTowards(target), 1, 1);
         // Debug.Log(newScale);
 
-        transform.localScale = newScale;
+        transform.localScale = newScale.x != 0 ? newScale : transform.localScale;
     }
 
     private void TurnAround()
