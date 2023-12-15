@@ -22,6 +22,7 @@ namespace Gameplay
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            Debug.Log("Trigger enter called");
             if (_isCollected)
                 return;
 
@@ -38,7 +39,8 @@ namespace Gameplay
 
         public void Trigger(Transform transform)
         {
-            if (!transform.TryGetComponent<PlayerController>(out PlayerController player))
+            Debug.Log("Trigger method activated");
+            if (!transform.TryGetComponent<PlayerController>(out PlayerController player) || _isCollected)
                 return;
 
             PickUp();
@@ -46,6 +48,7 @@ namespace Gameplay
 
         private void PickUp()
         {
+            Debug.Log("Picking up key");
             collider.enabled = false;
             _isCollected = true;
             Editarrr.Audio.AudioManager.Instance.PlayRandomizedAudioClip(pickupSound.name, 0.05f, 0);
