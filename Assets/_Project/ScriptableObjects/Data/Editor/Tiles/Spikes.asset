@@ -17,5 +17,6 @@ MonoBehaviour:
   <UISprite>k__BackingField: {fileID: 21300000, guid: 31525df4bd89477de93730ddb291f20d, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 680424469863939b5a394b53966e537a, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 014767df9bee719438e41b77e15ce021, type: 2}
+  <Config>k__BackingField: {fileID: 0}
   <LevelLimit>k__BackingField: 0
   <IsBackground>k__BackingField: 0

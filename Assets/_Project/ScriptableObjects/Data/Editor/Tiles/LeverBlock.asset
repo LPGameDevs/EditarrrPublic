@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: LeverBlock
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Lever Block
-  <Description>k__BackingField: This tile can block your way until the right level
-    is found
+  <Description>k__BackingField: Help or hindrance, turned on/off by levers on the
+    same channel.
   <UISprite>k__BackingField: {fileID: 21300000, guid: 2a74884633c91ac44a2d8859bcd6b47b, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 3b46f8755f5113743b2493571c0399af, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 58dfc968d4e966e428b097baf785a8be, type: 2}

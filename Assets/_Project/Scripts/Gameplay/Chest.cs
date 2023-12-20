@@ -39,18 +39,6 @@ namespace Gameplay
                 SetOpen();
         }
 
-        public void Trigger(Transform transform)
-        {
-            if (_isWon || !_isOpen || !transform.TryGetComponent<PlayerController>(out PlayerController player))
-            {
-                return;
-            }
-
-            _isWon = true;
-            Editarrr.Audio.AudioManager.Instance.PlayAudioClip(_winSound);
-            OnChestReached?.Invoke();
-        }
-
         public void SetOpen()
         {
             if (_isOpen)
@@ -61,6 +49,24 @@ namespace Gameplay
             _collider.enabled = true;
             _animator.SetTrigger(Open);
             _isOpen = true;
+        }
+
+
+        public void Trigger(Transform transform)
+        {
+            if (_isWon || !_isOpen)
+            {
+                return;
+            }
+
+            _isWon = true;
+            Editarrr.Audio.AudioManager.Instance.PlayAudioClip(_winSound);
+            OnChestReached?.Invoke();
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            Trigger(collision.transform);
         }
 
         private void OnEnable()

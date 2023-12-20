@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Clawdia
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Clawdia
-  <Description>k__BackingField: A dangerous crabby foe
+  <Description>k__BackingField: Dangerous point guard, attacks players if they get
+    too close!
   <UISprite>k__BackingField: {fileID: 21300000, guid: 6e690e25b92f892838ba4962ed9b4dfa, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 067a02ef022f718b7882de5e2d0025a3, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: cdc3022af8342373188fe3da826ed5fd, type: 2}
