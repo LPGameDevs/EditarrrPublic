@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Key
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Key
-  <Description>k__BackingField: Unlock the treasure with one or many keys
+  <Description>k__BackingField: Unlock the treasure by collecting all keys in a level.
   <UISprite>k__BackingField: {fileID: 21300000, guid: 51a1265a9a2cfd2ddb0e6d5d17cd23ce, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 94d528d9024f139ed81e1235cfd7c6bc, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 0b51826c600478be7ab6c76dba28eb94, type: 2}

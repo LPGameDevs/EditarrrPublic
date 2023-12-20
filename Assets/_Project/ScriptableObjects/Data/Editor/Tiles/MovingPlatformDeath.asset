@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: MovingPlatformDeath
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Moving Platform of Death
-  <Description>k__BackingField: Dodge these... they are not fun
+  <Description>k__BackingField: Dodge these... they are not fun.
   <UISprite>k__BackingField: {fileID: 6291843735777069718, guid: 3cbd3405a311921c5bcc4515bc6148a0, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 70ae17fd06da3903cb7fb50bf66dc845, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 36936f3dd1ed38924b02cf94087cf53d, type: 2}
+  <Config>k__BackingField: {fileID: 0}
   <LevelLimit>k__BackingField: 0
   <IsBackground>k__BackingField: 0

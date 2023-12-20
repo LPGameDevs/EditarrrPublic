@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ffed527745628541a0978d580263665, type: 3}
   m_Name: Wall
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Wall
-  <Description>k__BackingField: Something to walk on
+  <Name>k__BackingField: Terrain
+  <Description>k__BackingField: Your basic building blocks. Ground, wall, ceiling
+    - whatever you want it to be!
   <UISprite>k__BackingField: {fileID: 5504718189712137809, guid: 6ce8822ae70bdd2fa95b5efe4226647c, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: 3d5db691f22abc297b535276f5e894c1, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: f128bea3ae148e14dbca75bcc47b157f, type: 2}
+  <Config>k__BackingField: {fileID: 0}
   <LevelLimit>k__BackingField: 0
   <IsBackground>k__BackingField: 0
