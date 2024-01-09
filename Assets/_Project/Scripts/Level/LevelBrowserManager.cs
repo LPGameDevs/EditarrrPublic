@@ -41,7 +41,7 @@ public class LevelBrowserManager : ManagerComponent
         this.PreviousCursor = "";
         this.LevelQuery = new RemoteLevelLoadQuery()
         {
-            limit = 400,
+            limit = 50,
             cursor = "",
             code = "",
             labels = new List<string>(),

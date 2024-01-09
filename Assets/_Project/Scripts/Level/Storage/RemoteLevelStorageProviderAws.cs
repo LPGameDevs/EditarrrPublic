@@ -311,6 +311,12 @@ namespace Level.Storage
                 labels = query.Value.labels.Count > 0 ? String.Join(",", query.Value.labels) : "";
             }
 
+            // Hardcode search limit to avoid pagination issues.
+            if (code.Length > 0)
+            {
+                limit = "500";
+            }
+
             string queryParams = $"?limit={limit}";
             queryParams += cursor.Length > 0 ? $"&cursor={cursor}" : "";
             queryParams += labels.Length > 0 ? $"&any-of-labels={labels}" : "";
