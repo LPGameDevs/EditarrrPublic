@@ -156,6 +156,9 @@ MonoBehaviour:
   <StunDuration>k__BackingField: 0
   <ForceOrigin>k__BackingField: {fileID: 8716000030919448201}
   <useStaticForce>k__BackingField: 1
+  <contactFeedback>k__BackingField: {fileID: 0}
+  _useTrigger: 1
+  _useCollider: 0
 --- !u!50 &1134828341692155681
 Rigidbody2D:
   serializedVersion: 4
@@ -250,7 +253,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 31525df4bd89477de93730ddb291f20d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 50f2a00846be3ca4b8cfe387a7466388, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

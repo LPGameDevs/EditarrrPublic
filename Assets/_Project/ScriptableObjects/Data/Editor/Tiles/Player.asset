@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Captain
   <Description>k__BackingField: This is where you spawn into the level.
-  <UISprite>k__BackingField: {fileID: 21300000, guid: e7b9508647f8a4f4e9d1491ab30994b2, type: 3}
+  <UISprite>k__BackingField: {fileID: 21300000, guid: 1291687d078c33248a5f3e160305885b, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: ce34959abb45887fc82e6c6a77f51fd1, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 4338bc1ea6c17474c927cfbba456bd2a, type: 2}
+  <Config>k__BackingField: {fileID: 0}
   <LevelLimit>k__BackingField: 1
   <IsBackground>k__BackingField: 0
