@@ -474,7 +474,9 @@ namespace Editarrr.Level
         AvgScore = 3,
         TotalScores = 4,
         AvgRating = 5,
-        TotalRatings = 6
+        TotalRatings = 6,
+        Code = 7,
+        CreatorName = 8,
     }
     public struct RemoteLevelLoadQuery
     {
