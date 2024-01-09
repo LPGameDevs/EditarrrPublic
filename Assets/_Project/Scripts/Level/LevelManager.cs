@@ -461,10 +461,31 @@ namespace Editarrr.Level
 
     public delegate void LevelManager_AllLevelsLoadedCallback(LevelStub[] levelStates, string cursor = "");
 
+    public enum SortDirection
+    {
+        Ascending,
+        Descending
+    }
+    public enum SortOption
+    {
+        None = 0,
+        UpdatedAt = 1,
+        CreatedAt = 2,
+        AvgScore = 3,
+        TotalScores = 4,
+        AvgRating = 5,
+        TotalRatings = 6,
+        Code = 7,
+        CreatorName = 8,
+    }
     public struct RemoteLevelLoadQuery
     {
         public int limit;
         public string cursor;
+        public string code;
+        public List<string> labels;
+        public SortOption sort;
+        public SortDirection direction;
     }
 
     public struct LevelMetaCache

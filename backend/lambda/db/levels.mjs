@@ -20,6 +20,7 @@ export class LevelsSortOptions {
     static TOTAL_SCORES = "total-scores";
     static AVG_RATING = "avg-rating";
     static TOTAL_RATINGS = "total-ratings";
+    static LEVEL_CODE = "level-code";
 
     static isValid(str) {
         for (const validOption in LevelsSortOptions) {

@@ -20,7 +20,7 @@ namespace Level.Storage
     public delegate void RemoteScoreStorage_ScoreSubmittedCallback(string code, string remoteId, bool isSteam = false);
     public delegate void RemoteScoreStorage_AllScoresLoadedCallback(ScoreStub[] scoreStubs);
     public delegate void RemoteLevelStorage_LevelUploadedCallback(string code, string remoteId, bool isSteam = false);
-    public delegate void RemoteLevelStorage_LevelLoadedCallback(LevelSave levelsave);
+    public delegate void RemoteLevelStorage_LevelLoadedCallback(LevelSave levelsave, bool updateUI = false);
     public delegate void RemoteLevelStorage_LevelScreenshotDownloadedCallback();
 
     public delegate void RemoteLevelStorage_AllLevelsLoadedCallback(LevelStub[] levelStubs, string cursor = "");

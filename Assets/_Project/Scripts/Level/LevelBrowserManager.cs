@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Browser;
 using Editarrr.Level;
 using Editarrr.Managers;
@@ -42,6 +43,10 @@ public class LevelBrowserManager : ManagerComponent
         {
             limit = 50,
             cursor = "",
+            code = "",
+            labels = new List<string>(),
+            sort = SortOption.None,
+            direction = SortDirection.Ascending,
         };
     }
 
@@ -59,15 +64,15 @@ public class LevelBrowserManager : ManagerComponent
 
         void SetLevelsAfterLoad(LevelStub[] levels, string cursor = "")
         {
-            IOrderedEnumerable<LevelStub> orderedlevels = null;
-            if (SortingState.Ascending == _currentSortingState)
-                orderedlevels = levels.OrderBy(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
-            else if (SortingState.Descending == _currentSortingState)
-                orderedlevels = levels.OrderByDescending(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
-            else
-                orderedlevels = levels.OrderBy(x => x.Code);
+            // IOrderedEnumerable<LevelStub> orderedlevels = null;
+            // if (SortingState.Ascending == _currentSortingState)
+            //     orderedlevels = levels.OrderBy(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
+            // else if (SortingState.Descending == _currentSortingState)
+            //     orderedlevels = levels.OrderByDescending(x => typeof(LevelStub).GetProperty(_sortingCriterionName).GetValue(x));
+            // else
+            //     orderedlevels = levels.OrderBy(x => x.Code);
 
-            this._levelLoader.SetLevels(orderedlevels.ToArray());
+            this._levelLoader.SetLevels(levels);
             this.NextCursor = cursor;
             this.PagerRequestResultHasMoreCallback?.Invoke(levels.Length == this.LevelQuery.limit);
             this.PagerRequestResultHasMoreCallback = null;
@@ -84,6 +89,23 @@ public class LevelBrowserManager : ManagerComponent
         // Update display - this is only necessary with long downloads.
         // DestroyAndRefreshLevels();
         AnalyticsManager.Instance.TrackEvent(AnalyticsEvent.LevelDownload, code);
+    }
+
+    private void OnLevelSearchRequested(string code)
+    {
+        var remoteLevelLoadQuery = this.LevelQuery;
+        remoteLevelLoadQuery.code = code;
+        this.LevelQuery = remoteLevelLoadQuery;
+        DestroyAndRefreshLevels();
+    }
+
+    private void OnLevelSortRequested(SortOption sort = SortOption.None, SortDirection direction = SortDirection.Ascending)
+    {
+        var remoteLevelLoadQuery = this.LevelQuery;
+        remoteLevelLoadQuery.sort = sort;
+        remoteLevelLoadQuery.direction = direction;
+        this.LevelQuery = remoteLevelLoadQuery;
+        DestroyAndRefreshLevels();
     }
 
     private void OnLevelScreenshotDownloadRequested(string code)
@@ -104,7 +126,7 @@ public class LevelBrowserManager : ManagerComponent
         // DestroyAndRefreshLevels();
     }
 
-    private void OnLevelDownloadComplete(LevelSave level)
+    private void OnLevelDownloadComplete(LevelSave level, bool updateBrowserLevels = false)
     {
         // save level to local storage.
         LevelManager.SaveDownloadedLevel(level);
@@ -112,7 +134,10 @@ public class LevelBrowserManager : ManagerComponent
         Debug.Log("Download finished for level " + level.Code + ".");
 
         // Update display.
-        //DestroyAndRefreshLevels();
+        if (updateBrowserLevels)
+        {
+            DestroyAndRefreshLevels();
+        }
     }
 
 #if !UNITY_WEBGL && !UNITY_EDITOR_OSX
@@ -151,8 +176,62 @@ public class LevelBrowserManager : ManagerComponent
 
     private void OnSortingCriteriaChanged(SortingState doNotUse, SortingSelector newSelector)
     {
-        _currentSortingState = newSelector.CurrentState;
-        _sortingCriterionName = newSelector.SortingCriterionName;
+        SortOption sort = SortOption.None;
+        SortDirection direction = SortDirection.Ascending;
+        if (newSelector.CurrentState == SortingState.Descending)
+        {
+            direction = SortDirection.Descending;
+        }
+
+        switch (newSelector.SortingCriterionName)
+        {
+            case "Code":
+                sort = SortOption.Code;
+                break;
+            case "CreatorName":
+                sort = SortOption.CreatorName;
+                break;
+            case "TotalScores":
+                sort = SortOption.TotalScores;
+                break;
+            case "TotalRatings":
+                sort = SortOption.TotalRatings;
+                break;
+        }
+
+        this.OnLevelSortRequested(sort, direction);
+
+
+        // _currentSortingState = newSelector.CurrentState;
+        // _sortingCriterionName = newSelector.SortingCriterionName;
+        // DestroyAndRefreshLevels();
+    }
+
+    private void OnBrowserLabelAddRequested(string label)
+    {
+        // No need to add if its already there.
+        if (this.LevelQuery.labels.Contains(label))
+        {
+            return;
+        }
+
+        var remoteLevelLoadQuery = this.LevelQuery;
+        remoteLevelLoadQuery.labels.Remove(label);
+        this.LevelQuery = remoteLevelLoadQuery;
+        DestroyAndRefreshLevels();
+    }
+
+    private void OnBrowserLabelRemoveRequested(string label)
+    {
+        // No need to re,pve if its not there.
+        if (!this.LevelQuery.labels.Contains(label))
+        {
+            return;
+        }
+
+        var remoteLevelLoadQuery = this.LevelQuery;
+        remoteLevelLoadQuery.labels.Add(label);
+        this.LevelQuery = remoteLevelLoadQuery;
         DestroyAndRefreshLevels();
     }
 
@@ -166,6 +245,8 @@ public class LevelBrowserManager : ManagerComponent
         this.LevelManager.DoOnEnable();
 
         LevelBrowserLevel.OnBrowserLevelDownload += OnLevelDownloadRequested;
+        DownloadByCode.OnDownloadLevelByCodeRequested += OnLevelDownloadRequested;
+        DownloadByCode.OnSearchLevelByCodeRequested += OnLevelSearchRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot += OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated += OnBrowserPagerUpdateRequested;
         SortingSelector.OnStateChanged += OnSortingCriteriaChanged;
@@ -182,6 +263,8 @@ public class LevelBrowserManager : ManagerComponent
         this.LevelManager.DoOnDisable();
 
         LevelBrowserLevel.OnBrowserLevelDownload -= OnLevelDownloadRequested;
+        DownloadByCode.OnDownloadLevelByCodeRequested -= OnLevelDownloadRequested;
+        DownloadByCode.OnSearchLevelByCodeRequested -= OnLevelSearchRequested;
         LevelBrowserLevel.OnBrowserLevelDownloadScreenshot -= OnLevelScreenshotDownloadRequested;
         BrowserPager.OnBrowserPagerUpdated -= OnBrowserPagerUpdateRequested;
         SortingSelector.OnStateChanged -= OnSortingCriteriaChanged;

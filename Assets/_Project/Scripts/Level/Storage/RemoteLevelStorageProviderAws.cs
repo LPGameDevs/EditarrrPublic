@@ -24,6 +24,16 @@ namespace Level.Storage
         public static string AwsLevelUrl => GetLevelUrl();
         public static string AwsScreenshotUrl => GetScreenshotUrl();
 
+        public static Dictionary<SortOption, string> SortOptionMap = new Dictionary<SortOption, string>()
+        {
+            {SortOption.UpdatedAt, "updated-at"},
+            {SortOption.CreatedAt, "created-at"},
+            {SortOption.AvgScore, "avg-score"},
+            {SortOption.TotalScores, "total-scores"},
+            {SortOption.AvgRating, "avg-rating"},
+            {SortOption.TotalRatings, "total-ratings"},
+        };
+
         public void Initialize()
         {
             // Nothing needed here.
@@ -133,7 +143,46 @@ namespace Level.Storage
                 });
         }
 
+        /**
+         * Download level either by code or by remote id.
+         */
         public void Download(string code, RemoteLevelStorage_LevelLoadedCallback callback)
+        {
+            if (code.Length == 5)
+            {
+                DownloadByCode(code, callback, DownloadByRemoteId);
+            }
+            else
+            {
+                DownloadByRemoteId(code, callback);
+            }
+        }
+        public delegate void Aws_CodeFoundCallback(string code, RemoteLevelStorage_LevelLoadedCallback callback, bool updateUIOnSuccess = false);
+
+
+        /**
+         * If we dont know the remote id we try to get that first and then pass on to the download callback.
+         */
+        private void DownloadByCode(string code, RemoteLevelStorage_LevelLoadedCallback nextCallback, Aws_CodeFoundCallback callback)
+        {
+            string url = $"{AwsLevelUrl}/levels?nameContains={code}&limit=1000";
+            RestClient.Get<AwsLevels>(url).Then(res =>
+            {
+                Debug.Log(url);
+                Debug.Log(JsonUtility.ToJson(res, true));
+
+                if (res.levels.Length > 0)
+                {
+                    callback.Invoke(res.levels[0].id, nextCallback, true);
+                }
+            }).Catch(err =>
+            {
+                Debug.Log(url);
+                Debug.Log(err.Message);
+            });
+        }
+
+        public void DownloadByRemoteId(string code, RemoteLevelStorage_LevelLoadedCallback callback, bool updateUIOnSuccess = false)
         {
             string url = $"{AwsLevelUrl}/levels/{code}";
             RestClient.Get<AwsLevel>(url).Then(res =>
@@ -161,7 +210,7 @@ namespace Level.Storage
                     save.SetLabel(label);
                 }
                 save.SetPublished(res.status == "PUBLISHED");
-                callback?.Invoke(save);
+                callback?.Invoke(save, updateUIOnSuccess);
 
                 this.DoDownloadScreenshot(res.name);
 
@@ -248,14 +297,30 @@ namespace Level.Storage
         {
             string limit = "10";
             string cursor = "";
+            string code = "";
+            string labels = "";
+            SortOption sort = SortOption.None;
+            SortDirection direction = SortDirection.Ascending;
             if (query != null)
             {
                 limit = query.Value.limit.ToString();
                 cursor = query.Value.cursor;
+                code = query.Value.code;
+                sort = query.Value.sort;
+                direction = query.Value.direction;
+                labels = query.Value.labels.Count > 0 ? String.Join(",", query.Value.labels) : "";
             }
 
             string queryParams = $"?limit={limit}";
             queryParams += cursor.Length > 0 ? $"&cursor={cursor}" : "";
+            queryParams += labels.Length > 0 ? $"&any-of-labels={labels}" : "";
+            queryParams += code.Length > 0 ? $"&nameContains={code}" : "";
+
+            if (SortOptionMap.TryGetValue(sort, out string sortString))
+            {
+                queryParams += $"&sort-option={sortString}";
+            }
+            queryParams += direction == SortDirection.Ascending ? "&sort-asc=true" : "&sort-asc=false";
 
             string url = $"{AwsLevelUrl}/levels{queryParams}";
             // Get request to /levels
@@ -278,6 +343,7 @@ namespace Level.Storage
                     levelStubs.Add(levelStub);
                 }
 
+                Debug.Log(url);
                 Debug.Log(JsonUtility.ToJson(res, true));
                 callback?.Invoke(levelStubs.ToArray(), res.cursor);
             }).Catch(err =>
