@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Spikes of Death
   <Description>k__BackingField: So sharp they will kill you instantly!
-  <UISprite>k__BackingField: {fileID: 21300000, guid: a634ee6a797b22a23a758a8391f9f2b2, type: 3}
+  <UISprite>k__BackingField: {fileID: 21300000, guid: 21d567f58c71bf141853f8917528650d, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: bbd1442755791b896a02309ec97f4c30, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 3992a0d09e0aa1d37af56d7b4d807530, type: 2}
   <Config>k__BackingField: {fileID: 0}

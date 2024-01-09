@@ -1260,6 +1260,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SnowParticleSystem
       objectReference: {fileID: 0}
+    - target: {fileID: 5473698936061217284, guid: 13412943b0561804491f86177fd2b9ae, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5473698936061217285, guid: 13412943b0561804491f86177fd2b9ae, type: 3}
       propertyPath: m_RootOrder
       value: 1

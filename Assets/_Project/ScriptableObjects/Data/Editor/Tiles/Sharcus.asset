@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Sharcus
   <Description>k__BackingField: Speedy ground patrol, sprints toward player.
-  <UISprite>k__BackingField: {fileID: 21300000, guid: 87b29e96e212f07128cc7cc8c4b71ad5, type: 3}
+  <UISprite>k__BackingField: {fileID: 21300000, guid: e94b85832682be446b6911cedc67f68a, type: 3}
   <EditorGridTile>k__BackingField: {fileID: 11400000, guid: a78f5aa6fbd59df5386943a50df2be54, type: 2}
   <Tile>k__BackingField: {fileID: 11400000, guid: 9160cacdedfc78341b2be0ab1d49483c, type: 2}
   <Config>k__BackingField: {fileID: 0}
