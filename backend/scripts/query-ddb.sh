@@ -77,3 +77,17 @@ TABLE=editarrr-level-storage
 #   --key-condition-expression "levelStatus = :status" \
 #   --filter-expression "(contains(labels, :label1) OR contains(labels, :label2)) AND contains(levelName, :nameSubstring)" \
 #   --expression-attribute-values '{ ":status": { "S": "PUBLISHED" }, ":label1": { "S": "test" }, ":label2": { "S": "GDFG" }, ":nameSubstring": { "S": "2" } }'
+
+# Get Levels demo that, if there 'limit' cuts off _after_ the FilterExpression is executed
+# From the AWS Doc (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.FilterExpression.html)
+# 'A Query operation can retrieve a maximum of 1 MB of data. This limit applies before the filter expression is evaluated.'
+# Note: the '--max-items' flag in the CLI does what we want, but it is a CLI-only option (https://docs.aws.amazon.com/cli/latest/reference/dynamodb/query.html)
+# aws dynamodb query \
+#   --table-name $TABLE \
+#   --index-name "levelStatus-levelUpdatedAt-index" \
+#   --select "ALL_PROJECTED_ATTRIBUTES" \
+#   --limit 10 \
+#   --no-scan-index-forward \
+#   --key-condition-expression "levelStatus = :status" \
+#   --filter-expression "(contains(levelName, :nameSubstring))" \
+#   --expression-attribute-values '{ ":status": { "S": "PUBLISHED" }, ":nameSubstring": { "S": "56197" } }'

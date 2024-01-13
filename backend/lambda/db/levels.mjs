@@ -89,7 +89,6 @@ export class LevelsDbClient {
             TableName: tableNameLevel,
             IndexName: sortOptionToIndex[sortOption],
             Select: "ALL_PROJECTED_ATTRIBUTES",
-            Limit: pageLimit,
             ScanIndexForward: sortAsc,
             KeyConditionExpression: "levelStatus = :status",
             ExpressionAttributeValues: {
@@ -111,6 +110,17 @@ export class LevelsDbClient {
             };
         }
 
+        // We only set a limit if there are filters because
+        // if we have a FilterExpression in a DDB query, we can NOT use 'limit' for pagination.
+        // The filtering doesn't happen until _after_ the first page is fetched - meaning it only filters on the limited set of items. 
+        // From the AWS Doc (https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.FilterExpression.html)
+        // 'A Query operation can retrieve a maximum of 1 MB of data. This limit applies before the filter expression is evaluated.'
+        // and see this discussion: https://stackoverflow.com/questions/40138551/how-can-i-do-dynamodb-limit-after-filtering
+        // Note: the '--max-items' flag in the CLI does what we want, but it is a CLI-only option (https://docs.aws.amazon.com/cli/latest/reference/dynamodb/query.html)
+        if (filters === undefined || Object.keys(filters).length == 0) {
+            query.Limit = pageLimit
+        }
+
         var anyOfLabels = filters?.anyOfLabels;
         if (anyOfLabels !== undefined && anyOfLabels.length > 0) {
             var containsAnyOfLabelsFilterExpression = anyOfLabels.map((label, index) => `contains(labels, :label${index})`).join(" OR ");
@@ -128,6 +138,14 @@ export class LevelsDbClient {
         }
 
         var queryResponse = await this.dynamoDbClient.send(new QueryCommand(query));
+
+        // See comments above why we have to do this
+        if (filters !== undefined && Object.keys(filters).length > 0) {
+            if (queryResponse.Items.length > pageLimit) {
+                queryResponse.Items = queryResponse.Items.slice(0, pageLimit);
+                queryResponse.LastEvaluatedKey = queryResponse.Items[pageLimit-1];
+            }
+        }
 
         // TODO Validation of response
 
