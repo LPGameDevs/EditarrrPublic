@@ -78,6 +78,7 @@ export class ScoresDbClient {
             TableName: tableName,
             IndexName: sortOptionToIndex[sortOption],
             Select: "ALL_PROJECTED_ATTRIBUTES",
+            // Note: We should STOP using 'limit' if we introduce a FilterExpression - see https://stackoverflow.com/questions/40138551/how-can-i-do-dynamodb-limit-after-filtering
             Limit: pageLimit,
             ScanIndexForward: sortAsc, 
             KeyConditionExpression: "pk = :levelId",

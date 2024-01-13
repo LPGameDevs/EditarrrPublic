@@ -951,7 +951,6 @@ describe('GetPagedLevels', function () {
             TableName: tableNameLevel,
             IndexName: "levelStatus-levelUpdatedAt-index",
             Select: "ALL_PROJECTED_ATTRIBUTES",
-            Limit: 10,
             ScanIndexForward: false,
             KeyConditionExpression: "levelStatus = :status",
             FilterExpression: "contains(labels, :label0) OR contains(labels, :label1)",
@@ -1064,7 +1063,6 @@ describe('GetPagedLevels', function () {
             TableName: tableNameLevel,
             IndexName: "levelStatus-levelUpdatedAt-index",
             Select: "ALL_PROJECTED_ATTRIBUTES",
-            Limit: 10,
             ScanIndexForward: false,
             KeyConditionExpression: "levelStatus = :status",
             FilterExpression: "contains(levelName, :nameSubstring)",
@@ -1177,7 +1175,6 @@ describe('GetPagedLevels', function () {
             TableName: tableNameLevel,
             IndexName: "levelStatus-levelUpdatedAt-index",
             Select: "ALL_PROJECTED_ATTRIBUTES",
-            Limit: 10,
             ScanIndexForward: false,
             KeyConditionExpression: "levelStatus = :status",
             FilterExpression: "(contains(labels, :label0) OR contains(labels, :label1)) AND (contains(levelName, :nameSubstring))",
@@ -1242,4 +1239,102 @@ describe('GetPagedLevels', function () {
             ]    
         });
     });
+
+    it('should still paginate (artifically) when label and/or nameContains filters are set.', async function () {
+        // Arrange
+        var sortOptionQueryParam = undefined;
+        var sortAscQueryParam = undefined;
+        var limitQueryParam = "1";
+        var cursorQueryParam = undefined;
+        var useDraftsQueryParam = undefined;
+        var filters = {
+            anyOfLabels: [ "test", "GDFG" ],
+            nameContains: "2",
+        }
+
+        ddbClientSendStub.withArgs(match.has("input", {
+            TableName: tableNameLevel,
+            IndexName: "levelStatus-levelUpdatedAt-index",
+            Select: "ALL_PROJECTED_ATTRIBUTES",
+            ScanIndexForward: false,
+            KeyConditionExpression: "levelStatus = :status",
+            FilterExpression: "(contains(labels, :label0) OR contains(labels, :label1)) AND (contains(levelName, :nameSubstring))",
+            ExpressionAttributeValues: { 
+                ":status": "PUBLISHED",
+                ":label0": "test",
+                ":label1": "GDFG",
+                ":nameSubstring": "2",
+             },
+        })).returns({
+            "Items":[
+                {
+                    "levelName": "Level 2",
+                    "levelUpdatedAt": 2,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#2-2-2-2-2",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#2-2-2-2-2",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                    "labels": [ "test" ],
+                },
+                {
+                    "levelName": "Level 22",
+                    "levelUpdatedAt": 22,
+                    "levelCreatorId": "user-1-id",
+                    "levelData": {},
+                    "levelStatus": "PUBLISHED",
+                    "sk": "LEVEL#22-22-22-22-22",
+                    "levelCreatedAt": 1698514557729,
+                    "pk": "LEVEL#22-22-22-22-22",
+                    "levelCreatorName": "User 1",
+                    "levelAvgScore": 1.0,
+                    "levelTotalScores": 2,
+                    "levelAvgRating": 1,
+                    "levelTotalRatings": 2,
+                    "labels": [ "GDFG" ],
+                }
+            ] 
+        });
+
+
+        // Act
+        var firstPageOfLevels = await levelsApi.getPagedLevels(
+            sortOptionQueryParam,
+            sortAscQueryParam,
+            limitQueryParam,
+            cursorQueryParam,
+            useDraftsQueryParam,
+            filters,
+        );
+
+        // Assert
+        expect(firstPageOfLevels).to.deep.equal({
+            levels: [
+                {
+                    "id": "2-2-2-2-2",
+                    "name": "Level 2",
+                    "creator": {
+                        "id": "user-1-id",
+                        "name": "User 1",
+                    },
+                    "updatedAt": 2,
+                    "data": {},
+                    "status": "PUBLISHED",
+                    "createdAt": 1698514557729,
+                    "avgScore": 1.0,
+                    "totalScores": 2,
+                    "avgRating": 1,
+                    "totalRatings": 2,
+                    "labels": [ "test" ],
+                }
+            ],
+            cursor: "2-2-2-2-2",
+        });
+    })
 });

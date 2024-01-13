@@ -48,3 +48,7 @@ echo
 echo "Getting levels that have the 'test' or 'GDFG' labels AND have '2' in their name"
 curl ${URL}?'any-of-labels=test,GDFG&nameContains=2' | python3 -m json.tool
 echo
+
+echo "Getting levels paginates correctly even if the 'nameContains' (or other filters that us DDB FilterExpression) is provided (this query should return an level)"
+curl ${URL}?'nameContains=56197' | python3 -m json.tool
+echo
