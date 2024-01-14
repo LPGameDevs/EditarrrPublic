@@ -41,6 +41,10 @@ echo "Getting the levels by code, alpha-numerically sorted ascending"
 curl ${URL}?'sort-option=level-code&sort-asc=true' | python3 -m json.tool
 echo
 
+echo "Getting the levels by creator name, alphabetically sorted ascending"
+curl ${URL}?'sort-option=creator-name&sort-asc=true' | python3 -m json.tool
+echo
+
 echo "Getting levels that have the 'test' or 'GDFG' labels"
 curl ${URL}?'any-of-labels=test,GDFG' | python3 -m json.tool
 echo
