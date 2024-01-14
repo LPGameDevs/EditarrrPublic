@@ -37,6 +37,10 @@ echo "Getting the levels with the most ratings"
 curl ${URL}?'sort-option=total-ratings&sort-asc=false&limit='${LIMIT} | python3 -m json.tool
 echo
 
+echo "Getting the levels by code, alpha-numerically sorted ascending"
+curl ${URL}?'sort-option=level-code&sort-asc=true' | python3 -m json.tool
+echo
+
 echo "Getting levels that have the 'test' or 'GDFG' labels"
 curl ${URL}?'any-of-labels=test,GDFG' | python3 -m json.tool
 echo
