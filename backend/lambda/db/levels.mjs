@@ -12,6 +12,7 @@ const indexStatusTotalScores = "levelStatus-levelTotalScores-index";
 const indexStatusAvgRating = "levelStatus-levelAvgRating-index";
 const indexStatusTotalRatings = "levelStatus-levelTotalRatings-index";
 const indexStatusLevelName = "levelStatus-levelName-index";
+const indexStatusLevelCreatorName = "levelStatus-levelCreatorName-index";
 
 // Because JS doesn't have enums...
 export class LevelsSortOptions {
@@ -22,6 +23,7 @@ export class LevelsSortOptions {
     static AVG_RATING = "avg-rating";
     static TOTAL_RATINGS = "total-ratings";
     static LEVEL_CODE = "level-code";
+    static CREATOR_NAME = "creator-name";
 
     static isValid(str) {
         for (const validOption in LevelsSortOptions) {
@@ -45,6 +47,7 @@ const sortOptionToIndex = {
     [LevelsSortOptions.AVG_RATING]: indexStatusAvgRating,
     [LevelsSortOptions.TOTAL_RATINGS]: indexStatusTotalRatings,
     [LevelsSortOptions.LEVEL_CODE]: indexStatusLevelName,
+    [LevelsSortOptions.CREATOR_NAME]: indexStatusLevelCreatorName,
 }
 
 const sortOptionToAttributeName = {
@@ -55,6 +58,7 @@ const sortOptionToAttributeName = {
     [LevelsSortOptions.AVG_RATING]: "levelAvgRating",
     [LevelsSortOptions.TOTAL_RATINGS]: "levelTotalRatings",
     [LevelsSortOptions.LEVEL_CODE]: "levelName",
+    [LevelsSortOptions.CREATOR_NAME]: "levelCreatorName"
 }
 
 export class LevelsDbClient {

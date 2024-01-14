@@ -68,6 +68,10 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     name = "levelName"
     type = "S"
   }
+  attribute {
+    name = "levelCreatorName"
+    type = "S"
+  }
   
   # attribute {
   #   name = "levelData"
@@ -158,6 +162,16 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     range_key       = "levelName"
     projection_type = "INCLUDE"
     non_key_attributes = [ "pk", "levelUpdatedAt", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+
+  global_secondary_index {
+    name            = "levelStatus-levelCreatorName-index"
+    hash_key        = "levelStatus"
+    range_key       = "levelCreatorName"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "pk", "levelName", "levelUpdatedAt", "levelCreatorId", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
