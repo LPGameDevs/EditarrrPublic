@@ -11,6 +11,7 @@ const indexStatusAvgScore = "levelStatus-levelAvgScore-index"
 const indexStatusTotalScores = "levelStatus-levelTotalScores-index";
 const indexStatusAvgRating = "levelStatus-levelAvgRating-index";
 const indexStatusTotalRatings = "levelStatus-levelTotalRatings-index";
+const indexStatusLevelName = "levelStatus-levelName-index";
 
 // Because JS doesn't have enums...
 export class LevelsSortOptions {
@@ -43,6 +44,7 @@ const sortOptionToIndex = {
     [LevelsSortOptions.TOTAL_SCORES]: indexStatusTotalScores,
     [LevelsSortOptions.AVG_RATING]: indexStatusAvgRating,
     [LevelsSortOptions.TOTAL_RATINGS]: indexStatusTotalRatings,
+    [LevelsSortOptions.LEVEL_CODE]: indexStatusLevelName,
 }
 
 const sortOptionToAttributeName = {
@@ -52,6 +54,7 @@ const sortOptionToAttributeName = {
     [LevelsSortOptions.TOTAL_SCORES]: "levelTotalScores",
     [LevelsSortOptions.AVG_RATING]: "levelAvgRating",
     [LevelsSortOptions.TOTAL_RATINGS]: "levelTotalRatings",
+    [LevelsSortOptions.LEVEL_CODE]: "levelName",
 }
 
 export class LevelsDbClient {

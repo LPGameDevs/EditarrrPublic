@@ -64,11 +64,11 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     name = "levelTotalRatings"
     type = "N"
   }
-
-  # attribute {
-  #   name = "levelName"
-  #   type = "S"
-  # }
+  attribute {
+    name = "levelName"
+    type = "S"
+  }
+  
   # attribute {
   #   name = "levelData"
   #   type = "M" # JSON Blob
@@ -148,6 +148,16 @@ resource "aws_dynamodb_table" "editarrr-level-storage" {
     range_key       = "levelTotalRatings"
     projection_type = "INCLUDE"
     non_key_attributes = [ "pk", "levelName", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "labels"]
+    write_capacity  = 0
+    read_capacity   = 0
+  }
+
+  global_secondary_index {
+    name            = "levelStatus-levelName-index"
+    hash_key        = "levelStatus"
+    range_key       = "levelName"
+    projection_type = "INCLUDE"
+    non_key_attributes = [ "pk", "levelUpdatedAt", "levelCreatorId", "levelCreatorName", "version", "levelAvgScore", "levelTotalScores", "levelAvgRating", "levelTotalRatings", "labels"]
     write_capacity  = 0
     read_capacity   = 0
   }
