@@ -281,6 +281,9 @@ Alternates Considered:
 | PK: User + SK: Level |  Problems: You can't query directly for a single level w/o a GSI, maintaining a sorted list of scores might get expensive |
 | Same schema, no GSIs | Expensive Scans operations, which would likely incur latency & costs |
 
+#### February 2024 - Retro
+https://medium.com/@nathanielmorihara/impressions-of-lambda-dynamodb-for-indie-game-level-storage-c0d66597b1ec
+
 
 ## Background
 
