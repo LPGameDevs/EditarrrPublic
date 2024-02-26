@@ -513,7 +513,7 @@ export const handler = async (event, context) => {
                     responseScores.push({
                         "scoreId": id,
                         "levelId": levelId,
-                        "score": dbScore.score,
+                        "scoreNumber": dbScore.scoreNumber,
                         "code": dbScore.scoreLevelName,
                         "creator": {
                             "id": dbScore.scoreCreatorId,
