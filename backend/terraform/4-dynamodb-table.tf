@@ -186,12 +186,6 @@ resource "aws_dynamodb_table" "editarrr-score-storage" {
   # pk: LEVEL#<levelId>
   # sk: SCORE#<score>
 
-  # DEPRECATED - use 'scoreNumber' instead. Can get rid of this once we migrate
-  attribute {
-    name = "score"
-    type = "S" # Number of seconds 0015.123
-  }
-
   attribute {
     name = "scoreNumber"
     type = "N" # Number of seconds, e.g. 10.1234
@@ -217,17 +211,6 @@ resource "aws_dynamodb_table" "editarrr-score-storage" {
   #   name = "ghost"
   #   type = "M" # JSON Blob
   # }
-
-  # DEPRECATED - use scoreLevelName-scoreNumber-index instead. Can get rid of this once we migrate
-  global_secondary_index {
-    name            = "scoreLevelName-score-index"
-    hash_key        = "pk"
-    range_key       = "score"  // sort key
-    projection_type = "INCLUDE"
-    non_key_attributes = [ "sk", "pk", "scoreLevelName", "scoreCreatorName", "scoreSubmittedAt", "scoreCreatorId"]
-    write_capacity  = 0
-    read_capacity   = 0
-  }
 
   global_secondary_index {
     name            = "scoreLevelName-scoreNumber-index"
